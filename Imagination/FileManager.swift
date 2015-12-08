@@ -8,7 +8,7 @@
 
 import Foundation
 
-class FileManager: NSObject {
+class FileManager: NSFileManager {
     class func pathOfName(name:String)->String{
         let documetPaths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentationDirectory,NSSearchPathDomainMask.UserDomainMask, true)
         let path = documetPaths[0] as String

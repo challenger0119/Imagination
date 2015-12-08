@@ -87,4 +87,33 @@ class DataCache: NSObject {
             print(catalogue)
         }
     }
+    
+    //删除方法保留 非特殊情况不适用
+    func deleteTest() {
+        for ddd in catalogue! {
+            if ddd < "2015-12-05" {
+                if deleteDay(ddd) {
+                    catalogue?.removeAtIndex((catalogue?.indexOf(ddd))!)
+                    storeCatalogue()
+                }
+            }
+        }
+    }
+    func deleteDay(dd:String) -> Bool{
+        print("deleteday\(dd)")
+        let filePath = FileManager.pathOfName(dd)
+        let mng = FileManager.defaultManager()
+        if mng.fileExistsAtPath(filePath) {
+            do {
+                try mng.removeItemAtPath(filePath)
+                return true
+            } catch {
+                print("删除文件错误:\(filePath)")
+                return false
+            }
+        }
+        return false
+    }
+    
+        
 }

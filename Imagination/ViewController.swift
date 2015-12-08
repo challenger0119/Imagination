@@ -17,15 +17,29 @@ class ViewController: UITableViewController,DayListDelegate {
     @IBOutlet weak var today: UINavigationItem!
     
     @IBAction func otherDay(sender: UIBarButtonItem) {
-        if let tmpList = self.view.viewWithTag(TAG_DAYLIST) {
-            tmpList.removeFromSuperview()
-        }else{
-            if let cata = DataCache.shareInstance.catalogue {
-                daylist = DayList(frame: CGRectMake(0, 0, 150, self.view.frame.height), cc: cata.reverse(),dele:self)
-                daylist?.tag = TAG_DAYLIST
-                self.view.addSubview(daylist!)
+        if let nav = self.navigationController {
+            if let tmpList = nav.view.viewWithTag(TAG_DAYLIST) {
+                tmpList.removeFromSuperview()
+            }else{
+                if let cata = DataCache.shareInstance.catalogue {
+                    daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height), cc: cata.reverse(),dele:self)
+                    daylist?.tag = TAG_DAYLIST
+                    self.navigationController?.view.addSubview(daylist!)
+                }
+            }
+        } else {
+            //几乎不可能是这种 只是方便
+            if let tmpList = self.view.viewWithTag(TAG_DAYLIST) {
+                tmpList.removeFromSuperview()
+            }else{
+                if let cata = DataCache.shareInstance.catalogue {
+                    daylist = DayList(frame: CGRectMake(0, 0, 150, self.view.frame.height), cc: cata.reverse(),dele:self)
+                    daylist?.tag = TAG_DAYLIST
+                    self.navigationController?.view.addSubview(daylist!)
+                }
             }
         }
+        
     }
  
     func didSelectItem(item: String) {

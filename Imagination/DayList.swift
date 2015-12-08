@@ -24,7 +24,8 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
         self.layer.borderColor = UIColor.blueColor().CGColor
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 0.5
-        self.frame = self.table.frame
+        self.backgroundColor = UIColor.whiteColor()
+        self.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.width, 0)
         self.table.delegate = self
         self.table.dataSource = self
         self.addSubview(table)
@@ -37,8 +38,8 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
         if viewHeight < actualHeight {
             actualHeight = viewHeight
         }
-        self.table.frame = CGRectMake(0, 0, frame.width, actualHeight)
-        self.frame = self.table.frame
+        self.table.frame = CGRectMake(0,0, frame.width, actualHeight)
+        self.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.width, actualHeight)
         UIView.commitAnimations()
     }
 
