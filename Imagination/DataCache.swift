@@ -19,6 +19,7 @@ class DataCache: NSObject {
     
     static let shareInstance = DataCache()
     private let FILENAME_INDEX = "index"
+    var fileState:(filename:String,lastDate:String)?
     var lastDayName:String?
     var catalogue:[String]?
     //[2015.11.20,2015.11.30,2015.12.2]
@@ -121,8 +122,12 @@ class DataCache: NSObject {
     }
     
     //备份
-    
+    //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
     func backupAll() {
+        checkFileExist()
+        if fileState!.lastDate != " " {
+            deleteDay(fileState!.filename)
+        }
         if let cc = catalogue {
             let start = cc[0]
             let end = cc[cc.count-1]
@@ -131,9 +136,47 @@ class DataCache: NSObject {
     }
     
     func backupToNow() {
-        
+        checkFileExist()
+        if fileState!.lastDate != " " {
+            //如果之前有备份 就从之前备份到今天
+            deleteDay(fileState!.filename)
+            createDataFile(fileState!.lastDate, to: Time.today())
+        } else {
+            //如果之前没有备份 就全部备份
+            if let cc = catalogue {
+                let start = cc[0]
+                let end = cc[cc.count-1]
+                createDataFile(start, to: end)
+            }
+        }
     }
+    
+    func checkFileExist() {
+        let mng = FileManager.defaultManager()
+        var lastTimeEnd = " "
+        var lastBackup = " "
+        do {
+            let files = try mng.contentsOfDirectoryAtPath(FileManager.pathOfNameInDocuments(""))
+            if !files.isEmpty {
+                for ff in files {
+                    let ffarray = ff.componentsSeparatedByString(".")
+                    if ffarray.count == 2 {
+                        let filename = ffarray[0]
+                        lastBackup = filename+".txt"
+                        let fnarray = filename.componentsSeparatedByString("_")
+                        lastTimeEnd = fnarray[1]
+                        break
+                    }
+                }
+            }
+        } catch {
+            
+        }
+        fileState = (lastBackup,lastTimeEnd)
+    }
+    
     //删除方法保留 非特殊情况不使用
+    
     private func deleteTest() {
         for ddd in catalogue! {
             if ddd < "2015-12-05" {
@@ -145,7 +188,7 @@ class DataCache: NSObject {
         }
     }
     private func deleteDay(dd:String) -> Bool{
-        print("deleteday\(dd)")
+        print("deleteday:\(dd)")
         let filePath = FileManager.pathOfNameInDocuments(dd)
         let mng = FileManager.defaultManager()
         if mng.fileExistsAtPath(filePath) {
@@ -165,7 +208,7 @@ class DataCache: NSObject {
     /*
     func changeFileToDocuments() {
         if let cc = catalogue {
-            let mng = FileManager()
+            let mng = FileManager.defaultManager()
             let ccpath = FileManager.pathOfName(FILENAME_INDEX)
             if mng.fileExistsAtPath(ccpath) {
                 do {
@@ -188,7 +231,7 @@ class DataCache: NSObject {
     }
     
     func deleteFileInLib() {
-        let mng = FileManager()
+        let mng = FileManager.defaultManager()
         if let cc = catalogue {
             
             let ccpath = FileManager.pathOfName(FILENAME_INDEX)

@@ -9,17 +9,18 @@
 import Foundation
 
 class FileManager: NSFileManager {
-    /*
-    class func pathOfName(name:String)->String{
-        let documetPaths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentationDirectory,NSSearchPathDomainMask.UserDomainMask, true)
+    
+ 
+    class func pathOfNameInCaches(name:String)->String{
+        let documetPaths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory,NSSearchPathDomainMask.UserDomainMask, true)
         let path = documetPaths[0] as String
         return path.stringByAppendingString(name)
     }
-    class func TxtFile(name:String) -> String {
-        let file = FileManager.pathOfName(name)
+    class func TxtFileInCaches(name:String) -> String {
+        let file = FileManager.pathOfNameInCaches(name)
         return file.stringByAppendingString(".txt")
     }
-    */
+    
     
     class func pathOfNameInDocuments(name:String)->String{
         let documetPaths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory,NSSearchPathDomainMask.UserDomainMask, true)
