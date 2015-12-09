@@ -17,6 +17,7 @@
 		F88D3BA51C14678600A3C921 /* DayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D3BA41C14678600A3C921 /* DayList.swift */; };
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
 		F8DA4DF81C0F103000FD8F6A /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DA4DF71C0F103000FD8F6A /* CustomCell.swift */; };
+		F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918A1C17CAE500650406 /* MoreViewController.swift */; };
 		F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F28CF41C0DB9D40007EDE3 /* Time.swift */; };
 		F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,7 @@
 		F88D3BA41C14678600A3C921 /* DayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayList.swift; sourceTree = "<group>"; };
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		F8DA4DF71C0F103000FD8F6A /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
+		F8E9918A1C17CAE500650406 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		F8F28CF41C0DB9D40007EDE3 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorityViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,6 +73,7 @@
 				F81229611BF73C6C00BDCF0E /* AppDelegate.swift */,
 				F81229631BF73C6C00BDCF0E /* ViewController.swift */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
+				F8E9918A1C17CAE500650406 /* MoreViewController.swift */,
 				F812297A1BF7755200BDCF0E /* EditImagination.swift */,
 				F812296B1BF73C6C00BDCF0E /* Assets.xcassets */,
 				F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */,
@@ -161,6 +164,7 @@
 				F88D3BA51C14678600A3C921 /* DayList.swift in Sources */,
 				F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */,
 				F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */,
+				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F8DA4DF81C0F103000FD8F6A /* CustomCell.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F812297B1BF7755200BDCF0E /* EditImagination.swift in Sources */,

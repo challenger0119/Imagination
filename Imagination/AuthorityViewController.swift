@@ -27,7 +27,7 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     func checkAuthority(passwd:String){
         if passwd == "5233" {
             let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
-            let vc = storeboad.instantiateViewControllerWithIdentifier("newstart")
+            let vc = storeboad.instantiateViewControllerWithIdentifier("inittab")
             self.presentViewController(vc, animated: true, completion: nil)
         }else{
             let alert = UIAlertController.init(title: "提示", message: "抱歉，证据不足哦！", preferredStyle: UIAlertControllerStyle.Alert)
