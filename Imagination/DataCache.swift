@@ -18,7 +18,7 @@ class DataCache: NSObject {
      ***/
     
     static let shareInstance = DataCache()
-    let FILENAME_INDEX = "index"
+    private let FILENAME_INDEX = "index"
     var lastDayName:String?
     var catalogue:[String]?
     //[2015.11.20,2015.11.30,2015.12.2]
@@ -26,7 +26,7 @@ class DataCache: NSObject {
     //{[2015.11.20:{[9.30:sxx],[9.52]:dff]}],[2015.11.30:{[8.50:fdfd],[12.50:erre]}]}
     var lastDay:Dictionary<String,String>?
     
-    func updateCatalogue() {
+    private func updateCatalogue() {
         if let cata = catalogue {
             if (cata.indexOf(lastDayName!) == nil) {
                 catalogue?.append(lastDayName!)
@@ -38,10 +38,11 @@ class DataCache: NSObject {
         }
     }
     
+    //数据更新的两个方法
     func updateLastday(lastdayValue:String,key:String) {
         lastDay?.updateValue(lastdayValue, forKey: key)
         let myData = NSKeyedArchiver.archivedDataWithRootObject(lastDay!)
-        myData.writeToFile(FileManager.pathOfName(lastDayName!), atomically: true)
+        myData.writeToFile(FileManager.pathOfNameInDocuments(lastDayName!), atomically: true)
         updateCatalogue()
     }
     
@@ -49,47 +50,91 @@ class DataCache: NSObject {
         lastDayName = lastdayName
         lastDay = lastdayDic
         let myData = NSKeyedArchiver.archivedDataWithRootObject(lastDay!)
-        myData.writeToFile(FileManager.pathOfName(lastDayName!), atomically: true)
+        myData.writeToFile(FileManager.pathOfNameInDocuments(lastDayName!), atomically: true)
         updateCatalogue()
     }
     
     
-
+    //初始化显示数据
     func loadLastDay(){
         loadCatalogue()
         if let DAYS = catalogue {
             if lastDayName == nil {
                 lastDayName = DAYS[DAYS.count-1]//lastDay
             }
-            loadDay(lastDayName!)
-        }
-    }
-    func loadLastDayToDay(dd:String) {
-        lastDayName = dd
-        loadDay(lastDayName!)
-    }
-    func loadDay(dd:String) {
-        if let mydata = NSData.init(contentsOfFile: FileManager.pathOfName(dd)) {
-            lastDay = (NSKeyedUnarchiver.unarchiveObjectWithData(mydata) as? Dictionary)
+            lastDay = loadDay(lastDayName!)
         }
     }
     
-    func storeCatalogue(){
+    //载入特定时间
+    func loadLastDayToDay(dd:String) {
+        lastDayName = dd
+        lastDay = loadDay(lastDayName!)
+    }
+    private func loadDay(dd:String) -> Dictionary<String,String>? {
+        if let mydata = NSData.init(contentsOfFile: FileManager.pathOfNameInDocuments(dd)) {
+            return (NSKeyedUnarchiver.unarchiveObjectWithData(mydata) as? Dictionary)!
+        }
+        return nil
+    }
+    
+    //存储目录
+    private func storeCatalogue(){
         if catalogue != nil {
             let myData = NSKeyedArchiver.archivedDataWithRootObject(catalogue!)
-            myData.writeToFile(FileManager.pathOfName(FILENAME_INDEX), atomically: true)
+            myData.writeToFile(FileManager.pathOfNameInDocuments(FILENAME_INDEX), atomically: true)
             print(catalogue)
         }
     }
-    func loadCatalogue(){
-        if let mydata = NSData.init(contentsOfFile: FileManager.pathOfName(FILENAME_INDEX)) {
+    //载入目录
+    private func loadCatalogue(){
+        if let mydata = NSData.init(contentsOfFile: FileManager.pathOfNameInDocuments(FILENAME_INDEX)) {
             catalogue = (NSKeyedUnarchiver.unarchiveObjectWithData(mydata) as? Array)
             print(catalogue)
         }
     }
     
-    //删除方法保留 非特殊情况不适用
-    func deleteTest() {
+    //创建文件
+    private func createDataFile(from:String,to:String) {
+        print("fileName:\(from)_\(to)")
+        let txtfile = FileManager.TxtFileInDocuments("\(from)_\(to)")
+        let data = NSMutableData()
+        for dd in catalogue! {
+            if dd >= from && dd <= to {
+                if let ddtmp = loadDay(dd) {
+                    let thisday = dd+"\n"
+                    data.appendData(thisday.dataUsingEncoding(NSUTF8StringEncoding)!)
+                    var keys = Array(ddtmp.keys)
+                    keys.sortInPlace(){$0 < $1}
+                    for kk in keys {
+                        let title = kk+"\n"
+                        data.appendData(title.dataUsingEncoding(NSUTF8StringEncoding)!)
+                        let content = ddtmp[kk]!+"\n"
+                        data.appendData((content.dataUsingEncoding(NSUTF8StringEncoding))!)
+                    }
+                }
+                let over = "\n\n"
+                data.appendData((over.dataUsingEncoding(NSUTF8StringEncoding))!)
+            }
+        }
+        data.writeToFile(txtfile, atomically: true)
+    }
+    
+    //备份
+    
+    func backupAll() {
+        if let cc = catalogue {
+            let start = cc[0]
+            let end = cc[cc.count-1]
+            createDataFile(start, to: end)
+        }
+    }
+    
+    func backupToNow() {
+        
+    }
+    //删除方法保留 非特殊情况不使用
+    private func deleteTest() {
         for ddd in catalogue! {
             if ddd < "2015-12-05" {
                 if deleteDay(ddd) {
@@ -99,9 +144,9 @@ class DataCache: NSObject {
             }
         }
     }
-    func deleteDay(dd:String) -> Bool{
+    private func deleteDay(dd:String) -> Bool{
         print("deleteday\(dd)")
-        let filePath = FileManager.pathOfName(dd)
+        let filePath = FileManager.pathOfNameInDocuments(dd)
         let mng = FileManager.defaultManager()
         if mng.fileExistsAtPath(filePath) {
             do {
@@ -115,5 +160,70 @@ class DataCache: NSObject {
         return false
     }
     
-        
+    
+    //修正目录错误的临时方法
+    /*
+    func changeFileToDocuments() {
+        if let cc = catalogue {
+            let mng = FileManager()
+            let ccpath = FileManager.pathOfName(FILENAME_INDEX)
+            if mng.fileExistsAtPath(ccpath) {
+                do {
+                    try mng.copyItemAtPath(ccpath, toPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX))
+                } catch {
+                    print("删除copyItemAtPath错误:\(ccpath)")
+                }
+            }
+            for dd in cc  {
+                let filePath = FileManager.pathOfName(dd)
+                if mng.fileExistsAtPath(filePath) {
+                    do {
+                        try mng.copyItemAtPath(filePath, toPath: FileManager.pathOfNameInDocuments(dd))
+                    } catch {
+                        print("删除copyItemAtPath错误:\(filePath)")
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteFileInLib() {
+        let mng = FileManager()
+        if let cc = catalogue {
+            
+            let ccpath = FileManager.pathOfName(FILENAME_INDEX)
+            if mng.fileExistsAtPath(ccpath) {
+                do {
+                    try mng.removeItemAtPath(ccpath)
+                } catch {
+                    print("删除错误:\(ccpath)")
+                }
+            }
+            for dd in cc  {
+                let filePath = FileManager.pathOfName(dd)
+                if mng.fileExistsAtPath(filePath) {
+                    do {
+                        try mng.removeItemAtPath(filePath)
+                    } catch {
+                        print("删除错误:\(filePath)")
+                    }
+                }
+            }
+        }
+        var p1 = FileManager.pathOfName("2015-12-4_2015-12-10.txt")
+        if mng.fileExistsAtPath(p1) {
+            do {
+                try mng.removeItemAtPath(p1)
+            } catch {
+            }
+        }
+        p1 = FileManager.pathOfName("2015-12-04_2015-12-10.txt")
+        if mng.fileExistsAtPath(p1) {
+            do {
+                try mng.removeItemAtPath(p1)
+            } catch {
+            }
+        }
+    }
+    */
 }

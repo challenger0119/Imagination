@@ -9,9 +9,26 @@
 import Foundation
 
 class FileManager: NSFileManager {
+    /*
     class func pathOfName(name:String)->String{
         let documetPaths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentationDirectory,NSSearchPathDomainMask.UserDomainMask, true)
         let path = documetPaths[0] as String
         return path.stringByAppendingString(name)
+    }
+    class func TxtFile(name:String) -> String {
+        let file = FileManager.pathOfName(name)
+        return file.stringByAppendingString(".txt")
+    }
+    */
+    
+    class func pathOfNameInDocuments(name:String)->String{
+        let documetPaths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory,NSSearchPathDomainMask.UserDomainMask, true)
+        let path = documetPaths[0] as String
+        return path.stringByAppendingString("/"+name)
+    }
+    
+    class func TxtFileInDocuments(name:String) -> String {
+        let file = FileManager.pathOfNameInDocuments(name)
+        return file.stringByAppendingString(".txt")
     }
 }

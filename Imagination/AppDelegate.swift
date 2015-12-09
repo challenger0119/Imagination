@@ -8,12 +8,11 @@
 
 import UIKit
 import CoreData
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let DEBUG = true
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
@@ -32,9 +31,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-        let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
-        let vc = storeboad.instantiateViewControllerWithIdentifier("authority")
-        self.window?.rootViewController = vc
+        if !DEBUG {
+            let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
+            let vc = storeboad.instantiateViewControllerWithIdentifier("authority")
+            self.window?.rootViewController = vc
+        }
+        
     }
 
     func applicationDidBecomeActive(application: UIApplication) {

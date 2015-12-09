@@ -10,8 +10,16 @@ import UIKit
 
 class MoreViewController: UITableViewController {
     
-    override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        print(indexPath)
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 0 {
+            DataCache.shareInstance.backupToNow()
+        } else if indexPath.row == 1 {
+            DataCache.shareInstance.backupAll()
+        } else if indexPath.row == 2 {
+            
+        } else if indexPath.row == 3 {
+            
+        }
     }
 
 }
