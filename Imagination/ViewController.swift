@@ -69,7 +69,9 @@ class ViewController: UITableViewController,DayListDelegate {
         }
         self.tableView.reloadData()
     }
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(true)
@@ -81,6 +83,9 @@ class ViewController: UITableViewController,DayListDelegate {
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        daylist?.removeFromSuperview()
+    }
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let day = dayCache {
             return day.count

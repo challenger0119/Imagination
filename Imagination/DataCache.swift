@@ -84,20 +84,17 @@ class DataCache: NSObject {
         if catalogue != nil {
             let myData = NSKeyedArchiver.archivedDataWithRootObject(catalogue!)
             myData.writeToFile(FileManager.pathOfNameInDocuments(FILENAME_INDEX), atomically: true)
-            print(catalogue)
         }
     }
     //载入目录
     private func loadCatalogue(){
         if let mydata = NSData.init(contentsOfFile: FileManager.pathOfNameInDocuments(FILENAME_INDEX)) {
             catalogue = (NSKeyedUnarchiver.unarchiveObjectWithData(mydata) as? Array)
-            print(catalogue)
         }
     }
     
     //创建文件
     private func createBackupFile(from:String,to:String) -> String {
-        //print("fileName:\(from)_\(to)")
         let txtfile = FileManager.TxtFileInDocuments("\(from)_\(to)")
         let data = NSMutableData()
         for dd in catalogue! {
@@ -124,7 +121,6 @@ class DataCache: NSObject {
     
     //导出
     func createExportDataFile(from:String,to:String) ->String {
-        //print("fileName:\(from)_\(to)")
         //删除原有的 导出文件只需要一份
         let mng = FileManager.defaultManager()
         do {

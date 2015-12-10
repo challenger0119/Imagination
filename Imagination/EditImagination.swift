@@ -35,10 +35,8 @@ class EditImagination: UIViewController,UITextViewDelegate {
     
     func keyboardWillShow(notifi:NSNotification){
         if let info = notifi.userInfo {
-            print(info)
             if let kbd = info[UIKeyboardFrameEndUserInfoKey] {
                 keyBoardHeight = kbd.CGRectValue.size.height
-                print(keyBoardHeight)
             }
         }
         
