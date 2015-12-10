@@ -18,6 +18,8 @@
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
 		F8DA4DF81C0F103000FD8F6A /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DA4DF71C0F103000FD8F6A /* CustomCell.swift */; };
 		F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918A1C17CAE500650406 /* MoreViewController.swift */; };
+		F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918E1C19123F00650406 /* DataPicker.swift */; };
+		F8E991911C19233800650406 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E991901C19233800650406 /* MessageUI.framework */; };
 		F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F28CF41C0DB9D40007EDE3 /* Time.swift */; };
 		F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */; };
 /* End PBXBuildFile section */
@@ -36,6 +38,8 @@
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		F8DA4DF71C0F103000FD8F6A /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		F8E9918A1C17CAE500650406 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
+		F8E9918E1C19123F00650406 /* DataPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPicker.swift; sourceTree = "<group>"; };
+		F8E991901C19233800650406 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		F8F28CF41C0DB9D40007EDE3 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorityViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -45,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F8E991911C19233800650406 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +59,7 @@
 		F81229551BF73C6C00BDCF0E = {
 			isa = PBXGroup;
 			children = (
+				F8E991901C19233800650406 /* MessageUI.framework */,
 				F81229601BF73C6C00BDCF0E /* Imagination */,
 				F812295F1BF73C6C00BDCF0E /* Products */,
 			);
@@ -73,6 +79,7 @@
 				F81229611BF73C6C00BDCF0E /* AppDelegate.swift */,
 				F81229631BF73C6C00BDCF0E /* ViewController.swift */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
+				F8E9918E1C19123F00650406 /* DataPicker.swift */,
 				F8E9918A1C17CAE500650406 /* MoreViewController.swift */,
 				F812297A1BF7755200BDCF0E /* EditImagination.swift */,
 				F812296B1BF73C6C00BDCF0E /* Assets.xcassets */,
@@ -169,6 +176,7 @@
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F812297B1BF7755200BDCF0E /* EditImagination.swift in Sources */,
 				F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */,
+				F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -150,7 +150,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="备份最近" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GEX-No-Os0">
-                                                    <rect key="frame" x="-17" y="5" width="64" height="20"/>
+                                                    <rect key="frame" x="15" y="5" width="64" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -158,7 +158,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="将备份最后一次备份至今的内容并导出" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gEm-Wk-4yh">
-                                                    <rect key="frame" x="-131" y="25" width="187" height="14"/>
+                                                    <rect key="frame" x="15" y="25" width="187" height="14"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -178,7 +178,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="全部备份" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XCd-q9-UFd">
-                                                    <rect key="frame" x="-17" y="5" width="64" height="20"/>
+                                                    <rect key="frame" x="15" y="5" width="64" height="20"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -186,7 +186,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="将备份所有内容并导出" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jga-jr-OXI">
-                                                    <rect key="frame" x="-54" y="25" width="110" height="14"/>
+                                                    <rect key="frame" x="15" y="25" width="110" height="14"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -310,7 +310,6 @@
         <!--Navigation Controller-->
         <scene sceneID="ezd-nQ-Pck">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZSH-5u-4f1" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="newstart" automaticallyAdjustsScrollViewInsets="NO" id="Be1-lz-K6g" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" systemItem="recents" id="Tiw-cW-hIv"/>
                     <toolbarItems/>
@@ -324,6 +323,7 @@
                         <segue destination="DsF-HB-JXj" kind="relationship" relationship="rootViewController" id="45N-Zr-6AI"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZSH-5u-4f1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3628" y="527"/>
         </scene>

@@ -96,7 +96,7 @@ class DataCache: NSObject {
     }
     
     //创建文件
-    private func createDataFile(from:String,to:String) {
+    private func createDataFile(from:String,to:String) -> String {
         print("fileName:\(from)_\(to)")
         let txtfile = FileManager.TxtFileInDocuments("\(from)_\(to)")
         let data = NSMutableData()
@@ -119,11 +119,37 @@ class DataCache: NSObject {
             }
         }
         data.writeToFile(txtfile, atomically: true)
+        return "\(from)_\(to)"
     }
     
+    //导出
+    func createExportDataFile(from:String,to:String) {
+        print("fileName:\(from)_\(to)")
+        let txtfile = FileManager.TxtFileInCaches("\(from)_\(to)")
+        let data = NSMutableData()
+        for dd in catalogue! {
+            if dd >= from && dd <= to {
+                if let ddtmp = loadDay(dd) {
+                    let thisday = dd+"\n"
+                    data.appendData(thisday.dataUsingEncoding(NSUTF8StringEncoding)!)
+                    var keys = Array(ddtmp.keys)
+                    keys.sortInPlace(){$0 < $1}
+                    for kk in keys {
+                        let title = kk+"\n"
+                        data.appendData(title.dataUsingEncoding(NSUTF8StringEncoding)!)
+                        let content = ddtmp[kk]!+"\n"
+                        data.appendData((content.dataUsingEncoding(NSUTF8StringEncoding))!)
+                    }
+                }
+                let over = "\n\n"
+                data.appendData((over.dataUsingEncoding(NSUTF8StringEncoding))!)
+            }
+        }
+        data.writeToFile(txtfile, atomically: true)
+    }
     //备份
     //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
-    func backupAll() {
+    func backupAll() -> String{
         checkFileExist()
         if fileState!.lastDate != " " {
             deleteDay(fileState!.filename)
@@ -131,26 +157,27 @@ class DataCache: NSObject {
         if let cc = catalogue {
             let start = cc[0]
             let end = cc[cc.count-1]
-            createDataFile(start, to: end)
+            return createDataFile(start, to: end)
         }
+        return " "
     }
     
-    func backupToNow() {
+    func backupToNow() ->String {
         checkFileExist()
         if fileState!.lastDate != " " {
             //如果之前有备份 就从之前备份到今天
             deleteDay(fileState!.filename)
-            createDataFile(fileState!.lastDate, to: Time.today())
+            return createDataFile(fileState!.lastDate, to: Time.today())
         } else {
             //如果之前没有备份 就全部备份
             if let cc = catalogue {
                 let start = cc[0]
                 let end = cc[cc.count-1]
-                createDataFile(start, to: end)
+               return createDataFile(start, to: end)
             }
         }
+        return " "
     }
-    
     func checkFileExist() {
         let mng = FileManager.defaultManager()
         var lastTimeEnd = " "
