@@ -96,8 +96,8 @@ class DataCache: NSObject {
     }
     
     //创建文件
-    private func createDataFile(from:String,to:String) -> String {
-        print("fileName:\(from)_\(to)")
+    private func createBackupFile(from:String,to:String) -> String {
+        //print("fileName:\(from)_\(to)")
         let txtfile = FileManager.TxtFileInDocuments("\(from)_\(to)")
         let data = NSMutableData()
         for dd in catalogue! {
@@ -123,8 +123,29 @@ class DataCache: NSObject {
     }
     
     //导出
-    func createExportDataFile(from:String,to:String) {
-        print("fileName:\(from)_\(to)")
+    func createExportDataFile(from:String,to:String) ->String {
+        //print("fileName:\(from)_\(to)")
+        //删除原有的 导出文件只需要一份
+        let mng = FileManager.defaultManager()
+        do {
+            let files = try mng.contentsOfDirectoryAtPath(FileManager.pathOfNameInCaches(""))
+            if !files.isEmpty {
+                for ff in files {
+                    let ffarray = ff.componentsSeparatedByString(".")
+                    if ffarray.count == 2 {
+                        do{
+                            try mng.removeItemAtPath(FileManager.TxtFileInCaches(ffarray[0]))
+                        } catch {
+                            
+                        }
+                    }
+                }
+            }
+        } catch {
+            
+        }
+        
+        
         let txtfile = FileManager.TxtFileInCaches("\(from)_\(to)")
         let data = NSMutableData()
         for dd in catalogue! {
@@ -146,6 +167,7 @@ class DataCache: NSObject {
             }
         }
         data.writeToFile(txtfile, atomically: true)
+        return "\(from)_\(to)"
     }
     //备份
     //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
@@ -157,7 +179,7 @@ class DataCache: NSObject {
         if let cc = catalogue {
             let start = cc[0]
             let end = cc[cc.count-1]
-            return createDataFile(start, to: end)
+            return createBackupFile(start, to: end)
         }
         return " "
     }
@@ -167,13 +189,13 @@ class DataCache: NSObject {
         if fileState!.lastDate != " " {
             //如果之前有备份 就从之前备份到今天
             deleteDay(fileState!.filename)
-            return createDataFile(fileState!.lastDate, to: Time.today())
+            return createBackupFile(fileState!.lastDate, to: Time.today())
         } else {
             //如果之前没有备份 就全部备份
             if let cc = catalogue {
                 let start = cc[0]
                 let end = cc[cc.count-1]
-               return createDataFile(start, to: end)
+               return createBackupFile(start, to: end)
             }
         }
         return " "
