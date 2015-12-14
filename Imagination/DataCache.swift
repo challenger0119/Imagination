@@ -19,9 +19,18 @@ class DataCache: NSObject {
     
     static let shareInstance = DataCache()
     private let FILENAME_INDEX = "index"
+    let EMPTY_STRING = " "
     var fileState:(filename:String,lastDate:String)?
     var lastDayName:String?
     var catalogue:[String]?
+    var email:String?{
+        set{
+            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "email")
+        }
+        get{
+            return NSUserDefaults.standardUserDefaults().objectForKey("email") as? String
+        }
+    }
     //[2015.11.20,2015.11.30,2015.12.2]
     var lastYear:Dictionary<String,Dictionary<String,String>>?
     //{[2015.11.20:{[9.30:sxx],[9.52]:dff]}],[2015.11.30:{[8.50:fdfd],[12.50:erre]}]}
@@ -169,7 +178,7 @@ class DataCache: NSObject {
     //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
     func backupAll() -> String{
         checkFileExist()
-        if fileState!.lastDate != " " {
+        if fileState!.lastDate != EMPTY_STRING {
             deleteDay(fileState!.filename)
         }
         if let cc = catalogue {
@@ -177,12 +186,12 @@ class DataCache: NSObject {
             let end = cc[cc.count-1]
             return createBackupFile(start, to: end)
         }
-        return " "
+        return EMPTY_STRING
     }
     
     func backupToNow() ->String {
         checkFileExist()
-        if fileState!.lastDate != " " {
+        if fileState!.lastDate != EMPTY_STRING {
             //如果之前有备份 就从之前备份到今天
             deleteDay(fileState!.filename)
             return createBackupFile(fileState!.lastDate, to: Time.today())
@@ -194,12 +203,12 @@ class DataCache: NSObject {
                return createBackupFile(start, to: end)
             }
         }
-        return " "
+        return EMPTY_STRING
     }
     func checkFileExist() {
         let mng = FileManager.defaultManager()
-        var lastTimeEnd = " "
-        var lastBackup = " "
+        var lastTimeEnd = EMPTY_STRING
+        var lastBackup = EMPTY_STRING
         do {
             let files = try mng.contentsOfDirectoryAtPath(FileManager.pathOfNameInDocuments(""))
             if !files.isEmpty {
