@@ -22,7 +22,7 @@ class ViewController: UITableViewController,DayListDelegate {
                 tmpList.removeFromSuperview()
             }else{
                 if let cata = DataCache.shareInstance.catalogue {
-                    daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height), cc: cata.reverse(),dele:self)
+                    daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height-(nav.navigationBar.frame.height+20)), cc: cata.reverse(),dele:self)
                     daylist?.tag = TAG_DAYLIST
                     self.navigationController?.view.addSubview(daylist!)
                 }
@@ -33,7 +33,7 @@ class ViewController: UITableViewController,DayListDelegate {
                 tmpList.removeFromSuperview()
             }else{
                 if let cata = DataCache.shareInstance.catalogue {
-                    daylist = DayList(frame: CGRectMake(0, 0, 150, self.view.frame.height), cc: cata.reverse(),dele:self)
+                    daylist = DayList(frame: CGRectMake(0, 20, 150, self.view.frame.height-20), cc: cata.reverse(),dele:self)
                     daylist?.tag = TAG_DAYLIST
                     self.navigationController?.view.addSubview(daylist!)
                 }
