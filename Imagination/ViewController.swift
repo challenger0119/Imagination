@@ -22,7 +22,7 @@ class ViewController: UITableViewController,DayListDelegate {
                 tmpList.removeFromSuperview()
             }else{
                 if let cata = DataCache.shareInstance.catalogue {
-                    daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height-(nav.navigationBar.frame.height+20)), cc: cata.reverse(),dele:self)
+                    daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height-2*(nav.navigationBar.frame.height+20)), cc: cata.reverse(),dele:self)
                     daylist?.tag = TAG_DAYLIST
                     self.navigationController?.view.addSubview(daylist!)
                 }
@@ -105,7 +105,7 @@ class ViewController: UITableViewController,DayListDelegate {
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
-        let vc = storeboad.instantiateViewControllerWithIdentifier("editmind") as! EditImagination
+        let vc = storeboad.instantiateViewControllerWithIdentifier("mood") as! MoodViewController
         vc.text = content![indexPath.row]
         vc.editMode = true
         self.navigationController?.pushViewController(vc, animated: true)

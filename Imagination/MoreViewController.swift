@@ -25,7 +25,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         dCache.checkFileExist()
         if let fs = dCache.fileState {
             if fs.lastDate != dCache.EMPTY_STRING {
-                resent.detailTextLabel?.text = "上次备份于\(fs.lastDate) \n该项只备份上次备份日期到今天的内容并导出"
+                resent.detailTextLabel?.text = "上次备份于\(fs.lastDate) \n只备份上次备份日期至今天的内容并通过邮件导出"
             }
             if let mail = dCache.email {
                 setEmail.detailTextLabel?.text = "当前接收邮箱:\(mail) 备份文件将发往这里"

@@ -14,6 +14,8 @@
 		F812296F1BF73C6C00BDCF0E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */; };
 		F812297B1BF7755200BDCF0E /* EditImagination.swift in Sources */ = {isa = PBXBuildFile; fileRef = F812297A1BF7755200BDCF0E /* EditImagination.swift */; };
 		F812297D1BF777AB00BDCF0E /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F812297C1BF777AB00BDCF0E /* DataCache.swift */; };
+		F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF731C378CB7008EF34D /* MoodViewController.swift */; };
+		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
 		F88D3BA51C14678600A3C921 /* DayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D3BA41C14678600A3C921 /* DayList.swift */; };
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
 		F8DA4DF81C0F103000FD8F6A /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DA4DF71C0F103000FD8F6A /* CustomCell.swift */; };
@@ -34,6 +36,8 @@
 		F81229701BF73C6C00BDCF0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F812297A1BF7755200BDCF0E /* EditImagination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditImagination.swift; sourceTree = "<group>"; };
 		F812297C1BF777AB00BDCF0E /* DataCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCache.swift; sourceTree = "<group>"; };
+		F870EF731C378CB7008EF34D /* MoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodViewController.swift; sourceTree = "<group>"; };
+		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F88D3BA41C14678600A3C921 /* DayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayList.swift; sourceTree = "<group>"; };
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		F8DA4DF71C0F103000FD8F6A /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
@@ -79,6 +83,7 @@
 				F81229611BF73C6C00BDCF0E /* AppDelegate.swift */,
 				F81229631BF73C6C00BDCF0E /* ViewController.swift */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
+				F870EF731C378CB7008EF34D /* MoodViewController.swift */,
 				F8E9918E1C19123F00650406 /* DataPicker.swift */,
 				F8E9918A1C17CAE500650406 /* MoreViewController.swift */,
 				F812297A1BF7755200BDCF0E /* EditImagination.swift */,
@@ -91,6 +96,7 @@
 				F8F28CF41C0DB9D40007EDE3 /* Time.swift */,
 				F8DA4DF71C0F103000FD8F6A /* CustomCell.swift */,
 				F88D3BA41C14678600A3C921 /* DayList.swift */,
+				F870EF751C37BBB5008EF34D /* Item.swift */,
 			);
 			path = Imagination;
 			sourceTree = "<group>";
@@ -171,7 +177,9 @@
 				F88D3BA51C14678600A3C921 /* DayList.swift in Sources */,
 				F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */,
 				F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */,
+				F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
+				F870EF761C37BBB5008EF34D /* Item.swift in Sources */,
 				F8DA4DF81C0F103000FD8F6A /* CustomCell.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F812297B1BF7755200BDCF0E /* EditImagination.swift in Sources */,
@@ -291,6 +299,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = imas.Imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -302,6 +311,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = imas.Imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
