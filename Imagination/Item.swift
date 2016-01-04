@@ -9,40 +9,29 @@
 import UIKit
 
 class Item: NSObject {
-    let happy = (color:UIColor.orangeColor(),index:1)
-    let justok = (color:UIColor.greenColor(),index:2)
-    let why = (color:UIColor.redColor(),index:3)
+    
+    private let moodColor = [UIColor.blackColor(),UIColor.orangeColor(),UIColor.greenColor(),UIColor.redColor()]
+    var mood:Int//心情
     
     var content:String//内容
-    var time:String//时间
-    var mood:Int//心情
-    init(time:String,content:String,mood:Int) {
-        self.content = content
-        self.time = time
-        self.mood = mood
-        super.init()
-    }
+    var color:UIColor
     
-    func toDictionary() -> Dictionary<String,String> {
-        let cc = self.content + "-" + "\(self.mood)"
-        return Dictionary.init(dictionaryLiteral: (self.time,cc))
-    }
-    func finalString() -> String{
-        return self.content + "-" + "\(self.mood)"
-    }
-    init(contentString:String,time:String) {
-        self.time = time
+    init(contentString:String) {
         
         let array = contentString.componentsSeparatedByString("-")
         if array.count >= 2 {
             self.content = array[0]
-            let mm = array[1]
-            self.mood = Int(mm)!
-            
+            self.mood = Int(array[1])!
+            self.color = self.moodColor[self.mood]
         } else {
-            self.content = "错误"
+            self.content = contentString
             self.mood = 0
+            self.color = self.moodColor[self.mood]
         }
         super.init()
+    }
+    
+    static func ItemString(content:String,mood:Int) ->String {
+        return content + "-" + "\(mood)"
     }
 }

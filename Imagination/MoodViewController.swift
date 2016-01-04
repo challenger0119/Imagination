@@ -12,9 +12,11 @@ class MoodViewController: UIViewController {
 
     let dataCache = DataCache.shareInstance
     var editMode = false
+    var moodState = 0
     var keyBoardHeight:CGFloat = 216.0
     var clockDic = Dictionary<String,String>()
     var text:String = " "
+    
     @IBOutlet weak var content: UITextView!
     @IBOutlet weak var cool: UIImageView!
     @IBOutlet weak var ok: UIImageView!
@@ -33,19 +35,32 @@ class MoodViewController: UIViewController {
             self.ok.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: "okClicked"))
             self.why.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: "whyClicked"))
         }
+        
+        switch moodState {
+        case 1:
+            coolClicked()
+        case 2:
+            okClicked()
+        case 3:
+            whyClicked()
+        default: break
+        }
     }
     
     func coolClicked() {
+        moodState = 1
         self.cool.image = UIImage.init(named: "cool")
         self.ok.image = UIImage.init(named: "ok_gray")
         self.why.image = UIImage.init(named: "why_gray")
     }
     func okClicked() {
+        moodState = 2
         self.cool.image = UIImage.init(named: "cool_gray")
         self.ok.image = UIImage.init(named: "ok")
         self.why.image = UIImage.init(named: "why_gray")
     }
     func whyClicked() {
+        moodState = 3
         self.cool.image = UIImage.init(named: "cool_gray")
         self.ok.image = UIImage.init(named: "ok_gray")
         self.why.image = UIImage.init(named: "why")
@@ -79,9 +94,9 @@ class MoodViewController: UIViewController {
         let ttt = content.text
         if !ttt.isEmpty {
             if Time.today() == dataCache.lastDayName {
-                dataCache.updateLastday(ttt, key: Time.clock())
+                dataCache.updateLastday(Item.ItemString(content.text, mood: moodState), key: Time.clock())
             } else {
-                dataCache.initLastday([Time.clock():ttt], lastdayName: Time.today())
+                dataCache.initLastday([Time.clock():Item.ItemString(content.text, mood: moodState)], lastdayName: Time.today())
             }
         }
         self.navigationController?.popToRootViewControllerAnimated(true)

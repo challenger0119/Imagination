@@ -98,15 +98,20 @@ class ViewController: UITableViewController,DayListDelegate {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("xxxxx",forIndexPath: indexPath) as! CustomCell
+        let cc = Item.init(contentString: content![indexPath.row])
         cell.time.text = times![indexPath.row]
-        cell.content.text = content![indexPath.row]
+        cell.content.text = cc.content
+        cell.time.textColor = cc.color
+        cell.content.textColor = cc.color
         
         return cell
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
         let vc = storeboad.instantiateViewControllerWithIdentifier("mood") as! MoodViewController
-        vc.text = content![indexPath.row]
+        let cc = Item.init(contentString: content![indexPath.row])
+        vc.text = cc.content
+        vc.moodState = cc.mood
         vc.editMode = true
         self.navigationController?.pushViewController(vc, animated: true)
     }
