@@ -74,6 +74,9 @@ class ViewController: UITableViewController,DayListDelegate {
         let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
         let vc = storeboad.instantiateViewControllerWithIdentifier("authority")
         self.presentViewController(vc, animated: true, completion: nil)
+        let swipe = UISwipeGestureRecognizer.init(target: self, action: "newmind")
+        swipe.direction = UISwipeGestureRecognizerDirection.Left
+        self.view.addGestureRecognizer(swipe)
     }
     override func viewWillAppear(animated: Bool)
     {
@@ -94,6 +97,12 @@ class ViewController: UITableViewController,DayListDelegate {
             return day.count
         }
         return 0
+    }
+    
+    func newmind() {
+        let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
+        let vc = storeboad.instantiateViewControllerWithIdentifier("mood") as! MoodViewController
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

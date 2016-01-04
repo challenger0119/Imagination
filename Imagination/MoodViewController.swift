@@ -75,15 +75,8 @@ class MoodViewController: UIViewController {
             if let kbd = info[UIKeyboardFrameEndUserInfoKey] {
                 keyBoardHeight = kbd.CGRectValue.size.height
             
-                if keyBoardHeight > self.cool.frame.height {
-                    keyBoardHeight = keyBoardHeight - self.cool.frame.height + 30
-                } else {
-                    if self.cool.frame.height - keyBoardHeight > 30 {
-                        keyBoardHeight = 0
-                    } else {
-                        keyBoardHeight = 30 - (self.cool.frame.height - keyBoardHeight)
-                    }
-                }
+                keyBoardHeight += 30
+                
                 updateTextView()
             }
         }
@@ -91,6 +84,9 @@ class MoodViewController: UIViewController {
     }
     
     @IBAction func done(sender: UIBarButtonItem) {
+        self.doneAction()
+    }
+    func doneAction() {
         let ttt = content.text
         if !ttt.isEmpty {
             if Time.today() == dataCache.lastDayName {
@@ -98,6 +94,17 @@ class MoodViewController: UIViewController {
             } else {
                 dataCache.initLastday([Time.clock():Item.ItemString(content.text, mood: moodState)], lastdayName: Time.today())
             }
+        } else {
+            if moodState != 0 {
+                switch moodState {
+                case 1: content.text = "\"不言不语，毕竟言语无法表达我今天的快乐！！\""
+                case 2: content.text = "\"可能这就是平凡的一天 但我不愿这样,不甘心。\""
+                case 3: content.text = "\"生活不就是这样吗？开心与不开心交替出现，不是都说最有趣的路是曲曲折折的吗？加油!\""
+                default: break
+                }
+                self.doneAction()
+            }
+            
         }
         self.navigationController?.popToRootViewControllerAnimated(true)
     }
@@ -107,7 +114,7 @@ class MoodViewController: UIViewController {
         for  cs in css {
             if cs.identifier == "keyboard" {
                 NSLayoutConstraint.deactivateConstraints([cs])
-                let new = NSLayoutConstraint.init(item: self.cool, attribute: NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem: self.content, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: keyBoardHeight)
+                let new = NSLayoutConstraint.init(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy:NSLayoutRelation.Equal, toItem: self.content, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: keyBoardHeight)
                 new.identifier = "keyboard"
                 self.view.addConstraint(new)
             }
@@ -119,7 +126,7 @@ class MoodViewController: UIViewController {
         for  cs in css {
             if cs.identifier == "keyboard" {
                 NSLayoutConstraint.deactivateConstraints([cs])
-                let new = NSLayoutConstraint.init(item: self.cool, attribute: NSLayoutAttribute.Top, relatedBy:NSLayoutRelation.Equal, toItem: self.content, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+                let new = NSLayoutConstraint.init(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy:NSLayoutRelation.Equal, toItem: self.content, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
                 new.identifier = "keyboard"
                 self.view.addConstraint(new)
             }

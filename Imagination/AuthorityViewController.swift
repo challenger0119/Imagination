@@ -14,6 +14,7 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     
     override func viewDidLoad() {
         password.delegate = self
+        useTouchId()
     }
 
     func check() {
@@ -26,11 +27,6 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     
     func checkAuthority(passwd:String){
         if passwd == "5233" {
-            /*
-            let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
-            let vc = storeboad.instantiateViewControllerWithIdentifier("inittab")
-            self.presentViewController(vc, animated: true, completion: nil)
-            */
             self.dismissViewControllerAnimated(true, completion: nil)
         }else{
             let alert = UIAlertController.init(title: "提示", message: "抱歉，证据不足哦！", preferredStyle: UIAlertControllerStyle.Alert)
@@ -45,4 +41,27 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
         check()
         return true
     }
+    
+    func useTouchId()
+    {
+        let authenticationContext = LAContext()
+        var error: NSError?
+        
+        let isTouchIdAvailable = authenticationContext.canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics,
+            error: &error)
+        
+        if isTouchIdAvailable
+        {
+            authenticationContext.evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, localizedReason: "需要验证指纹", reply: {
+                (success, error) -> Void in
+                if success
+                {
+                    self.checkAuthority("5233")
+                }
+            })
+        }
+    }
+
 }
+
+
