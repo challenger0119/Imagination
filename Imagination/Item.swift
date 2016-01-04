@@ -9,6 +9,10 @@
 import UIKit
 
 class Item: NSObject {
+    let happy = (color:UIColor.orangeColor(),index:1)
+    let justok = (color:UIColor.greenColor(),index:2)
+    let why = (color:UIColor.redColor(),index:3)
+    
     var content:String//内容
     var time:String//时间
     var mood:Int//心情
@@ -22,6 +26,9 @@ class Item: NSObject {
     func toDictionary() -> Dictionary<String,String> {
         let cc = self.content + "-" + "\(self.mood)"
         return Dictionary.init(dictionaryLiteral: (self.time,cc))
+    }
+    func finalString() -> String{
+        return self.content + "-" + "\(self.mood)"
     }
     init(contentString:String,time:String) {
         self.time = time
