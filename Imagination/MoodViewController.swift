@@ -84,6 +84,7 @@ class MoodViewController: UIViewController {
     }
     
     @IBAction func done(sender: UIBarButtonItem) {
+        self.content.endEditing(true)
         self.doneAction()
     }
     func doneAction() {
@@ -106,7 +107,8 @@ class MoodViewController: UIViewController {
             }
             
         }
-        self.navigationController?.popToRootViewControllerAnimated(true)
+        //self.navigationController?.popToRootViewControllerAnimated(true)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func updateTextView() {

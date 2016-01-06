@@ -107,11 +107,11 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*
+        
         let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
         let vc = storeboad.instantiateViewControllerWithIdentifier("authority")
         self.presentViewController(vc, animated: true, completion: nil)
-*/
+
     }
     
     func refreshMoodState() {
