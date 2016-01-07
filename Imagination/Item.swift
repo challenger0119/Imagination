@@ -9,8 +9,10 @@
 import UIKit
 
 class Item: NSObject {
-    
-    private let moodColor = [UIColor.blackColor(),UIColor.orangeColor(),UIColor.greenColor(),UIColor.redColor()]
+    static let coolColor = UIColor.orangeColor()
+    static let justOkColor = UIColor.init(red: 4.0/255.0, green: 119.0/255.0, blue: 240.0/255.0, alpha: 1.0)
+    static let whyColor = UIColor.redColor()
+    private let moodColor = [UIColor.blackColor(),Item.coolColor,Item.justOkColor,Item.whyColor]
     var mood:Int//心情
     
     var content:String//内容

@@ -27,9 +27,9 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     let TAG_DAYLIST:NSInteger = 100
     
     func initMoodStateColor() {
-        self.left.backgroundColor = UIColor.orangeColor()
-        self.middle.backgroundColor = UIColor.greenColor()
-        self.right.backgroundColor = UIColor.redColor()
+        self.left.backgroundColor = Item.coolColor
+        self.middle.backgroundColor = Item.justOkColor
+        self.right.backgroundColor = Item.whyColor
     }
     func disableMoodStateColor() {
         self.left.backgroundColor = UIColor.lightGrayColor()

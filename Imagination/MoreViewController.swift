@@ -137,7 +137,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         noti.repeatInterval = NSCalendarUnit.Day
         noti.timeZone = NSTimeZone.systemTimeZone()
         noti.soundName = UILocalNotificationDefaultSoundName
-        noti.alertBody = "今天心情如何？还没有记录哦！"
+        noti.alertBody = "今天心情如何？记录了吗？"
         noti.alertAction = "记"
         noti.hasAction = true
         noti.applicationIconBadgeNumber = 1
