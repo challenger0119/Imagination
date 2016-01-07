@@ -28,4 +28,9 @@ class Time: NSObject {
         let format = NSDateFormatter()
         return format.dateFromString(time)!
     }
+    static func nowPlus(intval:NSTimeInterval) -> NSDate {
+        let format = NSDateFormatter()
+        format.dateFormat = "yyyy-MM-dd HH:mm:SS"
+        return format.dateFromString(format.stringFromDate(NSDate.init(timeIntervalSinceNow: intval)))!
+    }
 }

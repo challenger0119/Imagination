@@ -12,13 +12,34 @@ import MessageUI
 class MoreViewController: UITableViewController,DataPickerDelegate,MFMailComposeViewControllerDelegate {
     let dCache = DataCache.shareInstance
     var picker:DataPicker?
+    var datePicker:UIDatePicker?
+    var isReminder:Bool{
+        get{
+            if let nn = NSUserDefaults.standardUserDefaults().objectForKey("noti_everyday") as? NSNumber {
+                if nn.boolValue {
+                    return true
+                } else {
+                   return false
+                }
+            } else {
+                return false
+            }
+        }
+        set{
+            NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: "noti_everyday")
+        }
+    }
+    
+    
     @IBOutlet weak var resent: UITableViewCell!
     @IBOutlet weak var setEmail: UITableViewCell!
+    @IBOutlet weak var reminder: UITableViewCell!
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         updateRecentDetail()
+        updateReminder()
     }
     
     func updateRecentDetail() {
@@ -28,11 +49,12 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
                 resent.detailTextLabel?.text = "上次备份于\(fs.lastDate) \n只备份上次备份日期至今天的内容并通过邮件导出"
             }
             if let mail = dCache.email {
-                setEmail.detailTextLabel?.text = "当前接收邮箱:\(mail) 备份文件将发往这里"
+                setEmail.detailTextLabel?.text = "当前接收邮箱:\(mail) "
             }
         }
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView .deselectRowAtIndexPath(indexPath, animated: true)
         if indexPath.row == 0 {
             sendBackupToMail(dCache.backupToNow())
             updateRecentDetail()
@@ -42,9 +64,9 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         } else if indexPath.row == 2 {
             picker = DataPicker.init(frame: CGRectMake(20, (self.view.frame.height-200)/2-50, self.view.frame.width-40, 200), dele: self)
             self.view.addSubview(picker!)
-        } else if indexPath.row == 3 {
+        } else if indexPath.row == 5 {
             sendByEmail("", fileName: "建议")
-        } else if indexPath.row == 4 {
+        } else if indexPath.row == 3 {
             let alert = UIAlertController.init(title: "设置邮箱", message: "请输入邮箱地址", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addTextFieldWithConfigurationHandler({
                 (email:UITextField) -> Void in
@@ -67,9 +89,65 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
                 }))
             alert.addAction(UIAlertAction.init(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
+        } else if indexPath.row == 4 {
+            if isReminder {
+                isReminder = false
+                if let notis = UIApplication.sharedApplication().scheduledLocalNotifications {
+                    print(notis)
+                    UIApplication.sharedApplication().cancelAllLocalNotifications()
+                }
+                updateReminder()
+                return
+            }
+            
+            let pickerBack = UIView.init(frame: CGRectMake(self.view.frame.width/2-150, 130, 300, 250))
+            pickerBack.backgroundColor = UIColor.whiteColor()
+            pickerBack.layer.borderColor = UIColor.blueColor().CGColor
+            pickerBack.layer.borderWidth = 0.5
+            pickerBack.layer.cornerRadius = 5
+            pickerBack.layer.masksToBounds = true
+            pickerBack.tag = 111
+            let btn = UIButton.init(frame: CGRectMake(pickerBack.frame.width - 50, 0, 50, 34))
+            btn.setTitle("完成", forState: UIControlState.Normal)
+            btn.backgroundColor = UIColor.blueColor()
+            btn.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            btn.addTarget(self, action: "didSelectTime", forControlEvents: UIControlEvents.TouchUpInside)
+            pickerBack.addSubview(btn)
+            datePicker = UIDatePicker.init(frame:CGRectMake(0, 34, 300, 216))
+            datePicker!.datePickerMode = UIDatePickerMode.DateAndTime
+            datePicker?.timeZone = NSTimeZone.systemTimeZone()
+            pickerBack.addSubview(datePicker!)
+            self.view.addSubview(pickerBack)
         }
     }
     
+    func updateReminder() {
+        if isReminder {
+            reminder.textLabel?.text = "关闭每日提醒"
+        } else {
+            reminder.textLabel?.text = "开启每日提醒"
+        }
+    }
+    func didSelectTime(){
+        self.view.viewWithTag(111)?.removeFromSuperview()
+        
+        print("noti_everyday set!")
+        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "noti_everyday")
+        let noti = UILocalNotification.init()
+        noti.fireDate = datePicker?.date
+        noti.repeatInterval = NSCalendarUnit.Day
+        noti.timeZone = NSTimeZone.systemTimeZone()
+        noti.soundName = UILocalNotificationDefaultSoundName
+        noti.alertBody = "今天心情如何？还没有记录哦！"
+        noti.alertAction = "记"
+        noti.hasAction = true
+        noti.applicationIconBadgeNumber = 1
+        let info = ["noti":"imagination"]
+        noti.userInfo = info
+        UIApplication.sharedApplication().scheduleLocalNotification(noti)
+        
+        updateReminder()
+    }
     func dataPickerResult(first: String, second: String) {
         sendExportToMail(dCache.createExportDataFile(first, to: second))
     }
