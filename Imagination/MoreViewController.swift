@@ -100,17 +100,16 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
                 return
             }
             
-            let pickerBack = UIView.init(frame: CGRectMake(self.view.frame.width/2-150, 130, 300, 250))
+            let pickerBack = UIView.init(frame: CGRectMake(self.view.frame.width/2-150, self.view.frame.height/2-170, 300, 250))
             pickerBack.backgroundColor = UIColor.whiteColor()
-            pickerBack.layer.borderColor = UIColor.blueColor().CGColor
+            pickerBack.layer.borderColor = UIColor.blackColor().CGColor
             pickerBack.layer.borderWidth = 0.5
             pickerBack.layer.cornerRadius = 5
             pickerBack.layer.masksToBounds = true
             pickerBack.tag = 111
             let btn = UIButton.init(frame: CGRectMake(pickerBack.frame.width - 50, 0, 50, 34))
             btn.setTitle("完成", forState: UIControlState.Normal)
-            btn.backgroundColor = UIColor.blueColor()
-            btn.setTitleColor(UIColor.whiteColor(), forState: UIControlState.Normal)
+            btn.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
             btn.addTarget(self, action: "didSelectTime", forControlEvents: UIControlEvents.TouchUpInside)
             pickerBack.addSubview(btn)
             datePicker = UIDatePicker.init(frame:CGRectMake(0, 34, 300, 216))
