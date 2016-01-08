@@ -16,6 +16,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     @IBOutlet weak var right: UIView!
     @IBOutlet weak var done: UIBarButtonItem!
     @IBOutlet weak var backView: UIView!
+    
     var cool = 0
     var ok = 0
     var why = 0
@@ -36,6 +37,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         self.middle.backgroundColor = UIColor.lightGrayColor()
         self.right.backgroundColor = UIColor.lightGrayColor()
     }
+    
     @IBAction func otherDay(sender:AnyObject) {
         if let nav = self.navigationController {
             if let tmpList = nav.view.viewWithTag(TAG_DAYLIST) {
