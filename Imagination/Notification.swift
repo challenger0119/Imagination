@@ -32,7 +32,7 @@ class Notification: NSObject {
         }
     }
     
-    static func createNotificaion(fire:NSDate) {
+    static func createNotificaion(fire:NSDate?) {
         Notification.isReminder = true
         let noti = UILocalNotification.init()
         noti.fireDate = fire
@@ -46,5 +46,34 @@ class Notification: NSObject {
         let info = [Notification.notiKey:Notification.notiValue]
         noti.userInfo = info
         UIApplication.sharedApplication().scheduleLocalNotification(noti)
+    }
+    
+    static func reScheduleNotificationToNextDay() {
+        
+        if Notification.isReminder {
+            //如果有提醒 将提醒取消 并将时间设定为明天开始
+            if let notifications = UIApplication.sharedApplication().scheduledLocalNotifications {
+                for nn in notifications {
+                    if let info = nn.userInfo {
+                        if let ss = info[Notification.notiKey] as? String {
+                            if ss == Notification.notiValue {
+                                var newnoti = UILocalNotification.init()
+                                newnoti = nn
+                                newnoti.fireDate = NSDate.init(timeInterval: 24*60*60, sinceDate: nn.fireDate!)
+                                UIApplication.sharedApplication().cancelLocalNotification(nn)
+                                UIApplication.sharedApplication().scheduleLocalNotification(newnoti)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    static func cancelAllNotifications() {
+        if let notis = UIApplication.sharedApplication().scheduledLocalNotifications {
+            print(notis)
+            UIApplication.sharedApplication().cancelAllLocalNotifications()
+        }
     }
 }

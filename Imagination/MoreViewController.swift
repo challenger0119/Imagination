@@ -13,6 +13,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     let dCache = DataCache.shareInstance
     var picker:DataPicker?
     var datePicker:UIDatePicker?
+    /*
     var isReminder:Bool{
         get{
             if let nn = NSUserDefaults.standardUserDefaults().objectForKey("noti_everyday") as? NSNumber {
@@ -29,6 +30,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: "noti_everyday")
         }
     }
+*/
     
     
     @IBOutlet weak var resent: UITableViewCell!
@@ -90,12 +92,9 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             alert.addAction(UIAlertAction.init(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         } else if indexPath.row == 4 {
-            if isReminder {
-                isReminder = false
-                if let notis = UIApplication.sharedApplication().scheduledLocalNotifications {
-                    print(notis)
-                    UIApplication.sharedApplication().cancelAllLocalNotifications()
-                }
+            if Notification.isReminder {
+                Notification.isReminder = false
+                Notification.cancelAllNotifications()
                 updateReminder()
                 return
             }
@@ -121,7 +120,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     }
     
     func updateReminder() {
-        if isReminder {
+        if Notification.isReminder {
             reminder.textLabel?.text = "关闭每日提醒"
         } else {
             reminder.textLabel?.text = "开启每日提醒"
@@ -130,20 +129,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     func didSelectTime(){
         self.view.viewWithTag(111)?.removeFromSuperview()
         
-        print("noti_everyday set!")
-        NSUserDefaults.standardUserDefaults().setBool(true, forKey: "noti_everyday")
-        let noti = UILocalNotification.init()
-        noti.fireDate = datePicker?.date
-        noti.repeatInterval = NSCalendarUnit.Day
-        noti.timeZone = NSTimeZone.systemTimeZone()
-        noti.soundName = UILocalNotificationDefaultSoundName
-        noti.alertBody = "今天心情如何？记录了吗？"
-        noti.alertAction = "记"
-        noti.hasAction = true
-        noti.applicationIconBadgeNumber = 1
-        let info = ["noti":"imagination"]
-        noti.userInfo = info
-        UIApplication.sharedApplication().scheduleLocalNotification(noti)
+        Notification.createNotificaion(datePicker?.date)
         
         updateReminder()
     }

@@ -18,28 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings.init(forTypes: [UIUserNotificationType.Alert,UIUserNotificationType.Sound,UIUserNotificationType.Badge], categories: nil))
         
+        
         //启动的时候查看今天的提醒发送没 没有就取消
-        if let noti = NSUserDefaults.standardUserDefaults().objectForKey("noti_everyday") as? NSNumber {
-            if noti.boolValue {
-                //如果有提醒 将提醒取消 并将时间设定为明天开始
-                if let notifications = UIApplication.sharedApplication().scheduledLocalNotifications {
-                    for nn in notifications {
-                        if let info = nn.userInfo {
-                            if let ss = info["noti"] as? String {
-                                if ss == "imagination" {
-                                    var newnoti = UILocalNotification.init()
-                                    newnoti = nn
-                                    newnoti.fireDate = NSDate.init(timeInterval: 24*60*60, sinceDate: nn.fireDate!)
-                                    UIApplication.sharedApplication().cancelLocalNotification(nn)
-                                    UIApplication.sharedApplication().scheduleLocalNotification(newnoti)
-                                }
-                            }
-                        }
-                    }
-                }
-                
-            }
-        }
+        Notification.reScheduleNotificationToNextDay()
         return true
     }
 
