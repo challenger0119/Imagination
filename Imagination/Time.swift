@@ -24,8 +24,19 @@ class Time: NSObject {
         format.dateFormat = "HH:mm:SS"
         return format.stringFromDate(NSDate.init(timeIntervalSinceNow: 0))
     }
-    static func dateFromString(time:String) -> NSDate {
+    static func dateFromString(time:String) -> NSDate? {
         let format = NSDateFormatter()
-        return format.dateFromString(time)!
+        format.dateFormat = "yyyy-MM-dd HH:mm:SS"
+        return format.dateFromString(time)
+    }
+    static func dayOfDate(date:NSDate) -> String {
+        let format = NSDateFormatter()
+        format.dateFormat = "yyyy-MM-dd"
+        return format.stringFromDate(date)
+    }
+    static func clockOfDate(date:NSDate) -> String {
+        let format = NSDateFormatter()
+        format.dateFormat = "HH:mm:SS"
+        return format.stringFromDate(date)
     }
 }

@@ -18,9 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings.init(forTypes: [UIUserNotificationType.Alert,UIUserNotificationType.Sound,UIUserNotificationType.Badge], categories: nil))
         
+        Notification.testToRescheduleNotificationToNextDay()
         
-        //启动的时候查看今天的提醒发送没 没有就取消
-        Notification.reScheduleNotificationToNextDay()
         return true
     }
 
@@ -46,7 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        //启动的时候查看今天的提醒发送没 没有就取消
+        Notification.testToRescheduleNotificationToNextDay()
         
     }
 
