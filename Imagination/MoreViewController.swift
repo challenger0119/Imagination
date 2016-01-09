@@ -122,8 +122,12 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     func updateReminder() {
         if Notification.isReminder {
             reminder.textLabel?.text = "关闭每日提醒"
+            if let clock = Notification.fireDate {
+                reminder.detailTextLabel?.text = Time.clockOfDate(clock)
+            }
         } else {
             reminder.textLabel?.text = "开启每日提醒"
+            reminder.detailTextLabel?.text = "每天特定时段会提示更新心情"
         }
     }
     func didSelectTime(){
