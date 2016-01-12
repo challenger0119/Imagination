@@ -43,10 +43,12 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     
     override func viewDidLoad() {
         self.password.delegate = self
-        self.useTouchId()
+        
         if vType == type.ChangePass {
             password.placeholder = "请输入新密码(留空删除密码)"
             password.secureTextEntry = false
+        } else {
+            self.useTouchId()
         }
     }
     
@@ -54,7 +56,7 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
         if passwd == AuthorityViewController.pWord {
             self.dismissViewControllerAnimated(true, completion: nil)
         }else{
-            let alert = UIAlertController.init(title: "提示", message: "抱歉，证据不足哦！", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController.init(title: "提示", message: "抱歉，证据不足哦！（忘记密码不要怕，用指纹进去改密码）", preferredStyle: UIAlertControllerStyle.Alert)
             let action = UIAlertAction.init(title: "好的", style: UIAlertActionStyle.Default, handler: nil)
             alert.addAction(action)
             self.presentViewController(alert, animated: true, completion: nil)
