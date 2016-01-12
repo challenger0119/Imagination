@@ -66,8 +66,6 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         } else if indexPath.row == 2 {
             picker = DataPicker.init(frame: CGRectMake(20, (self.view.frame.height-200)/2-50, self.view.frame.width-40, 200), dele: self)
             self.view.addSubview(picker!)
-        } else if indexPath.row == 5 {
-            sendByEmail("", fileName: "建议")
         } else if indexPath.row == 3 {
             let alert = UIAlertController.init(title: "设置邮箱", message: "请输入邮箱地址", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addTextFieldWithConfigurationHandler({
@@ -116,6 +114,13 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             datePicker?.timeZone = NSTimeZone.systemTimeZone()
             pickerBack.addSubview(datePicker!)
             self.view.addSubview(pickerBack)
+        } else if indexPath.row == 5 {
+            let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
+            let vc = storeboad.instantiateViewControllerWithIdentifier("authority") as! AuthorityViewController
+            vc.vType = AuthorityViewController.type.ChangePass
+            self.presentViewController(vc, animated: true, completion: nil)
+        } else if indexPath.row == 6 {
+            sendByEmail("", fileName: "建议")
         }
     }
     

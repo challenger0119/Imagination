@@ -10,23 +10,48 @@ import UIKit
 import LocalAuthentication
 
 class AuthorityViewController: UIViewController,UITextFieldDelegate {
-    @IBOutlet weak var password: UITextField!
-    
-    override func viewDidLoad() {
-        password.delegate = self
-        useTouchId()
+    enum type{
+        case Normal,ChangePass
     }
-
-    func check() {
-        if let text = password.text {
-            if !text.isEmpty {
-                checkAuthority(text)
+    @IBOutlet weak var password: UITextField!
+    var vType = type.Normal
+    static var pWord:String?{
+        get{
+            if let ss = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
+                return ss
+            } else {
+                return ""
+            }
+        }
+        set{
+            if newValue == nil {
+                NSUserDefaults.standardUserDefaults().setObject("", forKey: "password")
+            } else {
+                NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "password")
             }
         }
     }
+    @IBAction func ok() {
+        if vType == type.ChangePass {
+            AuthorityViewController.pWord = password.text
+            password.resignFirstResponder()
+            self.dismissViewControllerAnimated(true, completion: nil)
+            return
+        }
+        checkAuthority(password.text)
+    }
     
-    func checkAuthority(passwd:String){
-        if passwd == "5233" {
+    override func viewDidLoad() {
+        self.password.delegate = self
+        self.useTouchId()
+        if vType == type.ChangePass {
+            password.placeholder = "请输入新密码(留空删除密码)"
+            password.secureTextEntry = false
+        }
+    }
+    
+    func checkAuthority(passwd:String?){
+        if passwd == AuthorityViewController.pWord {
             self.dismissViewControllerAnimated(true, completion: nil)
         }else{
             let alert = UIAlertController.init(title: "提示", message: "抱歉，证据不足哦！", preferredStyle: UIAlertControllerStyle.Alert)
@@ -38,7 +63,7 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        check()
+        ok()
         return true
     }
     
@@ -56,7 +81,7 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
                 (success, error) -> Void in
                 if success
                 {
-                    self.checkAuthority("5233")
+                    self.dismissViewControllerAnimated(true, completion: nil)
                 }
             })
         }
