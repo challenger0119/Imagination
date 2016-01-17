@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -18,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings.init(forTypes: [UIUserNotificationType.Alert,UIUserNotificationType.Sound,UIUserNotificationType.Badge], categories: nil))
         
         Notification.testToRescheduleNotificationToNextDay()
-        
         return true
     }
 

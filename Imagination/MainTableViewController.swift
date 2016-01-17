@@ -22,6 +22,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     var why = 0
     
     var dayCache:Dictionary<String,String>?
+    var monthCache:Dictionary<String,Dictionary<String,String>>?
     var times:[String]?
     var content:[String]?
     var daylist:DayList?
@@ -43,10 +44,16 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             if let tmpList = nav.view.viewWithTag(TAG_DAYLIST) {
                 tmpList.removeFromSuperview()
             }else{
+                /*
                 if let cata = DataCache.shareInstance.catalogue {
                     daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height-2*(nav.navigationBar.frame.height+20)), cc: cata.reverse(),dele:self)
                     daylist?.tag = TAG_DAYLIST
                     self.navigationController?.view.addSubview(daylist!)
+                }*/
+                if let cata = DataCache.shareInstance.catalogue_month {
+                    daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height-2*(nav.navigationBar.frame.height+20)), cc: cata.reverse(),dele:self)
+                    daylist?.tag = TAG_DAYLIST
+                    self.navigationController!.view.addSubview(daylist!)
                 }
             }
         } else {
@@ -54,10 +61,16 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             if let tmpList = self.view.viewWithTag(TAG_DAYLIST) {
                 tmpList.removeFromSuperview()
             }else{
+                /*
                 if let cata = DataCache.shareInstance.catalogue {
                     daylist = DayList(frame: CGRectMake(0, 20, 150, self.view.frame.height-20), cc: cata.reverse(),dele:self)
                     daylist?.tag = TAG_DAYLIST
-                    self.navigationController?.view.addSubview(daylist!)
+                    self.view.addSubview(daylist!)
+                }*/
+                if let cata = DataCache.shareInstance.catalogue_month {
+                    daylist = DayList(frame: CGRectMake(0, 20, 150, self.view.frame.height-20), cc: cata.reverse(),dele:self)
+                    daylist?.tag = TAG_DAYLIST
+                    self.view.addSubview(daylist!)
                 }
             }
         }
@@ -66,9 +79,15 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     //MARK: DayListDelegate
     
     func didSelectItem(item: String) {
+        /*
         DataCache.shareInstance.loadLastDayToDay(item)
         today.title = item
         loadData()
+        refreshMoodState()
+*/
+        DataCache.shareInstance.loadLastMonthToMonth(item)
+        today.title = item
+        loadMonthData()
         refreshMoodState()
     }
     
@@ -106,7 +125,56 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         }
         self.tableView.reloadData()
     }
-    
+    func loadMonthData() {
+        monthCache = DataCache.shareInstance.lastMonth
+        cool = 0
+        ok = 0
+        why = 0
+        if let mm = monthCache {
+            //{2015.1.2:{9:30:xxx,11:30:xxx},2015.1.3:{6:35:ddd,11:07:ddd}}
+            var dayArray = Array(mm.keys)//[2015.1.2,2015.1.3]
+            dayArray.sortInPlace({$0>$1})//[2015.1.3,2015.1.2]
+            times?.removeAll()
+            content?.removeAll()
+            for daytime in dayArray {
+                if let day = mm[daytime] {//{9:30:xxx,11:30:xxx}
+                    var tmpTimes = Array(day.keys)//[9:30,11:30]
+                    tmpTimes.sortInPlace({$0>$1})//[11:30,9:30]
+                    
+                    for ct in tmpTimes {
+                        if content == nil {//xxx
+                            content = Array.init(arrayLiteral: day[ct]!)
+                        }  else {
+                            content?.append(day[ct]!)
+                            
+                        }
+                        //赋值moodState
+                        let cc = Item.init(contentString: day[ct]!)
+                        switch cc.mood {
+                        case 1:cool++
+                        case 2:ok++
+                        case 3:why++
+                        default:break
+                        }
+                    }
+                    if times == nil {
+                        times = Array(changeTimeToDayAndTime(tmpTimes, day: daytime))
+                    } else {
+                        times?.appendContentsOf(changeTimeToDayAndTime(tmpTimes, day: daytime))
+                    }
+                }
+            }
+        }
+        self.tableView.reloadData()
+    }
+    func changeTimeToDayAndTime(timearry:[String],day:String) -> [String]{
+        //添加日期信息在里面 9：30 -> 2015.2.3 9:30
+        var newArray = [String]()
+        for tt in timearry {
+            newArray.append(day+" "+tt)
+        }
+        return newArray
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         if AuthorityViewController.pWord != "" {
@@ -146,10 +214,12 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(true)
-        DataCache.shareInstance.loadLastDay()
-        today.title = DataCache.shareInstance.lastDayName
-        
-        loadData()
+//        DataCache.shareInstance.loadLastDay()
+//        today.title = DataCache.shareInstance.lastDayName
+//        loadData()
+        DataCache.shareInstance.loadLastMonth()
+        today.title = DataCache.shareInstance.lastMonthName
+        loadMonthData()
         
         self.tableView.estimatedRowHeight = 80
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -174,7 +244,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        if let day = dayCache {
+        if let day = content {
             return day.count
         }
         return 0

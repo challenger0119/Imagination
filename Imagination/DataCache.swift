@@ -22,7 +22,9 @@ class DataCache: NSObject {
     let EMPTY_STRING = " "
     var fileState:(filename:String,lastDate:String)?
     var lastDayName:String?
+    var lastMonthName:String?
     var catalogue:[String]?
+    var catalogue_month:[String]?
     var email:String?{
         set{
             NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "email")
@@ -35,6 +37,7 @@ class DataCache: NSObject {
     var lastYear:Dictionary<String,Dictionary<String,String>>?
     //{[2015.11.20:{[9.30:sxx],[9.52]:dff]}],[2015.11.30:{[8.50:fdfd],[12.50:erre]}]}
     var lastDay:Dictionary<String,String>?
+    var lastMonth:Dictionary<String,Dictionary<String,String>>?
     
     private func updateCatalogue() {
         if let cata = catalogue {
@@ -76,10 +79,24 @@ class DataCache: NSObject {
         }
     }
     
+    func loadLastMonth(){
+        loadCatalogue_month()
+        if let Months = catalogue_month {
+            if lastMonthName == nil {
+                lastMonthName = Months[Months.count-1]//lastMonth
+            }
+            lastMonth = loadMonth(lastMonthName!)
+        }
+    }
+    
     //载入特定时间
     func loadLastDayToDay(dd:String) {
         lastDayName = dd
         lastDay = loadDay(lastDayName!)
+    }
+    func loadLastMonthToMonth(mm:String) {
+        lastMonthName = mm
+        lastMonth = loadMonth(lastMonthName!)
     }
     private func loadDay(dd:String) -> Dictionary<String,String>? {
         if let mydata = NSData.init(contentsOfFile: FileManager.pathOfNameInDocuments(dd)) {
@@ -87,7 +104,28 @@ class DataCache: NSObject {
         }
         return nil
     }
+    private func loadMonth(mm:String) -> Dictionary<String,Dictionary<String,String>>? {
+        if let cts = catalogue {
+            var lMonth = Dictionary<String,Dictionary<String,String>>()
+            for ct in cts {
+                if isThisMonth(mm, dd: ct) {
+                    lMonth.updateValue((self.loadDay(ct)!), forKey: ct)
+                }
+            }
+            return lMonth
+        } else {
+            return nil
+        }
+    }
     
+    private func isThisMonth(thismonth:String,dd:String) -> Bool {
+        let arr = dd.componentsSeparatedByString("-")
+        if arr.count == 3 {
+            return (arr[0]+"-"+arr[1]) == thismonth
+        }else{
+            return false
+        }
+    }
     //存储目录
     private func storeCatalogue(){
         if catalogue != nil {
@@ -97,11 +135,58 @@ class DataCache: NSObject {
     }
     //载入目录
     private func loadCatalogue(){
+        catalogue?.removeAll()
         if let mydata = NSData.init(contentsOfFile: FileManager.pathOfNameInDocuments(FILENAME_INDEX)) {
             catalogue = (NSKeyedUnarchiver.unarchiveObjectWithData(mydata) as? Array)
         }
     }
     
+    private func loadCatalogue_month(){
+        self.loadCatalogue()
+        catalogue_month?.removeAll()
+        var montharray = [Int]()
+        if let cts = catalogue {
+            for ct in cts {
+                if isSameMonth(monthOfCatalogue(ct), arr: montharray)  {
+                    continue;
+                } else {
+                    if catalogue_month == nil {
+                        catalogue_month = Array.init(arrayLiteral: self.cutDateToMonth(ct))
+                    } else {
+                        catalogue_month?.append(self.cutDateToMonth(ct))
+                    }
+                    montharray.append(monthOfCatalogue(ct))
+                }
+                
+            }
+        }
+    }
+    private func isSameMonth(mm:Int,arr:[Int]) -> Bool {
+        //字典没有顺序所以记录之前有的月份 然后比较
+        for ii in arr {
+            if mm == ii {
+                return true
+            }
+        }
+        return false
+    }
+    private func cutDateToMonth(ss:String) -> String {
+        let arr = ss.componentsSeparatedByString("-")
+        if arr.count == 3 {
+            return arr[0]+"-"+arr[1]
+        }else{
+            return ss
+        }
+    }
+    private func monthOfCatalogue(cata:String) -> Int {
+        let arr = cata.componentsSeparatedByString("-")
+        if arr.count == 3 {
+            return Int(arr[1])!
+        }else{
+            return 0 //解析错误
+        }
+        
+    }
     //创建文件
     private func createBackupFile(from:String,to:String) -> String {
         let txtfile = FileManager.TxtFileInDocuments("\(from)_\(to)")
