@@ -99,8 +99,8 @@ class MoodViewController: UIViewController {
             if moodState != 0 {
                 switch moodState {
                 case 1: content.text = "\"不言不语，毕竟言语无法表达我今天的快乐！！\""
-                case 2: content.text = "\"可能这就是平凡的一天 但我不愿这样,不甘心。\""
-                case 3: content.text = "\"生活不就是这样吗？开心与不开心交替出现，不是都说最有趣的路是曲曲折折的吗？加油!\""
+                case 2: content.text = "\"可能这就是平凡的一天，但我不愿这样,不甘心。\""
+                case 3: content.text = "\"生活不就是这样吗——开心与不开心交替出现。不是都说最有趣的路是曲曲折折的吗？加油!\""
                 default: break
                 }
                 self.doneAction()
