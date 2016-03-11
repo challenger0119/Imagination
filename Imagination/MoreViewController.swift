@@ -172,12 +172,16 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         let vc = MFMailComposeViewController.init()
         vc.mailComposeDelegate = self
         vc.setSubject(fileName)
-        if let mail = self.dCache.email {
-           vc.setToRecipients([mail])
-        } else {
-        vc.setToRecipients(nil)
-        }
         
+        if fileName == "建议" {
+            vc.setToRecipients(["miaoqiwang@gmail.com"])
+        } else {
+            if let mail = self.dCache.email {
+                vc.setToRecipients([mail])
+            } else {
+                vc.setToRecipients(nil)
+            }
+        }
         
         let senddata = NSData.init(contentsOfFile: filePath)
         if let dd = senddata {
