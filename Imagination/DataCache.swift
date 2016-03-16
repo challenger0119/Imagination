@@ -51,6 +51,13 @@ class DataCache: NSObject {
         }
     }
     
+    func newStringContent(content:String, moodState:Int) {
+        if Time.today() == self.lastDayName {
+            self.updateLastday(Item.ItemString(content, mood: moodState), key: Time.clock())
+        } else {
+            self.initLastday([Time.clock():Item.ItemString(content, mood: moodState)], lastdayName: Time.today())
+        }
+    }
     //数据更新的两个方法
     func updateLastday(lastdayValue:String,key:String) {
         lastDay?.updateValue(lastdayValue, forKey: key)
@@ -66,7 +73,6 @@ class DataCache: NSObject {
         myData.writeToFile(FileManager.pathOfNameInDocuments(lastDayName!), atomically: true)
         updateCatalogue()
     }
-    
     
     //初始化显示数据
     func loadLastDay(){
@@ -87,6 +93,7 @@ class DataCache: NSObject {
             }
             lastMonth = loadMonth(lastMonthName!)
         }
+        self.loadLastDay()
     }
     
     //载入特定时间

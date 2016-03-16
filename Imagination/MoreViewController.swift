@@ -13,24 +13,6 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     let dCache = DataCache.shareInstance
     var picker:DataPicker?
     var datePicker:UIDatePicker?
-    /*
-    var isReminder:Bool{
-        get{
-            if let nn = NSUserDefaults.standardUserDefaults().objectForKey("noti_everyday") as? NSNumber {
-                if nn.boolValue {
-                    return true
-                } else {
-                   return false
-                }
-            } else {
-                return false
-            }
-        }
-        set{
-            NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: "noti_everyday")
-        }
-    }
-*/
     
     
     @IBOutlet weak var resent: UITableViewCell!

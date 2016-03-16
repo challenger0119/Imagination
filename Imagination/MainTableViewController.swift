@@ -145,11 +145,28 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+
         if AuthorityViewController.pWord != "" {
             let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
             let vc = storeboad.instantiateViewControllerWithIdentifier("authority")
             self.presentViewController(vc, animated: true, completion: nil)
         }
+    }
+    override func viewWillAppear(animated: Bool)
+    {
+        super.viewWillAppear(true)
+        DataCache.shareInstance.loadLastMonth()
+        today.title = DataCache.shareInstance.lastMonthName
+        loadMonthData()
+        
+        self.tableView.estimatedRowHeight = 80
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    override func viewDidAppear(animated: Bool) {
+        refreshMoodState()
+    }
+    override func viewDidDisappear(animated: Bool) {
+        daylist?.removeFromSuperview()
     }
     
     func refreshMoodState() {
@@ -173,23 +190,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         let right = UIView.init(frame: CGRectMake(partition_b, height, self.backView.frame.width - partition_b, height))
         right.backgroundColor = Item.whyColor
         self.backView.addSubview(right)
-    }
-    
-    override func viewWillAppear(animated: Bool)
-    {
-        super.viewWillAppear(true)
-        DataCache.shareInstance.loadLastMonth()
-        today.title = DataCache.shareInstance.lastMonthName
-        loadMonthData()
-        
-        self.tableView.estimatedRowHeight = 80
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-    }
-    override func viewDidAppear(animated: Bool) {
-        refreshMoodState()
-    }
-    override func viewDidDisappear(animated: Bool) {
-        daylist?.removeFromSuperview()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

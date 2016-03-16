@@ -90,11 +90,7 @@ class MoodViewController: UIViewController {
     func doneAction() {
         let ttt = content.text
         if !ttt.isEmpty {
-            if Time.today() == dataCache.lastDayName {
-                dataCache.updateLastday(Item.ItemString(content.text, mood: moodState), key: Time.clock())
-            } else {
-                dataCache.initLastday([Time.clock():Item.ItemString(content.text, mood: moodState)], lastdayName: Time.today())
-            }
+            dataCache.newStringContent(ttt, moodState: moodState)
         } else {
             if moodState != 0 {
                 switch moodState {
@@ -107,7 +103,6 @@ class MoodViewController: UIViewController {
             }
             
         }
-        //self.navigationController?.popToRootViewControllerAnimated(true)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
