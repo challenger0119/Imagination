@@ -11,9 +11,6 @@ import UIKit
 class MainTableViewController: UITableViewController,DayListDelegate {
 
     @IBOutlet weak var today: UINavigationItem!
-    @IBOutlet weak var left: UIView!
-    @IBOutlet weak var middle: UIView!
-    @IBOutlet weak var right: UIView!
     @IBOutlet weak var done: UIBarButtonItem!
     @IBOutlet weak var backView: UIView!
     
@@ -27,29 +24,12 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     var content:[String]?
     var daylist:DayList?
     let TAG_DAYLIST:NSInteger = 100
-    
-    func initMoodStateColor() {
-        self.left.backgroundColor = Item.coolColor
-        self.middle.backgroundColor = Item.justOkColor
-        self.right.backgroundColor = Item.whyColor
-    }
-    func disableMoodStateColor() {
-        self.left.backgroundColor = UIColor.lightGrayColor()
-        self.middle.backgroundColor = UIColor.lightGrayColor()
-        self.right.backgroundColor = UIColor.lightGrayColor()
-    }
-    
+
     @IBAction func otherDay(sender:AnyObject) {
         if let nav = self.navigationController {
             if let tmpList = nav.view.viewWithTag(TAG_DAYLIST) {
                 tmpList.removeFromSuperview()
             }else{
-                /*
-                if let cata = DataCache.shareInstance.catalogue {
-                    daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height-2*(nav.navigationBar.frame.height+20)), cc: cata.reverse(),dele:self)
-                    daylist?.tag = TAG_DAYLIST
-                    self.navigationController?.view.addSubview(daylist!)
-                }*/
                 if let cata = DataCache.shareInstance.catalogue_month {
                     daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height-2*(nav.navigationBar.frame.height+20)), cc: cata.reverse(),dele:self)
                     daylist?.tag = TAG_DAYLIST
@@ -61,12 +41,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             if let tmpList = self.view.viewWithTag(TAG_DAYLIST) {
                 tmpList.removeFromSuperview()
             }else{
-                /*
-                if let cata = DataCache.shareInstance.catalogue {
-                    daylist = DayList(frame: CGRectMake(0, 20, 150, self.view.frame.height-20), cc: cata.reverse(),dele:self)
-                    daylist?.tag = TAG_DAYLIST
-                    self.view.addSubview(daylist!)
-                }*/
                 if let cata = DataCache.shareInstance.catalogue_month {
                     daylist = DayList(frame: CGRectMake(0, 20, 150, self.view.frame.height-20), cc: cata.reverse(),dele:self)
                     daylist?.tag = TAG_DAYLIST
@@ -79,12 +53,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     //MARK: DayListDelegate
     
     func didSelectItem(item: String) {
-        /*
-        DataCache.shareInstance.loadLastDayToDay(item)
-        today.title = item
-        loadData()
-        refreshMoodState()
-*/
         DataCache.shareInstance.loadLastMonthToMonth(item)
         today.title = item
         loadMonthData()
@@ -186,37 +154,30 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     
     func refreshMoodState() {
         let total = cool + ok + why
+        for v in self.backView.subviews {
+            v.removeFromSuperview()
+        }
         if total == 0 {
             //如果没有moodState 就return
-            disableMoodStateColor()
             return
         }
-        initMoodStateColor()
-        
         let partition_a = self.backView.frame.width * CGFloat(cool) / CGFloat(total)
         let partition_b = self.backView.frame.width * CGFloat(cool + ok) / CGFloat(total)
-        
-        for ctt in self.backView.constraints {
-            if ctt.identifier == "middleLeading" {
-                NSLayoutConstraint.deactivateConstraints([ctt])
-                let new = NSLayoutConstraint.init(item: self.middle, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.backView, attribute: NSLayoutAttribute.Leading, multiplier: 1, constant: partition_a)
-                new.identifier = "middleLeading"
-                self.backView.addConstraint(new)
-            } else if ctt.identifier == "rightLeading" {
-                NSLayoutConstraint.deactivateConstraints([ctt])
-                let new = NSLayoutConstraint.init(item: self.right, attribute: NSLayoutAttribute.Leading, relatedBy: NSLayoutRelation.Equal, toItem: self.backView, attribute: NSLayoutAttribute.Leading, multiplier: 1, constant: partition_b)
-                new.identifier = "rightLeading"
-                self.backView.addConstraint(new)
-            }
-        }
-        
+        let height = self.backView.frame.height / 3
+        let left = UIView.init(frame: CGRectMake(0, height, partition_a, height))
+        left.backgroundColor = Item.coolColor
+        self.backView.addSubview(left)
+        let center = UIView.init(frame: CGRectMake(partition_a, height, partition_b - partition_a, height))
+        center.backgroundColor = Item.justOkColor
+        self.backView.addSubview(center)
+        let right = UIView.init(frame: CGRectMake(partition_b, height, self.backView.frame.width - partition_b, height))
+        right.backgroundColor = Item.whyColor
+        self.backView.addSubview(right)
     }
+    
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(true)
-//        DataCache.shareInstance.loadLastDay()
-//        today.title = DataCache.shareInstance.lastDayName
-//        loadData()
         DataCache.shareInstance.loadLastMonth()
         today.title = DataCache.shareInstance.lastMonthName
         loadMonthData()
