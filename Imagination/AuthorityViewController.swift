@@ -71,22 +71,27 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     
     func useTouchId()
     {
-        let authenticationContext = LAContext()
-        var error: NSError?
-        
-        let isTouchIdAvailable = authenticationContext.canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics,
-            error: &error)
-        
-        if isTouchIdAvailable
-        {
-            authenticationContext.evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, localizedReason: "需要验证指纹", reply: {
-                (success, error) -> Void in
-                if success
-                {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
-            })
+        if DataCache.shareInstance.isStart {
+            DataCache.shareInstance.isStart = false
+            //有touchID的时候有杀不死app bug 尴尬！ 暂且这么处理
+            let authenticationContext = LAContext()
+            var error: NSError?
+            
+            let isTouchIdAvailable = authenticationContext.canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics,
+                error: &error)
+            
+            if isTouchIdAvailable
+            {
+                authenticationContext.evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, localizedReason: "需要验证指纹", reply: {
+                    (success, error) -> Void in
+                    if success
+                    {
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
+                })
+            }
         }
+        
     }
 
 }

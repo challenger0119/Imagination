@@ -145,12 +145,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if AuthorityViewController.pWord != "" {
-            let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
-            let vc = storeboad.instantiateViewControllerWithIdentifier("authority")
-            self.presentViewController(vc, animated: true, completion: nil)
-        }
     }
     override func viewWillAppear(animated: Bool)
     {
@@ -161,10 +155,23 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         
         self.tableView.estimatedRowHeight = 80
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        
     }
     override func viewDidAppear(animated: Bool) {
         refreshMoodState()
+        self.authorityView()
     }
+    
+    func authorityView() {
+        if AuthorityViewController.pWord != "" && DataCache.shareInstance.isStart {
+            let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
+            let vc = storeboad.instantiateViewControllerWithIdentifier("authority")
+            self.presentViewController(vc, animated: true, completion: {
+                
+            })
+        }
+    }
+    
     override func viewDidDisappear(animated: Bool) {
         daylist?.removeFromSuperview()
     }
