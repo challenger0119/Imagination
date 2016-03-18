@@ -16,6 +16,8 @@
 		F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF731C378CB7008EF34D /* MoodViewController.swift */; };
 		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
 		F88D3BA51C14678600A3C921 /* DayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D3BA41C14678600A3C921 /* DayList.swift */; };
+		F8C05A7F1C9BBBC800726997 /* TypeInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C05A7E1C9BBBC800726997 /* TypeInView.swift */; };
+		F8C05A811C9BBBF400726997 /* TypeInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C05A801C9BBBF400726997 /* TypeInView.xib */; };
 		F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */; };
 		F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */; };
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
@@ -38,6 +40,8 @@
 		F870EF731C378CB7008EF34D /* MoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodViewController.swift; sourceTree = "<group>"; };
 		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F88D3BA41C14678600A3C921 /* DayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayList.swift; sourceTree = "<group>"; };
+		F8C05A7E1C9BBBC800726997 /* TypeInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeInView.swift; sourceTree = "<group>"; };
+		F8C05A801C9BBBF400726997 /* TypeInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TypeInView.xib; sourceTree = "<group>"; };
 		F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
@@ -82,6 +86,7 @@
 			children = (
 				F81229611BF73C6C00BDCF0E /* AppDelegate.swift */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
+				F8C05A801C9BBBF400726997 /* TypeInView.xib */,
 				F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */,
 				F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */,
 				F870EF731C378CB7008EF34D /* MoodViewController.swift */,
@@ -97,6 +102,7 @@
 				F88D3BA41C14678600A3C921 /* DayList.swift */,
 				F870EF751C37BBB5008EF34D /* Item.swift */,
 				F81283971C3F82E8002985A7 /* Notification.swift */,
+				F8C05A7E1C9BBBC800726997 /* TypeInView.swift */,
 			);
 			path = Imagination;
 			sourceTree = "<group>";
@@ -162,6 +168,7 @@
 				F812296F1BF73C6C00BDCF0E /* LaunchScreen.storyboard in Resources */,
 				F812296C1BF73C6C00BDCF0E /* Assets.xcassets in Resources */,
 				F81229671BF73C6C00BDCF0E /* Main.storyboard in Resources */,
+				F8C05A811C9BBBF400726997 /* TypeInView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,6 +186,7 @@
 				F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F870EF761C37BBB5008EF34D /* Item.swift in Sources */,
+				F8C05A7F1C9BBBC800726997 /* TypeInView.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */,
 				F81283981C3F82E8002985A7 /* Notification.swift in Sources */,

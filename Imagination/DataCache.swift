@@ -16,12 +16,66 @@ class DataCache: NSObject {
     
     static let shareInstance = DataCache()
 
+    class Calculation {
+        static let FILEPATH = "caculate"
+        var calculateRecord:[String]?{//[2016-3-17:300:This month,2016-3-18:-100:Next month]
+            didSet{
+                //store to file
+                let mydata = NSKeyedArchiver.archivedDataWithRootObject(self.calculateRecord!)
+                mydata.writeToFile(FileManager.pathOfNameInDocuments(Calculation.FILEPATH), atomically: true)
+            }
+        }
+        
+        func storeCalculateRecord(record:String){
+            if self.calculateRecord == nil{
+                self.calculateRecord = [record]
+            }else{
+                self.calculateRecord?.append(record)
+            }
+        }
+        
+        func loadCalculateRecord(){
+            if let data = NSKeyedUnarchiver.unarchiveObjectWithFile(FileManager.pathOfNameInDocuments(Calculation.FILEPATH)) {
+                self.calculateRecord = data as? [String]
+            }
+        }
+        
+        
+        func exportCalulateRecordToTableFile(){
+            /*
+            create table
+            2016-4-5    300 nihao        //2 space at end
+            2016-6-7                200 nihao   //2 space at beginning
+            
+            */
+            if self.calculateRecord != nil {
+                var result = ""
+                for rec in self.calculateRecord! {
+                    let recArray = rec.componentsSeparatedByString(":")
+                    var str = recArray[0]
+                    let intNum = Int(recArray[1])
+                    if intNum > 0{
+                        str += "    \(intNum)"
+                        str += "    \(recArray[2])       \n"
+                    }else{
+                        str += "            \(intNum)"//2 tab
+                        str += "    \(recArray[2])\n"
+                    }
+                    result += str
+                }
+                print(result)
+                let data = result.dataUsingEncoding(NSUTF8StringEncoding)
+                data?.writeToFile(FileManager.TxtFileInDocuments(Calculation.FILEPATH), atomically: true)
+                
+            }
+        }
+    }
+        
     private let FILENAME_INDEX = "index"
     var isStart = true //启动标记 用于touchID
     let EMPTY_STRING = " "
     var fileState:(filename:String,lastDate:String)?
-    //var currentDayName:String?
-    //var currentMonthName:String?
+  
     var currentDayName:String?
     var currentMonthName:String?
     var catalogue:[String]?

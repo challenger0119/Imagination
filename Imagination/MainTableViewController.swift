@@ -13,6 +13,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     @IBOutlet weak var today: UINavigationItem!
     @IBOutlet weak var done: UIBarButtonItem!
     @IBOutlet weak var backView: UIView!
+    let isCalculate = false
     
     var cool = 0
     var ok = 0
@@ -135,6 +136,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         }
         self.tableView.reloadData()
     }
+    
     func changeTimeToDayAndTime(timearry:[String],day:String) -> [String]{
         //添加日期信息在里面 9：30 -> 2015.2.3 9:30
         var newArray = [String]()
@@ -143,23 +145,38 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         }
         return newArray
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
+
+    func differentWillAppear() {
+        if isCalculate {
+            
+        }else {
+            DataCache.shareInstance.loadLastMonth()
+            today.title = DataCache.shareInstance.currentMonthName
+            loadMonthData()
+        }
     }
+    
+    func differentDidAppear(){
+        if isCalculate {
+            
+        }else{
+            refreshMoodState()
+            self.authorityView()
+        }
+    }
+    
     override func viewWillAppear(animated: Bool)
     {
         super.viewWillAppear(true)
-        DataCache.shareInstance.loadLastMonth()
-        today.title = DataCache.shareInstance.currentMonthName
-        loadMonthData()
+        self.differentWillAppear()
         
         self.tableView.estimatedRowHeight = 80
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
     }
     override func viewDidAppear(animated: Bool) {
-        refreshMoodState()
-        self.authorityView()
+        super.viewDidAppear(true)
+        self.differentDidAppear()
     }
     
     func authorityView() {
