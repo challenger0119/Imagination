@@ -150,7 +150,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     {
         super.viewWillAppear(true)
         DataCache.shareInstance.loadLastMonth()
-        today.title = DataCache.shareInstance.lastMonthName
+        today.title = DataCache.shareInstance.currentMonthName
         loadMonthData()
         
         self.tableView.estimatedRowHeight = 80

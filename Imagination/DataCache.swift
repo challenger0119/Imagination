@@ -13,9 +13,6 @@
 
 import Foundation
 class DataCache: NSObject {
-    /***
-     变量定义有歧义 这里的last 更多的用来作为“当前显示”使用 尤其是lastday lastDayname
-     ***/
     
     static let shareInstance = DataCache()
 
@@ -23,8 +20,10 @@ class DataCache: NSObject {
     var isStart = true //启动标记 用于touchID
     let EMPTY_STRING = " "
     var fileState:(filename:String,lastDate:String)?
-    var lastDayName:String?
-    var lastMonthName:String?
+    //var currentDayName:String?
+    //var currentMonthName:String?
+    var currentDayName:String?
+    var currentMonthName:String?
     var catalogue:[String]?
     var catalogue_month:[String]?
     var email:String?{
@@ -43,36 +42,36 @@ class DataCache: NSObject {
     
     private func updateCatalogue() {
         if let cata = catalogue {
-            if (cata.indexOf(lastDayName!) == nil) {
-                catalogue?.append(lastDayName!)
+            if (cata.indexOf(currentDayName!) == nil) {
+                catalogue?.append(currentDayName!)
                 storeCatalogue()
             }
         } else {
-            catalogue = Array.init(arrayLiteral: lastDayName!)
+            catalogue = Array.init(arrayLiteral: currentDayName!)
             storeCatalogue()
         }
     }
     
     func newStringContent(content:String, moodState:Int) {
-        if Time.today() == self.lastDayName {
+        if Time.today() == self.currentDayName {
             self.updateLastday(Item.ItemString(content, mood: moodState), key: Time.clock())
         } else {
-            self.initLastday([Time.clock():Item.ItemString(content, mood: moodState)], lastdayName: Time.today())
+            self.initLastday([Time.clock():Item.ItemString(content, mood: moodState)], currentDayName: Time.today())
         }
     }
     //数据更新的两个方法
     func updateLastday(lastdayValue:String,key:String) {
         lastDay?.updateValue(lastdayValue, forKey: key)
         let myData = NSKeyedArchiver.archivedDataWithRootObject(lastDay!)
-        myData.writeToFile(FileManager.pathOfNameInDocuments(lastDayName!), atomically: true)
+        myData.writeToFile(FileManager.pathOfNameInDocuments(currentDayName!), atomically: true)
         updateCatalogue()
     }
     
-    func initLastday(lastdayDic:Dictionary<String,String>,lastdayName:String) {
-        lastDayName = lastdayName
+    func initLastday(lastdayDic:Dictionary<String,String>,currentDayName:String) {
+        self.currentDayName = currentDayName
         lastDay = lastdayDic
         let myData = NSKeyedArchiver.archivedDataWithRootObject(lastDay!)
-        myData.writeToFile(FileManager.pathOfNameInDocuments(lastDayName!), atomically: true)
+        myData.writeToFile(FileManager.pathOfNameInDocuments(self.currentDayName!), atomically: true)
         updateCatalogue()
     }
     
@@ -80,32 +79,32 @@ class DataCache: NSObject {
     func loadLastDay(){
         loadCatalogue()
         if let DAYS = catalogue {
-            if lastDayName == nil {
-                lastDayName = DAYS[DAYS.count-1]//lastDay
+            if currentDayName == nil {
+                currentDayName = DAYS[DAYS.count-1]//lastDay
             }
-            lastDay = loadDay(lastDayName!)
+            lastDay = loadDay(currentDayName!)
         }
     }
     
     func loadLastMonth(){
         loadCatalogue_month()
         if let Months = catalogue_month {
-            if lastMonthName == nil {
-                lastMonthName = Months[Months.count-1]//lastMonth
+            if currentMonthName == nil {
+                currentMonthName = Months[Months.count-1]//lastMonth
             }
-            lastMonth = loadMonth(lastMonthName!)
+            lastMonth = loadMonth(currentMonthName!)
         }
         self.loadLastDay()
     }
     
     //载入特定时间
     func loadLastDayToDay(dd:String) {
-        lastDayName = dd
-        lastDay = loadDay(lastDayName!)
+        currentDayName = dd
+        lastDay = loadDay(currentDayName!)
     }
     func loadLastMonthToMonth(mm:String) {
-        lastMonthName = mm
-        lastMonth = loadMonth(lastMonthName!)
+        currentMonthName = mm
+        lastMonth = loadMonth(currentMonthName!)
     }
     private func loadDay(dd:String) -> Dictionary<String,String>? {
         if let mydata = NSData.init(contentsOfFile: FileManager.pathOfNameInDocuments(dd)) {
