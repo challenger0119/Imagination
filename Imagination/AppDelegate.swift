@@ -52,8 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     rootController.presentViewController(vc, animated: true, completion: nil)
                 }
             }
-            
-            
         }
     }
 
