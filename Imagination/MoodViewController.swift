@@ -24,16 +24,16 @@ class MoodViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: "closeKeyboard"))
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        self.view.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(closeKeyboard)))
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         
         if editMode {
             self.navigationItem.rightBarButtonItem?.enabled = false
             content.text = text
         } else {
-            self.cool.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: "coolClicked"))
-            self.ok.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: "okClicked"))
-            self.why.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: "whyClicked"))
+            self.cool.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(coolClicked)))
+            self.ok.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(okClicked)))
+            self.why.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(whyClicked)))
         }
         
         switch moodState {

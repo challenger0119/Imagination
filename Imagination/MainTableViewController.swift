@@ -84,9 +84,9 @@ class MainTableViewController: UITableViewController,DayListDelegate {
                     //赋值moodState
                     let cc = Item.init(contentString: day[ct]!)
                     switch cc.mood {
-                    case 1:cool++
-                    case 2:ok++
-                    case 3:why++
+                    case 1:cool+=1
+                    case 2:ok+=1
+                    case 3:why+=1
                     default:break
                     }
                 }
@@ -120,9 +120,9 @@ class MainTableViewController: UITableViewController,DayListDelegate {
                         //赋值moodState
                         let cc = Item.init(contentString: day[ct]!)
                         switch cc.mood {
-                        case 1:cool++
-                        case 2:ok++
-                        case 3:why++
+                        case 1:cool+=1
+                        case 2:ok+=1
+                        case 3:why+=1
                         default:break
                         }
                     }

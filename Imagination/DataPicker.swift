@@ -29,11 +29,11 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         self.layer.cornerRadius = 5
         let conform = UIButton.init(frame: CGRectMake(self.frame.size.width - 50, 5,30, 30))
         conform.setImage(UIImage.init(named: "check"), forState: UIControlState.Normal)
-        conform.addTarget(self, action: "conform", forControlEvents: UIControlEvents.TouchUpInside)
+        conform.addTarget(self, action: #selector(DataPicker.conform), forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(conform)
         let cancel = UIButton.init(frame: CGRectMake(20, 5,30, 30))
         cancel.setImage(UIImage.init(named: "cancel"), forState: UIControlState.Normal)
-        cancel.addTarget(self, action: "cancel", forControlEvents: UIControlEvents.TouchUpInside)
+        cancel.addTarget(self, action: #selector(DataPicker.cancel), forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(cancel)
         let pickerView = UIPickerView.init(frame: CGRectMake(0, 30, self.frame.size.width, self.frame.size.height-30))
         pickerView.delegate = self

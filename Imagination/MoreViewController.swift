@@ -89,7 +89,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             let btn = UIButton.init(frame: CGRectMake(pickerBack.frame.width - 50, 0, 50, 34))
             btn.setTitle("完成", forState: UIControlState.Normal)
             btn.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-            btn.addTarget(self, action: "didSelectTime", forControlEvents: UIControlEvents.TouchUpInside)
+            btn.addTarget(self, action: #selector(didSelectTime), forControlEvents: UIControlEvents.TouchUpInside)
             pickerBack.addSubview(btn)
             datePicker = UIDatePicker.init(frame:CGRectMake(0, 34, 300, 216))
             datePicker!.datePickerMode = UIDatePickerMode.DateAndTime
