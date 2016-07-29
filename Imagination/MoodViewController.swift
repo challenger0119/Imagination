@@ -18,9 +18,8 @@ class MoodViewController: UIViewController {
     var text:String = " "
     
     @IBOutlet weak var content: UITextView!
-    @IBOutlet weak var cool: UIImageView!
-    @IBOutlet weak var ok: UIImageView!
-    @IBOutlet weak var why: UIImageView!
+    @IBOutlet weak var goodBtn: UIButton!
+    @IBOutlet weak var noGoodBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,41 +29,33 @@ class MoodViewController: UIViewController {
         if editMode {
             self.navigationItem.rightBarButtonItem?.enabled = false
             content.text = text
-        } else {
-            self.cool.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(coolClicked)))
-            self.ok.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(okClicked)))
-            self.why.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(whyClicked)))
         }
         
         switch moodState {
         case 1:
-            coolClicked()
+            noGoodBtnClicked()
         case 2:
-            okClicked()
-        case 3:
-            whyClicked()
+            goodBtnClicked()
         default: break
         }
     }
     
-    func coolClicked() {
-        moodState = 1
-        self.cool.image = UIImage.init(named: "cool")
-        self.ok.image = UIImage.init(named: "ok_gray")
-        self.why.image = UIImage.init(named: "why_gray")
-    }
-    func okClicked() {
+    @IBAction func noGoodBtnClicked() {
         moodState = 2
-        self.cool.image = UIImage.init(named: "cool_gray")
-        self.ok.image = UIImage.init(named: "ok")
-        self.why.image = UIImage.init(named: "why_gray")
+        self.noGoodBtn.backgroundColor = Item.justOkColor
+        self.noGoodBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        
+        self.goodBtn.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+        self.goodBtn.backgroundColor = Item.defaultColor
     }
-    func whyClicked() {
-        moodState = 3
-        self.cool.image = UIImage.init(named: "cool_gray")
-        self.ok.image = UIImage.init(named: "ok_gray")
-        self.why.image = UIImage.init(named: "why")
+    @IBAction func goodBtnClicked() {
+        moodState = 1
+        self.noGoodBtn.backgroundColor = Item.defaultColor
+        self.noGoodBtn.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+        self.goodBtn.backgroundColor = Item.coolColor
+        self.goodBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
     }
+   
     func closeKeyboard() {
         resumeScrollView()
         content.resignFirstResponder()

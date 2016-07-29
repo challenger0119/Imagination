@@ -12,7 +12,10 @@ class Item: NSObject {
     static let coolColor = UIColor.orangeColor()
     static let justOkColor = UIColor.init(red: 4.0/255.0, green: 119.0/255.0, blue: 240.0/255.0, alpha: 1.0)
     static let whyColor = UIColor.redColor()
+    static let defaultColor = UIColor.init(red: 239.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1)
+    //static let defaultColor = UIColor.init(red: 247.0/255.0, green: 247.0/255.0, blue: 247.0/255.0, alpha: 1)
     private let moodColor = [UIColor.blackColor(),Item.coolColor,Item.justOkColor,Item.whyColor]
+    
     var mood:Int//心情
     
     var content:String//内容
