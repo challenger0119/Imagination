@@ -10,7 +10,6 @@
         <!--MoodViewController-->
         <scene sceneID="Btl-FK-rhb">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OQq-0p-uvv" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="mood" title="MoodViewController" hidesBottomBarWhenPushed="YES" id="rnp-hY-qrU" customClass="MoodViewController" customModule="Imagination" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cOg-dX-FmL"/>
@@ -78,6 +77,7 @@
                         <outlet property="noGoodBtn" destination="ZrJ-IL-7Y7" id="O12-zT-PrY"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OQq-0p-uvv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3275" y="498"/>
         </scene>
@@ -162,7 +162,7 @@
         <scene sceneID="aEs-Rf-MJZ">
             <objects>
                 <tableViewController title="功能区" id="mhu-fR-pvP" customClass="MoreViewController" customModule="Imagination" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="khi-yC-oQb">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="khi-yC-oQb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -345,7 +345,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zjt-YD-0dx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2300.8000000000002" y="1219.3066666666666"/>
+            <point key="canvasLocation" x="2300" y="1219"/>
         </scene>
         <!--Authority-->
         <scene sceneID="Fs2-Uy-bvV">

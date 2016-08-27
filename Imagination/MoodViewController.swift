@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MoodViewController: UIViewController {
+class MoodViewController: UIViewController,UIAlertViewDelegate {
 
     let dataCache = DataCache.shareInstance
     var editMode = false
@@ -16,6 +16,7 @@ class MoodViewController: UIViewController {
     var keyBoardHeight:CGFloat = 216.0
     var clockDic = Dictionary<String,String>()
     var text:String = " "
+    let keyboardDistance:CGFloat = 30.0
     
     @IBOutlet weak var content: UITextView!
     @IBOutlet weak var goodBtn: UIButton!
@@ -38,6 +39,7 @@ class MoodViewController: UIViewController {
             goodBtnClicked()
         default: break
         }
+        self.content.becomeFirstResponder()
     }
     
     @IBAction func noGoodBtnClicked() {
@@ -66,7 +68,7 @@ class MoodViewController: UIViewController {
             if let kbd = info[UIKeyboardFrameEndUserInfoKey] {
                 keyBoardHeight = kbd.CGRectValue.size.height
             
-                keyBoardHeight += 30
+                keyBoardHeight += self.keyboardDistance
                 
                 updateTextView()
             }
@@ -76,7 +78,23 @@ class MoodViewController: UIViewController {
     
     @IBAction func done(sender: UIBarButtonItem) {
         self.content.endEditing(true)
-        self.doneAction()
+        resumeScrollView()
+        if self.moodState == 0 {
+            let alert = UIAlertController(title: "提示", message: "确定不选择状态？", preferredStyle: .Alert)
+            alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: {
+                action in
+                self.doneAction()
+            }))
+            alert.addAction(UIAlertAction(title: "取消", style: .Default, handler: {
+                action in
+            }))
+            self.presentViewController(alert, animated: true, completion: {
+                
+            })
+            
+        }else{
+            self.doneAction()
+        }
     }
     func doneAction() {
         let ttt = content.text
@@ -114,7 +132,7 @@ class MoodViewController: UIViewController {
         for  cs in css {
             if cs.identifier == "keyboard" {
                 NSLayoutConstraint.deactivateConstraints([cs])
-                let new = NSLayoutConstraint.init(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy:NSLayoutRelation.Equal, toItem: self.content, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: 0)
+                let new = NSLayoutConstraint.init(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy:NSLayoutRelation.Equal, toItem: self.content, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: keyboardDistance)
                 new.identifier = "keyboard"
                 self.view.addConstraint(new)
             }
