@@ -78,7 +78,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     
     @IBAction func done(sender: UIBarButtonItem) {
         self.content.endEditing(true)
-        resumeScrollView()
+        self.resumeScrollView()
         if self.moodState == 0 {
             let alert = UIAlertController(title: "提示", message: "确定不选择状态？", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: {
