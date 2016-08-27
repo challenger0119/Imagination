@@ -14,7 +14,7 @@ class CustomTableViewCell: UITableViewCell {
     @IBOutlet weak var content: UITextView!
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        self.content.layer.cornerRadius = 3.0
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
