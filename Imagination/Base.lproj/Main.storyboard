@@ -350,6 +350,47 @@
             </objects>
             <point key="canvasLocation" x="2367" y="1219"/>
         </scene>
+        <!--Location View Controller-->
+        <scene sceneID="lVa-wJ-tRc">
+            <objects>
+                <viewController id="jXS-t6-tYh" customClass="LocationViewController" customModule="Imagination" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="toU-oi-g7n"/>
+                        <viewControllerLayoutGuide type="bottom" id="CI2-qZ-9Cc"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YsD-KA-BuJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bZq-3o-ufW">
+                                <rect key="frame" x="-4" y="28" width="328" height="270"/>
+                            </mapView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mmq-tB-zca">
+                                <rect key="frame" x="-4" y="299" width="328" height="269"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Mmq-tB-zca" firstAttribute="height" secondItem="bZq-3o-ufW" secondAttribute="height" id="4xM-bh-tYk"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Mmq-tB-zca" secondAttribute="trailing" constant="-20" id="GYp-XB-RbR"/>
+                            <constraint firstItem="bZq-3o-ufW" firstAttribute="leading" secondItem="YsD-KA-BuJ" secondAttribute="leadingMargin" constant="-20" id="Rrn-jI-MLi"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="bZq-3o-ufW" secondAttribute="trailing" constant="-20" id="YZ7-3l-LZg"/>
+                            <constraint firstItem="Mmq-tB-zca" firstAttribute="top" secondItem="bZq-3o-ufW" secondAttribute="bottom" constant="1" id="Zgm-18-LFe"/>
+                            <constraint firstItem="Mmq-tB-zca" firstAttribute="leading" secondItem="YsD-KA-BuJ" secondAttribute="leadingMargin" constant="-20" id="dRZ-G4-OhC"/>
+                            <constraint firstItem="CI2-qZ-9Cc" firstAttribute="top" secondItem="Mmq-tB-zca" secondAttribute="bottom" id="eW5-pb-fyT"/>
+                            <constraint firstItem="bZq-3o-ufW" firstAttribute="top" secondItem="toU-oi-g7n" secondAttribute="bottom" constant="8" id="kKo-Rd-eCc"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="bZq-3o-ufW" id="QXG-wd-emD"/>
+                        <outlet property="tableView" destination="Mmq-tB-zca" id="Q8P-dI-vRb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QfU-4x-Fta" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2822" y="1219"/>
+        </scene>
         <!--Authority-->
         <scene sceneID="Fs2-Uy-bvV">
             <objects>
