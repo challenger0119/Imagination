@@ -65,6 +65,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="HeE-rP-zJw">
+                        <barButtonItem key="leftBarButtonItem" title="取消" id="PEo-NT-4Ew">
+                            <connections>
+                                <action selector="cancel:" destination="rnp-hY-qrU" id="fF7-RT-71u"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="完成" style="done" id="B6f-hb-wZy">
                             <connections>
                                 <action selector="done:" destination="rnp-hY-qrU" id="Jwp-I2-4IM"/>

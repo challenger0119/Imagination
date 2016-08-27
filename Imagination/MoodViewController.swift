@@ -76,6 +76,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
         
     }
     
+    @IBAction func cancel(sender: UIBarButtonItem) {
+        self.content.endEditing(true)
+        self.dismissViewControllerAnimated(true, completion: {
+            
+        })
+    }
     @IBAction func done(sender: UIBarButtonItem) {
         self.content.endEditing(true)
         self.resumeScrollView()
