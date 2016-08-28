@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CoreLocation
 class MoodViewController: UIViewController,UIAlertViewDelegate {
 
     let dataCache = DataCache.shareInstance
@@ -16,11 +16,18 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     var keyBoardHeight:CGFloat = 216.0
     var clockDic = Dictionary<String,String>()
     var text:String = " "
-    let keyboardDistance:CGFloat = 30.0
+    let keyboardDistance:CGFloat = 20
+    var place:CLPlacemark?{
+        didSet{
+            self.getLocBtn.setTitle(self.place!.name, forState: .Normal)
+        }
+    }
     
     @IBOutlet weak var content: UITextView!
     @IBOutlet weak var goodBtn: UIButton!
     @IBOutlet weak var noGoodBtn: UIButton!
+    @IBOutlet weak var getLocBtn: UIButton!
+    @IBOutlet weak var bottomContraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,21 +66,22 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     }
    
     func closeKeyboard() {
-        resumeScrollView()
         content.resignFirstResponder()
+        self.bottomContraint.constant = self.keyboardDistance
     }
     
     func keyboardWillShow(notifi:NSNotification){
         if let info = notifi.userInfo {
             if let kbd = info[UIKeyboardFrameEndUserInfoKey] {
                 keyBoardHeight = kbd.CGRectValue.size.height
-            
-                keyBoardHeight += self.keyboardDistance
-                
-                updateTextView()
+                self.bottomContraint.constant += keyBoardHeight
             }
         }
         
+    }
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.closeKeyboard()
     }
     
     @IBAction func cancel(sender: UIBarButtonItem) {
@@ -83,9 +91,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
         })
     }
     @IBAction func done(sender: UIBarButtonItem) {
-        self.content.endEditing(true)
-        self.resumeScrollView()
-        if self.moodState == 0 {
+        self.closeKeyboard()
+        if !self.content.text.isEmpty && self.moodState == 0 {
             let alert = UIAlertController(title: "提示", message: "确定不选择状态？", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: {
                 action in
@@ -105,7 +112,11 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     func doneAction() {
         let ttt = content.text
         if !ttt.isEmpty {
-            dataCache.newStringContent(ttt, moodState: moodState)
+            if self.place != nil {
+                dataCache.newStringContent(ttt, moodState: moodState,GPSPlace: self.place!)
+            }else{
+                dataCache.newStringContent(ttt, moodState: moodState)
+            }
         } else {
             if moodState != 0 {
                 switch moodState {
@@ -116,11 +127,10 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
                 }
                 self.doneAction()
             }
-            
         }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
+    /*
     func updateTextView() {
         let css = self.view.constraints
         for  cs in css {
@@ -132,7 +142,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
             }
         }
     }
-    
+ */
+    /*
     func resumeScrollView() {
         let css = self.view.constraints
         for  cs in css {
@@ -144,4 +155,16 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
             }
         }
     }
+ */
+    //MARK: -segue
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "moodToLocation" {
+            let vc = segue.destinationViewController as! LocationViewController
+            vc.placeSelected = {
+                pls in
+                self.place = pls
+            }
+        }
+    }
+    
 }

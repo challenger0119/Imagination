@@ -12,9 +12,12 @@ class CustomTableViewCell: UITableViewCell {
 
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var content: UITextView!
+    @IBOutlet weak var locLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         self.content.layer.cornerRadius = 3.0
+        //self.layer.borderWidth = 0.3
+        //self.layer.borderColor = UIColor.lightGrayColor().CGColor
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

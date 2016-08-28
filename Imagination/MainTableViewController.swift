@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import CoreLocation
 class MainTableViewController: UITableViewController,DayListDelegate {
 
     @IBOutlet weak var today: UINavigationItem!
@@ -25,6 +25,8 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     var content:[String]?
     var daylist:DayList?
     let TAG_DAYLIST:NSInteger = 100
+    
+    var locToShow:CLLocationCoordinate2D?
 
     @IBAction func otherDay(sender:AnyObject) {
         if let nav = self.navigationController {
@@ -243,11 +245,20 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         cell.content.text = cc.content
         cell.time.textColor = cc.color
         cell.content.textColor = cc.color
+        cell.locLabel.text = cc.place.name
+        cell.locLabel.textColor = cc.color
         return cell
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let cc = Item.init(contentString: content![indexPath.row])
+        if !cc.place.name.isEmpty {
+            self.locToShow = CLLocationCoordinate2D(latitude: cc.place.latitude, longitude: cc.place.longtitude)
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("LocationViewController") as! LocationViewController
+            vc.placeToShow = self.locToShow
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     /*
     // Override to support conditional editing of the table view.
@@ -281,16 +292,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         // Return false if you do not want the item to be re-orderable.
         return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
     */
 

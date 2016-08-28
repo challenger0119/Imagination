@@ -12,6 +12,7 @@
 */
 
 import Foundation
+import CoreLocation
 class DataCache: NSObject {
     
     static let shareInstance = DataCache()
@@ -103,6 +104,14 @@ class DataCache: NSObject {
         } else {
             catalogue = Array.init(arrayLiteral: currentDayName!)
             storeCatalogue()
+        }
+    }
+    
+    func newStringContent(content:String, moodState:Int,GPSPlace:CLPlacemark){
+        if Time.today() == self.currentDayName {
+            self.updateLastday(Item.ItemString(content, mood: moodState,GPSName: GPSPlace.name!,latitude:GPSPlace.location!.coordinate.latitude,longtitude:GPSPlace.location!.coordinate.longitude), key: Time.clock())
+        } else {
+            self.initLastday([Time.clock():Item.ItemString(content, mood: moodState,GPSName: GPSPlace.name!,latitude:GPSPlace.location!.coordinate.latitude,longtitude:GPSPlace.location!.coordinate.longitude)], currentDayName: Time.today())
         }
     }
     

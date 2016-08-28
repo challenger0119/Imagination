@@ -13,13 +13,13 @@ class Item: NSObject {
     static let justOkColor = UIColor.init(red: 4.0/255.0, green: 119.0/255.0, blue: 240.0/255.0, alpha: 1.0)
     static let whyColor = UIColor.redColor()
     static let defaultColor = UIColor.init(red: 239.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1)
-    //static let defaultColor = UIColor.init(red: 247.0/255.0, green: 247.0/255.0, blue: 247.0/255.0, alpha: 1)
-    private let moodColor = [UIColor.blackColor(),Item.coolColor,Item.justOkColor,Item.whyColor]
+    private let moodColor = [UIColor.darkGrayColor(),Item.coolColor,Item.justOkColor,Item.whyColor]
     
     var mood:Int//心情
     
     var content:String//内容
     var color:UIColor
+    var place:(name:String,latitude:Double,longtitude:Double)
     
     init(contentString:String) {
         
@@ -28,15 +28,27 @@ class Item: NSObject {
             self.content = array[0]
             self.mood = Int(array[1])!
             self.color = self.moodColor[self.mood]
+            if array.count >= 3{
+                let string = array[2]
+                let sb = string.componentsSeparatedByString(",")
+                self.place = (sb[0] ,Double(sb[1])!,Double(sb[2])!)
+            }else{
+                self.place = ("",0,0)
+            }
         } else {
             self.content = contentString
             self.mood = 0
             self.color = self.moodColor[self.mood]
+            self.place = ("",0,0)
         }
         super.init()
     }
     
     static func ItemString(content:String,mood:Int) ->String {
         return content + "-" + "\(mood)"
+    }
+    
+    class func ItemString(content:String,mood:Int,GPSName:String,latitude:Double,longtitude:Double) ->String {
+        return content + "-" + "\(mood)" + "-" + "\(GPSName),\(latitude),\(longtitude)"
     }
 }
