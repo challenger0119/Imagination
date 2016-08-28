@@ -70,7 +70,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
    
     func closeKeyboard() {
         content.resignFirstResponder()
-        self.bottomContraint.constant = self.keyboardDistance
+        self.bottomContraint.constant = self.keyboardDistance;
     }
     
     func keyboardWillShow(notifi:NSNotification){
