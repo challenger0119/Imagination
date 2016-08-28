@@ -77,7 +77,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
         if let info = notifi.userInfo {
             if let kbd = info[UIKeyboardFrameEndUserInfoKey] {
                 keyBoardHeight = kbd.CGRectValue.size.height
-                self.bottomContraint.constant += keyBoardHeight
+                self.bottomContraint.constant = keyBoardHeight + self.keyboardDistance
             }
         }
         
@@ -87,12 +87,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
         self.closeKeyboard()
     }
     
-    @IBAction func cancel(sender: UIBarButtonItem) {
-        self.content.endEditing(true)
-        self.dismissViewControllerAnimated(true, completion: {
-            
-        })
-    }
+
     @IBAction func done(sender: UIBarButtonItem) {
         self.closeKeyboard()
         if !self.content.text.isEmpty && self.moodState == 0 {
