@@ -53,6 +53,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     }
     
     @IBAction func noGoodBtnClicked() {
+        if moodState == 2 {
+            moodState = 0;
+            self.noGoodBtn.backgroundColor = Item.defaultColor
+            self.noGoodBtn.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+            return
+        }
         moodState = 2
         self.noGoodBtn.backgroundColor = Item.justOkColor
         self.noGoodBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -61,6 +67,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
         self.goodBtn.backgroundColor = Item.defaultColor
     }
     @IBAction func goodBtnClicked() {
+        if moodState == 1 {
+            moodState = 0;
+            self.goodBtn.backgroundColor = Item.defaultColor
+            self.goodBtn.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+            return
+        }
         moodState = 1
         self.noGoodBtn.backgroundColor = Item.defaultColor
         self.noGoodBtn.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
