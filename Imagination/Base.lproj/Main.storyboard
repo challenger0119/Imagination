@@ -106,12 +106,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="8KV-2G-h92">
-                            <rect key="frame" x="0.0" y="64" width="320" height="26"/>
+                            <rect key="frame" x="0.0" y="64" width="320" height="7"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="reuseIdentifier" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="240" id="GJe-x6-Ovx" userLabel="reuseIdentifier" customClass="CustomTableViewCell" customModule="Imagination" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="118" width="320" height="240"/>
+                                <rect key="frame" x="0.0" y="99" width="320" height="240"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" tableViewCell="GJe-x6-Ovx" id="kBh-2i-O7O">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>

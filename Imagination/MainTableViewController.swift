@@ -206,16 +206,35 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         }
         let partition_a = self.backView.frame.width * CGFloat(cool) / CGFloat(total)
         let partition_b = self.backView.frame.width * CGFloat(cool + ok) / CGFloat(total)
-        let height = self.backView.frame.height / 3
-        let left = UIView.init(frame: CGRectMake(0, height, partition_a, height))
+        let height = self.backView.frame.height / 2
+        let left = UIView.init(frame: CGRectMake(0, 0, 0, height))
         left.backgroundColor = Item.coolColor
         self.backView.addSubview(left)
-        let center = UIView.init(frame: CGRectMake(partition_a, height, partition_b - partition_a, height))
+        let center = UIView.init(frame: CGRectMake(partition_a, 0, 0, height))
         center.backgroundColor = Item.justOkColor
         self.backView.addSubview(center)
-        let right = UIView.init(frame: CGRectMake(partition_b, height, self.backView.frame.width - partition_b, height))
+        let right = UIView.init(frame: CGRectMake(partition_b, 0,0, height))
         right.backgroundColor = Item.whyColor
         self.backView.addSubview(right)
+        
+        UIView.animateWithDuration(0.1, animations: {
+            left.frame = CGRectMake(0, 0, partition_a, height)
+            }, completion: {
+                finish in
+                if finish {
+                    UIView.animateWithDuration(0.1, animations: {
+                        center.frame = CGRectMake(partition_a, 0, partition_b - partition_a, height)
+                        }, completion: {
+                            finish in
+                            if finish {
+                                UIView.animateWithDuration(0.1, animations: {
+                                    right.frame = CGRectMake(partition_b, 0, self.backView.frame.width - partition_b, height)
+                                })
+                            }
+                    })
+                }
+        })
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
