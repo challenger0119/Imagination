@@ -280,7 +280,16 @@ class DataCache: NSObject {
                         let title = kk+"\n"
                         data.appendData(title.dataUsingEncoding(NSUTF8StringEncoding)!)
                         let item = Item(contentString:  ddtmp[kk]!)
-                        let content = item.content + "\n" + "心情:\(item.moodString) 位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))\n"
+                        var content = item.content + "\n"
+                        if item.mood != 0 {
+                            content += "心情:\(item.moodString) "
+                        }
+                        if item.place.latitude != 0 {
+                            content += "位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))"
+                        }
+                        if item.mood != 0 || item.place.latitude != 0 {
+                            content += "\n"
+                        }
                         data.appendData((content.dataUsingEncoding(NSUTF8StringEncoding))!)
                     }
                 }
