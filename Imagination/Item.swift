@@ -14,11 +14,12 @@ class Item: NSObject {
     static let whyColor = UIColor.redColor()
     static let defaultColor = UIColor.init(red: 239.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1)
     private let moodColor = [UIColor.darkGrayColor(),Item.coolColor,Item.justOkColor,Item.whyColor]
-    
+    private let moodStrings = ["NA","Cool","Just OK","Confused"]
     var mood:Int//心情
     
     var content:String//内容
     var color:UIColor
+    var moodString:String
     var place:(name:String,latitude:Double,longtitude:Double)
     
     init(contentString:String) {
@@ -27,7 +28,6 @@ class Item: NSObject {
         if array.count >= 2 {
             self.content = array[0]
             self.mood = Int(array[1])!
-            self.color = self.moodColor[self.mood]
             if array.count >= 3{
                 let string = array[2]
                 let sb = string.componentsSeparatedByString(",")
@@ -38,9 +38,10 @@ class Item: NSObject {
         } else {
             self.content = contentString
             self.mood = 0
-            self.color = self.moodColor[self.mood]
             self.place = ("",0,0)
         }
+        self.color = self.moodColor[self.mood]
+        self.moodString = self.moodStrings[self.mood]
         super.init()
     }
     

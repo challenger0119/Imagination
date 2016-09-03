@@ -259,8 +259,15 @@ class DataCache: NSObject {
         
     }
     //创建文件
-    private func createBackupFile(from:String,to:String) -> String {
-        let txtfile = FileManager.TxtFileInDocuments("\(from)_\(to)")
+    private func createBackupFileWithAddtionalInfo(from:String,to:String) -> String {
+        return createFileAtPath(from, to: to, fileGetter: {
+            f,t in
+            return FileManager.TxtFileInDocuments("\(f)_\(t)")
+        })
+    }
+    
+    private func createFileAtPath(from:String,to:String,fileGetter:(from:String,to:String)->String)->String{
+        let txtfile = fileGetter(from:from,to: to)
         let data = NSMutableData()
         for dd in catalogue! {
             if dd >= from && dd <= to {
@@ -272,7 +279,8 @@ class DataCache: NSObject {
                     for kk in keys {
                         let title = kk+"\n"
                         data.appendData(title.dataUsingEncoding(NSUTF8StringEncoding)!)
-                        let content = ddtmp[kk]!+"\n"
+                        let item = Item(contentString:  ddtmp[kk]!)
+                        let content = item.content + "\n" + "心情:\(item.moodString) 位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))\n"
                         data.appendData((content.dataUsingEncoding(NSUTF8StringEncoding))!)
                     }
                 }
@@ -281,10 +289,10 @@ class DataCache: NSObject {
             }
         }
         data.writeToFile(txtfile, atomically: true)
-        return "\(from)_\(to)"
+        return txtfile
     }
-    
     //导出
+    //导出和备份不在同一逻辑下 所以不在一个目录放
     func createExportDataFile(from:String,to:String) ->String {
         //删除原有的 导出文件只需要一份
         let mng = FileManager.defaultManager()
@@ -305,31 +313,12 @@ class DataCache: NSObject {
         } catch {
             
         }
-        
-        
-        let txtfile = FileManager.TxtFileInCaches("\(from)_\(to)")
-        let data = NSMutableData()
-        for dd in catalogue! {
-            if dd >= from && dd <= to {
-                if let ddtmp = loadDay(dd) {
-                    let thisday = dd+"\n"
-                    data.appendData(thisday.dataUsingEncoding(NSUTF8StringEncoding)!)
-                    var keys = Array(ddtmp.keys)
-                    keys.sortInPlace(){$0 < $1}
-                    for kk in keys {
-                        let title = kk+"\n"
-                        data.appendData(title.dataUsingEncoding(NSUTF8StringEncoding)!)
-                        let content = ddtmp[kk]!+"\n"
-                        data.appendData((content.dataUsingEncoding(NSUTF8StringEncoding))!)
-                    }
-                }
-                let over = "\n\n"
-                data.appendData((over.dataUsingEncoding(NSUTF8StringEncoding))!)
-            }
-        }
-        data.writeToFile(txtfile, atomically: true)
-        return "\(from)_\(to)"
+        return createFileAtPath(from, to: to, fileGetter: {
+            f,t in
+            return FileManager.TxtFileInCaches("\(f)_\(t)")
+        })
     }
+
     //备份
     //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
     func backupAll() -> String{
@@ -340,7 +329,7 @@ class DataCache: NSObject {
         if let cc = catalogue {
             let start = cc[0]
             let end = cc[cc.count-1]
-            return createBackupFile(start, to: end)
+            return createBackupFileWithAddtionalInfo(start, to: end)
         }
         return EMPTY_STRING
     }
@@ -350,13 +339,13 @@ class DataCache: NSObject {
         if fileState!.lastDate != EMPTY_STRING {
             //如果之前有备份 就从之前备份到今天
             deleteDay(fileState!.filename)
-            return createBackupFile(fileState!.lastDate, to: Time.today())
+            return createBackupFileWithAddtionalInfo(fileState!.lastDate, to: Time.today())
         } else {
             //如果之前没有备份 就全部备份
             if let cc = catalogue {
                 let start = cc[0]
                 let end = cc[cc.count-1]
-               return createBackupFile(start, to: end)
+               return createBackupFileWithAddtionalInfo(start, to: end)
             }
         }
         return EMPTY_STRING

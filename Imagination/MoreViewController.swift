@@ -139,7 +139,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             self.presentViewController(alert, animated: true, completion: nil)
             return
         }
-        sendByEmail(FileManager.TxtFileInDocuments(name), fileName: name+".txt")
+        sendByEmail(name, fileName: name+".txt")
     }
     func sendExportToMail(name:String) {
         if name == dCache.EMPTY_STRING {
@@ -148,12 +148,13 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             self.presentViewController(alert, animated: true, completion: nil)
             return
         }
-        sendByEmail(FileManager.TxtFileInCaches(name), fileName: name+".txt")
+        sendByEmail(name, fileName: name+".txt")
     }
     func sendByEmail(filePath:String,fileName:String) {
         let vc = MFMailComposeViewController.init()
         vc.mailComposeDelegate = self
-        vc.setSubject(fileName)
+        let sub = NSString(string: filePath)
+        vc.setSubject(sub.lastPathComponent)
         
         if fileName == "建议" {
             vc.setToRecipients(["miaoqiwang@gmail.com"])
@@ -167,7 +168,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         
         let senddata = NSData.init(contentsOfFile: filePath)
         if let dd = senddata {
-            vc.addAttachmentData(dd, mimeType: "text/plain", fileName: fileName)
+            vc.addAttachmentData(dd, mimeType: "text/plain", fileName: sub.lastPathComponent)
         }
         
         self.presentViewController(vc, animated: true, completion: nil)
