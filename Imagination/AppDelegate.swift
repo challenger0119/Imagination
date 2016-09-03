@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-        print(notification.alertBody)
+        Dlog(notification.alertBody)
         application.applicationIconBadgeNumber -= 1
     }
     func applicationDidEnterBackground(application: UIApplication) {

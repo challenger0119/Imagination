@@ -15,6 +15,7 @@
 		F81283981C3F82E8002985A7 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81283971C3F82E8002985A7 /* Notification.swift */; };
 		F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF731C378CB7008EF34D /* MoodViewController.swift */; };
 		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
+		F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E8F7D1D7ADDFF002954B9 /* Log.swift */; };
 		F88D3BA51C14678600A3C921 /* DayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D3BA41C14678600A3C921 /* DayList.swift */; };
 		F8C05A7F1C9BBBC800726997 /* TypeInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C05A7E1C9BBBC800726997 /* TypeInView.swift */; };
 		F8C05A811C9BBBF400726997 /* TypeInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C05A801C9BBBF400726997 /* TypeInView.xib */; };
@@ -41,6 +42,7 @@
 		F81283971C3F82E8002985A7 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		F870EF731C378CB7008EF34D /* MoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodViewController.swift; sourceTree = "<group>"; };
 		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		F87E8F7D1D7ADDFF002954B9 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F88D3BA41C14678600A3C921 /* DayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayList.swift; sourceTree = "<group>"; };
 		F8C05A7E1C9BBBC800726997 /* TypeInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeInView.swift; sourceTree = "<group>"; };
 		F8C05A801C9BBBF400726997 /* TypeInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TypeInView.xib; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				F81283971C3F82E8002985A7 /* Notification.swift */,
 				F8C05A7E1C9BBBC800726997 /* TypeInView.swift */,
 				F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */,
+				F87E8F7D1D7ADDFF002954B9 /* Log.swift */,
 			);
 			path = Imagination;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 				F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
+				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,
 				F870EF761C37BBB5008EF34D /* Item.swift in Sources */,
 				F8C05A7F1C9BBBC800726997 /* TypeInView.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
@@ -317,6 +321,7 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = imas.Imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -333,6 +338,7 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = imas.Imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;

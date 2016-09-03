@@ -48,7 +48,7 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("didselect\(indexPath.row)")
+        Dlog("didselect\(indexPath.row)")
         delegate.didSelectItem(content[indexPath.row])
         self.removeFromSuperview()
     }

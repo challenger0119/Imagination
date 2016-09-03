@@ -65,7 +65,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
             } else {
                 to = catalogue![row-1]
             }
-            print("\(from)-\(to)")
+            Dlog("\(from)-\(to)")
         }
     }
     
@@ -76,7 +76,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         
         if let vv = view {
-            print("reusing")
+            Dlog("reusing")
             let tmp = vv as! UILabel
             if row == 0 {
                 if component == 0 {
@@ -89,7 +89,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
             }
             return tmp
         } else {
-            print("not reusing")
+            Dlog("not reusing")
             let label = UILabel.init(frame: CGRectMake(0, 0, pickerView.frame.size.width/2, 40))
             label.textAlignment = NSTextAlignment.Center
             if row == 0 {

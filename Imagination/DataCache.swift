@@ -64,7 +64,7 @@ class DataCache: NSObject {
                     }
                     result += str
                 }
-                print(result)
+                Dlog(result)
                 let data = result.dataUsingEncoding(NSUTF8StringEncoding)
                 data?.writeToFile(FileManager.TxtFileInDocuments(Calculation.FILEPATH), atomically: true)
                 
@@ -387,7 +387,7 @@ class DataCache: NSObject {
         }
     }
     private func deleteDay(dd:String) -> Bool{
-        print("deleteday:\(dd)")
+        Dlog("deleteday:\(dd)")
         let filePath = FileManager.pathOfNameInDocuments(dd)
         let mng = FileManager.defaultManager()
         if mng.fileExistsAtPath(filePath) {
@@ -395,7 +395,7 @@ class DataCache: NSObject {
                 try mng.removeItemAtPath(filePath)
                 return true
             } catch {
-                print("删除文件错误:\(filePath)")
+                Dlog("删除文件错误:\(filePath)")
                 return false
             }
         }

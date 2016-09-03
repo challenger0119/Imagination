@@ -64,7 +64,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                 self.places = pls
                 self.tableView.reloadData()
             }else{
-                print(error?.description);
+                Dlog(error?.description);
             }
         })
     }
@@ -139,7 +139,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                     self.places = pls
                     self.tableView.reloadData()
                 }else{
-                    print(error?.description);
+                    Dlog(error?.description);
                 }
                 
             })
@@ -148,7 +148,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     }
     
     func mapViewDidFailLoadingMap(mapView: MKMapView, withError error: NSError) {
-        print(error.debugDescription)
+        Dlog(error.debugDescription)
     }
     
     /*

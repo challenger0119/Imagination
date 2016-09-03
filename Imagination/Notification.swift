@@ -83,7 +83,7 @@ class Notification: NSObject {
     
     static func cancelAllNotifications() {
         if let notis = UIApplication.sharedApplication().scheduledLocalNotifications {
-            print(notis)
+            Dlog(notis)
             UIApplication.sharedApplication().cancelAllLocalNotifications()
         }
     }
