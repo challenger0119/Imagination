@@ -17,7 +17,7 @@ class Notification: NSObject {
     static let notiAction = "记"
     static let keyForFiredate = "firedate"
     static let keyForReminder = "noti_everyday"
-    
+    static let keyForNewMoodAdded = "newMoodAdded"
     
     static var fireDate:NSDate?{
         get{

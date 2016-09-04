@@ -136,36 +136,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
                 default: break
                 }
                 self.doneAction()
+                NSNotificationCenter.defaultCenter().postNotificationName(Notification.keyForNewMoodAdded, object: nil)
             }
         }
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    /*
-    func updateTextView() {
-        let css = self.view.constraints
-        for  cs in css {
-            if cs.identifier == "keyboard" {
-                NSLayoutConstraint.deactivateConstraints([cs])
-                let new = NSLayoutConstraint.init(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy:NSLayoutRelation.Equal, toItem: self.content, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: keyBoardHeight)
-                new.identifier = "keyboard"
-                self.view.addConstraint(new)
-            }
-        }
-    }
- */
-    /*
-    func resumeScrollView() {
-        let css = self.view.constraints
-        for  cs in css {
-            if cs.identifier == "keyboard" {
-                NSLayoutConstraint.deactivateConstraints([cs])
-                let new = NSLayoutConstraint.init(item: self.view, attribute: NSLayoutAttribute.Bottom, relatedBy:NSLayoutRelation.Equal, toItem: self.content, attribute: NSLayoutAttribute.Bottom, multiplier: 1, constant: keyboardDistance)
-                new.identifier = "keyboard"
-                self.view.addConstraint(new)
-            }
-        }
-    }
- */
+
     //MARK: -segue
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "moodToLocation" {

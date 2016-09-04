@@ -137,6 +137,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             }
         }
         self.tableView.reloadData()
+        
     }
     
     func changeTimeToDayAndTime(timearry:[String],day:String) -> [String]{
@@ -166,18 +167,20 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             self.authorityView()
         }
     }
-    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.differentWillAppear()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(differentWillAppear), name: Notification.keyForNewMoodAdded, object: nil)
+    }
     override func viewWillAppear(animated: Bool)
     {
-        super.viewWillAppear(true)
-        self.differentWillAppear()
-        
+        super.viewWillAppear(animated)
         self.tableView.estimatedRowHeight = 80
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
     }
     override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(true)
+        super.viewDidAppear(animated)
         self.differentDidAppear()
     }
     
@@ -197,9 +200,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     
     func refreshMoodState() {
         let total = cool + ok + why
-        for v in self.backView.subviews {
-            v.removeFromSuperview()
-        }
         if total == 0 {
             //如果没有moodState 就return
             return
@@ -207,34 +207,58 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         let partition_a = self.backView.frame.width * CGFloat(cool) / CGFloat(total)
         let partition_b = self.backView.frame.width * CGFloat(cool + ok) / CGFloat(total)
         let height = self.backView.frame.height / 2
-        let left = UIView.init(frame: CGRectMake(0, 0, 0, height))
-        left.backgroundColor = Item.coolColor
-        self.backView.addSubview(left)
-        let center = UIView.init(frame: CGRectMake(partition_a, 0, 0, height))
-        center.backgroundColor = Item.justOkColor
-        self.backView.addSubview(center)
-        let right = UIView.init(frame: CGRectMake(partition_b, 0,0, height))
-        right.backgroundColor = Item.whyColor
-        self.backView.addSubview(right)
         
-        UIView.animateWithDuration(0.1, animations: {
-            left.frame = CGRectMake(0, 0, partition_a, height)
-            }, completion: {
-                finish in
-                if finish {
-                    UIView.animateWithDuration(0.1, animations: {
-                        center.frame = CGRectMake(partition_a, 0, partition_b - partition_a, height)
-                        }, completion: {
-                            finish in
-                            if finish {
-                                UIView.animateWithDuration(0.1, animations: {
-                                    right.frame = CGRectMake(partition_b, 0, self.backView.frame.width - partition_b, height)
-                                })
-                            }
-                    })
-                }
-        })
         
+        var left:UIView! = self.backView.viewWithTag(1)
+        var center:UIView! = self.backView.viewWithTag(2)
+        var right:UIView! = self.backView.viewWithTag(3)
+        var firstTime = false
+        if left == nil {
+            firstTime = true
+            left = UIView.init(frame: CGRectMake(0, 0, 0, height))
+            left.backgroundColor = Item.coolColor
+            left.tag = 1;
+            self.backView.addSubview(left)
+        }
+        if center == nil{
+            center = UIView.init(frame: CGRectMake(partition_a, 0, 0, height))
+            center.backgroundColor = Item.justOkColor
+            center.tag = 2;
+            self.backView.addSubview(center)
+        }
+        if right == nil{
+            right = UIView.init(frame: CGRectMake(partition_b, 0,0, height))
+            right.backgroundColor = Item.whyColor
+            right.tag = 3;
+            self.backView.addSubview(right)
+        }
+        
+        if firstTime == true {
+            firstTime = false
+            UIView.animateWithDuration(0.1, animations: {
+                left.frame = CGRectMake(0, 0, partition_a, height)
+                }, completion: {
+                    finish in
+                    if finish {
+                        UIView.animateWithDuration(0.1, animations: {
+                            center.frame = CGRectMake(partition_a, 0, partition_b - partition_a, height)
+                            }, completion: {
+                                finish in
+                                if finish {
+                                    UIView.animateWithDuration(0.1, animations: {
+                                        right.frame = CGRectMake(partition_b, 0, self.backView.frame.width - partition_b, height)
+                                    })
+                                }
+                        })
+                    }
+            })
+        }else{
+            UIView.animateWithDuration(0.1, animations: {
+                left.frame = CGRectMake(0, 0, partition_a, height)
+                center.frame = CGRectMake(partition_a, 0, partition_b - partition_a, height)
+                right.frame = CGRectMake(partition_b, 0, self.backView.frame.width - partition_b, height)
+            })
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
