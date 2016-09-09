@@ -122,13 +122,17 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     func doneAction() {
         let ttt = content.text
         if !ttt.isEmpty {
+            //最终目的地 所有有能容更新的操作都在这里 无论是手动填写还是自动填写
             if self.place != nil {
                 dataCache.newStringContent(ttt, moodState: moodState,GPSPlace: self.place!)
             }else{
                 dataCache.newStringContent(ttt, moodState: moodState)
             }
+            NSNotificationCenter.defaultCenter().postNotificationName(Notification.keyForNewMoodAdded, object: nil)
+            self.dismissViewControllerAnimated(true, completion: nil)
         } else {
             if moodState != 0 {
+                //自动填写
                 switch moodState {
                 case 1: content.text = "\"不言不语，毕竟言语无法表达我今天的快乐！！\""
                 case 2: content.text = "\"可能这就是平凡的一天，但我不愿这样,不甘心。\""
@@ -136,10 +140,11 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
                 default: break
                 }
                 self.doneAction()
-                NSNotificationCenter.defaultCenter().postNotificationName(Notification.keyForNewMoodAdded, object: nil)
+                
+            }else{
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
         }
-        self.dismissViewControllerAnimated(true, completion: nil)
     }
 
     //MARK: -segue
