@@ -8,28 +8,28 @@
 
 import Foundation
 
-class FileManager: NSFileManager {
+class FileManager: Foundation.FileManager {
     
  
-    class func pathOfNameInCaches(name:String)->String{
-        let documetPaths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.CachesDirectory,NSSearchPathDomainMask.UserDomainMask, true)
+    class func pathOfNameInCaches(_ name:String)->String{
+        let documetPaths = NSSearchPathForDirectoriesInDomains(Foundation.FileManager.SearchPathDirectory.cachesDirectory,Foundation.FileManager.SearchPathDomainMask.userDomainMask, true)
         let path = documetPaths[0] as String
-        return path.stringByAppendingString("/"+name)
+        return path + ("/"+name)
     }
-    class func TxtFileInCaches(name:String) -> String {
+    class func TxtFileInCaches(_ name:String) -> String {
         let file = FileManager.pathOfNameInCaches(name)
-        return file.stringByAppendingString(".txt")
+        return file + ".txt"
     }
     
     
-    class func pathOfNameInDocuments(name:String)->String{
-        let documetPaths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory,NSSearchPathDomainMask.UserDomainMask, true)
+    class func pathOfNameInDocuments(_ name:String)->String{
+        let documetPaths = NSSearchPathForDirectoriesInDomains(Foundation.FileManager.SearchPathDirectory.documentDirectory,Foundation.FileManager.SearchPathDomainMask.userDomainMask, true)
         let path = documetPaths[0] as String
-        return path.stringByAppendingString("/"+name)
+        return path + ("/"+name)
     }
     
-    class func TxtFileInDocuments(name:String) -> String {
+    class func TxtFileInDocuments(_ name:String) -> String {
         let file = FileManager.pathOfNameInDocuments(name)
-        return file.stringByAppendingString(".txt")
+        return file + ".txt"
     }
 }

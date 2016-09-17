@@ -11,13 +11,13 @@ import LocalAuthentication
 
 class AuthorityViewController: UIViewController,UITextFieldDelegate {
     enum type{
-        case Normal,ChangePass
+        case normal,changePass
     }
     @IBOutlet weak var password: UITextField!
-    var vType = type.Normal
+    var vType = type.normal
     static var pWord:String?{
         get{
-            if let ss = NSUserDefaults.standardUserDefaults().objectForKey("password") as? String {
+            if let ss = UserDefaults.standard.object(forKey: "password") as? String {
                 return ss
             } else {
                 return ""
@@ -25,17 +25,17 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
         }
         set{
             if newValue == nil {
-                NSUserDefaults.standardUserDefaults().setObject("", forKey: "password")
+                UserDefaults.standard.set("", forKey: "password")
             } else {
-                NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "password")
+                UserDefaults.standard.set(newValue, forKey: "password")
             }
         }
     }
     @IBAction func ok() {
-        if vType == type.ChangePass {
+        if vType == type.changePass {
             AuthorityViewController.pWord = password.text
             password.resignFirstResponder()
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
             return
         }
         checkAuthority(password.text)
@@ -44,26 +44,26 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     override func viewDidLoad() {
         self.password.delegate = self
         
-        if vType == type.ChangePass {
+        if vType == type.changePass {
             password.placeholder = "请输入新密码(留空删除密码)"
-            password.secureTextEntry = false
+            password.isSecureTextEntry = false
         } else {
             self.useTouchId()
         }
     }
     
-    func checkAuthority(passwd:String?){
+    func checkAuthority(_ passwd:String?){
         if passwd == AuthorityViewController.pWord {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }else{
-            let alert = UIAlertController.init(title: "提示", message: "抱歉，证据不足哦！（忘记密码不要怕，重新启动会有指纹识别）", preferredStyle: UIAlertControllerStyle.Alert)
-            let action = UIAlertAction.init(title: "好的", style: UIAlertActionStyle.Default, handler: nil)
+            let alert = UIAlertController.init(title: "提示", message: "抱歉，证据不足哦！（忘记密码不要怕，重新启动会有指纹识别）", preferredStyle: UIAlertControllerStyle.alert)
+            let action = UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil)
             alert.addAction(action)
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         ok()
         return true
@@ -77,16 +77,16 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
             let authenticationContext = LAContext()
             var error: NSError?
             
-            let isTouchIdAvailable = authenticationContext.canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics,
+            let isTouchIdAvailable = authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
                 error: &error)
             
             if isTouchIdAvailable
             {
-                authenticationContext.evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, localizedReason: "需要验证指纹", reply: {
+                authenticationContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "需要验证指纹", reply: {
                     (success, error) -> Void in
                     if success
                     {
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        self.dismiss(animated: true, completion: nil)
                     }
                 })
             }

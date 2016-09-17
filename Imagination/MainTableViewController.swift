@@ -28,13 +28,13 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     
     var locToShow:CLLocationCoordinate2D?
 
-    @IBAction func otherDay(sender:AnyObject) {
+    @IBAction func otherDay(_ sender:AnyObject) {
         if let nav = self.navigationController {
             if let tmpList = nav.view.viewWithTag(TAG_DAYLIST) {
                 tmpList.removeFromSuperview()
             }else{
                 if let cata = DataCache.shareInstance.catalogue_month {
-                    daylist = DayList(frame: CGRectMake(0, nav.navigationBar.frame.height+20, 130, nav.view.frame.height-2*(nav.navigationBar.frame.height+20)), cc: cata.reverse(),dele:self)
+                    daylist = DayList(frame: CGRect(x: 0, y: nav.navigationBar.frame.height+20, width: 130, height: nav.view.frame.height-2*(nav.navigationBar.frame.height+20)), cc: cata.reversed(),dele:self)
                     daylist?.tag = TAG_DAYLIST
                     self.navigationController!.view.addSubview(daylist!)
                 }
@@ -45,7 +45,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
                 tmpList.removeFromSuperview()
             }else{
                 if let cata = DataCache.shareInstance.catalogue_month {
-                    daylist = DayList(frame: CGRectMake(0, 20, 150, self.view.frame.height-20), cc: cata.reverse(),dele:self)
+                    daylist = DayList(frame: CGRect(x: 0, y: 20, width: 150, height: self.view.frame.height-20), cc: cata.reversed(),dele:self)
                     daylist?.tag = TAG_DAYLIST
                     self.view.addSubview(daylist!)
                 }
@@ -55,7 +55,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     
     //MARK: DayListDelegate
     
-    func didSelectItem(item: String) {
+    func didSelectItem(_ item: String) {
         DataCache.shareInstance.loadLastMonthToMonth(item)
         today.title = item
         loadMonthData()
@@ -74,7 +74,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             times = Array(day.keys)
             
             if  times != nil  {
-                times?.sortInPlace({$0>$1})
+                times?.sort(by: {$0>$1})
                 for ct in times! {
                     if content == nil {
                         content = Array.init(arrayLiteral: day[ct]!)
@@ -104,13 +104,13 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         if let mm = monthCache {
             //{2015.1.2:{9:30:xxx,11:30:xxx},2015.1.3:{6:35:ddd,11:07:ddd}}
             var dayArray = Array(mm.keys)//[2015.1.2,2015.1.3]
-            dayArray.sortInPlace({$0>$1})//[2015.1.3,2015.1.2]
+            dayArray.sort(by: {$0>$1})//[2015.1.3,2015.1.2]
             times?.removeAll()
             content?.removeAll()
             for daytime in dayArray {
                 if let day = mm[daytime] {//{9:30:xxx,11:30:xxx}
                     var tmpTimes = Array(day.keys)//[9:30,11:30]
-                    tmpTimes.sortInPlace({$0>$1})//[11:30,9:30]
+                    tmpTimes.sort(by: {$0>$1})//[11:30,9:30]
                     
                     for ct in tmpTimes {
                         if content == nil {//xxx
@@ -131,7 +131,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
                     if times == nil {
                         times = Array(changeTimeToDayAndTime(tmpTimes, day: daytime))
                     } else {
-                        times?.appendContentsOf(changeTimeToDayAndTime(tmpTimes, day: daytime))
+                        times?.append(contentsOf: changeTimeToDayAndTime(tmpTimes, day: daytime))
                     }
                 }
             }
@@ -140,7 +140,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         
     }
     
-    func changeTimeToDayAndTime(timearry:[String],day:String) -> [String]{
+    func changeTimeToDayAndTime(_ timearry:[String],day:String) -> [String]{
         //添加日期信息在里面 9：30 -> 2015.2.3 9:30
         var newArray = [String]()
         for tt in timearry {
@@ -170,31 +170,31 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.differentWillAppear()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(differentWillAppear), name: Notification.keyForNewMoodAdded, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(differentWillAppear), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
     }
-    override func viewWillAppear(animated: Bool)
+    override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
         self.tableView.estimatedRowHeight = 80
         self.tableView.rowHeight = UITableViewAutomaticDimension
         
     }
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.differentDidAppear()
     }
     
     func authorityView() {
         if AuthorityViewController.pWord != "" && DataCache.shareInstance.isStart {
-            let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
-            let vc = storeboad.instantiateViewControllerWithIdentifier("authority")
-            self.presentViewController(vc, animated: true, completion: {
+            let storeboad = UIStoryboard.init(name: "Main", bundle: Bundle.main)
+            let vc = storeboad.instantiateViewController(withIdentifier: "authority")
+            self.present(vc, animated: true, completion: {
                 
             })
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         daylist?.removeFromSuperview()
     }
     
@@ -215,19 +215,19 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         var firstTime = false
         if left == nil {
             firstTime = true
-            left = UIView.init(frame: CGRectMake(0, 0, 0, height))
+            left = UIView.init(frame: CGRect(x: 0, y: 0, width: 0, height: height))
             left.backgroundColor = Item.coolColor
             left.tag = 1;
             self.backView.addSubview(left)
         }
         if center == nil{
-            center = UIView.init(frame: CGRectMake(partition_a, 0, 0, height))
+            center = UIView.init(frame: CGRect(x: partition_a, y: 0, width: 0, height: height))
             center.backgroundColor = Item.justOkColor
             center.tag = 2;
             self.backView.addSubview(center)
         }
         if right == nil{
-            right = UIView.init(frame: CGRectMake(partition_b, 0,0, height))
+            right = UIView.init(frame: CGRect(x: partition_b, y: 0,width: 0, height: height))
             right.backgroundColor = Item.whyColor
             right.tag = 3;
             self.backView.addSubview(right)
@@ -235,28 +235,28 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         
         if firstTime == true {
             firstTime = false
-            UIView.animateWithDuration(0.1, animations: {
-                left.frame = CGRectMake(0, 0, partition_a, height)
+            UIView.animate(withDuration: 0.1, animations: {
+                left.frame = CGRect(x: 0, y: 0, width: partition_a, height: height)
                 }, completion: {
                     finish in
                     if finish {
-                        UIView.animateWithDuration(0.1, animations: {
-                            center.frame = CGRectMake(partition_a, 0, partition_b - partition_a, height)
+                        UIView.animate(withDuration: 0.1, animations: {
+                            center.frame = CGRect(x: partition_a, y: 0, width: partition_b - partition_a, height: height)
                             }, completion: {
                                 finish in
                                 if finish {
-                                    UIView.animateWithDuration(0.1, animations: {
-                                        right.frame = CGRectMake(partition_b, 0, self.backView.frame.width - partition_b, height)
+                                    UIView.animate(withDuration: 0.1, animations: {
+                                        right.frame = CGRect(x: partition_b, y: 0, width: self.backView.frame.width - partition_b, height: height)
                                     })
                                 }
                         })
                     }
             })
         }else{
-            UIView.animateWithDuration(0.1, animations: {
-                left.frame = CGRectMake(0, 0, partition_a, height)
-                center.frame = CGRectMake(partition_a, 0, partition_b - partition_a, height)
-                right.frame = CGRectMake(partition_b, 0, self.backView.frame.width - partition_b, height)
+            UIView.animate(withDuration: 0.1, animations: {
+                left.frame = CGRect(x: 0, y: 0, width: partition_a, height: height)
+                center.frame = CGRect(x: partition_a, y: 0, width: partition_b - partition_a, height: height)
+                right.frame = CGRect(x: partition_b, y: 0, width: self.backView.frame.width - partition_b, height: height)
             })
         }
     }
@@ -267,12 +267,12 @@ class MainTableViewController: UITableViewController,DayListDelegate {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if let day = content {
             return day.count
@@ -281,10 +281,10 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier",forIndexPath: indexPath) as! CustomTableViewCell
-        let cc = Item.init(contentString: content![indexPath.row])
-        cell.time.text = times![indexPath.row]
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier",for: indexPath) as! CustomTableViewCell
+        let cc = Item.init(contentString: content![(indexPath as NSIndexPath).row])
+        cell.time.text = times![(indexPath as NSIndexPath).row]
         cell.content.text = cc.content
         cell.time.textColor = cc.color
         cell.content.textColor = cc.color
@@ -293,12 +293,12 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         return cell
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let cc = Item.init(contentString: content![indexPath.row])
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let cc = Item.init(contentString: content![(indexPath as NSIndexPath).row])
         if !cc.place.name.isEmpty {
             self.locToShow = CLLocationCoordinate2D(latitude: cc.place.latitude, longitude: cc.place.longtitude)
-            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("LocationViewController") as! LocationViewController
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LocationViewController") as! LocationViewController
             vc.placeToShow = self.locToShow
             self.navigationController?.pushViewController(vc, animated: true)
         }

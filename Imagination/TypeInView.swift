@@ -8,7 +8,7 @@
 
 import UIKit
 protocol TypeInViewDelegate {
-    func confirmWithStringResult(result:String)
+    func confirmWithStringResult(_ result:String)
 }
 class TypeInView: UIView {
 
@@ -26,29 +26,29 @@ class TypeInView: UIView {
     */
 
     @IBAction func changeOperator() {
-        let sheet = UIAlertController.init(title: "选择算符", message: nil, preferredStyle: .ActionSheet)
-        sheet.addAction(UIAlertAction.init(title: "+", style: .Default, handler: {
+        let sheet = UIAlertController.init(title: "选择算符", message: nil, preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction.init(title: "+", style: .default, handler: {
             at in
             self.adjustedNumber = at.title!
-            self.numberOperator.setTitle(self.adjustedNumber, forState: .Normal)
+            self.numberOperator.setTitle(self.adjustedNumber, for: UIControlState())
         }))
-        sheet.addAction(UIAlertAction.init(title: "-", style: .Default, handler: {
+        sheet.addAction(UIAlertAction.init(title: "-", style: .default, handler: {
             at in
             self.adjustedNumber = at.title!
-            self.numberOperator.setTitle(self.adjustedNumber, forState: .Normal)
+            self.numberOperator.setTitle(self.adjustedNumber, for: UIControlState())
         }))
-        self.window?.rootViewController?.presentViewController(sheet, animated: true, completion: {
+        self.window?.rootViewController?.present(sheet, animated: true, completion: {
         })
     }
     
     
-    func alert(content:String) {
-        let alert = UIAlertController.init(title: "提示", message: content, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction.init(title: "好的", style: .Cancel, handler: {
+    func alert(_ content:String) {
+        let alert = UIAlertController.init(title: "提示", message: content, preferredStyle: .alert)
+        alert.addAction(UIAlertAction.init(title: "好的", style: .cancel, handler: {
             at in
             
         }))
-        self.window?.rootViewController?.presentViewController(alert, animated: true, completion: {
+        self.window?.rootViewController?.present(alert, animated: true, completion: {
             
         })
     }
@@ -67,6 +67,6 @@ class TypeInView: UIView {
     }
 
     class func View() -> TypeInView? {
-        return NSBundle.mainBundle().loadNibNamed("TypeInView", owner: nil, options: nil).first as? TypeInView
+        return Bundle.main.loadNibNamed("TypeInView", owner: nil, options: nil)?.first as? TypeInView
     }
 }

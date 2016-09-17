@@ -8,7 +8,7 @@
 
 import Foundation
 
-func Dlog<T>(message: T,
+func Dlog<T>(_ message: T,
                     file: String = #file,
                     method: String = #function,
                     line: Int = #line)

@@ -8,7 +8,7 @@
 
 import UIKit
 protocol DataPickerDelegate {
-    func dataPickerResult(first:String,second:String)
+    func dataPickerResult(_ first:String,second:String)
 }
 class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     let catalogue = DataCache.shareInstance.catalogue
@@ -23,19 +23,19 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         self.delegate = dele
         super.init(frame: frame)
         self.frame = frame
-        self.backgroundColor = UIColor.whiteColor()
-        self.layer.borderColor = UIColor.blackColor().CGColor
+        self.backgroundColor = UIColor.white
+        self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 0.3
         self.layer.cornerRadius = 5
-        let conform = UIButton.init(frame: CGRectMake(self.frame.size.width - 50, 5,30, 30))
-        conform.setImage(UIImage.init(named: "check"), forState: UIControlState.Normal)
-        conform.addTarget(self, action: #selector(DataPicker.conform), forControlEvents: UIControlEvents.TouchUpInside)
+        let conform = UIButton.init(frame: CGRect(x: self.frame.size.width - 50, y: 5,width: 30, height: 30))
+        conform.setImage(UIImage.init(named: "check"), for: UIControlState())
+        conform.addTarget(self, action: #selector(DataPicker.conform), for: UIControlEvents.touchUpInside)
         self.addSubview(conform)
-        let cancel = UIButton.init(frame: CGRectMake(20, 5,30, 30))
-        cancel.setImage(UIImage.init(named: "cancel"), forState: UIControlState.Normal)
-        cancel.addTarget(self, action: #selector(DataPicker.cancel), forControlEvents: UIControlEvents.TouchUpInside)
+        let cancel = UIButton.init(frame: CGRect(x: 20, y: 5,width: 30, height: 30))
+        cancel.setImage(UIImage.init(named: "cancel"), for: UIControlState())
+        cancel.addTarget(self, action: #selector(DataPicker.cancel), for: UIControlEvents.touchUpInside)
         self.addSubview(cancel)
-        let pickerView = UIPickerView.init(frame: CGRectMake(0, 30, self.frame.size.width, self.frame.size.height-30))
+        let pickerView = UIPickerView.init(frame: CGRect(x: 0, y: 30, width: self.frame.size.width, height: self.frame.size.height-30))
         pickerView.delegate = self
         pickerView.dataSource = self
         self.addSubview(pickerView)
@@ -58,7 +58,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     func cancel() {
         self.removeFromSuperview()
     }
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if row != 0 {
             if component == 0 {
                 from = catalogue![row-1]
@@ -69,11 +69,11 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         }
     }
     
-    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
         return 40
     }
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
         if let vv = view {
             Dlog("reusing")
@@ -90,8 +90,8 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
             return tmp
         } else {
             Dlog("not reusing")
-            let label = UILabel.init(frame: CGRectMake(0, 0, pickerView.frame.size.width/2, 40))
-            label.textAlignment = NSTextAlignment.Center
+            let label = UILabel.init(frame: CGRect(x: 0, y: 0, width: pickerView.frame.size.width/2, height: 40))
+            label.textAlignment = NSTextAlignment.center
             if row == 0 {
                 if component == 0 {
                     label.text = "From"
@@ -106,11 +106,11 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     }
     
     
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if let cata = catalogue {
             return cata.count+1
         } else {

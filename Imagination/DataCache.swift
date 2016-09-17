@@ -13,6 +13,26 @@
 
 import Foundation
 import CoreLocation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 class DataCache: NSObject {
     
     static let shareInstance = DataCache()
@@ -22,12 +42,12 @@ class DataCache: NSObject {
         var calculateRecord:[String]?{//[2016-3-17:300:This month,2016-3-18:-100:Next month]
             didSet{
                 //store to file
-                let mydata = NSKeyedArchiver.archivedDataWithRootObject(self.calculateRecord!)
-                mydata.writeToFile(FileManager.pathOfNameInDocuments(Calculation.FILEPATH), atomically: true)
+                let mydata = NSKeyedArchiver.archivedData(withRootObject: self.calculateRecord!)
+                try? mydata.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(Calculation.FILEPATH)), options: [.atomic])
             }
         }
         
-        func storeCalculateRecord(record:String){
+        func storeCalculateRecord(_ record:String){
             if self.calculateRecord == nil{
                 self.calculateRecord = [record]
             }else{
@@ -36,7 +56,7 @@ class DataCache: NSObject {
         }
         
         func loadCalculateRecord(){
-            if let data = NSKeyedUnarchiver.unarchiveObjectWithFile(FileManager.pathOfNameInDocuments(Calculation.FILEPATH)) {
+            if let data = NSKeyedUnarchiver.unarchiveObject(withFile: FileManager.pathOfNameInDocuments(Calculation.FILEPATH)) {
                 self.calculateRecord = data as? [String]
             }
         }
@@ -52,7 +72,7 @@ class DataCache: NSObject {
             if self.calculateRecord != nil {
                 var result = ""
                 for rec in self.calculateRecord! {
-                    let recArray = rec.componentsSeparatedByString(":")
+                    let recArray = rec.components(separatedBy: ":")
                     var str = recArray[0]
                     let intNum = Int(recArray[1])
                     if intNum > 0{
@@ -65,14 +85,14 @@ class DataCache: NSObject {
                     result += str
                 }
                 Dlog(result)
-                let data = result.dataUsingEncoding(NSUTF8StringEncoding)
-                data?.writeToFile(FileManager.TxtFileInDocuments(Calculation.FILEPATH), atomically: true)
+                let data = result.data(using: String.Encoding.utf8)
+                try? data?.write(to: URL(fileURLWithPath: FileManager.TxtFileInDocuments(Calculation.FILEPATH)), options: [.atomic])
                 
             }
         }
     }
         
-    private let FILENAME_INDEX = "index"
+    fileprivate let FILENAME_INDEX = "index"
     var isStart = true //启动标记 用于touchID
     let EMPTY_STRING = " "
     var fileState:(filename:String,lastDate:String)?
@@ -83,10 +103,10 @@ class DataCache: NSObject {
     var catalogue_month:[String]?
     var email:String?{
         set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: "email")
+            UserDefaults.standard.set(newValue, forKey: "email")
         }
         get{
-            return NSUserDefaults.standardUserDefaults().objectForKey("email") as? String
+            return UserDefaults.standard.object(forKey: "email") as? String
         }
     }
     //[2015.11.20,2015.11.30,2015.12.2]
@@ -95,9 +115,9 @@ class DataCache: NSObject {
     var lastDay:Dictionary<String,String>?
     var lastMonth:Dictionary<String,Dictionary<String,String>>?
     
-    private func updateCatalogue() {
+    fileprivate func updateCatalogue() {
         if let cata = catalogue {
-            if (cata.indexOf(currentDayName!) == nil) {
+            if (cata.index(of: currentDayName!) == nil) {
                 catalogue?.append(currentDayName!)
                 storeCatalogue()
             }
@@ -107,7 +127,7 @@ class DataCache: NSObject {
         }
     }
     
-    func newStringContent(content:String, moodState:Int,GPSPlace:CLPlacemark){
+    func newStringContent(_ content:String, moodState:Int,GPSPlace:CLPlacemark){
         if Time.today() == self.currentDayName {
             self.updateLastday(Item.ItemString(content, mood: moodState,GPSName: GPSPlace.name!,latitude:GPSPlace.location!.coordinate.latitude,longtitude:GPSPlace.location!.coordinate.longitude), key: Time.clock())
         } else {
@@ -115,7 +135,7 @@ class DataCache: NSObject {
         }
     }
     
-    func newStringContent(content:String, moodState:Int) {
+    func newStringContent(_ content:String, moodState:Int) {
         if Time.today() == self.currentDayName {
             self.updateLastday(Item.ItemString(content, mood: moodState), key: Time.clock())
         } else {
@@ -123,18 +143,18 @@ class DataCache: NSObject {
         }
     }
     //数据更新的两个方法
-    func updateLastday(lastdayValue:String,key:String) {
+    func updateLastday(_ lastdayValue:String,key:String) {
         lastDay?.updateValue(lastdayValue, forKey: key)
-        let myData = NSKeyedArchiver.archivedDataWithRootObject(lastDay!)
-        myData.writeToFile(FileManager.pathOfNameInDocuments(currentDayName!), atomically: true)
+        let myData = NSKeyedArchiver.archivedData(withRootObject: lastDay!)
+        try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(currentDayName!)), options: [.atomic])
         updateCatalogue()
     }
     
-    func initLastday(lastdayDic:Dictionary<String,String>,currentDayName:String) {
+    func initLastday(_ lastdayDic:Dictionary<String,String>,currentDayName:String) {
         self.currentDayName = currentDayName
         lastDay = lastdayDic
-        let myData = NSKeyedArchiver.archivedDataWithRootObject(lastDay!)
-        myData.writeToFile(FileManager.pathOfNameInDocuments(self.currentDayName!), atomically: true)
+        let myData = NSKeyedArchiver.archivedData(withRootObject: lastDay!)
+        try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(self.currentDayName!)), options: [.atomic])
         updateCatalogue()
     }
     
@@ -161,21 +181,21 @@ class DataCache: NSObject {
     }
     
     //载入特定时间
-    func loadLastDayToDay(dd:String) {
+    func loadLastDayToDay(_ dd:String) {
         currentDayName = dd
         lastDay = loadDay(currentDayName!)
     }
-    func loadLastMonthToMonth(mm:String) {
+    func loadLastMonthToMonth(_ mm:String) {
         currentMonthName = mm
         lastMonth = loadMonth(currentMonthName!)
     }
-    private func loadDay(dd:String) -> Dictionary<String,String>? {
-        if let mydata = NSData.init(contentsOfFile: FileManager.pathOfNameInDocuments(dd)) {
-            return (NSKeyedUnarchiver.unarchiveObjectWithData(mydata) as? Dictionary)!
+    fileprivate func loadDay(_ dd:String) -> Dictionary<String,String>? {
+        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(dd))) {
+            return (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Dictionary)!
         }
         return nil
     }
-    private func loadMonth(mm:String) -> Dictionary<String,Dictionary<String,String>>? {
+    fileprivate func loadMonth(_ mm:String) -> Dictionary<String,Dictionary<String,String>>? {
         if let cts = catalogue {
             var lMonth = Dictionary<String,Dictionary<String,String>>()
             for ct in cts {
@@ -189,8 +209,8 @@ class DataCache: NSObject {
         }
     }
     
-    private func isThisMonth(thismonth:String,dd:String) -> Bool {
-        let arr = dd.componentsSeparatedByString("-")
+    fileprivate func isThisMonth(_ thismonth:String,dd:String) -> Bool {
+        let arr = dd.components(separatedBy: "-")
         if arr.count == 3 {
             return (arr[0]+"-"+arr[1]) == thismonth
         }else{
@@ -198,21 +218,21 @@ class DataCache: NSObject {
         }
     }
     //存储目录
-    private func storeCatalogue(){
+    fileprivate func storeCatalogue(){
         if catalogue != nil {
-            let myData = NSKeyedArchiver.archivedDataWithRootObject(catalogue!)
-            myData.writeToFile(FileManager.pathOfNameInDocuments(FILENAME_INDEX), atomically: true)
+            let myData = NSKeyedArchiver.archivedData(withRootObject: catalogue!)
+            try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX)), options: [.atomic])
         }
     }
     //载入目录
-    private func loadCatalogue(){
+    fileprivate func loadCatalogue(){
         catalogue?.removeAll()
-        if let mydata = NSData.init(contentsOfFile: FileManager.pathOfNameInDocuments(FILENAME_INDEX)) {
-            catalogue = (NSKeyedUnarchiver.unarchiveObjectWithData(mydata) as? Array)
+        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX))) {
+            catalogue = (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Array)
         }
     }
     
-    private func loadCatalogue_month(){
+    fileprivate func loadCatalogue_month(){
         self.loadCatalogue()
         catalogue_month?.removeAll()
         var montharray = [Int]()
@@ -232,7 +252,7 @@ class DataCache: NSObject {
             }
         }
     }
-    private func isSameMonth(mm:Int,arr:[Int]) -> Bool {
+    fileprivate func isSameMonth(_ mm:Int,arr:[Int]) -> Bool {
         //字典没有顺序所以记录之前有的月份 然后比较
         for ii in arr {
             if mm == ii {
@@ -241,16 +261,16 @@ class DataCache: NSObject {
         }
         return false
     }
-    private func cutDateToMonth(ss:String) -> String {
-        let arr = ss.componentsSeparatedByString("-")
+    fileprivate func cutDateToMonth(_ ss:String) -> String {
+        let arr = ss.components(separatedBy: "-")
         if arr.count == 3 {
             return arr[0]+"-"+arr[1]
         }else{
             return ss
         }
     }
-    private func monthOfCatalogue(cata:String) -> Int {
-        let arr = cata.componentsSeparatedByString("-")
+    fileprivate func monthOfCatalogue(_ cata:String) -> Int {
+        let arr = cata.components(separatedBy: "-")
         if arr.count == 3 {
             return Int(arr[1])!
         }else{
@@ -259,26 +279,26 @@ class DataCache: NSObject {
         
     }
     //创建文件
-    private func createBackupFileWithAddtionalInfo(from:String,to:String) -> String {
+    fileprivate func createBackupFileWithAddtionalInfo(_ from:String,to:String) -> String {
         return createFileAtPath(from, to: to, fileGetter: {
             f,t in
             return FileManager.TxtFileInDocuments("\(f)_\(t)")
         })
     }
     
-    private func createFileAtPath(from:String,to:String,fileGetter:(from:String,to:String)->String)->String{
-        let txtfile = fileGetter(from:from,to: to)
+    fileprivate func createFileAtPath(_ from:String,to:String,fileGetter:(_ from:String,_ to:String)->String)->String{
+        let txtfile = fileGetter(from,to)
         let data = NSMutableData()
         for dd in catalogue! {
             if dd >= from && dd <= to {
                 if let ddtmp = loadDay(dd) {
                     let thisday = dd+"\n"
-                    data.appendData(thisday.dataUsingEncoding(NSUTF8StringEncoding)!)
+                    data.append(thisday.data(using: String.Encoding.utf8)!)
                     var keys = Array(ddtmp.keys)
-                    keys.sortInPlace(){$0 < $1}
+                    keys.sort(){$0 < $1}
                     for kk in keys {
                         let title = kk+"\n"
-                        data.appendData(title.dataUsingEncoding(NSUTF8StringEncoding)!)
+                        data.append(title.data(using: String.Encoding.utf8)!)
                         let item = Item(contentString:  ddtmp[kk]!)
                         var content = item.content + "\n"
                         if item.mood != 0 {
@@ -290,29 +310,29 @@ class DataCache: NSObject {
                         if item.mood != 0 || item.place.latitude != 0 {
                             content += "\n"
                         }
-                        data.appendData((content.dataUsingEncoding(NSUTF8StringEncoding))!)
+                        data.append((content.data(using: String.Encoding.utf8))!)
                     }
                 }
                 let over = "\n\n"
-                data.appendData((over.dataUsingEncoding(NSUTF8StringEncoding))!)
+                data.append((over.data(using: String.Encoding.utf8))!)
             }
         }
-        data.writeToFile(txtfile, atomically: true)
+        data.write(toFile: txtfile, atomically: true)
         return txtfile
     }
     //导出
     //导出和备份不在同一逻辑下 所以不在一个目录放
-    func createExportDataFile(from:String,to:String) ->String {
+    func createExportDataFile(_ from:String,to:String) ->String {
         //删除原有的 导出文件只需要一份
-        let mng = FileManager.defaultManager()
+        let mng = FileManager.default
         do {
-            let files = try mng.contentsOfDirectoryAtPath(FileManager.pathOfNameInCaches(""))
+            let files = try mng.contentsOfDirectory(atPath: FileManager.pathOfNameInCaches(""))
             if !files.isEmpty {
                 for ff in files {
-                    let ffarray = ff.componentsSeparatedByString(".")
+                    let ffarray = ff.components(separatedBy: ".")
                     if ffarray.count == 2 {
                         do{
-                            try mng.removeItemAtPath(FileManager.TxtFileInCaches(ffarray[0]))
+                            try mng.removeItem(atPath: FileManager.TxtFileInCaches(ffarray[0]))
                         } catch {
                             
                         }
@@ -360,18 +380,18 @@ class DataCache: NSObject {
         return EMPTY_STRING
     }
     func checkFileExist() {
-        let mng = FileManager.defaultManager()
+        let mng = FileManager.default
         var lastTimeEnd = EMPTY_STRING
         var lastBackup = EMPTY_STRING
         do {
-            let files = try mng.contentsOfDirectoryAtPath(FileManager.pathOfNameInDocuments(""))
+            let files = try mng.contentsOfDirectory(atPath: FileManager.pathOfNameInDocuments(""))
             if !files.isEmpty {
                 for ff in files {
-                    let ffarray = ff.componentsSeparatedByString(".")
+                    let ffarray = ff.components(separatedBy: ".")
                     if ffarray.count == 2 {
                         let filename = ffarray[0]
                         lastBackup = filename+".txt"
-                        let fnarray = filename.componentsSeparatedByString("_")
+                        let fnarray = filename.components(separatedBy: "_")
                         lastTimeEnd = fnarray[1]
                         break
                     }
@@ -385,23 +405,23 @@ class DataCache: NSObject {
     
     //删除方法保留 非特殊情况不使用
     
-    private func deleteTest() {
+    fileprivate func deleteTest() {
         for ddd in catalogue! {
             if ddd < "2015-12-05" {
                 if deleteDay(ddd) {
-                    catalogue?.removeAtIndex((catalogue?.indexOf(ddd))!)
+                    catalogue?.remove(at: (catalogue?.index(of: ddd))!)
                     storeCatalogue()
                 }
             }
         }
     }
-    private func deleteDay(dd:String) -> Bool{
+    fileprivate func deleteDay(_ dd:String) -> Bool{
         Dlog("deleteday:\(dd)")
         let filePath = FileManager.pathOfNameInDocuments(dd)
-        let mng = FileManager.defaultManager()
-        if mng.fileExistsAtPath(filePath) {
+        let mng = FileManager.default
+        if mng.fileExists(atPath: filePath) {
             do {
-                try mng.removeItemAtPath(filePath)
+                try mng.removeItem(atPath: filePath)
                 return true
             } catch {
                 Dlog("删除文件错误:\(filePath)")

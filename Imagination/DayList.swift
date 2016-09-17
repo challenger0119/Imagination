@@ -8,7 +8,7 @@
 
 import UIKit
 protocol DayListDelegate {
-    func didSelectItem(item:String)
+    func didSelectItem(_ item:String)
 }
 
 class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
@@ -18,14 +18,14 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
     
     init(frame: CGRect, cc:[String],dele:DayListDelegate) {
         self.content = cc
-        self.table.frame = CGRectMake(0, 0, frame.width, 0)
+        self.table.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
         self.delegate = dele
         super.init(frame: frame)
-        self.layer.borderColor = UIColor.blueColor().CGColor
+        self.layer.borderColor = UIColor.blue.cgColor
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 0.5
-        self.backgroundColor = UIColor.whiteColor()
-        self.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.width, 0)
+        self.backgroundColor = UIColor.white
+        self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: 0)
         self.table.delegate = self
         self.table.dataSource = self
         self.addSubview(table)
@@ -38,8 +38,8 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
         if viewHeight < actualHeight {
             actualHeight = viewHeight
         }
-        self.table.frame = CGRectMake(0,0, frame.width, actualHeight)
-        self.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.width, actualHeight)
+        self.table.frame = CGRect(x: 0,y: 0, width: frame.width, height: actualHeight)
+        self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: actualHeight)
         UIView.commitAnimations()
     }
 
@@ -47,34 +47,34 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        Dlog("didselect\(indexPath.row)")
-        delegate.didSelectItem(content[indexPath.row])
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        Dlog("didselect\((indexPath as NSIndexPath).row)")
+        delegate.didSelectItem(content[(indexPath as NSIndexPath).row])
         self.removeFromSuperview()
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40.0
     }
     
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-        if let cell = table.dequeueReusableCellWithIdentifier("daylistcell") {
-            cell.textLabel?.text = content[indexPath.row]
+        if let cell = table.dequeueReusableCell(withIdentifier: "daylistcell") {
+            cell.textLabel?.text = content[(indexPath as NSIndexPath).row]
             return cell
         } else {
-            let cell = UITableViewCell.init(style: UITableViewCellStyle.Default, reuseIdentifier: "daylistcell")
-            cell.textLabel?.text = content[indexPath.row]
+            let cell = UITableViewCell.init(style: UITableViewCellStyle.default, reuseIdentifier: "daylistcell")
+            cell.textLabel?.text = content[(indexPath as NSIndexPath).row]
             return cell
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
        return 1
     }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return content.count
     }
 }

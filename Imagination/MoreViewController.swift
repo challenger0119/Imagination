@@ -37,41 +37,41 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             }
         }
     }
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView .deselectRowAtIndexPath(indexPath, animated: true)
-        if indexPath.row == 0 {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView .deselectRow(at: indexPath, animated: true)
+        if (indexPath as NSIndexPath).row == 0 {
             sendBackupToMail(dCache.backupToNow())
             updateRecentDetail()
-        } else if indexPath.row == 1 {
+        } else if (indexPath as NSIndexPath).row == 1 {
             sendBackupToMail(dCache.backupAll())
             updateRecentDetail()
-        } else if indexPath.row == 2 {
-            picker = DataPicker.init(frame: CGRectMake(20, (self.view.frame.height-200)/2-50, self.view.frame.width-40, 200), dele: self)
+        } else if (indexPath as NSIndexPath).row == 2 {
+            picker = DataPicker.init(frame: CGRect(x: 20, y: (self.view.frame.height-200)/2-50, width: self.view.frame.width-40, height: 200), dele: self)
             self.view.addSubview(picker!)
-        } else if indexPath.row == 3 {
-            let alert = UIAlertController.init(title: "设置邮箱", message: "请输入邮箱地址", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addTextFieldWithConfigurationHandler({
+        } else if (indexPath as NSIndexPath).row == 3 {
+            let alert = UIAlertController.init(title: "设置邮箱", message: "请输入邮箱地址", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addTextField(configurationHandler: {
                 (email:UITextField) -> Void in
-                email.clearButtonMode = UITextFieldViewMode.WhileEditing
+                email.clearButtonMode = UITextFieldViewMode.whileEditing
                 if let mail =  self.dCache.email {
                     email.placeholder = mail
                 }
                 })
-            alert.addAction(UIAlertAction.init(title: "确定", style: UIAlertActionStyle.Default, handler: {
+            alert.addAction(UIAlertAction.init(title: "确定", style: UIAlertActionStyle.default, handler: {
                 (confirm:UIAlertAction) -> Void in
                 let emailField = (alert.textFields?.first)! as UITextField
                 if self.isValidateEmail(emailField.text!) {
                     self.dCache.email = emailField.text
                     self.updateRecentDetail()
                 } else {
-                    let alert = UIAlertController.init(title: "提示", message: "邮箱地址格式不对", preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+                    let alert = UIAlertController.init(title: "提示", message: "邮箱地址格式不对", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 }
                 }))
-            alert.addAction(UIAlertAction.init(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
-        } else if indexPath.row == 4 {
+            alert.addAction(UIAlertAction.init(title: "取消", style: UIAlertActionStyle.cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        } else if (indexPath as NSIndexPath).row == 4 {
             if Notification.isReminder {
                 Notification.isReminder = false
                 Notification.cancelAllNotifications()
@@ -79,29 +79,29 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
                 return
             }
             
-            let pickerBack = UIView.init(frame: CGRectMake(self.view.frame.width/2-150, self.view.frame.height/2-170, 300, 250))
-            pickerBack.backgroundColor = UIColor.whiteColor()
-            pickerBack.layer.borderColor = UIColor.blackColor().CGColor
+            let pickerBack = UIView.init(frame: CGRect(x: self.view.frame.width/2-150, y: self.view.frame.height/2-170, width: 300, height: 250))
+            pickerBack.backgroundColor = UIColor.white
+            pickerBack.layer.borderColor = UIColor.black.cgColor
             pickerBack.layer.borderWidth = 0.5
             pickerBack.layer.cornerRadius = 5
             pickerBack.layer.masksToBounds = true
             pickerBack.tag = 111
-            let btn = UIButton.init(frame: CGRectMake(pickerBack.frame.width - 50, 0, 50, 34))
-            btn.setTitle("完成", forState: UIControlState.Normal)
-            btn.setTitleColor(UIColor.blackColor(), forState: UIControlState.Normal)
-            btn.addTarget(self, action: #selector(didSelectTime), forControlEvents: UIControlEvents.TouchUpInside)
+            let btn = UIButton.init(frame: CGRect(x: pickerBack.frame.width - 50, y: 0, width: 50, height: 34))
+            btn.setTitle("完成", for: UIControlState())
+            btn.setTitleColor(UIColor.black, for: UIControlState())
+            btn.addTarget(self, action: #selector(didSelectTime), for: UIControlEvents.touchUpInside)
             pickerBack.addSubview(btn)
-            datePicker = UIDatePicker.init(frame:CGRectMake(0, 34, 300, 216))
-            datePicker!.datePickerMode = UIDatePickerMode.DateAndTime
-            datePicker?.timeZone = NSTimeZone.systemTimeZone()
+            datePicker = UIDatePicker.init(frame:CGRect(x: 0, y: 34, width: 300, height: 216))
+            datePicker!.datePickerMode = UIDatePickerMode.dateAndTime
+            datePicker?.timeZone = TimeZone.current
             pickerBack.addSubview(datePicker!)
             self.view.addSubview(pickerBack)
-        } else if indexPath.row == 5 {
-            let storeboad = UIStoryboard.init(name: "Main", bundle: NSBundle.mainBundle())
-            let vc = storeboad.instantiateViewControllerWithIdentifier("authority") as! AuthorityViewController
-            vc.vType = AuthorityViewController.type.ChangePass
-            self.presentViewController(vc, animated: true, completion: nil)
-        } else if indexPath.row == 6 {
+        } else if (indexPath as NSIndexPath).row == 5 {
+            let storeboad = UIStoryboard.init(name: "Main", bundle: Bundle.main)
+            let vc = storeboad.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController
+            vc.vType = AuthorityViewController.type.changePass
+            self.present(vc, animated: true, completion: nil)
+        } else if (indexPath as NSIndexPath).row == 6 {
             sendByEmail("", fileName: "建议")
         }
     }
@@ -124,33 +124,33 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         
         updateReminder()
     }
-    func dataPickerResult(first: String, second: String) {
+    func dataPickerResult(_ first: String, second: String) {
         sendExportToMail(dCache.createExportDataFile(first, to: second))
     }
     
-    func isValidateEmail(email:String) -> Bool {
+    func isValidateEmail(_ email:String) -> Bool {
         return true
     }
     
-    func sendBackupToMail(name:String) {
+    func sendBackupToMail(_ name:String) {
         if name == dCache.EMPTY_STRING {
-            let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             return
         }
         sendByEmail(name, fileName: name+".txt")
     }
-    func sendExportToMail(name:String) {
+    func sendExportToMail(_ name:String) {
         if name == dCache.EMPTY_STRING {
-            let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+            let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
             return
         }
         sendByEmail(name, fileName: name+".txt")
     }
-    func sendByEmail(filePath:String,fileName:String) {
+    func sendByEmail(_ filePath:String,fileName:String) {
         let vc = MFMailComposeViewController.init()
         vc.mailComposeDelegate = self
         let sub = NSString(string: filePath)
@@ -166,20 +166,20 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             }
         }
         
-        let senddata = NSData.init(contentsOfFile: filePath)
+        let senddata = try? Data.init(contentsOf: URL(fileURLWithPath: filePath))
         if let dd = senddata {
             vc.addAttachmentData(dd, mimeType: "text/plain", fileName: sub.lastPathComponent)
         }
         
-        self.presentViewController(vc, animated: true, completion: nil)
+        self.present(vc, animated: true, completion: nil)
     }
     
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        self .dismissViewControllerAnimated(true, completion: nil)
-        if result == MFMailComposeResultSent {
-            let alert = UIAlertController.init(title: "提示", message: "发送成功", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        self .dismiss(animated: true, completion: nil)
+        if result == .sent {
+            let alert = UIAlertController.init(title: "提示", message: "发送成功", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     

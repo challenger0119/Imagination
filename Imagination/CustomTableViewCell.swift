@@ -20,7 +20,7 @@ class CustomTableViewCell: UITableViewCell {
         //self.layer.borderColor = UIColor.lightGrayColor().CGColor
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

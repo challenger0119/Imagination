@@ -19,22 +19,22 @@ class Notification: NSObject {
     static let keyForReminder = "noti_everyday"
     static let keyForNewMoodAdded = "newMoodAdded"
     
-    static var fireDate:NSDate?{
+    static var fireDate:Date?{
         get{
-            if let nn = NSUserDefaults.standardUserDefaults().objectForKey(Notification.keyForFiredate) as? NSDate {
+            if let nn = UserDefaults.standard.object(forKey: Notification.keyForFiredate) as? Date {
                 return nn
             } else {
                 return nil
             }
         }
         set{
-            NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: Notification.keyForFiredate)
+            UserDefaults.standard.set(newValue, forKey: Notification.keyForFiredate)
         }
     }
     
     static var isReminder:Bool{
         get{
-            if let nn = NSUserDefaults.standardUserDefaults().objectForKey(Notification.keyForReminder) as? NSNumber {
+            if let nn = UserDefaults.standard.object(forKey: Notification.keyForReminder) as? NSNumber {
                 if nn.boolValue {
                     return true
                 } else {
@@ -45,16 +45,16 @@ class Notification: NSObject {
             }
         }
         set{
-            NSUserDefaults.standardUserDefaults().setBool(newValue, forKey: Notification.keyForReminder)
+            UserDefaults.standard.set(newValue, forKey: Notification.keyForReminder)
         }
     }
     
-    static func createNotificaion(fire:NSDate?) {
+    static func createNotificaion(_ fire:Date?) {
         Notification.isReminder = true
         let noti = UILocalNotification.init()
         noti.fireDate = fire
-        noti.repeatInterval = NSCalendarUnit.Day
-        noti.timeZone = NSTimeZone.systemTimeZone()
+        noti.repeatInterval = NSCalendar.Unit.day
+        noti.timeZone = TimeZone.current
         noti.soundName = UILocalNotificationDefaultSoundName
         noti.alertBody = Notification.notiBody
         noti.alertAction = Notification.notiAction
@@ -62,7 +62,7 @@ class Notification: NSObject {
         noti.applicationIconBadgeNumber = 1
         let info = [Notification.notiKey:Notification.notiValue]
         noti.userInfo = info
-        UIApplication.sharedApplication().scheduleLocalNotification(noti)
+        UIApplication.shared.scheduleLocalNotification(noti)
         Notification.fireDate = fire
     }
     
@@ -72,9 +72,9 @@ class Notification: NSObject {
         if Notification.isReminder {
             if let dd = Notification.fireDate {
                 if Time.clockOfDate(dd) > Time.clock() && Time.dayOfDate(dd) <= Time.today(){
-                    UIApplication.sharedApplication().cancelAllLocalNotifications()
+                    UIApplication.shared.cancelAllLocalNotifications()
                     if let next = Time.dateFromString(Time.today()+" "+Time.clockOfDate(dd)) {
-                        Notification.createNotificaion(NSDate.init(timeInterval: 24*60*60, sinceDate: next))
+                        Notification.createNotificaion(Date.init(timeInterval: 24*60*60, since: next))
                     }
                 }
             }
@@ -82,9 +82,9 @@ class Notification: NSObject {
     }
     
     static func cancelAllNotifications() {
-        if let notis = UIApplication.sharedApplication().scheduledLocalNotifications {
+        if let notis = UIApplication.shared.scheduledLocalNotifications {
             Dlog(notis)
-            UIApplication.sharedApplication().cancelAllLocalNotifications()
+            UIApplication.shared.cancelAllLocalNotifications()
         }
     }
 }

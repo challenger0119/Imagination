@@ -10,33 +10,33 @@ import Foundation
 
 class Time: NSObject {
     static func now()->String{
-        let format = NSDateFormatter()
+        let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:SS"
-        return format.stringFromDate(NSDate.init(timeIntervalSinceNow: 0))
+        return format.string(from: Date.init(timeIntervalSinceNow: 0))
     }
     static func today()->String{
-        let format = NSDateFormatter()
+        let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
-        return format.stringFromDate(NSDate.init(timeIntervalSinceNow: 0))
+        return format.string(from: Date.init(timeIntervalSinceNow: 0))
     }
     static func clock()->String{
-        let format = NSDateFormatter()
+        let format = DateFormatter()
         format.dateFormat = "HH:mm:SS"
-        return format.stringFromDate(NSDate.init(timeIntervalSinceNow: 0))
+        return format.string(from: Date.init(timeIntervalSinceNow: 0))
     }
-    static func dateFromString(time:String) -> NSDate? {
-        let format = NSDateFormatter()
+    static func dateFromString(_ time:String) -> Date? {
+        let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:SS"
-        return format.dateFromString(time)
+        return format.date(from: time)
     }
-    static func dayOfDate(date:NSDate) -> String {
-        let format = NSDateFormatter()
+    static func dayOfDate(_ date:Date) -> String {
+        let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
-        return format.stringFromDate(date)
+        return format.string(from: date)
     }
-    static func clockOfDate(date:NSDate) -> String {
-        let format = NSDateFormatter()
+    static func clockOfDate(_ date:Date) -> String {
+        let format = DateFormatter()
         format.dateFormat = "HH:mm:SS"
-        return format.stringFromDate(date)
+        return format.string(from: date)
     }
 }

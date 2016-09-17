@@ -19,7 +19,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     let keyboardDistance:CGFloat = 20
     var place:CLPlacemark?{
         didSet{
-            self.getLocBtn.setTitle(self.place!.name, forState: .Normal)
+            self.getLocBtn.setTitle(self.place!.name, for: UIControlState())
         }
     }
     
@@ -32,10 +32,10 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(closeKeyboard)))
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         if editMode {
-            self.navigationItem.rightBarButtonItem?.enabled = false
+            self.navigationItem.rightBarButtonItem?.isEnabled = false
             content.text = text
         }
         
@@ -56,28 +56,28 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
         if moodState == 2 {
             moodState = 0;
             self.noGoodBtn.backgroundColor = Item.defaultColor
-            self.noGoodBtn.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+            self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
             return
         }
         moodState = 2
         self.noGoodBtn.backgroundColor = Item.justOkColor
-        self.noGoodBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        self.noGoodBtn.setTitleColor(UIColor.white, for: UIControlState())
         
-        self.goodBtn.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+        self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
         self.goodBtn.backgroundColor = Item.defaultColor
     }
     @IBAction func goodBtnClicked() {
         if moodState == 1 {
             moodState = 0;
             self.goodBtn.backgroundColor = Item.defaultColor
-            self.goodBtn.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+            self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
             return
         }
         moodState = 1
         self.noGoodBtn.backgroundColor = Item.defaultColor
-        self.noGoodBtn.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
+        self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
         self.goodBtn.backgroundColor = Item.coolColor
-        self.goodBtn.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        self.goodBtn.setTitleColor(UIColor.white, for: UIControlState())
     }
    
     func closeKeyboard() {
@@ -85,33 +85,33 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
         self.bottomContraint.constant = self.keyboardDistance;
     }
     
-    func keyboardWillShow(notifi:NSNotification){
-        if let info = notifi.userInfo {
+    func keyboardWillShow(_ notifi:Foundation.Notification){
+        if let info = (notifi as NSNotification).userInfo {
             if let kbd = info[UIKeyboardFrameEndUserInfoKey] {
-                keyBoardHeight = kbd.CGRectValue.size.height
+                keyBoardHeight = (kbd as AnyObject).cgRectValue.size.height
                 self.bottomContraint.constant = keyBoardHeight + self.keyboardDistance
             }
         }
         
     }
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.closeKeyboard()
     }
     
 
-    @IBAction func done(sender: UIBarButtonItem) {
+    @IBAction func done(_ sender: UIBarButtonItem) {
         self.closeKeyboard()
         if !self.content.text.isEmpty && self.moodState == 0 {
-            let alert = UIAlertController(title: "提示", message: "确定不选择状态？", preferredStyle: .Alert)
-            alert.addAction(UIAlertAction(title: "确定", style: .Default, handler: {
+            let alert = UIAlertController(title: "提示", message: "确定不选择状态？", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "确定", style: .default, handler: {
                 action in
                 self.doneAction()
             }))
-            alert.addAction(UIAlertAction(title: "取消", style: .Default, handler: {
+            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: {
                 action in
             }))
-            self.presentViewController(alert, animated: true, completion: {
+            self.present(alert, animated: true, completion: {
                 
             })
             
@@ -121,15 +121,15 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     }
     func doneAction() {
         let ttt = content.text
-        if !ttt.isEmpty {
+        if !(ttt?.isEmpty)! {
             //最终目的地 所有有能容更新的操作都在这里 无论是手动填写还是自动填写
             if self.place != nil {
-                dataCache.newStringContent(ttt, moodState: moodState,GPSPlace: self.place!)
+                dataCache.newStringContent(ttt!, moodState: moodState,GPSPlace: self.place!)
             }else{
-                dataCache.newStringContent(ttt, moodState: moodState)
+                dataCache.newStringContent(ttt!, moodState: moodState)
             }
-            NSNotificationCenter.defaultCenter().postNotificationName(Notification.keyForNewMoodAdded, object: nil)
-            self.dismissViewControllerAnimated(true, completion: nil)
+            NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
+            self.dismiss(animated: true, completion: nil)
         } else {
             if moodState != 0 {
                 //自动填写
@@ -142,15 +142,15 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
                 self.doneAction()
                 
             }else{
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
 
     //MARK: -segue
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "moodToLocation" {
-            let vc = segue.destinationViewController as! LocationViewController
+            let vc = segue.destination as! LocationViewController
             vc.placeSelected = {
                 pls in
                 self.place = pls
