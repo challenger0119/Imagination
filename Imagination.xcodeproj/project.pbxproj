@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F80D2C5A1DB5C75C00AC67AF /* workspace.html in Resources */ = {isa = PBXBuildFile; fileRef = F80D2C591DB5C75C00AC67AF /* workspace.html */; };
 		F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81229611BF73C6C00BDCF0E /* AppDelegate.swift */; };
 		F81229671BF73C6C00BDCF0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F81229651BF73C6C00BDCF0E /* Main.storyboard */; };
 		F812296C1BF73C6C00BDCF0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F812296B1BF73C6C00BDCF0E /* Assets.xcassets */; };
@@ -32,6 +33,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F80D2C591DB5C75C00AC67AF /* workspace.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = workspace.html; sourceTree = "<group>"; };
 		F812295E1BF73C6C00BDCF0E /* Imagination.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Imagination.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F81229611BF73C6C00BDCF0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F81229661BF73C6C00BDCF0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -70,10 +72,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F80D2C581DB5C75C00AC67AF /* html */ = {
+			isa = PBXGroup;
+			children = (
+				F80D2C591DB5C75C00AC67AF /* workspace.html */,
+			);
+			name = html;
+			path = Imagination/html;
+			sourceTree = "<group>";
+		};
 		F81229551BF73C6C00BDCF0E = {
 			isa = PBXGroup;
 			children = (
 				F8E991901C19233800650406 /* MessageUI.framework */,
+				F80D2C581DB5C75C00AC67AF /* html */,
 				F81229601BF73C6C00BDCF0E /* Imagination */,
 				F812295F1BF73C6C00BDCF0E /* Products */,
 			);
@@ -178,6 +190,7 @@
 			files = (
 				F812296F1BF73C6C00BDCF0E /* LaunchScreen.storyboard in Resources */,
 				F812296C1BF73C6C00BDCF0E /* Assets.xcassets in Resources */,
+				F80D2C5A1DB5C75C00AC67AF /* workspace.html in Resources */,
 				F81229671BF73C6C00BDCF0E /* Main.storyboard in Resources */,
 				F8C05A811C9BBBF400726997 /* TypeInView.xib in Resources */,
 			);

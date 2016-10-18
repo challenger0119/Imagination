@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+	<title>Workspace</title>
+	<script type="text/javascript">
+		function translateContent()
+		{
+			var vl = document.getElementById('content').value
+			if (vl == null || vl == "") {
+				alert('请输入需要转换的内容。')
+			}else{
+				var newVl = "转换结果：<br/>"+vl
+				document.getElementById('result').innerHTML = newVl
+			}
+		}
+	</script>
+</head>
+<body>
+请输入需要转换的语句：<br/>
+<input type="text" name="content" id="content">
+<input type="button" onclick="translateContent()" value="转换">
+<p id="result"></p>
+</body>
+</html>
