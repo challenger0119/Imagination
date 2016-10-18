@@ -1,25 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style type="text/css">
+	.textarea{
+		height: 400;
+		width: 400;
+	}
+	.button{
+		height: 30;
+		width:100;
+	}
+</style>
 <meta charset="utf-8">
 	<title>Workspace</title>
 	<script type="text/javascript">
+		var checknum = ""
+		function reverseState(iid){
+			var state = "checked='checked'"
+			if (checknum == iid) {
+				state = ""
+				checknum = ""
+			}else{
+				checknum = iid
+			}
+			var result
+			if (iid == "good") {
+				result =  "<input id='good' type='radio' value='Good' "+state+" onclick=\"reverseState('good')\" />Good <input id='medium' type='radio' value='Medium' onclick=\"reverseState('medium')\" />Medium <input id='bad' type='radio' value='Bad' onclick=\"reverseState('bad')\" />Bad<br/>"
+			}else if(iid == "medium"){
+
+				result = "<input id='good' type='radio' value='Good' onclick=\"reverseState('good')\" />Good <input id='medium' type='radio' value='Medium' "+state+" onclick=\"reverseState('medium')\"  />Medium <input id='bad' type='radio' value='Bad' onclick=\"reverseState('bad')\" />Bad<br/>"
+			}else{
+				result = "<input id='good' type='radio' value='Good' onclick=\"reverseState('good')\" />Good <input id='medium' type='radio' value='Medium' onclick=\"reverseState('medium')\" />Medium <input id='bad' type='radio' value='Bad' "+state+" onclick=\"reverseState('bad')\" />Bad<br/>"
+			}
+			document.getElementById("checkradio").innerHTML = result
+		}
+
 		function translateContent()
 		{
-			var vl = document.getElementById('content').value
+			var vl = document.getElementById('textContent').value
 			if (vl == null || vl == "") {
 				alert('请输入需要转换的内容。')
 			}else{
-				var newVl = "转换结果：<br/>"+vl
+				var moodNum = 0
+				if (checknum=="good") {
+					moodNum = 1
+				}else if(checknum == "medium"){
+					moodNum = 2
+				}else if(checknum=="bad"){
+					moodNum = 3
+				}else{
+					moodNum = 0
+				}
+				var newVl = "转换结果：<br/><pre>"+vl+moodNum+"</pre>"
 				document.getElementById('result').innerHTML = newVl
 			}
 		}
 	</script>
 </head>
 <body>
-请输入需要转换的语句：<br/>
-<input type="text" name="content" id="content">
-<input type="button" onclick="translateContent()" value="转换">
+今天心情怎样呢？<br/>
+<form id="checkradio">
+	<input id='good' type="radio" value="Good" onclick="reverseState('good')" />Good 
+	<input id="medium" type="radio" value="Medium" onclick="reverseState('medium')" />Medium 
+	<input id="bad" type="radio" value="Bad" onclick="reverseState('bad')"/>Bad<br/>
+</form>
+
+<textarea class="textarea" id="textContent">
+	
+</textarea>
+<br>
+<input class="button" type="button" onclick="translateContent()" value="转换">
 <p id="result"></p>
 </body>
 </html>
