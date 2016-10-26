@@ -8,11 +8,11 @@
 
 import Foundation
 
-class FileManager: Foundation.FileManager {
+extension FileManager {
     
  
     class func pathOfNameInCaches(_ name:String)->String{
-        let documetPaths = NSSearchPathForDirectoriesInDomains(Foundation.FileManager.SearchPathDirectory.cachesDirectory,Foundation.FileManager.SearchPathDomainMask.userDomainMask, true)
+        let documetPaths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory,FileManager.SearchPathDomainMask.userDomainMask, true)
         let path = documetPaths[0] as String
         return path + ("/"+name)
     }
@@ -23,7 +23,7 @@ class FileManager: Foundation.FileManager {
     
     
     class func pathOfNameInDocuments(_ name:String)->String{
-        let documetPaths = NSSearchPathForDirectoriesInDomains(Foundation.FileManager.SearchPathDirectory.documentDirectory,Foundation.FileManager.SearchPathDomainMask.userDomainMask, true)
+        let documetPaths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory,FileManager.SearchPathDomainMask.userDomainMask, true)
         let path = documetPaths[0] as String
         return path + ("/"+name)
     }

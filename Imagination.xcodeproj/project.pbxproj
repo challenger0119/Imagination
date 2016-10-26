@@ -102,30 +102,54 @@
 		F81229601BF73C6C00BDCF0E /* Imagination */ = {
 			isa = PBXGroup;
 			children = (
-				F81229611BF73C6C00BDCF0E /* AppDelegate.swift */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
-				F8C05A801C9BBBF400726997 /* TypeInView.xib */,
-				F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */,
-				F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */,
-				F870EF731C378CB7008EF34D /* MoodViewController.swift */,
-				F8E9918E1C19123F00650406 /* DataPicker.swift */,
-				F8E9918A1C17CAE500650406 /* MoreViewController.swift */,
-				F812296B1BF73C6C00BDCF0E /* Assets.xcassets */,
-				F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */,
-				F81229701BF73C6C00BDCF0E /* Info.plist */,
+				F8730EB91DC06E1A009112CE /* View&Controller */,
+				F8730EB81DC06E0D009112CE /* Model */,
+				F8730EBB1DC06E4F009112CE /* Support */,
+			);
+			path = Imagination;
+			sourceTree = "<group>";
+		};
+		F8730EB81DC06E0D009112CE /* Model */ = {
+			isa = PBXGroup;
+			children = (
 				F812297C1BF777AB00BDCF0E /* DataCache.swift */,
-				F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */,
 				F8D5C4081C01EE8600179853 /* FileManager.swift */,
 				F8F28CF41C0DB9D40007EDE3 /* Time.swift */,
 				F8EFBA601D71E73200A7C3C0 /* Annotation.swift */,
-				F88D3BA41C14678600A3C921 /* DayList.swift */,
+				F87E8F7D1D7ADDFF002954B9 /* Log.swift */,
 				F870EF751C37BBB5008EF34D /* Item.swift */,
 				F81283971C3F82E8002985A7 /* Notification.swift */,
-				F8C05A7E1C9BBBC800726997 /* TypeInView.swift */,
-				F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */,
-				F87E8F7D1D7ADDFF002954B9 /* Log.swift */,
 			);
-			path = Imagination;
+			name = Model;
+			sourceTree = "<group>";
+		};
+		F8730EB91DC06E1A009112CE /* View&Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */,
+				F870EF731C378CB7008EF34D /* MoodViewController.swift */,
+				F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */,
+				F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */,
+				F8E9918A1C17CAE500650406 /* MoreViewController.swift */,
+				F8E9918E1C19123F00650406 /* DataPicker.swift */,
+				F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */,
+				F88D3BA41C14678600A3C921 /* DayList.swift */,
+				F8C05A7E1C9BBBC800726997 /* TypeInView.swift */,
+				F8C05A801C9BBBF400726997 /* TypeInView.xib */,
+			);
+			name = "View&Controller";
+			sourceTree = "<group>";
+		};
+		F8730EBB1DC06E4F009112CE /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */,
+				F81229701BF73C6C00BDCF0E /* Info.plist */,
+				F812296B1BF73C6C00BDCF0E /* Assets.xcassets */,
+				F81229611BF73C6C00BDCF0E /* AppDelegate.swift */,
+			);
+			name = Support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
