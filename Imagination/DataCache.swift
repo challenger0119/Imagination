@@ -37,6 +37,8 @@ class DataCache: NSObject {
     
     static let shareInstance = DataCache()
 
+    let newline = "\r\n"
+    
     class Calculation {
         static let FILEPATH = "caculate"
         var calculateRecord:[String]?{//[2016-3-17:300:This month,2016-3-18:-100:Next month]
@@ -288,15 +290,15 @@ class DataCache: NSObject {
         for dd in catalogue! {
             if dd >= from && dd <= to {
                 if let ddtmp = loadDay(dd) {
-                    let thisday = dd+"\n"
+                    let thisday = dd + newline
                     data.append(thisday.data(using: String.Encoding.utf8)!)
                     var keys = Array(ddtmp.keys)
                     keys.sort(){$0 < $1}
                     for kk in keys {
-                        let title = kk+"\n"
+                        let title = kk+newline
                         data.append(title.data(using: String.Encoding.utf8)!)
                         let item = Item(contentString:  ddtmp[kk]!)
-                        var content = item.content + "\n"
+                        var content = item.content + newline
                         if item.mood != 0 {
                             content += "心情:\(item.moodString) "
                         }
@@ -304,12 +306,12 @@ class DataCache: NSObject {
                             content += "位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))"
                         }
                         if item.mood != 0 || item.place.latitude != 0 {
-                            content += "\n"
+                            content += newline
                         }
                         data.append((content.data(using: String.Encoding.utf8))!)
                     }
                 }
-                let over = "\n\n"
+                let over = newline+newline
                 data.append((over.data(using: String.Encoding.utf8))!)
             }
         }
