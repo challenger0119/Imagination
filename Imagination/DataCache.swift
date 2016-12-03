@@ -144,7 +144,7 @@ class DataCache: NSObject {
     }
     //数据更新的两个方法
     func updateLastday(_ lastdayValue:String,key:String) {
-        lastDay?.updateValue(lastdayValue, forKey: key)
+        let _ = lastDay?.updateValue(lastdayValue, forKey: key)
         let myData = NSKeyedArchiver.archivedData(withRootObject: lastDay!)
         try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(currentDayName!)), options: [.atomic])
         updateCatalogue()
@@ -162,9 +162,7 @@ class DataCache: NSObject {
     func loadLastDay(){
         loadCatalogue()
         if let DAYS = catalogue {
-            if currentDayName == nil {
-                currentDayName = DAYS[DAYS.count-1]//lastDay
-            }
+            currentDayName = DAYS[DAYS.count-1]//lastDay
             lastDay = loadDay(currentDayName!)
         }
     }
@@ -172,12 +170,10 @@ class DataCache: NSObject {
     func loadLastMonth(){
         loadCatalogue_month()
         if let Months = catalogue_month {
-            if currentMonthName == nil {
-                currentMonthName = Months[Months.count-1]//lastMonth
-            }
+            currentMonthName = Months[Months.count-1]//lastMonth
             lastMonth = loadMonth(currentMonthName!)
         }
-        self.loadLastDay()
+        loadLastDay()
     }
     
     //载入特定时间
@@ -353,7 +349,7 @@ class DataCache: NSObject {
     func backupAll() -> String{
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
-            deleteDay(fileState!.filename)
+            let _ = deleteDay(fileState!.filename)
         }
         if let cc = catalogue {
             let start = cc[0]
@@ -367,7 +363,7 @@ class DataCache: NSObject {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
             //如果之前有备份 就从之前备份到今天
-            deleteDay(fileState!.filename)
+            let _ = deleteDay(fileState!.filename)
             return createBackupFileWithAddtionalInfo(fileState!.lastDate, to: Time.today())
         } else {
             //如果之前没有备份 就全部备份

@@ -18,6 +18,7 @@
 		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
 		F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E8F7D1D7ADDFF002954B9 /* Log.swift */; };
 		F88D3BA51C14678600A3C921 /* DayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D3BA41C14678600A3C921 /* DayList.swift */; };
+		F8BE7FB41DC18F2100F6D093 /* NewMoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE7FB31DC18F2100F6D093 /* NewMoodViewController.swift */; };
 		F8C05A7F1C9BBBC800726997 /* TypeInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C05A7E1C9BBBC800726997 /* TypeInView.swift */; };
 		F8C05A811C9BBBF400726997 /* TypeInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C05A801C9BBBF400726997 /* TypeInView.xib */; };
 		F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */; };
@@ -46,6 +47,7 @@
 		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F87E8F7D1D7ADDFF002954B9 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F88D3BA41C14678600A3C921 /* DayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayList.swift; sourceTree = "<group>"; };
+		F8BE7FB31DC18F2100F6D093 /* NewMoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMoodViewController.swift; sourceTree = "<group>"; };
 		F8C05A7E1C9BBBC800726997 /* TypeInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeInView.swift; sourceTree = "<group>"; };
 		F8C05A801C9BBBF400726997 /* TypeInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TypeInView.xib; sourceTree = "<group>"; };
 		F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				F88D3BA41C14678600A3C921 /* DayList.swift */,
 				F8C05A7E1C9BBBC800726997 /* TypeInView.swift */,
 				F8C05A801C9BBBF400726997 /* TypeInView.xib */,
+				F8BE7FB31DC18F2100F6D093 /* NewMoodViewController.swift */,
 			);
 			name = "View&Controller";
 			sourceTree = "<group>";
@@ -179,7 +182,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0710;
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = Star;
 				TargetAttributes = {
 					F812295D1BF73C6C00BDCF0E = {
@@ -243,6 +246,7 @@
 				F81283981C3F82E8002985A7 /* Notification.swift in Sources */,
 				F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */,
 				F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */,
+				F8BE7FB41DC18F2100F6D093 /* NewMoodViewController.swift in Sources */,
 				F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -282,8 +286,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -326,8 +332,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -346,6 +354,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

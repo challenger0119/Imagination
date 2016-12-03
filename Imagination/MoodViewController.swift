@@ -46,6 +46,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
             goodBtnClicked()
         default: break
         }
+        
         self.content.becomeFirstResponder()
         let backItem = UIBarButtonItem()
         backItem.title = "返回"
