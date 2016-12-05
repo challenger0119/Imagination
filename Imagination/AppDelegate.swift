@@ -43,9 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         showAuthorityView()
     }
 
-
     func  showAuthorityView() {
-        if AuthorityViewController.pWord != ""{
+        if AuthorityViewController.pWord != AuthorityViewController.NotSet{
             if let rootController = self.window?.rootViewController {
                 if let pvc = rootController.presentedViewController {
                     if !pvc.isKind(of: AuthorityViewController.self) {
@@ -61,8 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-    
-    
     
     func applicationWillTerminate(_ application: UIApplication) {
 
