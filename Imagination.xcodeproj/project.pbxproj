@@ -19,8 +19,6 @@
 		F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E8F7D1D7ADDFF002954B9 /* Log.swift */; };
 		F88D3BA51C14678600A3C921 /* DayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D3BA41C14678600A3C921 /* DayList.swift */; };
 		F8BE7FB41DC18F2100F6D093 /* NewMoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8BE7FB31DC18F2100F6D093 /* NewMoodViewController.swift */; };
-		F8C05A7F1C9BBBC800726997 /* TypeInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C05A7E1C9BBBC800726997 /* TypeInView.swift */; };
-		F8C05A811C9BBBF400726997 /* TypeInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F8C05A801C9BBBF400726997 /* TypeInView.xib */; };
 		F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */; };
 		F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */; };
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
@@ -48,8 +46,6 @@
 		F87E8F7D1D7ADDFF002954B9 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F88D3BA41C14678600A3C921 /* DayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayList.swift; sourceTree = "<group>"; };
 		F8BE7FB31DC18F2100F6D093 /* NewMoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMoodViewController.swift; sourceTree = "<group>"; };
-		F8C05A7E1C9BBBC800726997 /* TypeInView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeInView.swift; sourceTree = "<group>"; };
-		F8C05A801C9BBBF400726997 /* TypeInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TypeInView.xib; sourceTree = "<group>"; };
 		F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
@@ -137,8 +133,6 @@
 				F8E9918E1C19123F00650406 /* DataPicker.swift */,
 				F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */,
 				F88D3BA41C14678600A3C921 /* DayList.swift */,
-				F8C05A7E1C9BBBC800726997 /* TypeInView.swift */,
-				F8C05A801C9BBBF400726997 /* TypeInView.xib */,
 				F8BE7FB31DC18F2100F6D093 /* NewMoodViewController.swift */,
 			);
 			name = "View&Controller";
@@ -219,7 +213,6 @@
 				F812296C1BF73C6C00BDCF0E /* Assets.xcassets in Resources */,
 				F80D2C5A1DB5C75C00AC67AF /* workspace.html in Resources */,
 				F81229671BF73C6C00BDCF0E /* Main.storyboard in Resources */,
-				F8C05A811C9BBBF400726997 /* TypeInView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,7 +233,6 @@
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,
 				F870EF761C37BBB5008EF34D /* Item.swift in Sources */,
-				F8C05A7F1C9BBBC800726997 /* TypeInView.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */,
 				F81283981C3F82E8002985A7 /* Notification.swift in Sources */,

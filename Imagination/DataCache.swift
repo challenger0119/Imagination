@@ -95,7 +95,7 @@ class DataCache: NSObject {
     }
         
     fileprivate let FILENAME_INDEX = "index"
-    var isStart = true //启动标记 用于touchID
+    //var isStart = true //启动标记 用于touchID
     let EMPTY_STRING = " "
     var fileState:(filename:String,lastDate:String)?
   

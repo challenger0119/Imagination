@@ -15,22 +15,26 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     }
     @IBOutlet weak var password: UITextField!
     var vType = type.normal
+    static let NotSet = ""
+    
     static var pWord:String?{
         get{
             if let ss = UserDefaults.standard.object(forKey: "password") as? String {
                 return ss
             } else {
-                return ""
+                return NotSet
             }
         }
         set{
             if newValue == nil {
-                UserDefaults.standard.set("", forKey: "password")
+                UserDefaults.standard.set(NotSet, forKey: "password")
             } else {
                 UserDefaults.standard.set(newValue, forKey: "password")
             }
         }
     }
+    
+    
     @IBAction func ok() {
         if vType == type.changePass {
             AuthorityViewController.pWord = password.text
@@ -42,14 +46,15 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     }
     
     override func viewDidLoad() {
-        self.password.delegate = self
+        super.viewDidLoad()
         
+        self.password.delegate = self
         if vType == type.changePass {
             password.placeholder = "请输入新密码(留空删除密码)"
             password.isSecureTextEntry = false
-        } else {
-            self.useTouchId()
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(useTouchId), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     func checkAuthority(_ passwd:String?){
@@ -71,27 +76,27 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     
     func useTouchId()
     {
-        if DataCache.shareInstance.isStart {
-            DataCache.shareInstance.isStart = false
-            //有touchID的时候有杀不死app bug 尴尬！ 暂且这么处理
-            let authenticationContext = LAContext()
-            var error: NSError?
-            
-            let isTouchIdAvailable = authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
-                error: &error)
-            
-            if isTouchIdAvailable
-            {
-                authenticationContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "需要验证指纹", reply: {
-                    (success, error) -> Void in
-                    if success
-                    {
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                })
-            }
+        if AuthorityViewController.pWord == AuthorityViewController.NotSet {
+            Dlog("not set")
+            return
         }
+      
+        let authenticationContext = LAContext()
+        var error: NSError?
         
+        let isTouchIdAvailable = authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                                                         error: &error)
+        
+        if isTouchIdAvailable
+        {
+            authenticationContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "需要验证指纹", reply: {
+                (success, error) -> Void in
+                if success
+                {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            })
+        }
     }
 
 }

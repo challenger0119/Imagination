@@ -164,13 +164,14 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             
         }else{
             refreshMoodState()
-            self.authorityView()
+            
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.differentWillAppear()
         NotificationCenter.default.addObserver(self, selector: #selector(differentWillAppear), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
+        self.authorityView()
     }
     override func viewWillAppear(_ animated: Bool)
     {
@@ -185,11 +186,10 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     }
     
     func authorityView() {
-        if AuthorityViewController.pWord != "" && DataCache.shareInstance.isStart {
-            let storeboad = UIStoryboard.init(name: "Main", bundle: Bundle.main)
-            let vc = storeboad.instantiateViewController(withIdentifier: "authority")
+        if AuthorityViewController.pWord != AuthorityViewController.NotSet{
+            let vc = self.storyboard!.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController
             self.present(vc, animated: true, completion: {
-                
+                vc.useTouchId()
             })
         }
     }
