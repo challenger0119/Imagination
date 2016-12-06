@@ -16,8 +16,6 @@ class CustomTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.content.layer.cornerRadius = 3.0
-        //self.layer.borderWidth = 0.3
-        //self.layer.borderColor = UIColor.lightGrayColor().CGColor
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

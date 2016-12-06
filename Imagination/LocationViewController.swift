@@ -151,15 +151,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         Dlog(error.localizedDescription)
     }
     
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     //地址有偏移 code的结果在location的右下角
     //第一个前提是 系统自我定位时候 获取的location不正确 而coder后的是正确的
     //第二个前提是 annotationview 拖拽后拿到的location是正确的 经过coder后不正确了 所以这里在didchangeDrageState里使用reverseTranslate修正

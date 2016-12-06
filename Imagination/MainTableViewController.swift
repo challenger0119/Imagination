@@ -13,13 +13,10 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     @IBOutlet weak var today: UINavigationItem!
     @IBOutlet weak var done: UIBarButtonItem!
     @IBOutlet weak var backView: UIView!
-    let isCalculate = false
-    
     var cool = 0
     var ok = 0
     var why = 0
     
-    var dayCache:Dictionary<String,String>?
     var monthCache:Dictionary<String,Dictionary<String,String>>?
     var times:[String]?
     var content:[String]?
@@ -51,50 +48,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
                 }
             }
         }
-    }
-    
-    //MARK: DayListDelegate
-    
-    func didSelectItem(_ item: String) {
-        DataCache.shareInstance.loadLastMonthToMonth(item)
-        today.title = item
-        loadMonthData()
-        refreshMoodState()
-    }
-    
-    func loadData() {
-        dayCache = DataCache.shareInstance.lastDay
-        cool = 0
-        ok = 0
-        why = 0
-        
-        if let day = dayCache {
-            times?.removeAll()
-            content?.removeAll()
-            times = Array(day.keys)
-            
-            if  times != nil  {
-                times?.sort(by: {$0>$1})
-                for ct in times! {
-                    if content == nil {
-                        content = Array.init(arrayLiteral: day[ct]!)
-                    }  else {
-                        content?.append(day[ct]!)
-                        
-                    }
-                    
-                    //赋值moodState
-                    let cc = Item.init(contentString: day[ct]!)
-                    switch cc.mood {
-                    case 1:cool+=1
-                    case 2:ok+=1
-                    case 3:why+=1
-                    default:break
-                    }
-                }
-            }
-        }
-        self.tableView.reloadData()
     }
     func loadMonthData() {
         monthCache = DataCache.shareInstance.lastMonth
@@ -137,9 +90,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             }
         }
         self.tableView.reloadData()
-        
     }
-    
     func changeTimeToDayAndTime(_ timearry:[String],day:String) -> [String]{
         //添加日期信息在里面 9：30 -> 2015.2.3 9:30
         var newArray = [String]()
@@ -148,42 +99,14 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         }
         return newArray
     }
-
     func differentWillAppear() {
-        if isCalculate {
-            
-        }else {
-            DataCache.shareInstance.loadLastMonth()
-            today.title = DataCache.shareInstance.currentMonthName
-            loadMonthData()
-        }
+        DataCache.shareInstance.loadLastMonth()
+        today.title = DataCache.shareInstance.currentMonthName
+        loadMonthData()
     }
-    
     func differentDidAppear(){
-        if isCalculate {
-            
-        }else{
-            refreshMoodState()
-        }
+        refreshMoodState()
     }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.differentWillAppear()
-        NotificationCenter.default.addObserver(self, selector: #selector(differentWillAppear), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
-        self.authorityView()
-    }
-    override func viewWillAppear(_ animated: Bool)
-    {
-        super.viewWillAppear(animated)
-        self.tableView.estimatedRowHeight = 80
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.differentDidAppear()
-    }
-    
     func authorityView() {
         if AuthorityViewController.pWord != AuthorityViewController.NotSet{
             let vc = self.storyboard!.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController
@@ -192,11 +115,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             })
         }
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        daylist?.removeFromSuperview()
-    }
-    
     func refreshMoodState() {
         let total = cool + ok + why
         if total == 0 {
@@ -259,7 +177,38 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             })
         }
     }
-
+    
+    //MARK: - vc life circle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.differentWillAppear()
+        NotificationCenter.default.addObserver(self, selector: #selector(differentWillAppear), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
+        self.authorityView()
+    }
+    override func viewWillAppear(_ animated: Bool){
+        super.viewWillAppear(animated)
+        self.tableView.estimatedRowHeight = 80
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.differentDidAppear()
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        daylist?.removeFromSuperview()
+    }
+    
+    //MARK: - DayListDelegate
+    
+    func didSelectItem(_ item: String) {
+        DataCache.shareInstance.loadLastMonthToMonth(item)
+        today.title = item
+        loadMonthData()
+        refreshMoodState()
+    }
+    
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
