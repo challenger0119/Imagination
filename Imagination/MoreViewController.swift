@@ -157,7 +157,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         vc.setSubject(sub.lastPathComponent)
         
         if fileName == "建议" {
-            vc.setToRecipients(["miaoqiwang@gmail.com"])
+            vc.setToRecipients(["miaoqi0119@163.com"])
         } else {
             if let mail = self.dCache.email {
                 vc.setToRecipients([mail])
