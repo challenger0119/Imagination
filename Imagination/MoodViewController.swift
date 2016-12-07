@@ -17,9 +17,18 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     var clockDic = Dictionary<String,String>()
     var text:String = " "
     let keyboardDistance:CGFloat = 20
+    
     var place:CLPlacemark?{
         didSet{
-            self.getLocBtn.setTitle(self.place!.name, for: UIControlState())
+            self.placeInfo = (self.place!.name!,self.place!.location!.coordinate.latitude, self.place!.location!.coordinate.longitude)
+        }
+    }
+    
+    var placeInfo:(name:String,latitude:Double,longtitude:Double)?{
+        didSet{
+            if self.getLocBtn != nil && self.getLocBtn.titleLabel != nil{
+                self.getLocBtn.setTitle(self.placeInfo!.name, for: .normal)
+            }
         }
     }
     
@@ -37,16 +46,29 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
         if editMode {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
             content.text = text
+            self.content.isEditable = false
+            if self.placeInfo != nil {
+                self.getLocBtn.setTitle(self.placeInfo!.name, for: .normal)
+            }
+        }else{
+            self.content.becomeFirstResponder()
         }
         switch moodState {
         case 1:
-            noGoodBtnClicked()
+            self.noGoodBtn.backgroundColor = Item.defaultColor
+            self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+            self.goodBtn.backgroundColor = Item.coolColor
+            self.goodBtn.setTitleColor(UIColor.white, for: UIControlState())
         case 2:
-            goodBtnClicked()
+            self.noGoodBtn.backgroundColor = Item.justOkColor
+            self.noGoodBtn.setTitleColor(UIColor.white, for: UIControlState())
+            
+            self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+            self.goodBtn.backgroundColor = Item.defaultColor
         default: break
         }
         
-        self.content.becomeFirstResponder()
+        
         let backItem = UIBarButtonItem()
         backItem.title = "返回"
         self.navigationItem.backBarButtonItem = backItem
@@ -130,7 +152,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
                 dataCache.newStringContent(ttt!, moodState: moodState)
             }
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
-            self.dismiss(animated: true, completion: nil)
+            back()
         } else {
             if moodState != 0 {
                 //自动填写
@@ -143,18 +165,31 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
                 self.doneAction()
                 
             }else{
-                self.dismiss(animated: true, completion: nil)
+                back()
             }
         }
     }
-
+    func back() {
+        self.dismiss(animated: true, completion: nil)
+        /*
+        if self.navigationController == nil {
+            self.dismiss(animated: true, completion: nil)
+        }else{
+            self.navigationController!.popViewController(animated: true)
+        }
+ */
+    }
     //MARK: -segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "moodToLocation" {
             let vc = segue.destination as! LocationViewController
-            vc.placeSelected = {
-                pls in
-                self.place = pls
+            if self.editMode && self.placeInfo != nil{
+                vc.placeToShow = CLLocationCoordinate2D(latitude: self.placeInfo!.latitude, longitude: self.placeInfo!.longtitude)
+            }else{
+                vc.placeSelected = {
+                    pls in
+                    self.place = pls
+                }
             }
         }
     }

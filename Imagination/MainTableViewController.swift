@@ -239,14 +239,14 @@ class MainTableViewController: UITableViewController,DayListDelegate {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let vc = self.storyboard!.instantiateViewController(withIdentifier: "mood") as! MoodViewController
+        vc.editMode = true
         let cc = Item.init(contentString: content![(indexPath as NSIndexPath).row])
-        if !cc.place.name.isEmpty {
-            self.locToShow = CLLocationCoordinate2D(latitude: cc.place.latitude, longitude: cc.place.longtitude)
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "LocationViewController") as! LocationViewController
-            vc.placeToShow = self.locToShow
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+        vc.text = cc.content
+        vc.moodState = cc.mood
+        vc.placeInfo = cc.place
+        self.navigationController?.pushViewController(vc, animated: true)
+ 
     }
-
 
 }
