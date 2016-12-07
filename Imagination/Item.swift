@@ -13,10 +13,13 @@ class Item: NSObject {
     static let justOkColor = UIColor.init(red: 4.0/255.0, green: 119.0/255.0, blue: 240.0/255.0, alpha: 1.0)
     static let whyColor = UIColor.red
     static let defaultColor = UIColor.init(red: 239.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1)
+    
+    static let seperator = "<->"
+    
     fileprivate let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
     fileprivate let moodStrings = ["NA","Cool","Just OK","Confused"]
+   
     var mood:Int//心情
-    
     var content:String//内容
     var color:UIColor
     var moodString:String
@@ -24,7 +27,7 @@ class Item: NSObject {
     
     init(contentString:String) {
         
-        let array = contentString.components(separatedBy: "-")
+        let array = contentString.components(separatedBy: Item.seperator)
         if array.count >= 2 {
             self.content = array[0]
             self.mood = Int(array[1])!
@@ -45,11 +48,11 @@ class Item: NSObject {
         super.init()
     }
     
-    static func ItemString(_ content:String,mood:Int) ->String {
-        return content + "-" + "\(mood)"
+    class func ItemString(_ content:String,mood:Int) ->String {
+        return content + self.seperator + "\(mood)"
     }
     
     class func ItemString(_ content:String,mood:Int,GPSName:String,latitude:Double,longtitude:Double) ->String {
-        return content + "-" + "\(mood)" + "-" + "\(GPSName),\(latitude),\(longtitude)"
+        return content + self.seperator + "\(mood)" + self.seperator + "\(GPSName),\(latitude),\(longtitude)"
     }
 }

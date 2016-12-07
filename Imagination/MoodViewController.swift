@@ -38,7 +38,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
             content.text = text
         }
-        
         switch moodState {
         case 1:
             noGoodBtnClicked()
@@ -115,11 +114,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
             self.present(alert, animated: true, completion: {
                 
             })
-            
         }else{
             self.doneAction()
         }
     }
+    
+    
     func doneAction() {
         let ttt = content.text
         if !(ttt?.isEmpty)! {

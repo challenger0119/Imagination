@@ -39,61 +39,6 @@ class DataCache: NSObject {
 
     let newline = "\r\n"
     
-    class Calculation {
-        static let FILEPATH = "caculate"
-        var calculateRecord:[String]?{//[2016-3-17:300:This month,2016-3-18:-100:Next month]
-            didSet{
-                //store to file
-                let mydata = NSKeyedArchiver.archivedData(withRootObject: self.calculateRecord!)
-                try? mydata.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(Calculation.FILEPATH)), options: [.atomic])
-            }
-        }
-        
-        func storeCalculateRecord(_ record:String){
-            if self.calculateRecord == nil{
-                self.calculateRecord = [record]
-            }else{
-                self.calculateRecord?.append(record)
-            }
-        }
-        
-        func loadCalculateRecord(){
-            if let data = NSKeyedUnarchiver.unarchiveObject(withFile: FileManager.pathOfNameInDocuments(Calculation.FILEPATH)) {
-                self.calculateRecord = data as? [String]
-            }
-        }
-        
-        
-        func exportCalulateRecordToTableFile(){
-            /*
-            create table
-            2016-4-5    300 nihao        //2 space at end
-            2016-6-7                200 nihao   //2 space at beginning
-            
-            */
-            if self.calculateRecord != nil {
-                var result = ""
-                for rec in self.calculateRecord! {
-                    let recArray = rec.components(separatedBy: ":")
-                    var str = recArray[0]
-                    let intNum = Int(recArray[1])
-                    if intNum > 0{
-                        str += "    \(intNum)"
-                        str += "    \(recArray[2])       \n"
-                    }else{
-                        str += "            \(intNum)"//2 tab
-                        str += "    \(recArray[2])\n"
-                    }
-                    result += str
-                }
-                Dlog(result)
-                let data = result.data(using: String.Encoding.utf8)
-                try? data?.write(to: URL(fileURLWithPath: FileManager.TxtFileInDocuments(Calculation.FILEPATH)), options: [.atomic])
-                
-            }
-        }
-    }
-        
     fileprivate let FILENAME_INDEX = "index"
     //var isStart = true //启动标记 用于touchID
     let EMPTY_STRING = " "
