@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreLocation
-class MoodViewController: UIViewController,UIAlertViewDelegate {
+class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
 
     let dataCache = DataCache.shareInstance
     var editMode = false
@@ -31,6 +31,10 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
             }
         }
     }
+    
+    
+    var imageVC:UIImagePickerController!
+    var imageBufferDic = [Int:Any]()
     
     @IBOutlet weak var content: UITextView!
     @IBOutlet weak var goodBtn: UIButton!
@@ -146,6 +150,9 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
         let ttt = content.text
         if !(ttt?.isEmpty)! {
             //最终目的地 所有有能容更新的操作都在这里 无论是手动填写还是自动填写
+            
+            analysisTextStorage() //解析出附件 暂时只有图片
+            
             if self.place != nil {
                 dataCache.newStringContent(ttt!, moodState: moodState,GPSPlace: self.place!)
             }else{
@@ -171,14 +178,105 @@ class MoodViewController: UIViewController,UIAlertViewDelegate {
     }
     func back() {
         self.dismiss(animated: true, completion: nil)
-        /*
-        if self.navigationController == nil {
-            self.dismiss(animated: true, completion: nil)
-        }else{
-            self.navigationController!.popViewController(animated: true)
-        }
- */
     }
+    
+    
+    func analysisTextStorage(){
+        //找到attachment  对比buffer 删除buffer中多余的attache 因为buffer只能增加
+        self.content.textStorage.enumerateAttribute(NSAttachmentAttributeName, in: NSRange(location: 0,length: self.content.textStorage.length), options: NSAttributedString.EnumerationOptions(rawValue: 0), using:{
+            (obj,range,pointor) in
+            if let imageAttache = obj as? NSTextAttachment {
+                if let image = imageAttache.image {
+                    self.imageBufferDic.updateValue(image, forKey: range.location)
+                }
+            }
+        })
+    }
+    @IBAction func getImage(_ sender: UIButton) {
+        closeKeyboard()
+        let queryVc = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        queryVc.addAction(UIAlertAction(title: "相机", style: .default, handler: { (act) in
+            self.imageVC = UIImagePickerController()
+            self.imageVC.sourceType = .camera
+            self.imageVC.delegate = self
+            self.present(self.imageVC, animated: true, completion: {
+                
+            })
+        }))
+        queryVc.addAction(UIAlertAction(title: "相册", style: .default, handler: { (act) in
+            self.imageVC = UIImagePickerController()
+            self.imageVC.sourceType = .photoLibrary
+            self.imageVC.delegate = self
+            self.present(self.imageVC, animated: true, completion: {
+                
+            })
+        }))
+        queryVc.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
+            queryVc.dismiss(animated: true, completion: nil)
+        }))
+        self.present(queryVc, animated: true, completion: nil)
+        
+    }
+    
+    func getImage(_ image:UIImage,frame:CGRect)->UIImage {
+        UIGraphicsBeginImageContextWithOptions(frame.size, false, UIScreen.main.scale)
+        UIBezierPath(roundedRect: frame, cornerRadius: 5).addClip()
+        image.draw(in: frame)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
+    
+    func addImageToTextView(image:UIImage) {
+        let textAttach = NSTextAttachment(data:nil, ofType: nil)
+        let imageWidth = self.content.frame.width*3/4;
+        let imageHeight = imageWidth * 4/3
+        textAttach.image = getImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+        let imageAttributeString = NSAttributedString(attachment:textAttach)
+        Dlog("add image at \(self.content.selectedRange.location)")
+        self.imageBufferDic.updateValue(image, forKey: self.content.selectedRange.location)
+        self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
+    }
+    
+    
+    //MARK: - UITextViewDelegate
+    
+    //MARK: - UIImagePickerViewControllerDelegate
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        imageVC.dismiss(animated: true, completion: {
+            
+        })
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let pimg = info[UIImagePickerControllerOriginalImage] as? UIImage{
+//            let imageName = Date().description
+//            let path = FileManager.imagePathWithName(imageName)
+//            if FileManager().createImageFileWithName(imageName, image: pimg) {
+//                addImageToTextView(image: UIImage(contentsOfFile: path)!)
+//            }
+            addImageToTextView(image: pimg)
+        }
+        imageVC.dismiss(animated: true, completion: {
+            
+        })
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        if let keys = editingInfo?.keys {
+            print(keys)
+            for item in keys{
+                print(editingInfo![item]!)
+            }
+        }
+//        let imageName = Date().description
+//        let path = FileManager.imagePathWithName(imageName)
+//        if FileManager().createImageFileWithName(imageName, image: image) {
+//            addImageToTextView(image: UIImage(contentsOfFile: path)!)
+//        }
+        imageVC.dismiss(animated: true, completion: {
+            self.addImageToTextView(image:image)
+        })
+    }
+
     //MARK: -segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "moodToLocation" {

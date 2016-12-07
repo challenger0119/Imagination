@@ -73,6 +73,15 @@ class DataCache: NSObject {
             storeCatalogue()
         }
     }
+
+    func newString(Content content:String, moodState:Int,GPSPlace:CLPlacemark,MultiMedia md:Dictionary<Int,Any>){
+        if Time.today() == self.currentDayName {
+            self.updateLastday(Item.ItemString(content, mood: moodState,GPSName: GPSPlace.name!,latitude:GPSPlace.location!.coordinate.latitude,longtitude:GPSPlace.location!.coordinate.longitude), key: Time.clock())
+        } else {
+            self.initLastday([Time.clock():Item.ItemString(content, mood: moodState,GPSName: GPSPlace.name!,latitude:GPSPlace.location!.coordinate.latitude,longtitude:GPSPlace.location!.coordinate.longitude)], currentDayName: Time.today())
+        }
+    }
+    
     
     func newStringContent(_ content:String, moodState:Int,GPSPlace:CLPlacemark){
         if Time.today() == self.currentDayName {

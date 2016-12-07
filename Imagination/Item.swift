@@ -26,6 +26,8 @@ class Item: NSObject {
     var moodString:String
     var place:(name:String,latitude:Double,longtitude:Double)
     
+    
+    
     init(contentString:String) {
         
         var array = contentString.components(separatedBy: Item.seperator)
@@ -50,6 +52,11 @@ class Item: NSObject {
         self.color = self.moodColor[self.mood]
         self.moodString = self.moodStrings[self.mood]
         super.init()
+    }
+    
+    
+    class func imageName(name nm:String,position pos:Int)->String{
+        return "\(nm)_\(pos)"
     }
     
     class func ItemString(_ content:String,mood:Int) ->String {
