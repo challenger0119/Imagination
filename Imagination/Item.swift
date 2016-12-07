@@ -15,6 +15,7 @@ class Item: NSObject {
     static let defaultColor = UIColor.init(red: 239.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1)
     
     static let seperator = "<->"
+    static let oldSeperator = "-"
     
     fileprivate let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
     fileprivate let moodStrings = ["NA","Cool","Just OK","Confused"]
@@ -27,7 +28,10 @@ class Item: NSObject {
     
     init(contentString:String) {
         
-        let array = contentString.components(separatedBy: Item.seperator)
+        var array = contentString.components(separatedBy: Item.seperator)
+        if array.count < 2 {
+            array = contentString.components(separatedBy: Item.oldSeperator)
+        }
         if array.count >= 2 {
             self.content = array[0]
             self.mood = Int(array[1])!
