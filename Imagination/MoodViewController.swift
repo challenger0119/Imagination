@@ -54,6 +54,14 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             if self.placeInfo != nil {
                 self.getLocBtn.setTitle(self.placeInfo!.name, for: .normal)
             }
+            
+            if self.multiMediaBufferDic != nil{
+                var keys = Array(self.multiMediaBufferDic!.keys)
+                keys.sort()
+                for key in keys {
+                    self.addMultimediaToTextView(multimedia: self.multiMediaBufferDic![key]!,at:key)
+                }
+            }
         }else{
             self.content.becomeFirstResponder()
         }
@@ -228,14 +236,22 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         return image!
     }
     
-    func addImageToTextView(image:UIImage) {
-        let textAttach = NSTextAttachment(data:nil, ofType: nil)
-        let imageWidth = self.content.frame.width*3/4;
-        let imageHeight = imageWidth * 4/3
-        textAttach.image = getImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
-        let imageAttributeString = NSAttributedString(attachment:textAttach)
-        Dlog("add image at \(self.content.selectedRange.location)")
-        self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
+    func addMultimediaToTextView(multimedia:AnyObject,at:Int = -1) {
+        
+        if multimedia.isKind(of: UIImage.self) {
+            let image = multimedia as! UIImage
+            let textAttach = NSTextAttachment(data:nil, ofType: nil)
+            let imageWidth = self.content.frame.width*3/4;
+            let imageHeight = imageWidth * 4/3
+            textAttach.image = getImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+            let imageAttributeString = NSAttributedString(attachment:textAttach)
+            Dlog("add image at \(self.content.selectedRange.location)")
+            if at == -1 {
+                self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
+            }else{
+                self.content.textStorage.insert(imageAttributeString, at: at)
+            }
+        }
     }
     
     
@@ -249,7 +265,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pimg = info[UIImagePickerControllerOriginalImage] as? UIImage{
-            addImageToTextView(image: pimg)
+            addMultimediaToTextView(multimedia: pimg)
         }
         imageVC.dismiss(animated: true, completion: {
             
@@ -263,7 +279,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             }
         }
         imageVC.dismiss(animated: true, completion: {
-            self.addImageToTextView(image:image)
+            self.addMultimediaToTextView(multimedia:image)
         })
     }
 

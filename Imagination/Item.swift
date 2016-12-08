@@ -30,6 +30,8 @@ class Item: NSObject {
     var moodString:String
     var place:(name:String,latitude:Double,longtitude:Double)
     var multiMediaFile:[String:String]?
+    var multiMedias:[Int:AnyObject]?
+    var multiMediasDescrip:String = ""
     
     enum MutiMediaType:String {
         case image = "Image",voice = "Voice",video = "Video"
@@ -56,25 +58,35 @@ class Item: NSObject {
                     
                     string = array[2]
                     sb = string.components(separatedBy: Item.multiMediaSeparator)
-                    self.content += "\n"
+                    self.multiMediasDescrip += "\n"
                     for file in sb {
                         let fileDescrip = file.components(separatedBy: Item.multiMediaIndicator)
                         if fileDescrip.count != 2 {
                             continue
                         }
+                        
+                        let fileinfo = fileDescrip[1].components(separatedBy: Item.multiMediaNameSeparator)
+                        if let img = FileManager.imageFile(withName: fileDescrip[1]) {
+                            if self.multiMedias == nil {
+                                self.multiMedias = [Int(fileinfo[1])!:img]
+                            }else{
+                                let _ = self.multiMedias?.updateValue(img, forKey: Int(fileinfo[1])!)
+                            }
+                        }
+                        
                         if self.multiMediaFile == nil {
                             self.multiMediaFile = [fileDescrip[0]:fileDescrip[1]]
                         }else{
                             let _ = self.multiMediaFile?.updateValue(fileDescrip[1], forKey: fileDescrip[0])
                         }
-                        self.content += "[\(fileDescrip[0])]"
+                        self.multiMediasDescrip += "[\(fileDescrip[0])]"
                     }
                 }else{
                     let string = array[2]
                     var sb = string.components(separatedBy: Item.gpsSeparator)
                     if sb.count < 2{
                         sb = string.components(separatedBy: Item.multiMediaSeparator)
-                        self.content += "\n"
+                        self.multiMediasDescrip += "\n"
                         for file in sb {
                             let fileDescrip = file.components(separatedBy: Item.multiMediaIndicator)
                             if self.multiMediaFile == nil {
@@ -82,7 +94,17 @@ class Item: NSObject {
                             }else{
                                 let _ = self.multiMediaFile?.updateValue(fileDescrip[1], forKey: fileDescrip[0])
                             }
-                            self.content += "[\(fileDescrip[0])]"
+                            
+                            let fileinfo = fileDescrip[1].components(separatedBy: Item.multiMediaNameSeparator)
+                            if let img = FileManager.imageFile(withName: fileDescrip[1]) {
+                                if self.multiMedias == nil {
+                                    self.multiMedias = [Int(fileinfo[1])!:img]
+                                }else{
+                                    let _ = self.multiMedias?.updateValue(img, forKey: Int(fileinfo[1])!)
+                                }
+                            }
+                            
+                            self.multiMediasDescrip += "[\(fileDescrip[0])]"
                         }
                         self.place = ("",0,0)
                     }else{

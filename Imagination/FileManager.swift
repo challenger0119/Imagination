@@ -49,19 +49,29 @@ extension FileManager {
         return self.documentsPath() + "/Multimedia"
     }
     
+    class func multiMediaFile(withName name:String)->AnyObject{
+        let path = self.multiMediaFilePath(withName: name)
+        if let data = FileManager.default.contents(atPath: path) {
+            return data as AnyObject;
+        }else{
+            return "" as AnyObject
+        }
+    }
+    
     //MARK: - store image
+    class func imageFile(withName name:String) -> UIImage? {
+        let path = self.imagePathWithName(name)
+        if let data =  UIImage.init(contentsOfFile: path) {
+            return data
+        }else{
+            return nil
+        }
+    }
     class func imageFilePath() -> String{
         return self.multiMediaFilePath() + "/Pictures"
     }
     class func imagePathWithName(_ name:String)->String{
-        
         return self.imageFilePath() + "/\(name.replacingOccurrences(of: ":", with: "-"))"
-    }
-    class func jpegImagePathWithName(_ name:String)->String{
-        return self.imagePathWithName(name) + ".jpg"
-    }
-    class func pngImagePathWithName(_ name:String)->String {
-        return self.imagePathWithName(name) + ".png"
     }
     
     var compression:CGFloat{
@@ -95,13 +105,11 @@ extension FileManager {
         }
         
         var data:Data!
-        var path:String!
+        let path:String = FileManager.imagePathWithName(name)
         if isPng {
             data = UIImagePNGRepresentation(image)
-            path = FileManager.pngImagePathWithName(name)
         }else{
             data = UIImageJPEGRepresentation(image, compression)
-            path = FileManager.jpegImagePathWithName(name)
         }
         Dlog("image file at \(path)")
         return self.createFile(atPath: path, contents: data, attributes: nil)
@@ -109,11 +117,7 @@ extension FileManager {
     
     func deleteImageFileWithName(_ name:String)->Bool{
         do{
-            if isPng {
-                try self.removeItem(atPath: FileManager.pngImagePathWithName(name))
-            }else{
-                try self.removeItem(atPath: FileManager.jpegImagePathWithName(name))
-            }
+            try self.removeItem(atPath: FileManager.imagePathWithName(name))
             return true
         }catch{
             return false

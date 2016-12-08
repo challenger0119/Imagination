@@ -229,7 +229,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier",for: indexPath) as! CustomTableViewCell
         let cc = Item.init(contentString: content![(indexPath as NSIndexPath).row])
         cell.time.text = times![(indexPath as NSIndexPath).row]
-        cell.content.text = cc.content
+        cell.content.text = cc.content+cc.multiMediasDescrip
         cell.time.textColor = cc.color
         cell.content.textColor = cc.color
         cell.locLabel.text = cc.place.name
@@ -245,6 +245,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         vc.text = cc.content
         vc.moodState = cc.mood
         vc.placeInfo = cc.place
+        vc.multiMediaBufferDic = cc.multiMedias
         self.navigationController?.pushViewController(vc, animated: true)
  
     }
