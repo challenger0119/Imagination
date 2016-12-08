@@ -13,6 +13,8 @@
 
 import Foundation
 import CoreLocation
+import UIKit
+
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
   case let (l?, r?):
@@ -74,30 +76,75 @@ class DataCache: NSObject {
         }
     }
 
-    func newString(Content content:String, moodState:Int,GPSPlace:CLPlacemark,MultiMedia md:Dictionary<Int,Any>){
-        if Time.today() == self.currentDayName {
-            self.updateLastday(Item.ItemString(content, mood: moodState,GPSName: GPSPlace.name!,latitude:GPSPlace.location!.coordinate.latitude,longtitude:GPSPlace.location!.coordinate.longitude), key: Time.clock())
-        } else {
-            self.initLastday([Time.clock():Item.ItemString(content, mood: moodState,GPSName: GPSPlace.name!,latitude:GPSPlace.location!.coordinate.latitude,longtitude:GPSPlace.location!.coordinate.longitude)], currentDayName: Time.today())
+    func newString(Content content:String, moodState:Int,GPSPlace:CLPlacemark?,multiMedia:Dictionary<Int,AnyObject>?){
+        
+        if let mm = multiMedia {
+            if let gps = GPSPlace {
+                if Time.today() == self.currentDayName {
+                    let clock = Time.clock()
+                    let today = self.currentDayName!
+                    
+                    self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: today + clock), key: clock)
+                    
+                    self.store(Multimedia: mm, baseName: today + clock)
+                } else {
+                    let clock = Time.clock()
+                    let today = Time.today()
+                    
+                    self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: today + clock)], currentDayName: today)
+                    
+                    self.store(Multimedia: mm, baseName: today + clock)                }
+            }else{
+                self.newString(Content: content, moodState: moodState, multiMedia: multiMedia)
+            }
+            
+        }else{
+            self.newStringContent(content, moodState: moodState, GPSPlace: GPSPlace)
         }
     }
     
-    
-    func newStringContent(_ content:String, moodState:Int,GPSPlace:CLPlacemark){
-        if Time.today() == self.currentDayName {
-            self.updateLastday(Item.ItemString(content, mood: moodState,GPSName: GPSPlace.name!,latitude:GPSPlace.location!.coordinate.latitude,longtitude:GPSPlace.location!.coordinate.longitude), key: Time.clock())
-        } else {
-            self.initLastday([Time.clock():Item.ItemString(content, mood: moodState,GPSName: GPSPlace.name!,latitude:GPSPlace.location!.coordinate.latitude,longtitude:GPSPlace.location!.coordinate.longitude)], currentDayName: Time.today())
+    func newString(Content content:String, moodState:Int,multiMedia:Dictionary<Int,AnyObject>?){
+        if let mm = multiMedia {
+            if Time.today() == self.currentDayName {
+                let clock = Time.clock()
+                let today = self.currentDayName!
+                
+                self.updateLastday(Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: today + clock), key: clock)
+                
+                self.store(Multimedia: mm, baseName: today + clock)
+            } else {
+                let clock = Time.clock()
+                let today = Time.today()
+                
+                self.initLastday([clock:Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: today + clock)], currentDayName: today)
+                
+                self.store(Multimedia: mm, baseName: today + clock)
+            }
+        }else{
+            self.newStringContent(content, moodState: moodState)
+        }
+    }
+    func newStringContent(_ content:String, moodState:Int,GPSPlace:CLPlacemark?){
+        if let gps = GPSPlace {
+            if Time.today() == self.currentDayName {
+                self.updateLastday(Item.itemString(content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude), key: Time.clock())
+            } else {
+                self.initLastday([Time.clock():Item.itemString(content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude)], currentDayName: Time.today())
+            }
+        }else{
+            self.newStringContent(content, moodState: moodState)
         }
     }
     
     func newStringContent(_ content:String, moodState:Int) {
         if Time.today() == self.currentDayName {
-            self.updateLastday(Item.ItemString(content, mood: moodState), key: Time.clock())
+            self.updateLastday(Item.itemString(content, mood: moodState), key: Time.clock())
         } else {
-            self.initLastday([Time.clock():Item.ItemString(content, mood: moodState)], currentDayName: Time.today())
+            self.initLastday([Time.clock():Item.itemString(content, mood: moodState)], currentDayName: Time.today())
         }
     }
+    
+    
     //数据更新的两个方法
     func updateLastday(_ lastdayValue:String,key:String) {
         let _ = lastDay?.updateValue(lastdayValue, forKey: key)
@@ -112,6 +159,22 @@ class DataCache: NSObject {
         let myData = NSKeyedArchiver.archivedData(withRootObject: lastDay!)
         try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(self.currentDayName!)), options: [.atomic])
         updateCatalogue()
+    }
+    
+    func store(Multimedia mm: [Int:AnyObject],baseName:String) {
+        //考虑异步进行
+        let fmng = FileManager.default
+        
+        let keys = Array(mm.keys)
+        for key in keys {
+            if let obj = mm[key] {
+                if obj.isKind(of: UIImage.self) {
+                    let _ = fmng.createImageFileWithName("\(baseName)_\(key)", image: obj as! UIImage)
+                }else{
+                    let _ = fmng.createDefaultMultimediaFile(withName: "\(baseName)_\(key)", object: obj)
+                }
+            }
+        }
     }
     
     //初始化显示数据
@@ -141,12 +204,14 @@ class DataCache: NSObject {
         currentMonthName = mm
         lastMonth = loadMonth(currentMonthName!)
     }
+    
     fileprivate func loadDay(_ dd:String) -> Dictionary<String,String>? {
         if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(dd))) {
             return (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Dictionary)!
         }
         return nil
     }
+    
     fileprivate func loadMonth(_ mm:String) -> Dictionary<String,Dictionary<String,String>>? {
         if let cts = catalogue {
             var lMonth = Dictionary<String,Dictionary<String,String>>()

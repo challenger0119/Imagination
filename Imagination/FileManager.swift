@@ -40,10 +40,22 @@ extension FileManager {
         return file + ".txt"
     }
     
-    //MARK: - store image
+    //Mutimedia file
+    class func multiMediaFilePath(withName name:String) -> String {
+        return self.multiMediaFilePath() + "/\(name.replacingOccurrences(of: ":", with: "-"))"
+    }
     
+    class func multiMediaFilePath() ->String {
+        return self.documentsPath() + "/Multimedia"
+    }
+    
+    //MARK: - store image
+    class func imageFilePath() -> String{
+        return self.multiMediaFilePath() + "/Pictures"
+    }
     class func imagePathWithName(_ name:String)->String{
-        return self.documentsPath() + "/Pictures/\(name)"
+        
+        return self.imageFilePath() + "/\(name.replacingOccurrences(of: ":", with: "-"))"
     }
     class func jpegImagePathWithName(_ name:String)->String{
         return self.imagePathWithName(name) + ".jpg"
@@ -62,10 +74,22 @@ extension FileManager {
             return false
         }
     }
+    func createDefaultMultimediaFile(withName name:String,object:AnyObject) -> Bool{
+        do{
+            try self.createDirectory(atPath: FileManager.multiMediaFilePath(), withIntermediateDirectories: true, attributes: nil)
+        }catch{
+            print("error createfile")
+        }
+        let path = FileManager.multiMediaFilePath(withName: name)
+        
+        let data = NSKeyedArchiver.archivedData(withRootObject: object)
+        Dlog("default multimedia file at \(path)")
+        return self.createFile(atPath: path, contents: data, attributes: nil)
+    }
     
     func createImageFileWithName(_ name:String,image:UIImage)->Bool{
         do{
-            try self.createDirectory(atPath: FileManager.documentsPath() + "/Pictures", withIntermediateDirectories: true, attributes: nil)
+            try self.createDirectory(atPath: FileManager.imageFilePath(), withIntermediateDirectories: true, attributes: nil)
         }catch{
             print("error createfile")
         }
@@ -79,7 +103,7 @@ extension FileManager {
             data = UIImageJPEGRepresentation(image, compression)
             path = FileManager.jpegImagePathWithName(name)
         }
-        print(path)
+        Dlog("image file at \(path)")
         return self.createFile(atPath: path, contents: data, attributes: nil)
     }
     

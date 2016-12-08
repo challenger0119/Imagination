@@ -12,17 +12,17 @@ class Time: NSObject {
     static func now()->String{
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:SS"
-        return format.string(from: Date.init(timeIntervalSinceNow: 0))
+        return format.string(from: Date())
     }
     static func today()->String{
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
-        return format.string(from: Date.init(timeIntervalSinceNow: 0))
+        return format.string(from: Date())
     }
     static func clock()->String{
         let format = DateFormatter()
         format.dateFormat = "HH:mm:SS"
-        return format.string(from: Date.init(timeIntervalSinceNow: 0))
+        return format.string(from: Date())
     }
     static func dateFromString(_ time:String) -> Date? {
         let format = DateFormatter()
