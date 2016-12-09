@@ -54,7 +54,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             if self.placeInfo != nil {
                 self.getLocBtn.setTitle(self.placeInfo!.name, for: .normal)
             }
-            
+            /*
             if self.multiMediaBufferDic != nil{
                 var keys = Array(self.multiMediaBufferDic!.keys)
                 keys.sort()
@@ -62,6 +62,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                     self.addMultimediaToTextView(multimedia: self.multiMediaBufferDic![key]!,at:key)
                 }
             }
+ */
         }else{
             self.content.becomeFirstResponder()
         }
@@ -85,6 +86,25 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         backItem.title = "返回"
         self.navigationItem.backBarButtonItem = backItem
     }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if editMode {
+            if self.multiMediaBufferDic != nil{
+                var keys = Array(self.multiMediaBufferDic!.keys)
+                keys.sort()
+                for key in keys {
+                    self.addMultimediaToTextView(multimedia: self.multiMediaBufferDic![key]!,at:key)
+                }
+            }
+        }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.closeKeyboard()
+    }
+    
     
     @IBAction func noGoodBtnClicked() {
         if moodState == 2 {
@@ -128,10 +148,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
         
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.closeKeyboard()
-    }
+  
     
 
     @IBAction func done(_ sender: UIBarButtonItem) {
@@ -235,20 +252,22 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         UIGraphicsEndImageContext()
         return image!
     }
-    
     func addMultimediaToTextView(multimedia:AnyObject,at:Int = -1) {
         
         if multimedia.isKind(of: UIImage.self) {
             let image = multimedia as! UIImage
             let textAttach = NSTextAttachment(data:nil, ofType: nil)
-            let imageWidth = self.content.frame.width*3/4;
-            let imageHeight = imageWidth * 4/3
+            let imageWidth = self.content.frame.width - 10;
+            let imageHeight = image.size.height / image.size.width * imageWidth
             textAttach.image = getImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
             let imageAttributeString = NSAttributedString(attachment:textAttach)
-            Dlog("add image at \(self.content.selectedRange.location)")
+            
             if at == -1 {
+                
                 self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
             }else{
+                //查看模式
+                Dlog("add image at \(at)")
                 self.content.textStorage.insert(imageAttributeString, at: at)
             }
         }
