@@ -178,6 +178,11 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         }
     }
     
+    
+    func caculateHeight(){
+        
+    }
+    
     //MARK: - vc life circle
     override func viewDidLoad() {
         super.viewDidLoad()

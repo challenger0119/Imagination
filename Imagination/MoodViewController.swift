@@ -49,20 +49,10 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         
         if editMode {
             self.navigationItem.rightBarButtonItem?.isEnabled = false
-            content.text = text
             self.content.isEditable = false
             if self.placeInfo != nil {
                 self.getLocBtn.setTitle(self.placeInfo!.name, for: .normal)
             }
-            /*
-            if self.multiMediaBufferDic != nil{
-                var keys = Array(self.multiMediaBufferDic!.keys)
-                keys.sort()
-                for key in keys {
-                    self.addMultimediaToTextView(multimedia: self.multiMediaBufferDic![key]!,at:key)
-                }
-            }
- */
         }else{
             self.content.becomeFirstResponder()
         }
@@ -91,13 +81,28 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if editMode {
+            let mstring = NSMutableAttributedString(string: self.text)
             if self.multiMediaBufferDic != nil{
                 var keys = Array(self.multiMediaBufferDic!.keys)
                 keys.sort()
+                var i:Int = 0 //插入补偿 解决排版问题
                 for key in keys {
-                    self.addMultimediaToTextView(multimedia: self.multiMediaBufferDic![key]!,at:key)
+                    if let multimedia = self.multiMediaBufferDic![key] {
+                        if multimedia.isKind(of: UIImage.self) {
+                            let image = multimedia as! UIImage
+                            let textAttach = NSTextAttachment(data:nil, ofType: nil)
+                            let imageWidth = self.content.frame.width - 10;
+                            let imageHeight = image.size.height / image.size.width * imageWidth
+                            textAttach.image = getImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                            let imageAttributeString = NSAttributedString(attachment:textAttach)
+                            
+                            mstring.insert(imageAttributeString, at: key+i)
+                            i += 1
+                        }
+                    }
                 }
             }
+            self.content.attributedText = mstring
         }
     }
     override func viewWillDisappear(_ animated: Bool) {
