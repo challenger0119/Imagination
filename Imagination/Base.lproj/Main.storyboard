@@ -126,7 +126,7 @@
         <scene sceneID="CzR-NL-bGx">
             <objects>
                 <tableViewController id="U04-u7-ktZ" customClass="MainTableViewController" customModule="Imagination" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="240" sectionHeaderHeight="28" sectionFooterHeight="28" id="6ld-d5-IZn">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="240" sectionHeaderHeight="1" sectionFooterHeight="1" id="6ld-d5-IZn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -135,8 +135,8 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="reuseIdentifier" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="240" id="GJe-x6-Ovx" userLabel="reuseIdentifier" customClass="CustomTableViewCell" customModule="Imagination" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="35" width="375" height="240"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="reuseIdentifier" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" id="GJe-x6-Ovx" userLabel="reuseIdentifier" customClass="CustomTableViewCell" customModule="Imagination" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="8" width="375" height="240"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" tableViewCell="GJe-x6-Ovx" id="kBh-2i-O7O">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="240"/>
@@ -151,29 +151,21 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Yj-Yn-u57">
-                                            <rect key="frame" x="8" y="36" width="359" height="172"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="749" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Yj-Yn-u57">
+                                            <rect key="frame" x="8" y="36" width="359" height="196"/>
                                             <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6c4-dI-LMN">
-                                            <rect key="frame" x="8" y="216" width="359" height="16"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.22211517889999999" green="0.60427910070000002" blue="0.80587911550000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="leadingMargin" secondItem="SXS-oA-mES" secondAttribute="leading" id="4t2-2j-3df"/>
                                         <constraint firstItem="5Yj-Yn-u57" firstAttribute="top" secondItem="SXS-oA-mES" secondAttribute="bottom" constant="8" symbolic="YES" id="7Kp-wR-TQ2"/>
-                                        <constraint firstItem="6c4-dI-LMN" firstAttribute="top" secondItem="5Yj-Yn-u57" secondAttribute="bottom" constant="8" id="IZl-Ck-F73"/>
-                                        <constraint firstItem="6c4-dI-LMN" firstAttribute="centerX" secondItem="5Yj-Yn-u57" secondAttribute="centerX" id="ilw-TM-w5x"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="5Yj-Yn-u57" secondAttribute="leading" id="n4i-Oa-LjU"/>
-                                        <constraint firstItem="6c4-dI-LMN" firstAttribute="width" secondItem="5Yj-Yn-u57" secondAttribute="width" id="n83-Rq-aG8"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="6c4-dI-LMN" secondAttribute="bottom" id="smt-CK-9HJ"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="5Yj-Yn-u57" secondAttribute="bottom" id="uKS-3i-uTe"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="SXS-oA-mES" secondAttribute="trailing" id="vTx-3V-9Q8"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="5Yj-Yn-u57" secondAttribute="trailing" id="yWG-Pb-mCg"/>
                                         <constraint firstAttribute="topMargin" secondItem="SXS-oA-mES" secondAttribute="top" id="ykN-1G-FGY"/>
@@ -181,7 +173,6 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="content" destination="5Yj-Yn-u57" id="1Ku-3K-N4Y"/>
-                                    <outlet property="locLabel" destination="6c4-dI-LMN" id="6vW-cc-k0Z"/>
                                     <outlet property="time" destination="SXS-oA-mES" id="7IS-Xy-1QT"/>
                                 </connections>
                             </tableViewCell>
@@ -211,7 +202,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUu-gi-bbh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2387" y="498"/>
+            <point key="canvasLocation" x="2386.5" y="497.5"/>
         </scene>
         <!--功能区-->
         <scene sceneID="aEs-Rf-MJZ">

@@ -185,11 +185,13 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(differentWillAppear), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
         self.authorityView()
     }
+    
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         self.tableView.estimatedRowHeight = 80
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
+ 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.differentDidAppear()
@@ -229,11 +231,14 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier",for: indexPath) as! CustomTableViewCell
         let cc = Item.init(contentString: content![(indexPath as NSIndexPath).row])
         cell.time.text = times![(indexPath as NSIndexPath).row]
-        cell.content.text = cc.content+cc.multiMediasDescrip
+        if cc.place.latitude != 0 {
+            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.multiMediasDescrip + "\n\n@\(cc.place.name)"
+        }else{
+            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.multiMediasDescrip
+        }
         cell.time.textColor = cc.color
         cell.content.textColor = cc.color
-        cell.locLabel.text = cc.place.name
-        cell.locLabel.textColor = cc.color
+        
         return cell
     }
 
