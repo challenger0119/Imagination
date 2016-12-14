@@ -16,7 +16,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     var keyBoardHeight:CGFloat = 216.0
     var clockDic = Dictionary<String,String>()
     var text:String = " "
-    let keyboardDistance:CGFloat = 20
+    let keyboardDistance:CGFloat = 10
     
     var place:CLPlacemark?{
         didSet{
@@ -48,7 +48,9 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
         if editMode {
-            self.navigationItem.rightBarButtonItem?.isEnabled = false
+            //self.navigationItem.rightBarButtonItem?.isEnabled = false
+            self.navigationItem.rightBarButtonItem?.title = "关闭"
+            
             self.content.isEditable = false
             if self.placeInfo != nil {
                 self.getLocBtn.setTitle(self.placeInfo!.name, for: .normal)
@@ -157,6 +159,10 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     
 
     @IBAction func done(_ sender: UIBarButtonItem) {
+        if editMode {
+            self.back()
+            return
+        }
         self.closeKeyboard()
         if !self.content.text.isEmpty && self.moodState == 0 {
             let alert = UIAlertController(title: "提示", message: "确定不选择状态？", preferredStyle: .alert)

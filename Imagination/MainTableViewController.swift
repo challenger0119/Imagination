@@ -178,9 +178,13 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         }
     }
     
+    var cellHeights = [CGFloat]()
     
     func caculateHeight(){
-        
+        if content != nil {
+            for ctt in content! {
+            }
+        }
     }
     
     //MARK: - vc life circle
@@ -234,7 +238,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier",for: indexPath) as! CustomTableViewCell
-        let cc = Item.init(contentString: content![(indexPath as NSIndexPath).row])
+        let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
         cell.time.text = times![(indexPath as NSIndexPath).row]
         if cc.place.latitude != 0 {
             cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.multiMediasDescrip + "\n\n@\(cc.place.name)"
@@ -251,13 +255,14 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         let vc = self.storyboard!.instantiateViewController(withIdentifier: "mood") as! MoodViewController
         vc.editMode = true
-        let cc = Item.init(contentString: content![(indexPath as NSIndexPath).row])
+        let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
         vc.text = cc.content
         vc.moodState = cc.mood
         vc.placeInfo = cc.place
         vc.multiMediaBufferDic = cc.multiMedias
-        self.navigationController?.pushViewController(vc, animated: true)
- 
+        let nav = UINavigationController(rootViewController: vc)
+        //self.navigationController?.pushViewController(nav, animated: true)
+        self.present(nav, animated: true, completion: nil)
     }
 
 }
