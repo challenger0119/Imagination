@@ -42,18 +42,29 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     @IBOutlet weak var getLocBtn: UIButton!
     @IBOutlet weak var bottomContraint: NSLayoutConstraint!
     
+    @IBOutlet weak var getVideoBtn: UIButton!
+    @IBOutlet weak var getVoiceBtn: UIButton!
+    @IBOutlet weak var getImageBtn: UIButton!
+    
+    func hideFunctionBtns(){
+        self.getVideoBtn.isHidden = true
+        self.getVoiceBtn.isHidden = true
+        self.getImageBtn.isHidden = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(closeKeyboard)))
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        
         if editMode {
-            //self.navigationItem.rightBarButtonItem?.isEnabled = false
             self.navigationItem.rightBarButtonItem?.title = "关闭"
             
             self.content.isEditable = false
+            hideFunctionBtns()
             if self.placeInfo != nil {
                 self.getLocBtn.setTitle(self.placeInfo!.name, for: .normal)
+            }else{
+                self.getLocBtn.isHidden = true
             }
         }else{
             self.content.becomeFirstResponder()
@@ -83,7 +94,14 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if editMode {
-            let mstring = NSMutableAttributedString(string: self.text)
+            let paragraghStyle = NSMutableParagraphStyle()
+            paragraghStyle.lineSpacing = 5
+            paragraghStyle.alignment = .left
+            paragraghStyle.lineBreakMode = .byCharWrapping
+            paragraghStyle.allowsDefaultTighteningForTruncation = true
+            
+            let font = UIFont(name: "Helvetica", size: 15.0)
+            let mstring = NSMutableAttributedString(string: self.text, attributes: [NSFontAttributeName:font!,NSParagraphStyleAttributeName:paragraghStyle])
             if self.multiMediaBufferDic != nil{
                 var keys = Array(self.multiMediaBufferDic!.keys)
                 keys.sort()
@@ -274,7 +292,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             let imageAttributeString = NSAttributedString(attachment:textAttach)
             
             if at == -1 {
-                
                 self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
             }else{
                 //查看模式

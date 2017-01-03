@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="DOF-yU-Hl6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="DOF-yU-Hl6">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -25,7 +25,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qk8-ap-gLh">
-                                <rect key="frame" x="-4" y="64" width="191.5" height="35"/>
+                                <rect key="frame" x="-4" y="64" width="192" height="35"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="1nK-yP-wrl"/>
@@ -38,7 +38,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZrJ-IL-7Y7">
-                                <rect key="frame" x="187.5" y="64" width="191.5" height="35"/>
+                                <rect key="frame" x="188" y="64" width="191" height="35"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Just Ok">
                                     <color key="titleColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -47,14 +47,14 @@
                                     <action selector="noGoodBtnClicked" destination="rnp-hY-qrU" eventType="touchUpInside" id="W9f-sy-dG5"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wXq-oj-MDY" userLabel="content">
-                                <rect key="frame" x="6" y="99" width="363" height="508"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wXq-oj-MDY" userLabel="content">
+                                <rect key="frame" x="16" y="99" width="348" height="508"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UTQ-2x-nDC">
-                                <rect key="frame" x="6" y="642" width="363" height="20"/>
+                                <rect key="frame" x="16" y="642" width="348" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="xn8-eo-dTr"/>
                                 </constraints>
@@ -64,18 +64,18 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OAT-03-YLo">
-                                <rect key="frame" x="318" y="607" width="31" height="30"/>
+                                <rect key="frame" x="313" y="607" width="31" height="30"/>
                                 <state key="normal" title="图片"/>
                                 <connections>
                                     <action selector="getImage:" destination="rnp-hY-qrU" eventType="touchUpInside" id="SVj-A0-8oH"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DES-cO-sDs">
-                                <rect key="frame" x="272" y="607" width="31" height="30"/>
+                                <rect key="frame" x="267" y="607" width="31" height="30"/>
                                 <state key="normal" title="录音"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Py-s5-doF">
-                                <rect key="frame" x="226" y="607" width="31" height="30"/>
+                                <rect key="frame" x="221" y="607" width="31" height="30"/>
                                 <state key="normal" title="视频"/>
                             </button>
                         </subviews>
@@ -86,9 +86,9 @@
                             <constraint firstItem="UTQ-2x-nDC" firstAttribute="top" secondItem="9Py-s5-doF" secondAttribute="bottom" constant="5" id="EjG-7d-Kg4"/>
                             <constraint firstItem="Mqa-9o-HmX" firstAttribute="top" secondItem="UTQ-2x-nDC" secondAttribute="bottom" constant="5" id="GXh-Td-dVE"/>
                             <constraint firstItem="Qk8-ap-gLh" firstAttribute="centerY" secondItem="ZrJ-IL-7Y7" secondAttribute="centerY" id="Hge-ZP-JKf"/>
-                            <constraint firstAttribute="leadingMargin" secondItem="wXq-oj-MDY" secondAttribute="leading" constant="10" id="K19-fy-qiP"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="wXq-oj-MDY" secondAttribute="leading" id="K19-fy-qiP"/>
                             <constraint firstItem="UTQ-2x-nDC" firstAttribute="width" secondItem="wXq-oj-MDY" secondAttribute="width" id="K58-fP-hi7"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="wXq-oj-MDY" secondAttribute="trailing" constant="-10" id="Rdk-5A-L3o"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wXq-oj-MDY" secondAttribute="trailing" constant="-5" id="Rdk-5A-L3o"/>
                             <constraint firstAttribute="leadingMargin" secondItem="Qk8-ap-gLh" secondAttribute="leading" constant="20" id="W9X-mY-3MH"/>
                             <constraint firstItem="ZrJ-IL-7Y7" firstAttribute="leading" secondItem="Qk8-ap-gLh" secondAttribute="trailing" id="YDX-Of-Q2A"/>
                             <constraint firstItem="DES-cO-sDs" firstAttribute="leading" secondItem="9Py-s5-doF" secondAttribute="trailing" constant="15" id="Zne-hV-Vt5"/>
@@ -113,7 +113,10 @@
                     <connections>
                         <outlet property="bottomContraint" destination="GXh-Td-dVE" id="RfB-p3-WbS"/>
                         <outlet property="content" destination="wXq-oj-MDY" id="J0r-5l-R19"/>
+                        <outlet property="getImageBtn" destination="OAT-03-YLo" id="0g3-gz-ckU"/>
                         <outlet property="getLocBtn" destination="UTQ-2x-nDC" id="TgG-LU-gVi"/>
+                        <outlet property="getVideoBtn" destination="9Py-s5-doF" id="azy-8t-doq"/>
+                        <outlet property="getVoiceBtn" destination="DES-cO-sDs" id="Y6p-Hm-Wcl"/>
                         <outlet property="goodBtn" destination="Qk8-ap-gLh" id="n9t-Bp-FSF"/>
                         <outlet property="noGoodBtn" destination="ZrJ-IL-7Y7" id="O12-zT-PrY"/>
                     </connections>
@@ -131,7 +134,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="8KV-2G-h92">
-                            <rect key="frame" x="0.0" y="64" width="375" height="7"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="7"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </view>
                         <prototypes>
