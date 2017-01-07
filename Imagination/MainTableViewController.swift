@@ -178,15 +178,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         }
     }
     
-    var cellHeights = [CGFloat]()
-    
-    func caculateHeight(){
-        if content != nil {
-            for ctt in content! {
-            }
-        }
-    }
-    
     //MARK: - vc life circle
     override func viewDidLoad() {
         super.viewDidLoad()
