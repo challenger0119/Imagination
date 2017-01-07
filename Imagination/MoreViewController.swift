@@ -91,8 +91,14 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             btn.setTitleColor(UIColor.black, for: UIControlState())
             btn.addTarget(self, action: #selector(didSelectTime), for: UIControlEvents.touchUpInside)
             pickerBack.addSubview(btn)
+            let cancelBtn = UIButton.init(frame: CGRect(x: 0, y: 0, width: 50, height: 34))
+            cancelBtn.setTitle("取消", for: UIControlState())
+            cancelBtn.setTitleColor(UIColor.black, for: UIControlState())
+            cancelBtn.addTarget(self, action: #selector(cancelDatePicker), for: UIControlEvents.touchUpInside)
+            pickerBack.addSubview(cancelBtn)
+            
             datePicker = UIDatePicker.init(frame:CGRect(x: 0, y: 34, width: 300, height: 216))
-            datePicker!.datePickerMode = UIDatePickerMode.dateAndTime
+            datePicker!.datePickerMode = UIDatePickerMode.time
             datePicker?.timeZone = TimeZone.current
             pickerBack.addSubview(datePicker!)
             self.view.addSubview(pickerBack)
@@ -106,6 +112,9 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         }
     }
     
+    func cancelDatePicker() {
+        self.view.viewWithTag(111)?.removeFromSuperview()
+    }
     func updateReminder() {
         if Notification.isReminder {
             reminder.textLabel?.text = "关闭每日提醒"
@@ -119,7 +128,6 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     }
     func didSelectTime(){
         self.view.viewWithTag(111)?.removeFromSuperview()
-        
         Notification.createNotificaion(datePicker?.date)
         
         updateReminder()

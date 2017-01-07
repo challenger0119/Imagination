@@ -74,8 +74,6 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     }
     //MARK: -Location
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-       // print(locations);//这里的坐标不准确
-        
         self.locManager.stopUpdatingLocation()
         if let newLocation = locations.last {
             self.addAnnotationWithCoordinate(newLocation)

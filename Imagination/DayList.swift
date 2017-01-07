@@ -21,13 +21,14 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
         self.table.frame = CGRect(x: 0, y: 0, width: frame.width, height: 0)
         self.delegate = dele
         super.init(frame: frame)
-        self.layer.borderColor = UIColor.blue.cgColor
+        self.layer.borderColor = UIColor.lightGray.cgColor
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 0.5
         self.backgroundColor = UIColor.white
         self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.width, height: 0)
         self.table.delegate = self
         self.table.dataSource = self
+        self.table.clipsToBounds = true
         self.addSubview(table)
         
         
@@ -43,6 +44,15 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
         UIView.commitAnimations()
     }
 
+    func close() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.frame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: self.frame.width, height: 0)
+        }) { (finish) in
+            if finish {
+                self.removeFromSuperview()
+            }
+        }
+    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -50,7 +60,7 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         Dlog("didselect\((indexPath as NSIndexPath).row)")
         delegate.didSelectItem(content[(indexPath as NSIndexPath).row])
-        self.removeFromSuperview()
+        close()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

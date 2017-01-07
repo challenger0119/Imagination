@@ -55,7 +55,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(closeKeyboard)))
+        let swipGesture = UISwipeGestureRecognizer(target: self, action: #selector(back))
+        swipGesture.direction = .down
+        self.view.addGestureRecognizer(swipGesture)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        
         if editMode {
             self.navigationItem.rightBarButtonItem?.title = "关闭"
             
@@ -69,6 +74,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }else{
             self.content.becomeFirstResponder()
         }
+        
         switch moodState {
         case 1:
             self.noGoodBtn.backgroundColor = Item.defaultColor
@@ -113,7 +119,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                             let textAttach = NSTextAttachment(data:nil, ofType: nil)
                             let imageWidth = self.content.frame.width - 10;
                             let imageHeight = image.size.height / image.size.width * imageWidth
-                            textAttach.image = getImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                            textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                             let imageAttributeString = NSAttributedString(attachment:textAttach)
                             
                             mstring.insert(imageAttributeString, at: key+i)
@@ -125,9 +131,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             self.content.attributedText = mstring
         }
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.closeKeyboard()
+        if !editMode {
+            closeKeyboard()
+        }
     }
     
     
@@ -173,12 +182,10 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
         
     }
-  
-    
 
     @IBAction func done(_ sender: UIBarButtonItem) {
         if editMode {
-            self.back()
+            back()
             return
         }
         self.closeKeyboard()
@@ -273,7 +280,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         
     }
     
-    func getImage(_ image:UIImage,frame:CGRect)->UIImage {
+    func cutImage(_ image:UIImage,frame:CGRect)->UIImage {
         UIGraphicsBeginImageContextWithOptions(frame.size, false, UIScreen.main.scale)
         UIBezierPath(roundedRect: frame, cornerRadius: 5).addClip()
         image.draw(in: frame)
@@ -281,6 +288,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         UIGraphicsEndImageContext()
         return image!
     }
+    
     func addMultimediaToTextView(multimedia:AnyObject,at:Int = -1) {
         
         if multimedia.isKind(of: UIImage.self) {
@@ -288,7 +296,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             let textAttach = NSTextAttachment(data:nil, ofType: nil)
             let imageWidth = self.content.frame.width - 10;
             let imageHeight = image.size.height / image.size.width * imageWidth
-            textAttach.image = getImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+            textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
             let imageAttributeString = NSAttributedString(attachment:textAttach)
             
             if at == -1 {
