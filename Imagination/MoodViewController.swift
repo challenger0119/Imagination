@@ -134,9 +134,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if !editMode {
-            closeKeyboard()
-        }
+        
     }
     
     
@@ -235,7 +233,25 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
     }
     func back() {
-        self.dismiss(animated: true, completion: nil)
+        if !editMode {
+            closeKeyboard()
+        }
+        if !self.content.text.isEmpty {
+            let alert = UIAlertController(title: "提示", message: "现在返回内容将丢失", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "确定", style: .default, handler: {
+                action in
+                self.dismiss(animated: true, completion: nil)
+            }))
+            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: {
+                action in
+            }))
+            self.present(alert, animated: true, completion: {
+                
+            })
+        }else{
+            self.dismiss(animated: true, completion: nil)
+        }
+        
     }
     
     
