@@ -55,7 +55,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(closeKeyboard)))
-        let swipGesture = UISwipeGestureRecognizer(target: self, action: #selector(back))
+        let swipGesture = UISwipeGestureRecognizer(target: self, action: #selector(didSwipDown))
         swipGesture.direction = .down
         self.view.addGestureRecognizer(swipGesture)
         
@@ -232,26 +232,34 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             }
         }
     }
-    func back() {
+    func didSwipDown(){
         if !editMode {
             closeKeyboard()
-        }
-        if !self.content.text.isEmpty {
-            let alert = UIAlertController(title: "提示", message: "现在返回内容将丢失", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "确定", style: .default, handler: {
-                action in
+            if !self.content.text.isEmpty {
+                let alert = UIAlertController(title: "提示", message: "现在返回内容将丢失", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "确定", style: .default, handler: {
+                    action in
+                    self.dismiss(animated: true, completion: nil)
+                }))
+                alert.addAction(UIAlertAction(title: "取消", style: .default, handler: {
+                    action in
+                }))
+                self.present(alert, animated: true, completion: {
+                    
+                })
+            }else{
                 self.dismiss(animated: true, completion: nil)
-            }))
-            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: {
-                action in
-            }))
-            self.present(alert, animated: true, completion: {
-                
-            })
+            }
         }else{
             self.dismiss(animated: true, completion: nil)
         }
         
+    }
+    func back() {
+        if !editMode {
+            closeKeyboard()
+        }
+        self.dismiss(animated: true, completion: nil)
     }
     
     

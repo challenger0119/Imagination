@@ -20,6 +20,7 @@ class Item: NSObject {
     static let gpsSeparator = ","
     static let multiMediaIndicator = "->"
     static let multiMediaNameSeparator = "_"
+    static let multiMediaFileNameTimeSperator = Item.gpsSeparator //不干扰情况下，一时想不到别的了...
     
     fileprivate let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
     fileprivate let moodStrings = ["NA","Cool","Just OK","Confused"]
@@ -34,14 +35,14 @@ class Item: NSObject {
     var multiMediasDescrip:String = ""
     
     enum MutiMediaType:String {
-        case image = "Image",voice = "Voice",video = "Video"
+        case image = "Image",voice = "Voice",video = "Video",def = "multi"
     }
     
     init(contentString:String) {
         
         var array = contentString.components(separatedBy: Item.separator)
         if array.count < 2 {
-            array = contentString.components(separatedBy: Item.oldSeparator)
+            array = contentString.components(separatedBy: Item.oldSeparator) //之前版本的
         }
         if array.count >= 2 {
             self.content = array[0]
@@ -124,6 +125,9 @@ class Item: NSObject {
         super.init()
     }
     
+    class func multiMediaFileNameTime(day:String,time:String) -> String{
+        return day+multiMediaFileNameTimeSperator+time
+    }
     class func getMultiMediaNameArray(MultiMedia multiMedia:[Int:AnyObject],multiMediaName:String)->[String]{
         func getMediaTypeString(obj:AnyObject)->String?{
             if obj.isKind(of: UIImage.self) {
@@ -154,7 +158,7 @@ class Item: NSObject {
             if obj.isKind(of: UIImage.self) {
                 return self.MutiMediaType.image.rawValue
             }else{
-                return nil
+                return self.MutiMediaType.def.rawValue
             }
         }
         var multiMediaDic = [String:AnyObject]()
@@ -182,7 +186,7 @@ class Item: NSObject {
         return self.itemString(content, mood: mood) + self.separator + "\(GPSName)\(self.gpsSeparator)\(latitude)\(self.gpsSeparator)\(longtitude)"
     }
     
-    //xxx<->xxx<->img:xx_xx;img->xx_xx,xx_xx;voice->xx_xx;
+    //xxx<->xxx<->img->xx_xx;img->xx_xx;voice->xx_xx
     class func itemString(Content content:String,mood:Int,multiMedia:[Int:AnyObject],multiMediaName:String) ->String {
         
         var multiMediaoString:String = ""
@@ -192,7 +196,7 @@ class Item: NSObject {
         }
         return self.itemString(content, mood: mood) + self.separator + multiMediaoString
     }
-    //xxx<->xxx<->img:xx_xx;img:xx_xx,xx_xx;voice:xx_xx;<->xx,xx,xx
+    //xxx<->xxx<->img->xx_xx;img->xx_xx;voice->xx_xx<->xx,xx,xx
     class func itemString(Content content:String,mood:Int,GPSName:String,latitude:Double,longtitude:Double,multiMedia:[Int:AnyObject],multiMediaName:String) ->String {
         
         return self.itemString(Content: content, mood: mood, multiMedia: multiMedia, multiMediaName: multiMediaName) + self.separator + "\(GPSName)\(self.gpsSeparator)\(latitude)\(self.gpsSeparator)\(longtitude)"

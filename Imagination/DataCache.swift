@@ -42,6 +42,7 @@ class DataCache: NSObject {
     let newline = "\r\n"
     
     fileprivate let FILENAME_INDEX = "index"
+    fileprivate let MULTI_FILENAME_INDEX = "multimedia_index"
     //var isStart = true //启动标记 用于touchID
     let EMPTY_STRING = " "
     var fileState:(filename:String,lastDate:String)?
@@ -50,6 +51,8 @@ class DataCache: NSObject {
     var currentMonthName:String?
     var catalogue:[String]?
     var catalogue_month:[String]?
+    var multiMediaCatalogue:[String]?
+    
     var email:String?{
         set{
             UserDefaults.standard.set(newValue, forKey: "email")
@@ -83,17 +86,19 @@ class DataCache: NSObject {
                 if Time.today() == self.currentDayName {
                     let clock = Time.clock()
                     let today = self.currentDayName!
+                    let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
                     
-                    self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: today + clock), key: clock)
+                    self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: baseName), key: clock)
                     
-                    self.store(Multimedia: mm, baseName: today + clock)
+                    self.store(Multimedia: mm, baseName: baseName)
                 } else {
                     let clock = Time.clock()
                     let today = Time.today()
+                    let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
+                    self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
                     
-                    self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: today + clock)], currentDayName: today)
-                    
-                    self.store(Multimedia: mm, baseName: today + clock)                }
+                    self.store(Multimedia: mm, baseName: baseName)
+                }
             }else{
                 self.newString(Content: content, moodState: moodState, multiMedia: multiMedia)
             }
@@ -108,17 +113,17 @@ class DataCache: NSObject {
             if Time.today() == self.currentDayName {
                 let clock = Time.clock()
                 let today = self.currentDayName!
+                let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
+                self.updateLastday(Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: baseName), key: clock)
                 
-                self.updateLastday(Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: today + clock), key: clock)
-                
-                self.store(Multimedia: mm, baseName: today + clock)
+                self.store(Multimedia: mm, baseName: baseName)
             } else {
                 let clock = Time.clock()
                 let today = Time.today()
+                let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
+                self.initLastday([clock:Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
                 
-                self.initLastday([clock:Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: today + clock)], currentDayName: today)
-                
-                self.store(Multimedia: mm, baseName: today + clock)
+                self.store(Multimedia: mm, baseName: baseName)
             }
         }else{
             self.newStringContent(content, moodState: moodState)
@@ -241,11 +246,23 @@ class DataCache: NSObject {
             try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX)), options: [.atomic])
         }
     }
+    fileprivate func storeMultiMediaCatalogue(){
+        if multiMediaCatalogue != nil {
+            let myData = NSKeyedArchiver.archivedData(withRootObject: multiMediaCatalogue!)
+            try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(MULTI_FILENAME_INDEX)), options: [.atomic])
+        }
+    }
     //载入目录
     fileprivate func loadCatalogue(){
         catalogue?.removeAll()
         if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX))) {
             catalogue = (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Array)
+        }
+    }
+    fileprivate func loadMultiMediaCatalogue(){
+        multiMediaCatalogue?.removeAll()
+        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(MULTI_FILENAME_INDEX))) {
+            multiMediaCatalogue = (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Array)
         }
     }
     
@@ -337,6 +354,7 @@ class DataCache: NSObject {
         data.write(toFile: txtfile, atomically: true)
         return txtfile
     }
+    
     //导出
     //导出和备份不在同一逻辑下 所以不在一个目录放
     func createExportDataFile(_ from:String,to:String) ->String {
@@ -365,6 +383,47 @@ class DataCache: NSObject {
         })
     }
 
+    func createExportDataFile2(_ from:String,to:String) ->[String] {
+        //删除原有的 导出文件只需要一份
+        let mng = FileManager.default
+        do {
+            let files = try mng.contentsOfDirectory(atPath: FileManager.pathOfNameInCaches(""))
+            if !files.isEmpty {
+                for ff in files {
+                    let ffarray = ff.components(separatedBy: ".")
+                    if ffarray.count == 2 {
+                        do{
+                            try mng.removeItem(atPath: FileManager.TxtFileInCaches(ffarray[0]))
+                        } catch {
+                            
+                        }
+                    }
+                }
+            }
+        } catch {
+            
+        }
+        var files = [String]()
+        files.append(createFileAtPath(from, to: to, fileGetter: {
+            f,t in
+            return FileManager.TxtFileInCaches("\(f)_\(t)")
+        }))
+        
+        loadMultiMediaCatalogue()
+        if let cata = multiMediaCatalogue {
+            for str in cata{
+                //图片文件命名格式2017-01-07,21-17-94_0
+                let array = str.components(separatedBy: Item.multiMediaFileNameTimeSperator)
+                let date = array.first!
+                if (date > from && date < to) || date == from || to == date {
+                    files.append(FileManager.multiMediaFilePath(withName: str))
+                }
+            }
+        }
+        
+        return files
+    }
+    
     //备份
     //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
     func backupAll() -> String{

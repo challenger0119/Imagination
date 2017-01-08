@@ -76,7 +76,6 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
         if let vv = view {
-            Dlog("reusing")
             let tmp = vv as! UILabel
             if row == 0 {
                 if component == 0 {
@@ -89,7 +88,6 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
             }
             return tmp
         } else {
-            Dlog("not reusing")
             let label = UILabel.init(frame: CGRect(x: 0, y: 0, width: pickerView.frame.size.width/2, height: 40))
             label.textAlignment = NSTextAlignment.center
             if row == 0 {
