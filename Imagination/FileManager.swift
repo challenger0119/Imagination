@@ -92,15 +92,16 @@ extension FileManager {
         return self.multiMediaFilePath() + "/Pictures"
     }
     fileprivate class func imagePathWithName(_ name:String)->String{
-        return self.imageFilePath() + "/\(name)"
+        let tname = name.replacingOccurrences(of: ":", with: Item.oldSeparator)
+        return self.imageFilePath() + "/\(tname)"
     }
     
-    var compression:CGFloat{
+    static var compression:CGFloat{
         get{
             return 0.5
         }
     }
-    var isPng:Bool {
+    static var isPng:Bool {
         get{
             return false
         }
@@ -116,11 +117,7 @@ extension FileManager {
         
         var data:Data!
         let path:String = FileManager.imagePathWithName(name)
-        if isPng {
-            data = UIImagePNGRepresentation(image)
-        }else{
-            data = UIImageJPEGRepresentation(image, compression)
-        }
+        data = FileManager.imageData(image: image)
         Dlog("image file at \(path)")
         return self.createFile(atPath: path, contents: data, attributes: nil)
     }
@@ -140,6 +137,14 @@ extension FileManager {
 }
 
 extension FileManager{
+
+    class func imageData(image:UIImage) -> Data? {
+        if FileManager.isPng {
+            return UIImagePNGRepresentation(image)
+        }else{
+            return UIImageJPEGRepresentation(image, FileManager.compression)
+        }
+    }
     func create(Multimedia file:Any,name:String,type:Item.MutiMediaType) -> Bool{
         let filename = "\(type.rawValue)\(Item.multiMediaIndicator)\(name)"
         var path = ""
@@ -152,11 +157,7 @@ extension FileManager{
                 print("error createfile")
             }
             path = FileManager.imagePathWithName(filename)
-            if isPng {
-                data = UIImagePNGRepresentation(file as! UIImage)
-            }else{
-                data = UIImageJPEGRepresentation(file as! UIImage, compression)
-            }
+            data = FileManager.imageData(image: file as! UIImage)
         default:
             do{
                 try self.createDirectory(atPath: FileManager.multiMediaFilePath(), withIntermediateDirectories: true, attributes: nil)
@@ -169,34 +170,43 @@ extension FileManager{
         return self.createFile(atPath: path, contents: data, attributes: nil)
     }
     
-    class func store(Multimedia mm:Dictionary<Int,AnyObject>,baseName:String){
+    class func store(Multimedia mm:Dictionary<Int,AnyObject>,baseName:String)->[String]?{
         //考虑异步进行
         let fmng = FileManager.default
         let keys = Array(mm.keys)
+        var names = [String]()
         for key in keys {
             if let obj = mm[key] {
+                let name = "\(baseName)_\(key)"
                 if obj.isKind(of: UIImage.self) {
-                    if fmng.create(Multimedia: obj,name:"\(baseName)_\(key)", type: .image) {
+                    if fmng.create(Multimedia: obj,name:name, type: .image) {
                         Dlog("create image file Failed")
                     }
                 }else{
-                    let _ = fmng.createDefaultMultimediaFile(withName: "\(baseName)_\(key)", object: obj)
+                    let _ = fmng.createDefaultMultimediaFile(withName: name, object: obj)
                 }
+                names.append(name)
             }
         }
+        if names.count == 0 {
+            return nil
+        }else{
+            return names
+        }
     }
-    class func multimediaFileWith(Name nm:String) -> AnyObject? {
+    class func multimediaFileWith(Name nm:String) -> (name:String,type:Item.MutiMediaType,obj:AnyObject?) {
         let narray = nm.components(separatedBy: Item.multiMediaIndicator)
         
         switch narray[0] {
         case Item.MutiMediaType.image.rawValue:
             if let data = FileManager.imageFile(withName: nm) {
-                return data
+                return (nm,Item.MutiMediaType.image,data)
             }else{
-                return nil
+                return (nm,Item.MutiMediaType.image,nil)
             }
         default:
-            return NSKeyedUnarchiver.unarchiveObject(withFile: FileManager.multiMediaFilePath(withName: nm)) as AnyObject?
+            return (nm,Item.MutiMediaType.def,NSKeyedUnarchiver.unarchiveObject(withFile: FileManager.multiMediaFilePath(withName: nm)) as AnyObject?)
         }
     }
+    
 }

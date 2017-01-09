@@ -40,10 +40,10 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView .deselectRow(at: indexPath, animated: true)
         if (indexPath as NSIndexPath).row == 0 {
-            sendBackupToMail(dCache.backupToNow())
+            sendBackupToMail(result: dCache.backupToNow())
             updateRecentDetail()
         } else if (indexPath as NSIndexPath).row == 1 {
-            sendBackupToMail(dCache.backupAll())
+            sendBackupToMail(result: dCache.backupAll())
             updateRecentDetail()
         } else if (indexPath as NSIndexPath).row == 2 {
             picker = DataPicker.init(frame: CGRect(x: 20, y: (self.view.frame.height-200)/2-50, width: self.view.frame.width-40, height: 200), dele: self)
@@ -108,7 +108,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             vc.vType = AuthorityViewController.type.changePass
             self.present(vc, animated: true, completion: nil)
         } else if (indexPath as NSIndexPath).row == 6 {
-            sendByEmail("", fileName: "建议")
+            sendByEmail("", fileName: "建议",attachments: nil)
         }
     }
     
@@ -133,32 +133,23 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         updateReminder()
     }
     func dataPickerResult(_ first: String, second: String) {
-        sendExportToMail(dCache.createExportDataFile(first, to: second))
+        sendBackupToMail(result: dCache.createExportDataFile(first, to: second))
     }
     
     func isValidateEmail(_ email:String) -> Bool {
         return true
     }
-    
-    func sendBackupToMail(_ name:String) {
-        if name == dCache.EMPTY_STRING {
+ 
+    func sendBackupToMail(result:(txtfile:String,files:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?))  {
+        if result.txtfile == dCache.EMPTY_STRING {
             let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             return
         }
-        sendByEmail(name, fileName: name+".txt")
+        sendByEmail(result.txtfile, fileName: result.txtfile+".txt",attachments: result.files)
     }
-    func sendExportToMail(_ name:String) {
-        if name == dCache.EMPTY_STRING {
-            let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return
-        }
-        sendByEmail(name, fileName: name+".txt")
-    }
-    func sendByEmail(_ filePath:String,fileName:String) {
+    func sendByEmail(_ filePath:String,fileName:String,attachments:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?) {
         let vc = MFMailComposeViewController.init()
         vc.mailComposeDelegate = self
         let sub = NSString(string: filePath)
@@ -178,7 +169,16 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         if let dd = senddata {
             vc.addAttachmentData(dd, mimeType: "text/plain", fileName: sub.lastPathComponent)
         }
-        
+        if attachments != nil {
+            for atc in attachments! {
+                switch atc.type {
+                case .image:
+                    vc.addAttachmentData(FileManager.imageData(image: atc.obj as! UIImage)!, mimeType: "image/png", fileName: "")
+                default:
+                    vc.addAttachmentData(atc.obj as! Data, mimeType: "", fileName: "")
+                }
+            }
+        }
         self.present(vc, animated: true, completion: nil)
     }
     

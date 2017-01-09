@@ -90,14 +90,14 @@ class DataCache: NSObject {
                     
                     self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: baseName), key: clock)
                     
-                    FileManager.store(Multimedia: mm, baseName: baseName)
+                    store(Multimedia: mm, baseName: baseName)
                 } else {
                     let clock = Time.clock()
                     let today = Time.today()
                     let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
                     self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
                     
-                    FileManager.store(Multimedia: mm, baseName: baseName)
+                    store(Multimedia: mm, baseName: baseName)
                 }
             }else{
                 self.newString(Content: content, moodState: moodState, multiMedia: multiMedia)
@@ -116,14 +116,15 @@ class DataCache: NSObject {
                 let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
                 self.updateLastday(Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: baseName), key: clock)
                 
-                FileManager.store(Multimedia: mm, baseName: baseName)
+                store(Multimedia: mm, baseName: baseName)
             } else {
                 let clock = Time.clock()
                 let today = Time.today()
                 let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
                 self.initLastday([clock:Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
                 
-                FileManager.store(Multimedia: mm, baseName: baseName)
+                store(Multimedia: mm, baseName: baseName)
+                
             }
         }else{
             self.newStringContent(content, moodState: moodState)
@@ -149,7 +150,13 @@ class DataCache: NSObject {
         }
     }
     
-    
+    func store(Multimedia mm:Dictionary<Int,AnyObject>,baseName:String){
+        if let names = FileManager.store(Multimedia: mm, baseName: baseName) {
+            for name in names {
+                updateMultimediaCatalogue(name: name)
+            }
+        }
+    }
     //数据更新的两个方法
     func updateLastday(_ lastdayValue:String,key:String) {
         let _ = lastDay?.updateValue(lastdayValue, forKey: key)
@@ -165,7 +172,13 @@ class DataCache: NSObject {
         try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(self.currentDayName!)), options: [.atomic])
         updateCatalogue()
     }
-    
+    func updateMultimediaCatalogue(name:String){
+        if self.multiMediaCatalogue == nil {
+            self.multiMediaCatalogue = [name]
+        }else{
+            self.multiMediaCatalogue?.append(name)
+        }
+    }
     //初始化显示数据
     func loadLastDay(){
         loadCatalogue()
@@ -341,7 +354,7 @@ class DataCache: NSObject {
     
     //导出
     //导出和备份不在同一逻辑下 所以不在一个目录放
-    func createExportDataFile(_ from:String,to:String) ->String {
+    func createExportDataFile(_ from:String,to:String) ->(txtfile:String,files:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?) {
         //删除原有的 导出文件只需要一份
         let mng = FileManager.default
         do {
@@ -361,56 +374,39 @@ class DataCache: NSObject {
         } catch {
             
         }
-        return createFileAtPath(from, to: to, fileGetter: {
+        return (createFileAtPath(from, to: to, fileGetter: {
             f,t in
             return FileManager.TxtFileInCaches("\(f)_\(t)")
-        })
+        }),createMutimedateExportDataFile(from, to: to))
     }
+    
 
-    func createExportDataFile2(_ from:String,to:String) ->[String] {
-        //删除原有的 导出文件只需要一份
-        let mng = FileManager.default
-        do {
-            let files = try mng.contentsOfDirectory(atPath: FileManager.pathOfNameInCaches(""))
-            if !files.isEmpty {
-                for ff in files {
-                    let ffarray = ff.components(separatedBy: ".")
-                    if ffarray.count == 2 {
-                        do{
-                            try mng.removeItem(atPath: FileManager.TxtFileInCaches(ffarray[0]))
-                        } catch {
-                            
-                        }
-                    }
-                }
-            }
-        } catch {
-            
-        }
-        var files = [String]()
-        files.append(createFileAtPath(from, to: to, fileGetter: {
-            f,t in
-            return FileManager.TxtFileInCaches("\(f)_\(t)")
-        }))
-        
+    func createMutimedateExportDataFile(_ from:String,to:String) -> [(name:String,type:Item.MutiMediaType,obj:AnyObject?)]? {
+       
+        var array:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?
         loadMultiMediaCatalogue()
         if let cata = multiMediaCatalogue {
             for str in cata{
                 //图片文件命名格式:img->2017-01-07,21-17-94_0
                 let farray = str.components(separatedBy: Item.multiMediaIndicator)
-                let array = farray[1].components(separatedBy: Item.multiMediaFileNameTimeSperator)
-                let date = array.first!
-                if (date > from && date < to) || date == from || to == date {
-                    files.append(FileManager.multiMediaFilePath(withName: str))
+                let sarray = farray[1].components(separatedBy: Item.multiMediaFileNameTimeSperator)
+                let day = sarray[0]
+                
+                if day == from || day == to || (day > from && day < to ) {
+                    if array == nil {
+                        array = [FileManager.multimediaFileWith(Name: str)]
+                    }else{
+                        array?.append(FileManager.multimediaFileWith(Name: str))
+                    }
                 }
             }
         }
-        return files
+        return array
     }
     
     //备份
     //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
-    func backupAll() -> String{
+    func backupAll() -> (txtfile:String,files:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?) {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
             let _ = deleteDay(fileState!.filename)
@@ -418,27 +414,28 @@ class DataCache: NSObject {
         if let cc = catalogue {
             let start = cc[0]
             let end = cc[cc.count-1]
-            return createBackupFileWithAddtionalInfo(start, to: end)
+            return (createBackupFileWithAddtionalInfo(start, to: end),createMutimedateExportDataFile(start, to: end))
         }
-        return EMPTY_STRING
+        return (EMPTY_STRING,nil)
     }
     
-    func backupToNow() ->String {
+    func backupToNow() ->(txtfile:String,files:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?)  {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
             //如果之前有备份 就从之前备份到今天
             let _ = deleteDay(fileState!.filename)
-            return createBackupFileWithAddtionalInfo(fileState!.lastDate, to: Time.today())
+            return (createBackupFileWithAddtionalInfo(fileState!.lastDate, to: Time.today()),createMutimedateExportDataFile(fileState!.lastDate, to: Time.today()))
         } else {
             //如果之前没有备份 就全部备份
             if let cc = catalogue {
                 let start = cc[0]
                 let end = cc[cc.count-1]
-               return createBackupFileWithAddtionalInfo(start, to: end)
+               return (createBackupFileWithAddtionalInfo(start, to: end),createMutimedateExportDataFile(start, to: end))
             }
         }
-        return EMPTY_STRING
+        return (EMPTY_STRING,nil)
     }
+    
     func checkFileExist() {
         let mng = FileManager.default
         var lastTimeEnd = EMPTY_STRING

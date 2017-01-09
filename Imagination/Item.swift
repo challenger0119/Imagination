@@ -69,16 +69,16 @@ class Item: NSObject {
                             continue
                         }
                         let data = FileManager.multimediaFileWith(Name: file)
-                        if data == nil {
+                        if data.obj == nil {
                             //无数据
                             continue
                         }
                         let fileinfo = fileDescrip[1].components(separatedBy: Item.multiMediaNameSeparator)
                         
                         if self.multiMedias == nil {
-                            self.multiMedias = [Int(fileinfo[1])!:data!]
+                            self.multiMedias = [Int(fileinfo[1])!:data.obj!]
                         }else{
-                            let _ = self.multiMedias?.updateValue(data!, forKey: Int(fileinfo[1])!)
+                            let _ = self.multiMedias?.updateValue(data.obj!, forKey: Int(fileinfo[1])!)
                         }
                         
                         if self.multiMediaFile == nil {
@@ -100,16 +100,16 @@ class Item: NSObject {
                                 continue
                             }
                             let data = FileManager.multimediaFileWith(Name: file)
-                            if data == nil {
+                            if data.obj == nil {
                                 //无数据
                                 continue
                             }
                             let fileinfo = fileDescrip[1].components(separatedBy: Item.multiMediaNameSeparator)
                             
                             if self.multiMedias == nil {
-                                self.multiMedias = [Int(fileinfo[1])!:data!]
+                                self.multiMedias = [Int(fileinfo[1])!:data.obj!]
                             }else{
-                                let _ = self.multiMedias?.updateValue(data!, forKey: Int(fileinfo[1])!)
+                                let _ = self.multiMedias?.updateValue(data.obj!, forKey: Int(fileinfo[1])!)
                             }
                             
                             if self.multiMediaFile == nil {
