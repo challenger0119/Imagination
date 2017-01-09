@@ -58,21 +58,27 @@ class Item: NSObject {
                     self.place = (sb[0] ,Double(sb[1])!,Double(sb[2])!)
                     
                     string = array[2]
+                    
                     sb = string.components(separatedBy: Item.multiMediaSeparator)
                     self.multiMediasDescrip += "\n"
+                    
                     for file in sb {
+                        
                         let fileDescrip = file.components(separatedBy: Item.multiMediaIndicator)
                         if fileDescrip.count != 2 {
                             continue
                         }
-                        
+                        let data = FileManager.multimediaFileWith(Name: file)
+                        if data == nil {
+                            //无数据
+                            continue
+                        }
                         let fileinfo = fileDescrip[1].components(separatedBy: Item.multiMediaNameSeparator)
-                        if let img = FileManager.imageFile(withName: fileDescrip[1]) {
-                            if self.multiMedias == nil {
-                                self.multiMedias = [Int(fileinfo[1])!:img]
-                            }else{
-                                let _ = self.multiMedias?.updateValue(img, forKey: Int(fileinfo[1])!)
-                            }
+                        
+                        if self.multiMedias == nil {
+                            self.multiMedias = [Int(fileinfo[1])!:data!]
+                        }else{
+                            let _ = self.multiMedias?.updateValue(data!, forKey: Int(fileinfo[1])!)
                         }
                         
                         if self.multiMediaFile == nil {
@@ -90,21 +96,27 @@ class Item: NSObject {
                         self.multiMediasDescrip += "\n"
                         for file in sb {
                             let fileDescrip = file.components(separatedBy: Item.multiMediaIndicator)
+                            if fileDescrip.count != 2 {
+                                continue
+                            }
+                            let data = FileManager.multimediaFileWith(Name: file)
+                            if data == nil {
+                                //无数据
+                                continue
+                            }
+                            let fileinfo = fileDescrip[1].components(separatedBy: Item.multiMediaNameSeparator)
+                            
+                            if self.multiMedias == nil {
+                                self.multiMedias = [Int(fileinfo[1])!:data!]
+                            }else{
+                                let _ = self.multiMedias?.updateValue(data!, forKey: Int(fileinfo[1])!)
+                            }
+                            
                             if self.multiMediaFile == nil {
                                 self.multiMediaFile = [fileDescrip[0]:fileDescrip[1]]
                             }else{
                                 let _ = self.multiMediaFile?.updateValue(fileDescrip[1], forKey: fileDescrip[0])
                             }
-                            
-                            let fileinfo = fileDescrip[1].components(separatedBy: Item.multiMediaNameSeparator)
-                            if let img = FileManager.imageFile(withName: fileDescrip[1]) {
-                                if self.multiMedias == nil {
-                                    self.multiMedias = [Int(fileinfo[1])!:img]
-                                }else{
-                                    let _ = self.multiMedias?.updateValue(img, forKey: Int(fileinfo[1])!)
-                                }
-                            }
-                            
                             self.multiMediasDescrip += "[\(fileDescrip[0])]"
                         }
                         self.place = ("",0,0)

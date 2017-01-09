@@ -41,12 +41,21 @@ extension FileManager {
     }
     
     //Mutimedia file
-    class func multiMediaFilePath(withName name:String) -> String {
-        return self.multiMediaFilePath() + "/\(name.replacingOccurrences(of: ":", with: "-"))"
-    }
-    
     class func multiMediaFilePath() ->String {
         return self.documentsPath() + "/Multimedia"
+    }
+    
+    class func multiMediaFilePath(withName name:String) -> String {
+        let tname = name.replacingOccurrences(of: ":", with: Item.oldSeparator)
+        let narray = tname.components(separatedBy: Item.multiMediaIndicator)
+        var path = ""
+        switch narray[0] {
+        case Item.MutiMediaType.image.rawValue:
+            path = self.imagePathWithName(tname)
+        default:
+            path = self.multiMediaFilePath() + "/\(tname)"
+        }
+        return path
     }
     
     class func multiMediaFile(withName name:String)->AnyObject{
@@ -55,33 +64,6 @@ extension FileManager {
             return data as AnyObject;
         }else{
             return "" as AnyObject
-        }
-    }
-    
-    //MARK: - store image
-    class func imageFile(withName name:String) -> UIImage? {
-        let path = self.imagePathWithName(name)
-        if let data =  UIImage.init(contentsOfFile: path) {
-            return data
-        }else{
-            return nil
-        }
-    }
-    class func imageFilePath() -> String{
-        return self.multiMediaFilePath() + "/Pictures"
-    }
-    class func imagePathWithName(_ name:String)->String{
-        return self.imageFilePath() + "/\(name.replacingOccurrences(of: ":", with: "-"))"
-    }
-    
-    var compression:CGFloat{
-        get{
-            return 0.5
-        }
-    }
-    var isPng:Bool {
-        get{
-            return false
         }
     }
     func createDefaultMultimediaFile(withName name:String,object:AnyObject) -> Bool{
@@ -97,7 +79,35 @@ extension FileManager {
         return self.createFile(atPath: path, contents: data, attributes: nil)
     }
     
-    func createImageFileWithName(_ name:String,image:UIImage)->Bool{
+    //MARK: - store image
+    fileprivate class func imageFile(withName name:String) -> UIImage? {
+        let path = self.imagePathWithName(name)
+        if let data =  UIImage.init(contentsOfFile: path) {
+            return data
+        }else{
+            return nil
+        }
+    }
+    fileprivate class func imageFilePath() -> String{
+        return self.multiMediaFilePath() + "/Pictures"
+    }
+    fileprivate class func imagePathWithName(_ name:String)->String{
+        return self.imageFilePath() + "/\(name)"
+    }
+    
+    var compression:CGFloat{
+        get{
+            return 0.5
+        }
+    }
+    var isPng:Bool {
+        get{
+            return false
+        }
+    }
+    
+    
+    private func createImageFileWithName(_ name:String,image:UIImage)->Bool{
         do{
             try self.createDirectory(atPath: FileManager.imageFilePath(), withIntermediateDirectories: true, attributes: nil)
         }catch{
@@ -115,7 +125,7 @@ extension FileManager {
         return self.createFile(atPath: path, contents: data, attributes: nil)
     }
     
-    func deleteImageFileWithName(_ name:String)->Bool{
+    private func deleteImageFileWithName(_ name:String)->Bool{
         do{
             try self.removeItem(atPath: FileManager.imagePathWithName(name))
             return true
@@ -124,9 +134,69 @@ extension FileManager {
         }
     }
     
-    class func allImageFilePaths()->[String]?{
+    private class func allImageFilePaths()->[String]?{
         return FileManager.default.subpaths(atPath: self.documentsPath() + "/Pictures")
     }
+}
 
+extension FileManager{
+    func create(Multimedia file:Any,name:String,type:Item.MutiMediaType) -> Bool{
+        let filename = "\(type.rawValue)\(Item.multiMediaIndicator)\(name)"
+        var path = ""
+        var data:Data!
+        switch type {
+        case .image:
+            do{
+                try self.createDirectory(atPath: FileManager.imageFilePath(), withIntermediateDirectories: true, attributes: nil)
+            }catch{
+                print("error createfile")
+            }
+            path = FileManager.imagePathWithName(filename)
+            if isPng {
+                data = UIImagePNGRepresentation(file as! UIImage)
+            }else{
+                data = UIImageJPEGRepresentation(file as! UIImage, compression)
+            }
+        default:
+            do{
+                try self.createDirectory(atPath: FileManager.multiMediaFilePath(), withIntermediateDirectories: true, attributes: nil)
+            }catch{
+                print("error createfile")
+            }
+            path = FileManager.multiMediaFilePath(withName: filename)
+            data = NSKeyedArchiver.archivedData(withRootObject: file)
+        }
+        return self.createFile(atPath: path, contents: data, attributes: nil)
+    }
     
+    class func store(Multimedia mm:Dictionary<Int,AnyObject>,baseName:String){
+        //考虑异步进行
+        let fmng = FileManager.default
+        let keys = Array(mm.keys)
+        for key in keys {
+            if let obj = mm[key] {
+                if obj.isKind(of: UIImage.self) {
+                    if fmng.create(Multimedia: obj,name:"\(baseName)_\(key)", type: .image) {
+                        Dlog("create image file Failed")
+                    }
+                }else{
+                    let _ = fmng.createDefaultMultimediaFile(withName: "\(baseName)_\(key)", object: obj)
+                }
+            }
+        }
+    }
+    class func multimediaFileWith(Name nm:String) -> AnyObject? {
+        let narray = nm.components(separatedBy: Item.multiMediaIndicator)
+        
+        switch narray[0] {
+        case Item.MutiMediaType.image.rawValue:
+            if let data = FileManager.imageFile(withName: nm) {
+                return data
+            }else{
+                return nil
+            }
+        default:
+            return NSKeyedUnarchiver.unarchiveObject(withFile: FileManager.multiMediaFilePath(withName: nm)) as AnyObject?
+        }
+    }
 }

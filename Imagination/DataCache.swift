@@ -90,14 +90,14 @@ class DataCache: NSObject {
                     
                     self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: baseName), key: clock)
                     
-                    self.store(Multimedia: mm, baseName: baseName)
+                    FileManager.store(Multimedia: mm, baseName: baseName)
                 } else {
                     let clock = Time.clock()
                     let today = Time.today()
                     let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
                     self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
                     
-                    self.store(Multimedia: mm, baseName: baseName)
+                    FileManager.store(Multimedia: mm, baseName: baseName)
                 }
             }else{
                 self.newString(Content: content, moodState: moodState, multiMedia: multiMedia)
@@ -116,14 +116,14 @@ class DataCache: NSObject {
                 let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
                 self.updateLastday(Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: baseName), key: clock)
                 
-                self.store(Multimedia: mm, baseName: baseName)
+                FileManager.store(Multimedia: mm, baseName: baseName)
             } else {
                 let clock = Time.clock()
                 let today = Time.today()
                 let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
                 self.initLastday([clock:Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
                 
-                self.store(Multimedia: mm, baseName: baseName)
+                FileManager.store(Multimedia: mm, baseName: baseName)
             }
         }else{
             self.newStringContent(content, moodState: moodState)
@@ -164,22 +164,6 @@ class DataCache: NSObject {
         let myData = NSKeyedArchiver.archivedData(withRootObject: lastDay!)
         try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(self.currentDayName!)), options: [.atomic])
         updateCatalogue()
-    }
-    
-    func store(Multimedia mm: [Int:AnyObject],baseName:String) {
-        //考虑异步进行
-        let fmng = FileManager.default
-        
-        let keys = Array(mm.keys)
-        for key in keys {
-            if let obj = mm[key] {
-                if obj.isKind(of: UIImage.self) {
-                    let _ = fmng.createImageFileWithName("\(baseName)_\(key)", image: obj as! UIImage)
-                }else{
-                    let _ = fmng.createDefaultMultimediaFile(withName: "\(baseName)_\(key)", object: obj)
-                }
-            }
-        }
     }
     
     //初始化显示数据
@@ -412,15 +396,15 @@ class DataCache: NSObject {
         loadMultiMediaCatalogue()
         if let cata = multiMediaCatalogue {
             for str in cata{
-                //图片文件命名格式2017-01-07,21-17-94_0
-                let array = str.components(separatedBy: Item.multiMediaFileNameTimeSperator)
+                //图片文件命名格式:img->2017-01-07,21-17-94_0
+                let farray = str.components(separatedBy: Item.multiMediaIndicator)
+                let array = farray[1].components(separatedBy: Item.multiMediaFileNameTimeSperator)
                 let date = array.first!
                 if (date > from && date < to) || date == from || to == date {
                     files.append(FileManager.multiMediaFilePath(withName: str))
                 }
             }
         }
-        
         return files
     }
     
