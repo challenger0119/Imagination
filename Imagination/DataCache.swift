@@ -51,7 +51,7 @@ class DataCache: NSObject {
     var currentMonthName:String?
     var catalogue:[String]?
     var catalogue_month:[String]?
-    var multiMediaCatalogue:[String]?
+    var multiMediaCatalogue:Set<String>?
     
     var email:String?{
         set{
@@ -69,6 +69,18 @@ class DataCache: NSObject {
     
     fileprivate func updateCatalogue() {
         if let cata = catalogue {
+            if (cata.index(of: currentDayName!) == nil) {
+                catalogue?.append(currentDayName!)
+                storeCatalogue()
+            }
+        } else {
+            catalogue = Array.init(arrayLiteral: currentDayName!)
+            storeCatalogue()
+        }
+    }
+    
+    fileprivate func updateMultimediaCatalogue() {
+        if let cata = multiMediaCatalogue {
             if (cata.index(of: currentDayName!) == nil) {
                 catalogue?.append(currentDayName!)
                 storeCatalogue()
@@ -176,8 +188,9 @@ class DataCache: NSObject {
         if self.multiMediaCatalogue == nil {
             self.multiMediaCatalogue = [name]
         }else{
-            self.multiMediaCatalogue?.append(name)
+            self.multiMediaCatalogue?.insert(name)
         }
+        storeMultiMediaCatalogue()
     }
     //初始化显示数据
     func loadLastDay(){
@@ -259,7 +272,7 @@ class DataCache: NSObject {
     fileprivate func loadMultiMediaCatalogue(){
         multiMediaCatalogue?.removeAll()
         if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(MULTI_FILENAME_INDEX))) {
-            multiMediaCatalogue = (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Array)
+            multiMediaCatalogue = (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Set)
         }
     }
     
@@ -307,7 +320,6 @@ class DataCache: NSObject {
         }else{
             return 0 //解析错误
         }
-        
     }
     //创建文件
     fileprivate func createBackupFileWithAddtionalInfo(_ from:String,to:String) -> String {
@@ -420,6 +432,7 @@ class DataCache: NSObject {
     }
     
     func backupToNow() ->(txtfile:String,files:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?)  {
+        
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
             //如果之前有备份 就从之前备份到今天

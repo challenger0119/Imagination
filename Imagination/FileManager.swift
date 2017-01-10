@@ -145,7 +145,14 @@ extension FileManager{
             return UIImageJPEGRepresentation(image, FileManager.compression)
         }
     }
-    func create(Multimedia file:Any,name:String,type:Item.MutiMediaType) -> Bool{
+    class func imageName(name:String)->String{
+        if FileManager.isPng {
+            return name+".png"
+        }else{
+            return name+".jpg"
+        }
+    }
+    func create(Multimedia file:Any,name:String,type:Item.MutiMediaType) -> String{
         let filename = "\(type.rawValue)\(Item.multiMediaIndicator)\(name)"
         var path = ""
         var data:Data!
@@ -167,7 +174,11 @@ extension FileManager{
             path = FileManager.multiMediaFilePath(withName: filename)
             data = NSKeyedArchiver.archivedData(withRootObject: file)
         }
-        return self.createFile(atPath: path, contents: data, attributes: nil)
+        if self.createFile(atPath: path, contents: data, attributes: nil) {
+            return filename
+        }else{
+            return ""
+        }
     }
     
     class func store(Multimedia mm:Dictionary<Int,AnyObject>,baseName:String)->[String]?{
@@ -177,11 +188,9 @@ extension FileManager{
         var names = [String]()
         for key in keys {
             if let obj = mm[key] {
-                let name = "\(baseName)_\(key)"
+                var name = "\(baseName)_\(key)"
                 if obj.isKind(of: UIImage.self) {
-                    if fmng.create(Multimedia: obj,name:name, type: .image) {
-                        Dlog("create image file Failed")
-                    }
+                    name = fmng.create(Multimedia: obj,name:name, type: .image)
                 }else{
                     let _ = fmng.createDefaultMultimediaFile(withName: name, object: obj)
                 }

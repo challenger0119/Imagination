@@ -173,9 +173,9 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             for atc in attachments! {
                 switch atc.type {
                 case .image:
-                    vc.addAttachmentData(FileManager.imageData(image: atc.obj as! UIImage)!, mimeType: "image/png", fileName: "")
+                    vc.addAttachmentData(FileManager.imageData(image: atc.obj as! UIImage)!, mimeType: "image/jpg", fileName: FileManager.imageName(name: atc.name))
                 default:
-                    vc.addAttachmentData(atc.obj as! Data, mimeType: "", fileName: "")
+                    vc.addAttachmentData(atc.obj as! Data, mimeType: "", fileName: atc.name)
                 }
             }
         }

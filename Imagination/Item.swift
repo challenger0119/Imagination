@@ -90,11 +90,11 @@ class Item: NSObject {
                     }
                 }else{
                     let string = array[2]
-                    var sb = string.components(separatedBy: Item.gpsSeparator)
-                    if sb.count < 2{
-                        sb = string.components(separatedBy: Item.multiMediaSeparator)
+                    var sbs = string.components(separatedBy: Item.gpsSeparator)
+                    if sbs.count <= 2{
+                        sbs = string.components(separatedBy: Item.multiMediaSeparator)
                         self.multiMediasDescrip += "\n"
-                        for file in sb {
+                        for file in sbs {
                             let fileDescrip = file.components(separatedBy: Item.multiMediaIndicator)
                             if fileDescrip.count != 2 {
                                 continue
@@ -121,7 +121,7 @@ class Item: NSObject {
                         }
                         self.place = ("",0,0)
                     }else{
-                        self.place = (sb[0] ,Double(sb[1])!,Double(sb[2])!)
+                        self.place = (sbs[0] ,Double(sbs[1])!,Double(sbs[2])!)
                     }
                 }
             }
