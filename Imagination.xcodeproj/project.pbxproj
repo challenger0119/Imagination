@@ -21,6 +21,7 @@
 		F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */; };
 		F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */; };
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
+		F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */; };
 		F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918A1C17CAE500650406 /* MoreViewController.swift */; };
 		F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918E1C19123F00650406 /* DataPicker.swift */; };
 		F8E991911C19233800650406 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E991901C19233800650406 /* MessageUI.framework */; };
@@ -47,6 +48,7 @@
 		F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
+		F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaodeMapApi.swift; sourceTree = "<group>"; };
 		F8E9918A1C17CAE500650406 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		F8E9918E1C19123F00650406 /* DataPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPicker.swift; sourceTree = "<group>"; };
 		F8E991901C19233800650406 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -116,6 +118,7 @@
 				F87E8F7D1D7ADDFF002954B9 /* Log.swift */,
 				F870EF751C37BBB5008EF34D /* Item.swift */,
 				F81283971C3F82E8002985A7 /* Notification.swift */,
+				F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,
+				F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */,
 				F870EF761C37BBB5008EF34D /* Item.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */,
@@ -359,7 +363,7 @@
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = imas.Imagination;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ujet.Imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -378,7 +382,7 @@
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = imas.Imagination;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ujet.Imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

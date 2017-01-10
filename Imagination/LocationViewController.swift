@@ -68,6 +68,8 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
             }
         })
     }
+
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -76,6 +78,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.locManager.stopUpdatingLocation()
         if let newLocation = locations.last {
+            GaodeMapApi.getNearByLocations(cor: newLocation.coordinate)
             self.addAnnotationWithCoordinate(newLocation)
         }
     }
@@ -115,7 +118,6 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
             let annoVIew = MKPinAnnotationView.init(annotation: annotation, reuseIdentifier: reusableIdentifier)
             annoVIew.canShowCallout = true
             annoVIew.pinTintColor = MKPinAnnotationView.redPinColor()
-            //annoVIew.animatesDrop = true
             annoVIew.isHighlighted = true
             annoVIew.isDraggable = true
             return annoVIew
@@ -139,10 +141,8 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                 }else{
                     Dlog(error!.localizedDescription);
                 }
-                
             })
         }
-        
     }
     
     func mapViewDidFailLoadingMap(_ mapView: MKMapView, withError error: Error) {

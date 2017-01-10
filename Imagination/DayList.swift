@@ -67,8 +67,6 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
         return 40.0
     }
     
-    
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         if let cell = table.dequeueReusableCell(withIdentifier: "daylistcell") {

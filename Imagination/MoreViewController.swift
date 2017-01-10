@@ -149,6 +149,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         }
         sendByEmail(result.txtfile, fileName: result.txtfile+".txt",attachments: result.files)
     }
+    
     func sendByEmail(_ filePath:String,fileName:String,attachments:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?) {
         let vc = MFMailComposeViewController.init()
         vc.mailComposeDelegate = self
