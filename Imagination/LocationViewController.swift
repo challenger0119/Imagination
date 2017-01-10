@@ -15,11 +15,12 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
     var locManager:CLLocationManager!
-    var places:[CLPlacemark]?
-    var placeSelected:((_ place:CLPlacemark)->Void)?
+    var placeInfo:[(name:String,coor:CLLocationCoordinate2D)] = []
+    var placeSelected:((_ place:(name:String,coor:CLLocationCoordinate2D))->Void)?
     let coder = CLGeocoder()
     var animation:UIActivityIndicatorView!
     var placeToShow:CLLocationCoordinate2D? //外面传进来
+    var onceBool:Bool = false
     override func viewDidLoad() {
         super.viewDidLoad()
         locManager = CLLocationManager()
@@ -35,7 +36,6 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         
         tableView.delegate = self
         tableView.dataSource = self
-        
         animation = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         animation.frame = CGRect(x:self.view.frame.width/2-50,y:self.view.frame.height/2-50,width:100, height:100)
         self.view .addSubview(animation)
@@ -49,6 +49,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     }
 
     func addAnnotationWithCoordinate(_ loc:CLLocation) {
+        self.mapView.removeAnnotations(self.mapView.annotations)
         animation.startAnimating()
         coder.reverseGeocodeLocation(loc, completionHandler: {
             pls,error in
@@ -56,20 +57,18 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
             if error == nil {
                 
                 if let place = pls?.first {
-                    let region = MKCoordinateRegionMakeWithDistance(place.location!.coordinate, 2000, 2000)
+                    let region = MKCoordinateRegionMakeWithDistance(place.location!.coordinate, 1500, 1500)
                     self.mapView.setRegion(region, animated: true)
                     self.mapView.addAnnotation(Annotation(coor: place.location!.coordinate,pMark: place))
-                    self.mapView.addAnnotation(Annotation(coor: place.location!.coordinate, pMark: place))
                 }
-                self.places = pls
-                self.tableView.reloadData()
+                
             }else{
                 Dlog(error!.localizedDescription);
             }
         })
     }
 
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -78,18 +77,25 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.locManager.stopUpdatingLocation()
         if let newLocation = locations.last {
-            GaodeMapApi.getNearByLocations(cor: newLocation.coordinate)
-            self.addAnnotationWithCoordinate(newLocation)
+            if !onceBool {
+                onceBool = true
+                GaodeMapApi.getNearByLocations(cor: newLocation.coordinate){
+                    rst in
+                    self.placeInfo = rst
+                    DispatchQueue.main.async {
+                        self.addAnnotationWithCoordinate(CLLocation(latitude: self.placeInfo.first!.coor.latitude, longitude: self.placeInfo.first!.coor.longitude))
+                        self.tableView.reloadData()
+                        self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
+                    }
+                }
+            }
+            
         }
     }
 
     //MARK: -Table
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let pls = self.places {
-            return pls.count
-        }else{
-            return 0
-        }
+        return self.placeInfo.count
     }
     internal func numberOfSections(in tableView: UITableView) -> Int {
         return 1;
@@ -97,16 +103,17 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reusableIdentifier, for: indexPath as IndexPath)
-        cell.textLabel?.text = self.places![indexPath.row].name
+        cell.selectionStyle = .gray
+        cell.textLabel?.text = self.placeInfo[indexPath.row].name
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if self.placeSelected != nil {
-            let place = self.places![indexPath.row]
+            let place = self.placeInfo[indexPath.row]
             self.placeSelected!(place)
+            addAnnotationWithCoordinate(CLLocation(latitude: place.coor.latitude, longitude: place.coor.longitude))
         }
-        self.navigationController!.popViewController(animated: true)
     }
     
     //MARK: MapViewDelegate
@@ -135,9 +142,10 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                     if let place = pls?.first {
                         self.mapView.removeAnnotation(view.annotation!)
                         self.mapView.addAnnotation(Annotation(coor: place.location!.coordinate, pMark: place))
+                        self.placeInfo.insert((place.name!,place.location!.coordinate), at: 0)
+                        self.tableView.reloadData()
+                        self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
                     }
-                    self.places = pls
-                    self.tableView.reloadData()
                 }else{
                     Dlog(error!.localizedDescription);
                 }

@@ -91,7 +91,7 @@ class DataCache: NSObject {
         }
     }
 
-    func newString(Content content:String, moodState:Int,GPSPlace:CLPlacemark?,multiMedia:Dictionary<Int,AnyObject>?){
+    func newString(Content content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?,multiMedia:Dictionary<Int,AnyObject>?){
         
         if let mm = multiMedia {
             if let gps = GPSPlace {
@@ -100,14 +100,14 @@ class DataCache: NSObject {
                     let today = self.currentDayName!
                     let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
                     
-                    self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: baseName), key: clock)
+                    self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm,multiMediaName: baseName), key: clock)
                     
                     store(Multimedia: mm, baseName: baseName)
                 } else {
                     let clock = Time.clock()
                     let today = Time.today()
                     let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
-                    self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
+                    self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
                     
                     store(Multimedia: mm, baseName: baseName)
                 }
@@ -142,12 +142,12 @@ class DataCache: NSObject {
             self.newStringContent(content, moodState: moodState)
         }
     }
-    func newStringContent(_ content:String, moodState:Int,GPSPlace:CLPlacemark?){
+    func newStringContent(_ content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?){
         if let gps = GPSPlace {
             if Time.today() == self.currentDayName {
-                self.updateLastday(Item.itemString(content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude), key: Time.clock())
+                self.updateLastday(Item.itemString(content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude), key: Time.clock())
             } else {
-                self.initLastday([Time.clock():Item.itemString(content, mood: moodState,GPSName: gps.name!,latitude:gps.location!.coordinate.latitude,longtitude:gps.location!.coordinate.longitude)], currentDayName: Time.today())
+                self.initLastday([Time.clock():Item.itemString(content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude)], currentDayName: Time.today())
             }
         }else{
             self.newStringContent(content, moodState: moodState)

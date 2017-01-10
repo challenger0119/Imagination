@@ -18,9 +18,9 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     var text:String = " "
     let keyboardDistance:CGFloat = 10
     
-    var place:CLPlacemark?{
+    var place:(name:String,coor:CLLocationCoordinate2D)?{
         didSet{
-            self.placeInfo = (self.place!.name!,self.place!.location!.coordinate.latitude, self.place!.location!.coordinate.longitude)
+            self.placeInfo = (self.place!.name,self.place!.coor.latitude, self.place!.coor.longitude)
         }
     }
     
