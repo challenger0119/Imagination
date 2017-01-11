@@ -38,7 +38,10 @@ class GaodeMapApi: NSObject {
                     if Int(dic["status"] as! String)!  == 1 {
                         let regeocodes = dic["regeocode"] as! Dictionary<String,AnyObject>
                         
+                        /*
+                        //基础地址没有原生的好，只用附近
                         let addressComponent = regeocodes["addressComponent"] as! Dictionary<String,AnyObject>
+                        
                         let address = regeocodes["formatted_address"] as! String
                         let streetNumber = addressComponent["streetNumber"] as! Dictionary<String,AnyObject>
                         let location = streetNumber["location"] as! String
@@ -49,6 +52,7 @@ class GaodeMapApi: NSObject {
                         }else{
                             result.append((address,CLLocationCoordinate2D()))
                         }
+ */
                         
                         let pois = regeocodes["pois"] as! [Dictionary<String,AnyObject>]
                         for poi in pois {

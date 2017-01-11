@@ -21,6 +21,9 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     var animation:UIActivityIndicatorView!
     var placeToShow:CLLocationCoordinate2D? //外面传进来
     var onceBool:Bool = false
+    
+    let lock = NSLock() //对placeInfo的操作存在线程安全问题
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         locManager = CLLocationManager()
@@ -48,7 +51,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         }
     }
 
-    func addAnnotationWithCoordinate(_ loc:CLLocation) {
+    func addAnnotationWithCoordinate(_ loc:CLLocation,additionalWork:((_ place:(name:String,coor:CLLocationCoordinate2D))->Void)? = nil) {
         self.mapView.removeAnnotations(self.mapView.annotations)
         animation.startAnimating()
         coder.reverseGeocodeLocation(loc, completionHandler: {
@@ -60,11 +63,8 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                     let region = MKCoordinateRegionMakeWithDistance(place.location!.coordinate, 1500, 1500)
                     self.mapView.setRegion(region, animated: true)
                     self.mapView.addAnnotation(Annotation(coor: place.location!.coordinate,pMark: place))
-                    if self.placeInfo.count == 0{
-                        self.placeInfo.append((place.name!,place.location!.coordinate))
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
+                    if additionalWork != nil {
+                        additionalWork!((place.name!,place.location!.coordinate))
                     }
                 }
                 
@@ -82,27 +82,35 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         })
     }
 
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     //MARK: -Location
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         self.locManager.stopUpdatingLocation()
         if let newLocation = locations.last {
             if !onceBool {
                 onceBool = true
-                GaodeMapApi.getNearByLocations(cor: newLocation.coordinate){
+                
+                addAnnotationWithCoordinate(newLocation,additionalWork: {
+                    place in
+                    self.lock.lock()
+                    self.placeInfo.insert(place, at: 0)
+                    self.lock.unlock()
+                    self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .top)
+                }) //当前位置
+                GaodeMapApi.getNearByLocations(cor: gaodeTransformCoordinate(cor: newLocation.coordinate)){
                     rst in
                     if rst.count == 0 {
                         self.addAnnotationWithCoordinate(newLocation)
                     }else{
-                        self.placeInfo = rst
+                        self.lock.lock()
+                        if self.placeInfo.count == 0 {
+                            self.placeInfo = rst
+                        }else{
+                            self.placeInfo.append(contentsOf: rst)
+                        }
+                        self.lock.unlock()
+                        
                         DispatchQueue.main.async {
-                            self.addAnnotationWithCoordinate(CLLocation(latitude: self.placeInfo.first!.coor.latitude, longitude: self.placeInfo.first!.coor.longitude))
                             self.tableView.reloadData()
-                            self.defaultSelectFirstRow()
                         }
                     }
                 }
@@ -211,5 +219,11 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
             return cor;
         }
     }
-
+    
+    //114.405585,30.5104631  114.409071913811,30.5115709534853 后面为实际，前面为得到
+    func gaodeTransformCoordinate(cor:CLLocationCoordinate2D)->CLLocationCoordinate2D{
+        let newx = cor.latitude*(30.5104631/30.5120709534853)
+        let newy = cor.longitude*(114.411071913811/114.405585)
+        return CLLocationCoordinate2D(latitude: newx, longitude: newy)
+    }
 }
