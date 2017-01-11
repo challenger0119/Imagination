@@ -15,12 +15,21 @@ class GaodeMapApi: NSObject {
     
     
     class func getNearByLocations(cor:CLLocationCoordinate2D,rst:@escaping (([(name:String,coor:CLLocationCoordinate2D)])->Void)){
+        var result = [(name:String,coor:CLLocationCoordinate2D)]()
+        
+        let reach = Reachability.forInternetConnection()
+        
+        let status = reach!.currentReachabilityStatus()
+        if status == NotReachable {
+            rst(result)
+            return
+        }
         let request = URLRequest(url:URL(string: "http://restapi.amap.com/v3/geocode/regeo?key=b62433a0d53d3b34eb8118264934f700&location=\(cor.longitude),\(cor.latitude)&extensions=all")!)
         Dlog(request.url?.absoluteString)
-        let session = URLSession.shared
         
+        let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, respond, error) in
-            var result = [(name:String,coor:CLLocationCoordinate2D)]()
+            
             
             if let dd = data {
                 do {

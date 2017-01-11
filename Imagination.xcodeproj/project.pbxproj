@@ -16,6 +16,7 @@
 		F81283981C3F82E8002985A7 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81283971C3F82E8002985A7 /* Notification.swift */; };
 		F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF731C378CB7008EF34D /* MoodViewController.swift */; };
 		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
+		F8723F141E260527009CCF44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F8723F131E260527009CCF44 /* Reachability.m */; };
 		F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87E8F7D1D7ADDFF002954B9 /* Log.swift */; };
 		F88D3BA51C14678600A3C921 /* DayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D3BA41C14678600A3C921 /* DayList.swift */; };
 		F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */; };
@@ -43,6 +44,9 @@
 		F81283971C3F82E8002985A7 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		F870EF731C378CB7008EF34D /* MoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodViewController.swift; sourceTree = "<group>"; };
 		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Imagination-Bridging-Header.h"; sourceTree = "<group>"; };
+		F8723F121E260527009CCF44 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		F8723F131E260527009CCF44 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		F87E8F7D1D7ADDFF002954B9 /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		F88D3BA41C14678600A3C921 /* DayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayList.swift; sourceTree = "<group>"; };
 		F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
@@ -111,6 +115,8 @@
 		F8730EB81DC06E0D009112CE /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F8723F121E260527009CCF44 /* Reachability.h */,
+				F8723F131E260527009CCF44 /* Reachability.m */,
 				F812297C1BF777AB00BDCF0E /* DataCache.swift */,
 				F8D5C4081C01EE8600179853 /* FileManager.swift */,
 				F8F28CF41C0DB9D40007EDE3 /* Time.swift */,
@@ -119,6 +125,7 @@
 				F870EF751C37BBB5008EF34D /* Item.swift */,
 				F81283971C3F82E8002985A7 /* Notification.swift */,
 				F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */,
+				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -182,7 +189,7 @@
 					F812295D1BF73C6C00BDCF0E = {
 						CreatedOnToolsVersion = 7.1;
 						DevelopmentTeam = 4ZF25P449K;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -239,6 +246,7 @@
 				F81283981C3F82E8002985A7 /* Notification.swift in Sources */,
 				F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */,
 				F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */,
+				F8723F141E260527009CCF44 /* Reachability.m in Sources */,
 				F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,6 +363,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 4ZF25P449K;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -365,6 +374,8 @@
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = imas.Imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -374,6 +385,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 4ZF25P449K;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -384,6 +396,7 @@
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = imas.Imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

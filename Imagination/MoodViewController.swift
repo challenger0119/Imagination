@@ -20,13 +20,17 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     
     var place:(name:String,coor:CLLocationCoordinate2D)?{
         didSet{
-            self.placeInfo = (self.place!.name,self.place!.coor.latitude, self.place!.coor.longitude)
+            if self.place == nil {
+                self.placeInfo = nil
+            }else{
+               self.placeInfo = (self.place!.name,self.place!.coor.latitude, self.place!.coor.longitude)
+            }
         }
     }
     
     var placeInfo:(name:String,latitude:Double,longtitude:Double)?{
         didSet{
-            if self.getLocBtn != nil && self.getLocBtn.titleLabel != nil{
+            if self.placeInfo != nil && self.getLocBtn != nil && self.getLocBtn.titleLabel != nil{
                 self.getLocBtn.setTitle(self.placeInfo!.name, for: .normal)
             }
         }
@@ -94,6 +98,9 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         let backItem = UIBarButtonItem()
         backItem.title = "返回"
         self.navigationItem.backBarButtonItem = backItem
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressAction(gesture:)))
+        self.getLocBtn.addGestureRecognizer(longPress)
     }
     
     
@@ -132,11 +139,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-    }
-    
     
     @IBAction func noGoodBtnClicked() {
         if moodState == 2 {
@@ -166,6 +168,15 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         self.goodBtn.setTitleColor(UIColor.white, for: UIControlState())
     }
    
+    func longPressAction(gesture:UILongPressGestureRecognizer){
+        if gesture.state == .began {
+            removeLocation()
+        }
+    }
+    func removeLocation(){
+        self.place = nil
+        self.getLocBtn.setTitle("获取地理位置", for: .normal)
+    }
     func closeKeyboard() {
         content.resignFirstResponder()
         self.bottomContraint.constant = self.keyboardDistance;
@@ -334,7 +345,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     
     
-    //MARK: - UITextViewDelegate
     
     //MARK: - UIImagePickerViewControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

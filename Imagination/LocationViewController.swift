@@ -60,10 +60,24 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                     let region = MKCoordinateRegionMakeWithDistance(place.location!.coordinate, 1500, 1500)
                     self.mapView.setRegion(region, animated: true)
                     self.mapView.addAnnotation(Annotation(coor: place.location!.coordinate,pMark: place))
+                    if self.placeInfo.count == 0{
+                        self.placeInfo.append((place.name!,place.location!.coordinate))
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
+                    }
                 }
                 
             }else{
                 Dlog(error!.localizedDescription);
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "提示", message: "定位需要网络", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "好的", style: .default, handler: { (act) in
+                    }))
+                    self.present(alert, animated: true, completion: {
+                        
+                    })
+                }
             }
         })
     }
@@ -81,15 +95,26 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                 onceBool = true
                 GaodeMapApi.getNearByLocations(cor: newLocation.coordinate){
                     rst in
-                    self.placeInfo = rst
-                    DispatchQueue.main.async {
-                        self.addAnnotationWithCoordinate(CLLocation(latitude: self.placeInfo.first!.coor.latitude, longitude: self.placeInfo.first!.coor.longitude))
-                        self.tableView.reloadData()
-                        self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
+                    if rst.count == 0 {
+                        self.addAnnotationWithCoordinate(newLocation)
+                    }else{
+                        self.placeInfo = rst
+                        DispatchQueue.main.async {
+                            self.addAnnotationWithCoordinate(CLLocation(latitude: self.placeInfo.first!.coor.latitude, longitude: self.placeInfo.first!.coor.longitude))
+                            self.tableView.reloadData()
+                            self.defaultSelectFirstRow()
+                        }
                     }
                 }
             }
             
+        }
+    }
+    
+    func defaultSelectFirstRow(){
+        self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
+        if let place = self.placeInfo.first {
+            self.placeSelected!(place)
         }
     }
 
@@ -144,7 +169,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                         self.mapView.addAnnotation(Annotation(coor: place.location!.coordinate, pMark: place))
                         self.placeInfo.insert((place.name!,place.location!.coordinate), at: 0)
                         self.tableView.reloadData()
-                        self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
+                        self.defaultSelectFirstRow()
                     }
                 }else{
                     Dlog(error!.localizedDescription);
