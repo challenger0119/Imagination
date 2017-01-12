@@ -46,8 +46,8 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
 
     func close() {
         UIView.animate(withDuration: 0.3, animations: {
-            self.table.frame = CGRect(x: 10,y: 40, width: 0, height: 0)
-            self.frame = CGRect(x: 10, y: 40, width: 0, height: 0)
+            self.table.frame = CGRect(x: 20,y: 40, width: 0, height: 0)
+            self.frame = CGRect(x: 20, y: 40, width: 0, height: 0)
         }) { (finish) in
             if finish {
                 self.removeFromSuperview()
