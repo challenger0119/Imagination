@@ -4,8 +4,7 @@
 
 决定将“毕生”所学集合于几个实用的App中，作为开发学习的demo集合，这是其中一个。
 ***
-#### 待完成：  
-1. 日期选择列表（SplitView样式）  
+#### 待完成：    
 2. 音频，视频
 3. 设计感提升..
 
@@ -23,3 +22,4 @@
 10. 视图动画：DayList，MainTableViewController  
 11. 时间日期：Time  
 12. 邮件：MoreViewController
+13. 简单的iPhone SplitView样式：MainTableViewController, CatalogueViewController
