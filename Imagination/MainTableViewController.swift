@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreLocation
-class MainTableViewController: UITableViewController,DayListDelegate {
+class MainTableViewController: UITableViewController,CatalogueViewControllerDelegate {
 
     @IBOutlet weak var today: UINavigationItem!
     @IBOutlet weak var done: UIBarButtonItem!
@@ -20,23 +20,22 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     var monthCache:Dictionary<String,Dictionary<String,String>>?
     var times:[String]?
     var content:[String]?
-    var daylist:DayList?
     let TAG_DAYLIST:NSInteger = 100
     
     var locToShow:CLLocationCoordinate2D?
 
     @IBAction func otherDay(_ sender:AnyObject) {
-        if let nav = self.navigationController {
-            if let tmpList = nav.view.viewWithTag(TAG_DAYLIST) {
-                (tmpList as! DayList).close()
-            }else{
-                if let cata = DataCache.shareInstance.catalogue_month {
-                    daylist = DayList(frame: CGRect(x: 0, y: nav.navigationBar.frame.height+20, width: 130, height: nav.view.frame.height-2*(nav.navigationBar.frame.height+20)), cc: cata.reversed(),dele:self)
-                    daylist?.tag = TAG_DAYLIST
-                    self.navigationController!.view.addSubview(daylist!)
-                }
-            }
+        
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "CatalogueViewController") as! CatalogueViewController;
+        vc.modalPresentationStyle = .overCurrentContext;
+        
+        if let cata = DataCache.shareInstance.catalogue_month {
+            vc.content = cata.reversed()
+            vc.delegate = self
         }
+        self.present(vc, animated: false, completion: {
+            
+        })
     }
        //MARK: - vc life circle
     func updateMonthData() {
@@ -63,11 +62,6 @@ class MainTableViewController: UITableViewController,DayListDelegate {
         refreshMoodState()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        daylist?.removeFromSuperview()
-    }
-    
     func authorityView() {
         if AuthorityViewController.pWord != AuthorityViewController.NotSet{
             let vc = self.storyboard!.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController
@@ -76,7 +70,13 @@ class MainTableViewController: UITableViewController,DayListDelegate {
             })
         }
     }
-    
+    func moveRight(){
+        var tframe = self.view.frame
+        tframe.origin.x = 200;
+        UIView.animate(withDuration: 0.3) {
+            self.view.frame = tframe;
+        }
+    }
     func loadMonthData() {
         monthCache = DataCache.shareInstance.lastMonth //{2015.1.2:{9:30:xxx,11:30:xxx},2015.1.3:{6:35:ddd,11:07:ddd}}
         cool = 0
@@ -195,7 +195,7 @@ class MainTableViewController: UITableViewController,DayListDelegate {
     
     //MARK: - DayListDelegate
     
-    func didSelectItem(_ item: String) {
+    func catalogueDidSelectItem(item: String){
         DataCache.shareInstance.loadLastMonthToMonth(item)
         today.title = item
         loadMonthData()

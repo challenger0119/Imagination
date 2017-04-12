@@ -13,8 +13,8 @@ protocol DayListDelegate {
 
 class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
     var table = UITableView()
-    let content:[String]
-    let delegate:DayListDelegate
+    var content:[String]
+    var delegate:DayListDelegate?
     
     init(frame: CGRect, cc:[String],dele:DayListDelegate) {
         self.content = cc
@@ -29,6 +29,7 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
         self.table.delegate = self
         self.table.dataSource = self
         self.table.clipsToBounds = true
+        self.table.backgroundColor = UIColor.clear
         self.addSubview(table)
         
         
@@ -54,13 +55,16 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
             }
         }
     }
+
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        self.content = [];
+        self.delegate = nil;
+        super.init(coder: aDecoder)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         Dlog("didselect\((indexPath as NSIndexPath).row)")
-        delegate.didSelectItem(content[(indexPath as NSIndexPath).row])
+        delegate?.didSelectItem(content[(indexPath as NSIndexPath).row])
         close()
     }
     
