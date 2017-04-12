@@ -9,6 +9,7 @@
 import UIKit
 protocol CatalogueViewControllerDelegate {
     func catalogueDidSelectItem(item:String)
+    func catalogueDidClose()
 }
 let reusableCellIdentifier = "CatalogueViewControllerCell"
 let tableWidth:CGFloat = 120
@@ -18,9 +19,9 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
     var delegate:CatalogueViewControllerDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         var tframe = self.view.frame
-        tframe.origin.y = 20
+        //tframe.origin.y = 20
         tframe.size.width = tableWidth
         tframe.origin.x = -tableWidth
         self.siderTable = UITableView(frame: tframe, style: .plain)
@@ -28,6 +29,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         self.siderTable.delegate = self
         self.siderTable.backgroundColor = Item.justOkColor
         self.siderTable.separatorStyle = .none
+        
         self.view.addSubview(siderTable)
         tframe.origin.x = tableWidth
         tframe.size.width = self.view.frame.width-tableWidth
@@ -35,7 +37,10 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         let tapview = UIView(frame: tframe)
         tapview.backgroundColor = UIColor.clear
         self.view.addSubview(tapview)
-        tapview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissVC)));
+        tapview.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cataCancel)));
+        
+        tframe.size.height = 20
+        self.siderTable.tableHeaderView = UIView(frame: tframe)
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -59,7 +64,10 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
             }
         }
     }
-    
+    func cataCancel(){
+        dismissVC()
+        self.delegate?.catalogueDidClose()
+    }
     
     //MARK: - UITableView
     func numberOfSections(in tableView: UITableView) -> Int {

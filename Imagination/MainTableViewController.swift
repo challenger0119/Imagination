@@ -33,8 +33,14 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             vc.content = cata.reversed()
             vc.delegate = self
         }
+        
         self.present(vc, animated: false, completion: {
-            
+            var tframe = self.view.frame
+            tframe.origin.x = tableWidth;
+            tframe.size.width = self.view.frame.width-tableWidth
+            UIView.animate(withDuration: 0.2) {
+                self.navigationController?.view.frame = tframe;
+            }
         })
     }
        //MARK: - vc life circle
@@ -60,6 +66,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refreshMoodState()
+        
     }
     
     func authorityView() {
@@ -70,13 +77,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             })
         }
     }
-    func moveRight(){
-        var tframe = self.view.frame
-        tframe.origin.x = 200;
-        UIView.animate(withDuration: 0.3) {
-            self.view.frame = tframe;
-        }
-    }
+
     func loadMonthData() {
         monthCache = DataCache.shareInstance.lastMonth //{2015.1.2:{9:30:xxx,11:30:xxx},2015.1.3:{6:35:ddd,11:07:ddd}}
         cool = 0
@@ -192,14 +193,37 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
     
 
+    func resumeView(andDo:@escaping ((Void)->Void)){
+        var tframe = self.view.frame
+        tframe.size.width = self.view.frame.width+tableWidth
+        tframe.origin.x = 0
+        UIView.animate(withDuration: 0.2) {
+            
+        }
+        UIView.animate(withDuration: 0.2, animations: { 
+            self.navigationController?.view.frame = tframe;
+        }) { (boo) in
+            if boo {
+                andDo()
+            }
+        }
+    }
     
     //MARK: - DayListDelegate
     
     func catalogueDidSelectItem(item: String){
-        DataCache.shareInstance.loadLastMonthToMonth(item)
-        today.title = item
-        loadMonthData()
-        refreshMoodState()
+        resumeView(){
+            DataCache.shareInstance.loadLastMonthToMonth(item)
+            self.today.title = item
+            self.loadMonthData()
+            self.refreshMoodState()
+        }
+
+    }
+    func catalogueDidClose() {
+        resumeView(){
+            
+        }
     }
     
     // MARK: - Table view data source
