@@ -33,8 +33,6 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         locManager.requestWhenInUseAuthorization()
         locManager.requestAlwaysAuthorization()
         
-        
-        //self.mapView.userTrackingMode = .Follow
         self.mapView.delegate = self
         
         tableView.delegate = self
@@ -66,6 +64,10 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                     if additionalWork != nil {
                         additionalWork!((place.name!,place.location!.coordinate))
                     }
+                    if self.placeToShow != nil {
+                        self.placeInfo.insert((place.name!,place.location!.coordinate), at: 0)
+                        self.tableView.reloadData()
+                    }
                 }
                 
             }else{
@@ -84,22 +86,19 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
 
     //MARK: -Location
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //Dlog(locations)
         self.locManager.stopUpdatingLocation()
+        
         if let newLocation = locations.last {
             if !onceBool {
                 onceBool = true
-                
-                addAnnotationWithCoordinate(newLocation,additionalWork: {
-                    place in
-                    self.lock.lock()
-                    self.placeInfo.insert(place, at: 0)
-                    self.lock.unlock()
-                    self.tableView.insertRows(at: [IndexPath(row:0,section:0)], with: .top)
-                }) //当前位置
+ 
                 GaodeMapApi.getNearByLocations(cor: gaodeTransformCoordinate(cor: newLocation.coordinate)){
                     rst in
                     if rst.count == 0 {
-                        self.addAnnotationWithCoordinate(newLocation)
+                        DispatchQueue.main.async {
+                            self.addAnnotationWithCoordinate(newLocation)
+                        }
                     }else{
                         self.lock.lock()
                         if self.placeInfo.count == 0 {
@@ -110,7 +109,9 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
                         self.lock.unlock()
                         
                         DispatchQueue.main.async {
+                            self.addAnnotationWithCoordinate(CLLocation(latitude: rst.first!.coor.latitude, longitude: rst.first!.coor.longitude))
                             self.tableView.reloadData()
+                            self.defaultSelectFirstRow()
                         }
                     }
                 }
@@ -121,8 +122,10 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     
     func defaultSelectFirstRow(){
         self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
-        if let place = self.placeInfo.first {
-            self.placeSelected!(place)
+        if self.placeToShow == nil {
+            if let place = self.placeInfo.first {
+                self.placeSelected!(place)
+            }
         }
     }
 
@@ -163,6 +166,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
             return annoVIew
         }
     }
+    //拖拽红点后调用
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
         let cor = reverseTransformCoordinate(cor: view.annotation!.coordinate)
         if newState == .ending {
@@ -195,18 +199,6 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     //第一个前提是 系统自我定位时候 获取的location不正确 而coder后的是正确的
     //第二个前提是 annotationview 拖拽后拿到的location是正确的 经过coder后不正确了 所以这里在didchangeDrageState里使用reverseTranslate修正
     //具体原因有待搜寻 iOS10.0后不再存在
-    
-    func transformCoordinate(cor:CLLocationCoordinate2D)->CLLocationCoordinate2D{
-        let version = UIDevice.current.systemVersion
-        switch version.compare("10.0.0", options: .numeric, range: nil, locale: nil) {
-        case.orderedAscending:
-            let newx = cor.latitude*(30.501500482611835/30.503810239337618)
-            let newy = cor.longitude*(114.42497398363371/114.41945126570926)
-            return CLLocationCoordinate2D(latitude: newx,longitude: newy)
-        default:
-            return cor;
-        }
-    }
     
     func reverseTransformCoordinate(cor:CLLocationCoordinate2D) -> CLLocationCoordinate2D {
         let version = UIDevice.current.systemVersion

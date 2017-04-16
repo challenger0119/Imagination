@@ -21,7 +21,6 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         super.viewDidLoad()
 
         var tframe = self.view.frame
-        //tframe.origin.y = 20
         tframe.size.width = tableWidth
         tframe.origin.x = -tableWidth
         self.siderTable = UITableView(frame: tframe, style: .plain)
