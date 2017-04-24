@@ -22,7 +22,7 @@ class Item: NSObject {
     static let multiMediaNameSeparator = "_"
     static let multiMediaFileNameTimeSperator = Item.gpsSeparator //不干扰情况下，一时想不到别的了...
     
-    fileprivate let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
+    static let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
     fileprivate let moodStrings = ["NA","Cool","Just OK","Confused"]
    
     var mood:Int//心情
@@ -132,7 +132,7 @@ class Item: NSObject {
             self.mood = 0
             self.place = ("",0,0)
         }
-        self.color = self.moodColor[self.mood]
+        self.color = Item.moodColor[self.mood]
         self.moodString = self.moodStrings[self.mood]
         super.init()
     }

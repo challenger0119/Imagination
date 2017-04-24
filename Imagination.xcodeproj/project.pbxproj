@@ -29,6 +29,10 @@
 		F8EFBA5F1D71DDDD00A7C3C0 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */; };
 		F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EFBA601D71E73200A7C3C0 /* Annotation.swift */; };
 		F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F28CF41C0DB9D40007EDE3 /* Time.swift */; };
+		F8F5D47B1EADCA25007BDF2A /* UIImage+BlurImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */; };
+		F8F5D47D1EADCDB1007BDF2A /* MoodShowImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F5D47C1EADCDB1007BDF2A /* MoodShowImageView.swift */; };
+		F8F5D47F1EADDAD9007BDF2A /* IndicatorMapViewBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F5D47E1EADDAD9007BDF2A /* IndicatorMapViewBack.swift */; };
+		F8F5D4811EADE2D1007BDF2A /* IndicatorMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F5D4801EADE2D1007BDF2A /* IndicatorMapView.swift */; };
 		F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +63,11 @@
 		F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		F8EFBA601D71E73200A7C3C0 /* Annotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 		F8F28CF41C0DB9D40007EDE3 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		F8F5D4791EADCA25007BDF2A /* UIImage+BlurImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+BlurImage.h"; sourceTree = "<group>"; };
+		F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BlurImage.m"; sourceTree = "<group>"; };
+		F8F5D47C1EADCDB1007BDF2A /* MoodShowImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodShowImageView.swift; sourceTree = "<group>"; };
+		F8F5D47E1EADDAD9007BDF2A /* IndicatorMapViewBack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorMapViewBack.swift; sourceTree = "<group>"; };
+		F8F5D4801EADE2D1007BDF2A /* IndicatorMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorMapView.swift; sourceTree = "<group>"; };
 		F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorityViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,6 +125,8 @@
 				F81283971C3F82E8002985A7 /* Notification.swift */,
 				F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */,
 				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
+				F8F5D4791EADCA25007BDF2A /* UIImage+BlurImage.h */,
+				F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -132,6 +143,9 @@
 				F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */,
 				F88D3BA41C14678600A3C921 /* DayList.swift */,
 				F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */,
+				F8F5D47C1EADCDB1007BDF2A /* MoodShowImageView.swift */,
+				F8F5D47E1EADDAD9007BDF2A /* IndicatorMapViewBack.swift */,
+				F8F5D4801EADE2D1007BDF2A /* IndicatorMapView.swift */,
 			);
 			name = "View&Controller";
 			sourceTree = "<group>";
@@ -221,9 +235,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8EFBA5F1D71DDDD00A7C3C0 /* LocationViewController.swift in Sources */,
+				F8F5D47D1EADCDB1007BDF2A /* MoodShowImageView.swift in Sources */,
 				F812297D1BF777AB00BDCF0E /* DataCache.swift in Sources */,
+				F8F5D4811EADE2D1007BDF2A /* IndicatorMapView.swift in Sources */,
 				F88D3BA51C14678600A3C921 /* DayList.swift in Sources */,
 				F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */,
+				F8F5D47B1EADCA25007BDF2A /* UIImage+BlurImage.m in Sources */,
 				F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */,
 				F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
@@ -231,6 +248,7 @@
 				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,
 				F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */,
 				F870EF761C37BBB5008EF34D /* Item.swift in Sources */,
+				F8F5D47F1EADDAD9007BDF2A /* IndicatorMapViewBack.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */,
 				F81283981C3F82E8002985A7 /* Notification.swift in Sources */,

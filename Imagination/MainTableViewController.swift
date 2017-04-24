@@ -257,15 +257,21 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let vc = self.storyboard!.instantiateViewController(withIdentifier: "mood") as! MoodViewController
-        vc.editMode = true
+        
+        
         let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
-        vc.text = cc.content
-        vc.moodState = cc.mood
-        vc.placeInfo = cc.place
-        vc.multiMediaBufferDic = cc.multiMedias
-        let nav = UINavigationController(rootViewController: vc)
-        self.present(nav, animated: true, completion: nil)
+
+        let mshow = MoodShowImageView(frame: UIApplication.shared.keyWindow!.bounds,contentText:cc.content, contentDic: cc.multiMedias,state:cc.mood,placeInfo:cc.place)
+        mshow.backgroundColor = UIColor.lightGray
+        mshow.alpha = 0
+        UIView.animate(withDuration: 0.5, animations: {
+            mshow.alpha = 1
+        })
+        mshow.image = UIImage.blurImage(of: UIApplication.shared.keyWindow!, withBlurNumber: 1)
+        mshow.exitAnimation = {
+            mshow.alpha = 0
+        }
+        UIApplication.shared.keyWindow!.addSubview(mshow)
     }
 
 }
