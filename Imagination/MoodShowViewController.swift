@@ -1,5 +1,5 @@
 //
-//  MoodShowImageView.swift
+//  MoodShowViewController.swift
 //  Imagination
 //
 //  Created by Star on 2017/4/24.
@@ -8,41 +8,81 @@
 
 import UIKit
 import MapKit
-class MoodShowImageView: UIImageView {
-
+class MoodShowViewController: UIViewController {
+    
     var multiMediaBufferDic:[Int:AnyObject]?
     var text:String = ""
     var pInfo:(name:String,latitude:Double,longtitude:Double)?
     var exitAnimation:((Void)->Void)?
-    var animationTime:TimeInterval = 0.2
+    var state = 0
     fileprivate var mapView:UIView?
-    init(frame: CGRect,contentText:String,contentDic:[Int:AnyObject]?,state:Int,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
+    
+    init(contentText:String,contentDic:[Int:AnyObject]?,state:Int,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
         self.multiMediaBufferDic = contentDic
         self.text = contentText
         self.pInfo = placeInfo
-        super.init(frame: frame)
-        self.isUserInteractionEnabled = true
-        
-        let textView = UITextView(frame: CGRect(x: 20, y: 40, width: self.frame.width-40, height: self.frame.height-60))
+        self.state = state
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    func closeVC(){
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.alpha = 0
+        }, completion: {
+            boo in
+            if boo {
+                self.dismiss(animated: false, completion: {
+                    
+                })
+            }
+        })
+    }
+    func showMap(){
+        if  mapView == nil {
+            mapView = IndicatorMapView(frame: CGRect(x: 20, y: self.view.frame.height-50-200, width: self.view.frame.width-40, height: 200),coor:CLLocationCoordinate2D(latitude: pInfo!.latitude, longitude: pInfo!.longtitude))
+            self.view.addSubview(mapView!)
+        }else{
+            mapView?.removeFromSuperview()
+        }
+    }
+    func cutImage(_ image:UIImage,frame:CGRect)->UIImage {
+        UIGraphicsBeginImageContextWithOptions(frame.size, false, UIScreen.main.scale)
+        UIBezierPath(roundedRect: frame, cornerRadius: 5).addClip()
+        image.draw(in: frame)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let imageView = UIImageView(frame: self.view.frame)
+        imageView.image = UIImage.blurImage(of: UIApplication.shared.keyWindow, withBlurNumber: 1)
+        self.view.addSubview(imageView)
+        let textView = UITextView(frame: CGRect(x: 20, y: 40, width: self.view.frame.width-40, height: self.view.frame.height-60))
         textView.isEditable = false
         textView.layer.cornerRadius = 5.0
         textView.clipsToBounds = true
-        textView.textColor = Item.moodColor[state]
-        self.addSubview(textView)
+        textView.textColor = Item.moodColor[self.state]
+        self.view.addSubview(textView)
         
         if pInfo != nil {
             var tframe = textView.frame
-             tframe.size.height = tframe.size.height - 30
+            tframe.size.height = tframe.size.height - 30
             textView.frame = tframe
-            let locBtn = UIButton(frame: CGRect(x: 20, y: self.frame.height-50, width: textView.frame.width, height: 30))
-            self.addSubview(locBtn)
+            let locBtn = UIButton(frame: CGRect(x: 20, y: self.view.frame.height-50, width: textView.frame.width, height: 30))
+            self.view.addSubview(locBtn)
             locBtn.layer.cornerRadius = 5.0
             locBtn.setTitleColor(Item.moodColor[state], for: .normal)
             locBtn.setTitle(pInfo!.name, for: .normal)
             locBtn.titleLabel?.adjustsFontSizeToFitWidth = true
             locBtn.addTarget(self, action: #selector(showMap), for: .touchUpInside)
         }
-    
+        
         
         let paragraghStyle = NSMutableParagraphStyle()
         paragraghStyle.lineSpacing = 5
@@ -73,42 +113,11 @@ class MoodShowImageView: UIImageView {
             }
         }
         textView.attributedText = mstring
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeView)))
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeVC)))
     }
 
-    func closeView(){
-        if exitAnimation != nil {
-            UIView.animate(withDuration: animationTime, animations: {
-                self.exitAnimation!()
-            }, completion: {
-                boo in
-                if boo {
-                    self.removeFromSuperview()
-                }
-            })
-        }else{
-            self.removeFromSuperview()
-        }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-    func showMap(){
-        if  mapView == nil {
-            mapView = IndicatorMapView(frame: CGRect(x: 20, y: self.frame.height-50-200, width: self.frame.width-40, height: 200),coor:CLLocationCoordinate2D(latitude: pInfo!.latitude, longitude: pInfo!.longtitude))
-            self.addSubview(mapView!)
-        }else{
-            mapView?.removeFromSuperview()
-        }
-    }
-    func cutImage(_ image:UIImage,frame:CGRect)->UIImage {
-        UIGraphicsBeginImageContextWithOptions(frame.size, false, UIScreen.main.scale)
-        UIBezierPath(roundedRect: frame, cornerRadius: 5).addClip()
-        image.draw(in: frame)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image!
-    }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-
 }

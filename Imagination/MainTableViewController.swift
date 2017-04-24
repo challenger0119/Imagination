@@ -261,17 +261,14 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         
         let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
 
-        let mshow = MoodShowImageView(frame: UIApplication.shared.keyWindow!.bounds,contentText:cc.content, contentDic: cc.multiMedias,state:cc.mood,placeInfo:cc.place)
-        mshow.backgroundColor = UIColor.lightGray
-        mshow.alpha = 0
-        UIView.animate(withDuration: 0.5, animations: {
-            mshow.alpha = 1
+        let vc = MoodShowViewController(contentText: cc.content, contentDic: cc.multiMedias, state: cc.mood, placeInfo: cc.place)
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.view.alpha = 0
+        self.tabBarController?.present(vc, animated: false, completion: {
+            UIView.animate(withDuration: 0.2, animations: {
+                vc.view.alpha = 1
+            })
         })
-        mshow.image = UIImage.blurImage(of: UIApplication.shared.keyWindow!, withBlurNumber: 1)
-        mshow.exitAnimation = {
-            mshow.alpha = 0
-        }
-        UIApplication.shared.keyWindow!.addSubview(mshow)
     }
 
 }
