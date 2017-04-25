@@ -78,7 +78,13 @@ extension FileManager {
         Dlog("default multimedia file at \(path)")
         return self.createFile(atPath: path, contents: data, attributes: nil)
     }
-    
+    //MARK: - store audio
+    fileprivate class func audioFilePath()->String{
+        return self.multiMediaFilePath() + "/Audios"
+    }
+    class func audioFilePathWithName(name:String)->String{
+        return self.audioFilePath() + "/\(name)"
+    }
     //MARK: - store image
     fileprivate class func imageFile(withName name:String) -> UIImage? {
         let path = self.imagePathWithName(name)

@@ -231,6 +231,15 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             }
         })
     }
+    @IBAction func getAudio(_ sender: UIButton) {
+        closeKeyboard()
+        if let arView = AudioRecordView.getView() {
+            arView.frame = CGRect(x: 20, y: self.view.frame.height - 160, width: self.view.frame.width-40, height: 100)
+        
+            self.view.addSubview(arView)
+        }
+
+    }
     @IBAction func getImage(_ sender: UIButton) {
         closeKeyboard()
         let queryVc = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
