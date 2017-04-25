@@ -13,7 +13,6 @@
 		F812296F1BF73C6C00BDCF0E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */; };
 		F812297D1BF777AB00BDCF0E /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F812297C1BF777AB00BDCF0E /* DataCache.swift */; };
 		F81283981C3F82E8002985A7 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81283971C3F82E8002985A7 /* Notification.swift */; };
-		F86488101EAEDDF900849290 /* VoiceRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F864880F1EAEDDF900849290 /* VoiceRecord.swift */; };
 		F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF731C378CB7008EF34D /* MoodViewController.swift */; };
 		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
 		F8723F141E260527009CCF44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F8723F131E260527009CCF44 /* Reachability.m */; };
@@ -21,6 +20,8 @@
 		F88D3BA51C14678600A3C921 /* DayList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F88D3BA41C14678600A3C921 /* DayList.swift */; };
 		F89537551EAEFC0200BFEAFC /* AudioRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89537541EAEFC0200BFEAFC /* AudioRecordView.swift */; };
 		F89537571EAEFC1200BFEAFC /* AudioRecordView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89537561EAEFC1200BFEAFC /* AudioRecordView.xib */; };
+		F895375A1EAF71A100BFEAFC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F89537591EAF71A100BFEAFC /* AVFoundation.framework */; };
+		F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89537841EAF89DE00BFEAFC /* AudioRecord.swift */; };
 		F8AB2A701E9D15E700B58229 /* CatalogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */; };
 		F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */; };
 		F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */; };
@@ -48,7 +49,6 @@
 		F81229701BF73C6C00BDCF0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F812297C1BF777AB00BDCF0E /* DataCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCache.swift; sourceTree = "<group>"; };
 		F81283971C3F82E8002985A7 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
-		F864880F1EAEDDF900849290 /* VoiceRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoiceRecord.swift; sourceTree = "<group>"; };
 		F870EF731C378CB7008EF34D /* MoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodViewController.swift; sourceTree = "<group>"; };
 		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Imagination-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -58,6 +58,8 @@
 		F88D3BA41C14678600A3C921 /* DayList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayList.swift; sourceTree = "<group>"; };
 		F89537541EAEFC0200BFEAFC /* AudioRecordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecordView.swift; sourceTree = "<group>"; };
 		F89537561EAEFC1200BFEAFC /* AudioRecordView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioRecordView.xib; sourceTree = "<group>"; };
+		F89537591EAF71A100BFEAFC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F89537841EAF89DE00BFEAFC /* AudioRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecord.swift; sourceTree = "<group>"; };
 		F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatalogueViewController.swift; sourceTree = "<group>"; };
 		F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F895375A1EAF71A100BFEAFC /* AVFoundation.framework in Frameworks */,
 				F8E991911C19233800650406 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +98,7 @@
 				F8E991901C19233800650406 /* MessageUI.framework */,
 				F81229601BF73C6C00BDCF0E /* Imagination */,
 				F812295F1BF73C6C00BDCF0E /* Products */,
+				F89537581EAF71A100BFEAFC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				F8723F121E260527009CCF44 /* Reachability.h */,
+				F89537841EAF89DE00BFEAFC /* AudioRecord.swift */,
 				F8723F131E260527009CCF44 /* Reachability.m */,
 				F812297C1BF777AB00BDCF0E /* DataCache.swift */,
 				F8D5C4081C01EE8600179853 /* FileManager.swift */,
@@ -133,7 +138,6 @@
 				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
 				F8F5D4791EADCA25007BDF2A /* UIImage+BlurImage.h */,
 				F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */,
-				F864880F1EAEDDF900849290 /* VoiceRecord.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -168,6 +172,14 @@
 				F81229611BF73C6C00BDCF0E /* AppDelegate.swift */,
 			);
 			name = Support;
+			sourceTree = "<group>";
+		};
+		F89537581EAF71A100BFEAFC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F89537591EAF71A100BFEAFC /* AVFoundation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -245,7 +257,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8EFBA5F1D71DDDD00A7C3C0 /* LocationViewController.swift in Sources */,
-				F86488101EAEDDF900849290 /* VoiceRecord.swift in Sources */,
 				F812297D1BF777AB00BDCF0E /* DataCache.swift in Sources */,
 				F8F5D4811EADE2D1007BDF2A /* IndicatorMapView.swift in Sources */,
 				F88D3BA51C14678600A3C921 /* DayList.swift in Sources */,
@@ -254,6 +265,7 @@
 				F8F5D47B1EADCA25007BDF2A /* UIImage+BlurImage.m in Sources */,
 				F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */,
 				F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */,
+				F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,

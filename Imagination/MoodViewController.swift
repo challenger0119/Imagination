@@ -8,7 +8,7 @@
 
 import UIKit
 import CoreLocation
-class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,AudioRecordViewDelegate {
 
     let dataCache = DataCache.shareInstance
     //var editMode = false
@@ -235,10 +235,9 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         closeKeyboard()
         if let arView = AudioRecordView.getView() {
             arView.frame = CGRect(x: 20, y: self.view.frame.height - 160, width: self.view.frame.width-40, height: 100)
-        
+            arView.delegate = self
             self.view.addSubview(arView)
         }
-
     }
     @IBAction func getImage(_ sender: UIButton) {
         closeKeyboard()
@@ -295,7 +294,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
     }
     
-    
+    //MARK: - AudioRecordViewDelegate
+    func audioRecordViewStateChanged(state: RecordState) {
+        if state == .Save {
+            //以链接的形式添加
+        }
+    }
     
     //MARK: - UIImagePickerViewControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

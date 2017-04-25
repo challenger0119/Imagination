@@ -10,8 +10,7 @@ import Foundation
 import UIKit
 
 extension FileManager {
-    
- 
+    //MARK: - Base
     class func documentsPath()->String{
         return NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory,FileManager.SearchPathDomainMask.userDomainMask, true)[0] as String
     }
@@ -39,53 +38,10 @@ extension FileManager {
         let file = FileManager.pathOfNameInDocuments(name)
         return file + ".txt"
     }
-    
-    //Mutimedia file
-    class func multiMediaFilePath() ->String {
-        return self.documentsPath() + "/Multimedia"
-    }
-    
-    class func multiMediaFilePath(withName name:String) -> String {
-        let tname = name.replacingOccurrences(of: ":", with: Item.oldSeparator)
-        let narray = tname.components(separatedBy: Item.multiMediaIndicator)
-        var path = ""
-        switch narray[0] {
-        case Item.MutiMediaType.image.rawValue:
-            path = self.imagePathWithName(tname)
-        default:
-            path = self.multiMediaFilePath() + "/\(tname)"
-        }
-        return path
-    }
-    
-    class func multiMediaFile(withName name:String)->AnyObject{
-        let path = self.multiMediaFilePath(withName: name)
-        if let data = FileManager.default.contents(atPath: path) {
-            return data as AnyObject;
-        }else{
-            return "" as AnyObject
-        }
-    }
-    func createDefaultMultimediaFile(withName name:String,object:AnyObject) -> Bool{
-        do{
-            try self.createDirectory(atPath: FileManager.multiMediaFilePath(), withIntermediateDirectories: true, attributes: nil)
-        }catch{
-            print("error createfile")
-        }
-        let path = FileManager.multiMediaFilePath(withName: name)
-        
-        let data = NSKeyedArchiver.archivedData(withRootObject: object)
-        Dlog("default multimedia file at \(path)")
-        return self.createFile(atPath: path, contents: data, attributes: nil)
-    }
-    //MARK: - store audio
-    fileprivate class func audioFilePath()->String{
-        return self.multiMediaFilePath() + "/Audios"
-    }
-    class func audioFilePathWithName(name:String)->String{
-        return self.audioFilePath() + "/\(name)"
-    }
-    //MARK: - store image
+}
+
+extension FileManager{
+    //MARK: - Image
     fileprivate class func imageFile(withName name:String) -> UIImage? {
         let path = self.imagePathWithName(name)
         if let data =  UIImage.init(contentsOfFile: path) {
@@ -112,13 +68,11 @@ extension FileManager {
             return false
         }
     }
-    
-    
     private func createImageFileWithName(_ name:String,image:UIImage)->Bool{
         do{
             try self.createDirectory(atPath: FileManager.imageFilePath(), withIntermediateDirectories: true, attributes: nil)
         }catch{
-            print("error createfile")
+            Dlog(error.localizedDescription)
         }
         
         var data:Data!
@@ -141,9 +95,26 @@ extension FileManager {
         return FileManager.default.subpaths(atPath: self.documentsPath() + "/Pictures")
     }
 }
+extension FileManager{
+    //MARK: - Audio
+    fileprivate class func audioFilePath()->String{
+        return self.multiMediaFilePath() + "/Audio"
+    }
+    class func audioFilePathWithName(name:String)->String{
+        do{
+            try FileManager.default.createDirectory(atPath: FileManager.audioFilePath(), withIntermediateDirectories: true, attributes: nil)
+        }catch{
+            Dlog(error.localizedDescription)
+        }
+        return self.audioFilePath() + "/\(name)"
+    }
+    class func audioFileDefaultPath()->String{
+        return self.audioFilePathWithName(name: "default.wav")
+    }
+}
 
 extension FileManager{
-
+    //MARK: - DataCache
     class func imageData(image:UIImage) -> Data? {
         if FileManager.isPng {
             return UIImagePNGRepresentation(image)
@@ -223,5 +194,48 @@ extension FileManager{
             return (nm,Item.MutiMediaType.def,NSKeyedUnarchiver.unarchiveObject(withFile: FileManager.multiMediaFilePath(withName: nm)) as AnyObject?)
         }
     }
+}
+
+extension FileManager{
+    //MARK: - Mutimedia file
+    class func multiMediaFilePath() ->String {
+        return self.documentsPath() + "/Multimedia"
+    }
+    
+    class func multiMediaFilePath(withName name:String) -> String {
+        let tname = name.replacingOccurrences(of: ":", with: Item.oldSeparator)
+        let narray = tname.components(separatedBy: Item.multiMediaIndicator)
+        var path = ""
+        switch narray[0] {
+        case Item.MutiMediaType.image.rawValue:
+            path = self.imagePathWithName(tname)
+        default:
+            path = self.multiMediaFilePath() + "/\(tname)"
+        }
+        return path
+    }
+    
+    class func multiMediaFile(withName name:String)->AnyObject{
+        let path = self.multiMediaFilePath(withName: name)
+        if let data = FileManager.default.contents(atPath: path) {
+            return data as AnyObject;
+        }else{
+            return "" as AnyObject
+        }
+    }
+    func createDefaultMultimediaFile(withName name:String,object:AnyObject) -> Bool{
+        do{
+            try self.createDirectory(atPath: FileManager.multiMediaFilePath(), withIntermediateDirectories: true, attributes: nil)
+        }catch{
+            print("error createfile")
+        }
+        let path = FileManager.multiMediaFilePath(withName: name)
+        
+        let data = NSKeyedArchiver.archivedData(withRootObject: object)
+        Dlog("default multimedia file at \(path)")
+        return self.createFile(atPath: path, contents: data, attributes: nil)
+    }
+    
     
 }
+
