@@ -11,7 +11,7 @@ import CoreLocation
 class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
 
     let dataCache = DataCache.shareInstance
-    var editMode = false
+    //var editMode = false
     var moodState = 0
     var keyBoardHeight:CGFloat = 216.0
     var clockDic = Dictionary<String,String>()
@@ -65,19 +65,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         
-        if editMode {
-            self.navigationItem.rightBarButtonItem?.title = "关闭"
-            
-            self.content.isEditable = false
-            hideFunctionBtns()
-            if self.placeInfo != nil {
-                self.getLocBtn.setTitle(self.placeInfo!.name, for: .normal)
-            }else{
-                self.getLocBtn.isHidden = true
-            }
-        }else{
-            self.content.becomeFirstResponder()
-        }
+        self.content.becomeFirstResponder()
         
         switch moodState {
         case 1:
@@ -101,42 +89,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressAction(gesture:)))
         self.getLocBtn.addGestureRecognizer(longPress)
-    }
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if editMode {
-            let paragraghStyle = NSMutableParagraphStyle()
-            paragraghStyle.lineSpacing = 5
-            paragraghStyle.alignment = .left
-            paragraghStyle.lineBreakMode = .byCharWrapping
-            paragraghStyle.allowsDefaultTighteningForTruncation = true
-            
-            let font = UIFont(name: "Helvetica", size: 15.0)
-            let mstring = NSMutableAttributedString(string: self.text, attributes: [NSFontAttributeName:font!,NSParagraphStyleAttributeName:paragraghStyle])
-            if self.multiMediaBufferDic != nil{
-                var keys = Array(self.multiMediaBufferDic!.keys)
-                keys.sort()
-                var i:Int = 0 //插入补偿 解决排版问题
-                for key in keys {
-                    if let multimedia = self.multiMediaBufferDic![key] {
-                        if multimedia.isKind(of: UIImage.self) {
-                            let image = multimedia as! UIImage
-                            let textAttach = NSTextAttachment(data:nil, ofType: nil)
-                            let imageWidth = self.content.frame.width - 10;
-                            let imageHeight = image.size.height / image.size.width * imageWidth
-                            textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
-                            let imageAttributeString = NSAttributedString(attachment:textAttach)
-                            
-                            mstring.insert(imageAttributeString, at: key+i)
-                            i += 1
-                        }
-                    }
-                }
-            }
-            self.content.attributedText = mstring
-        }
     }
     
     
@@ -193,10 +145,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
 
     @IBAction func done(_ sender: UIBarButtonItem) {
-        if editMode {
-            back()
-            return
-        }
         self.closeKeyboard()
         if !self.content.text.isEmpty && self.moodState == 0 {
             let alert = UIAlertController(title: "提示", message: "确定不选择状态？", preferredStyle: .alert)
@@ -244,32 +192,26 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
     }
     func didSwipDown(){
-        if !editMode {
-            closeKeyboard()
-            if !self.content.text.isEmpty {
-                let alert = UIAlertController(title: "提示", message: "现在返回内容将丢失", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "确定", style: .default, handler: {
-                    action in
-                    self.dismiss(animated: true, completion: nil)
-                }))
-                alert.addAction(UIAlertAction(title: "取消", style: .default, handler: {
-                    action in
-                }))
-                self.present(alert, animated: true, completion: {
-                    
-                })
-            }else{
+        closeKeyboard()
+        if !self.content.text.isEmpty {
+            let alert = UIAlertController(title: "提示", message: "现在返回内容将丢失", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "确定", style: .default, handler: {
+                action in
                 self.dismiss(animated: true, completion: nil)
-            }
+            }))
+            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: {
+                action in
+            }))
+            self.present(alert, animated: true, completion: {
+                
+            })
         }else{
             self.dismiss(animated: true, completion: nil)
         }
         
     }
     func back() {
-        if !editMode {
-            closeKeyboard()
-        }
+        closeKeyboard()
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -376,13 +318,9 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "moodToLocation" {
             let vc = segue.destination as! LocationViewController
-            if self.editMode && self.placeInfo != nil{
-                vc.placeToShow = CLLocationCoordinate2D(latitude: self.placeInfo!.latitude, longitude: self.placeInfo!.longtitude)
-            }else{
-                vc.placeSelected = {
-                    pls in
-                    self.place = pls
-                }
+            vc.placeSelected = {
+                pls in
+                self.place = pls
             }
         }
     }
