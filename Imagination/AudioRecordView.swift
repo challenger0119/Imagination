@@ -13,7 +13,7 @@ enum RecordState:Int {
 }
 
 protocol AudioRecordViewDelegate {
-    func audioRecordViewStateChanged(state:RecordState)
+    func audioRecordViewStateChanged(state:RecordState,audioRecord:AudioRecord)
 }
 class AudioRecordView: UIView,AVAudioRecorderDelegate {
 
@@ -32,7 +32,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
     var state:RecordState = .None{
         didSet{
             if delegate != nil {
-                delegate?.audioRecordViewStateChanged(state: state)
+                delegate?.audioRecordViewStateChanged(state: state,audioRecord: aRecord)
             }
             switch state {
             case .Recording:
@@ -114,7 +114,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         aRecord.playRecord()
     }
     @IBAction func saveBtnClicked(_ sender: UIButton) {
-        delegate?.audioRecordViewStateChanged(state: .Save)
+        delegate?.audioRecordViewStateChanged(state: .Save,audioRecord: aRecord)
         self.removeFromSuperview()
     }
     class func getView()->AudioRecordView?{
@@ -126,8 +126,8 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
     }
     
     func updateProgress(){
-        self.aRecord.recorder.updateMeters()
-        let power = aRecord.recorder.averagePower(forChannel:0)
+        self.aRecord.updateMeters()
+        let power = aRecord.averagePower(forChannel:0)
         self.audoMeterView.setProgress((power+160)/160, animated: true)
     }
 }

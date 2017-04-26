@@ -12,18 +12,20 @@ class AudioRecord: NSObject {
     var session:AVAudioSession!
     var recorder:AVAudioRecorder!
     var player:AVAudioPlayer!
-    
-    
-    let setting = [AVSampleRateKey:NSNumber(value:Float(8000.0)),
-                   AVFormatIDKey:NSNumber(value:Int(kAudioFormatLinearPCM)),
-                   AVLinearPCMBitDepthKey:NSNumber(value:Int(16)),
-                   AVNumberOfChannelsKey:NSNumber(value:Int(1)),
-                   AVLinearPCMIsFloatKey:NSNumber(value:Bool(true)),
-                   AVEncoderAudioQualityKey:NSNumber(value:Int(AVAudioQuality.high.rawValue))]
-
+    var recordFileURL:URL{
+        get{
+            return self.recorder.url
+        }
+    }
     override init() {
         let audiofile = FileManager.audioFileDefaultPath()
         let session =  AVAudioSession.sharedInstance()
+        let setting = [AVSampleRateKey:NSNumber(value:Float(8000.0)),
+                       AVFormatIDKey:NSNumber(value:Int(kAudioFormatLinearPCM)),
+                       AVLinearPCMBitDepthKey:NSNumber(value:Int(16)),
+                       AVNumberOfChannelsKey:NSNumber(value:Int(1)),
+                       AVLinearPCMIsFloatKey:NSNumber(value:Bool(true)),
+                       AVEncoderAudioQualityKey:NSNumber(value:Int(AVAudioQuality.high.rawValue))]
         do{
             try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
             
@@ -69,6 +71,16 @@ class AudioRecord: NSObject {
     }
     func stopPlayRecord(){
         self.player.stop()
+    }
+    
+    func updateMeters(){
+        self.recorder.updateMeters()
+    }
+    func averagePower(forChannel channel:Int)->Float{
+        return self.recorder.averagePower(forChannel:channel)
+    }
+    func peekPower(forChannel channel:Int)->Float{
+        return self.recorder.peakPower(forChannel: channel)
     }
     
 }

@@ -27,6 +27,7 @@
 		F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */; };
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
 		F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */; };
+		F8E6085A1EB035B6008A1030 /* audio.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E608591EB035B6008A1030 /* audio.png */; };
 		F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918A1C17CAE500650406 /* MoreViewController.swift */; };
 		F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918E1C19123F00650406 /* DataPicker.swift */; };
 		F8E991911C19233800650406 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E991901C19233800650406 /* MessageUI.framework */; };
@@ -65,6 +66,7 @@
 		F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaodeMapApi.swift; sourceTree = "<group>"; };
+		F8E608591EB035B6008A1030 /* audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = audio.png; sourceTree = "<group>"; };
 		F8E9918A1C17CAE500650406 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		F8E9918E1C19123F00650406 /* DataPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPicker.swift; sourceTree = "<group>"; };
 		F8E991901C19233800650406 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -113,6 +115,7 @@
 		F81229601BF73C6C00BDCF0E /* Imagination */ = {
 			isa = PBXGroup;
 			children = (
+				F8E608581EB035A3008A1030 /* Resources */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
 				F8730EB91DC06E1A009112CE /* View&Controller */,
 				F8730EB81DC06E0D009112CE /* Model */,
@@ -124,8 +127,8 @@
 		F8730EB81DC06E0D009112CE /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				F8723F121E260527009CCF44 /* Reachability.h */,
 				F89537841EAF89DE00BFEAFC /* AudioRecord.swift */,
+				F8723F121E260527009CCF44 /* Reachability.h */,
 				F8723F131E260527009CCF44 /* Reachability.m */,
 				F812297C1BF777AB00BDCF0E /* DataCache.swift */,
 				F8D5C4081C01EE8600179853 /* FileManager.swift */,
@@ -180,6 +183,14 @@
 				F89537591EAF71A100BFEAFC /* AVFoundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F8E608581EB035A3008A1030 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F8E608591EB035B6008A1030 /* audio.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,6 +257,7 @@
 				F812296F1BF73C6C00BDCF0E /* LaunchScreen.storyboard in Resources */,
 				F812296C1BF73C6C00BDCF0E /* Assets.xcassets in Resources */,
 				F81229671BF73C6C00BDCF0E /* Main.storyboard in Resources */,
+				F8E6085A1EB035B6008A1030 /* audio.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

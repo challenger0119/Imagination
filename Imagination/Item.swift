@@ -137,9 +137,7 @@ class Item: NSObject {
         super.init()
     }
     
-    class func multiMediaFileNameTime(day:String,time:String) -> String{
-        return day+multiMediaFileNameTimeSperator+time
-    }
+   
     class func getMultiMediaNameArray(MultiMedia multiMedia:[Int:AnyObject],multiMediaName:String)->[String]{
         func getMediaTypeString(obj:AnyObject)->String?{
             if obj.isKind(of: UIImage.self) {
@@ -184,6 +182,10 @@ class Item: NSObject {
         return multiMediaDic
     }
     
+    
+    class func multiMediaFileNameTime(day:String,time:String) -> String{
+        return day+multiMediaFileNameTimeSperator+time
+    }
     //xxx_12
     class func multiMediaName(name nm:String,position pos:Int)->String{
         return "\(nm)\(self.multiMediaNameSeparator)\(pos)"

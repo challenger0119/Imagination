@@ -275,11 +275,11 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     
     func addMultimediaToTextView(multimedia:AnyObject,at:Int = -1) {
+        let imageWidth = self.content.frame.width - 10;
         
         if multimedia.isKind(of: UIImage.self) {
             let image = multimedia as! UIImage
             let textAttach = NSTextAttachment(data:nil, ofType: nil)
-            let imageWidth = self.content.frame.width - 10;
             let imageHeight = image.size.height / image.size.width * imageWidth
             textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
             let imageAttributeString = NSAttributedString(attachment:textAttach)
@@ -291,13 +291,34 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 Dlog("add image at \(at)")
                 self.content.textStorage.insert(imageAttributeString, at: at)
             }
+        }else if multimedia.isKind(of: AudioRecord.self) {
+            let audio = multimedia as! AudioRecord
+            do{
+                let data = try Data.init(contentsOf: audio.recordFileURL)
+                let textAttach = NSTextAttachment(data: data, ofType: Item.MutiMediaType.voice.rawValue)
+                let image = UIImage.init(named: "audio")!
+                let imageHeight = image.size.height / image.size.width * imageWidth
+                textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                let imageAttributeString = NSAttributedString(attachment:textAttach)
+                if at == -1 {
+                    self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
+                }else{
+                    //查看模式
+                    Dlog("add image at \(at)")
+                    self.content.textStorage.insert(imageAttributeString, at: at)
+                }
+            }catch{
+                Dlog(error.localizedDescription)
+            }
+            
         }
     }
     
     //MARK: - AudioRecordViewDelegate
-    func audioRecordViewStateChanged(state: RecordState) {
+    func audioRecordViewStateChanged(state: RecordState,audioRecord:AudioRecord) {
         if state == .Save {
             //以链接的形式添加
+            addMultimediaToTextView(multimedia: audioRecord)
         }
     }
     

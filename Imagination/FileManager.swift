@@ -43,7 +43,7 @@ extension FileManager {
 extension FileManager{
     //MARK: - Image
     fileprivate class func imageFile(withName name:String) -> UIImage? {
-        let path = self.imagePathWithName(name)
+        let path = self.imageFilePathWithName(name)
         if let data =  UIImage.init(contentsOfFile: path) {
             return data
         }else{
@@ -53,7 +53,10 @@ extension FileManager{
     fileprivate class func imageFilePath() -> String{
         return self.multiMediaFilePath() + "/Pictures"
     }
-    fileprivate class func imagePathWithName(_ name:String)->String{
+    fileprivate class func imageFilePathWithTimestamp() -> String{
+        return self.imageFilePathWithName(FileManager.imageName(name: "default\(Time.timestamp())"))
+    }
+    fileprivate class func imageFilePathWithName(_ name:String)->String{
         let tname = name.replacingOccurrences(of: ":", with: Item.oldSeparator)
         return self.imageFilePath() + "/\(tname)"
     }
@@ -76,7 +79,7 @@ extension FileManager{
         }
         
         var data:Data!
-        let path:String = FileManager.imagePathWithName(name)
+        let path:String = FileManager.imageFilePathWithName(name)
         data = FileManager.imageData(image: image)
         Dlog("image file at \(path)")
         return self.createFile(atPath: path, contents: data, attributes: nil)
@@ -84,7 +87,7 @@ extension FileManager{
     
     private func deleteImageFileWithName(_ name:String)->Bool{
         do{
-            try self.removeItem(atPath: FileManager.imagePathWithName(name))
+            try self.removeItem(atPath: FileManager.imageFilePathWithName(name))
             return true
         }catch{
             return false
@@ -110,6 +113,9 @@ extension FileManager{
     }
     class func audioFileDefaultPath()->String{
         return self.audioFilePathWithName(name: "default.wav")
+    }
+    class func audioFilePathWithTimstamp()->String{
+        return self.audioFilePathWithName(name: "default\(Time.timestamp()).wav")
     }
 }
 
@@ -140,7 +146,7 @@ extension FileManager{
             }catch{
                 print("error createfile")
             }
-            path = FileManager.imagePathWithName(filename)
+            path = FileManager.imageFilePathWithName(filename)
             data = FileManager.imageData(image: file as! UIImage)
         default:
             do{
@@ -208,7 +214,7 @@ extension FileManager{
         var path = ""
         switch narray[0] {
         case Item.MutiMediaType.image.rawValue:
-            path = self.imagePathWithName(tname)
+            path = self.imageFilePathWithName(tname)
         default:
             path = self.multiMediaFilePath() + "/\(tname)"
         }

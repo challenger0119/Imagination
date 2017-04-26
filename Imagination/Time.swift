@@ -39,4 +39,7 @@ class Time: NSObject {
         format.dateFormat = "HH:mm:SS"
         return format.string(from: date)
     }
+    class func timestamp()->String{
+        return String(Date().timeIntervalSince1970)
+    }
 }

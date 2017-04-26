@@ -91,6 +91,7 @@ class DataCache: NSObject {
         }
     }
 
+    //文字，心情，地理位置，多媒体
     func newString(Content content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?,multiMedia:Dictionary<Int,AnyObject>?){
         
         if let mm = multiMedia {
@@ -99,7 +100,6 @@ class DataCache: NSObject {
                     let clock = Time.clock()
                     let today = self.currentDayName!
                     let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
-                    
                     self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm,multiMediaName: baseName), key: clock)
                     
                     store(Multimedia: mm, baseName: baseName)
@@ -108,18 +108,16 @@ class DataCache: NSObject {
                     let today = Time.today()
                     let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
                     self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
-                    
                     store(Multimedia: mm, baseName: baseName)
                 }
             }else{
                 self.newString(Content: content, moodState: moodState, multiMedia: multiMedia)
             }
-            
         }else{
             self.newStringContent(content, moodState: moodState, GPSPlace: GPSPlace)
         }
     }
-    
+    //文字，心情，多媒体
     func newString(Content content:String, moodState:Int,multiMedia:Dictionary<Int,AnyObject>?){
         if let mm = multiMedia {
             if Time.today() == self.currentDayName {
@@ -142,6 +140,7 @@ class DataCache: NSObject {
             self.newStringContent(content, moodState: moodState)
         }
     }
+    //文字，心情，地理位置
     func newStringContent(_ content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?){
         if let gps = GPSPlace {
             if Time.today() == self.currentDayName {
@@ -153,7 +152,7 @@ class DataCache: NSObject {
             self.newStringContent(content, moodState: moodState)
         }
     }
-    
+    //文字，心情
     func newStringContent(_ content:String, moodState:Int) {
         if Time.today() == self.currentDayName {
             self.updateLastday(Item.itemString(content, mood: moodState), key: Time.clock())
