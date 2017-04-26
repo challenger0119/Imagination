@@ -318,7 +318,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     func audioRecordViewStateChanged(state: RecordState,audioRecord:AudioRecord) {
         if state == .Save {
             //以链接的形式添加
-            addMultimediaToTextView(multimedia: audioRecord)
+            //addMultimediaToTextView(multimedia: audioRecord)
         }
     }
     
