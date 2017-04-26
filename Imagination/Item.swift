@@ -30,13 +30,11 @@ class Item: NSObject {
     var color:UIColor
     var moodString:String
     var place:(name:String,latitude:Double,longtitude:Double)
-    var multiMediaFile:[String:String]?
-    var multiMedias:[Int:AnyObject]?
+    //var multiMediaFile:[String:String]?
+    var multiMedias:[Int:MultiMediaFile]?
     var multiMediasDescrip:String = ""
     
-    enum MutiMediaType:String {
-        case image = "Image",voice = "Voice",video = "Video",def = "multi"
-    }
+    
     
     init(contentString:String) {
         
@@ -68,25 +66,31 @@ class Item: NSObject {
                         if fileDescrip.count != 2 {
                             continue
                         }
-                        let data = FileManager.multimediaFileWith(Name: file)
-                        if data.obj == nil {
-                            //无数据
-                            continue
-                        }
+                        
+                        let type = fileDescrip[0]
+                        
                         let fileinfo = fileDescrip[1].components(separatedBy: Item.multiMediaNameSeparator)
+                        let filename = fileinfo[0]
+                        let position = fileinfo[1]
+                        
+                        let mf = MultiMediaFile()
+                        switch type {
+                        case MutiMediaType.image.rawValue:
+                            mf.type = .image
+                            mf.storePath = FileManager.imageFilePathWithName(filename)
+                        case MutiMediaType.voice.rawValue:
+                            mf.type = .voice
+                            mf.storePath = FileManager.audioFilePathWithName(name: filename)
+                        default:
+                            break
+                        }
                         
                         if self.multiMedias == nil {
-                            self.multiMedias = [Int(fileinfo[1])!:data.obj!]
+                            self.multiMedias = [Int(position)!:mf]
                         }else{
-                            let _ = self.multiMedias?.updateValue(data.obj!, forKey: Int(fileinfo[1])!)
+                            let _ = self.multiMedias?.updateValue(mf, forKey: Int(position)!)
                         }
-                        
-                        if self.multiMediaFile == nil {
-                            self.multiMediaFile = [fileDescrip[0]:fileDescrip[1]]
-                        }else{
-                            let _ = self.multiMediaFile?.updateValue(fileDescrip[1], forKey: fileDescrip[0])
-                        }
-                        self.multiMediasDescrip += "[\(fileDescrip[0])]"
+                        self.multiMediasDescrip += "[\(type)]"
                     }
                 }else{
                     let string = array[2]
@@ -99,25 +103,30 @@ class Item: NSObject {
                             if fileDescrip.count != 2 {
                                 continue
                             }
-                            let data = FileManager.multimediaFileWith(Name: file)
-                            if data.obj == nil {
-                                //无数据
-                                continue
-                            }
+                            let type = fileDescrip[0]
+                            
                             let fileinfo = fileDescrip[1].components(separatedBy: Item.multiMediaNameSeparator)
+                            let filename = fileinfo[0]
+                            let position = fileinfo[1]
+                            
+                            let mf = MultiMediaFile()
+                            switch type {
+                            case MutiMediaType.image.rawValue:
+                                mf.type = .image
+                                mf.storePath = FileManager.imageFilePathWithName(filename)
+                            case MutiMediaType.voice.rawValue:
+                                mf.type = .voice
+                                mf.storePath = FileManager.audioFilePathWithName(name: filename)
+                            default:
+                                break
+                            }
                             
                             if self.multiMedias == nil {
-                                self.multiMedias = [Int(fileinfo[1])!:data.obj!]
+                                self.multiMedias = [Int(position)!:mf]
                             }else{
-                                let _ = self.multiMedias?.updateValue(data.obj!, forKey: Int(fileinfo[1])!)
+                                let _ = self.multiMedias?.updateValue(mf, forKey: Int(position)!)
                             }
-                            
-                            if self.multiMediaFile == nil {
-                                self.multiMediaFile = [fileDescrip[0]:fileDescrip[1]]
-                            }else{
-                                let _ = self.multiMediaFile?.updateValue(fileDescrip[1], forKey: fileDescrip[0])
-                            }
-                            self.multiMediasDescrip += "[\(fileDescrip[0])]"
+                            self.multiMediasDescrip += "[\(type)]"
                         }
                         self.place = ("",0,0)
                     }else{
@@ -137,58 +146,19 @@ class Item: NSObject {
         super.init()
     }
     
-   
-    class func getMultiMediaNameArray(MultiMedia multiMedia:[Int:AnyObject],multiMediaName:String)->[String]{
-        func getMediaTypeString(obj:AnyObject)->String?{
-            if obj.isKind(of: UIImage.self) {
-                return self.MutiMediaType.image.rawValue
-            }else{
-                return nil
-            }
-        }
+    class func getMultiMediaNameArray(multiMedia:[Int:MultiMediaFile])->[String]{
         var multiMediaoArray = [String]()
-        
         let keyArray = Array(multiMedia.keys)
         for key in keyArray{
             if let obj = multiMedia[key] {
-                if let type = getMediaTypeString(obj: obj){
-                    var tmpStr = "\(type)\(self.multiMediaIndicator)\(self.multiMediaName(name: multiMediaName, position: key))"
-                    if keyArray.index(of: key) != keyArray.count-1 {
-                        tmpStr += self.multiMediaSeparator
-                    }
-                    multiMediaoArray.append(tmpStr)
+                var tmpStr = "\(obj.type.rawValue)\(self.multiMediaIndicator)\(obj.nameWithPosition(pos: key))"
+                if keyArray.index(of: key) != keyArray.count-1 {
+                    tmpStr += self.multiMediaSeparator
                 }
+                multiMediaoArray.append(tmpStr)
             }
         }
         return multiMediaoArray
-    }
-    
-    class func getMultiMediaNameBaseDic(MultiMedia multiMedia:[Int:AnyObject],multiMediaName:String)->[String:AnyObject]{
-        func getMediaTypeString(obj:AnyObject)->String?{
-            if obj.isKind(of: UIImage.self) {
-                return self.MutiMediaType.image.rawValue
-            }else{
-                return self.MutiMediaType.def.rawValue
-            }
-        }
-        var multiMediaDic = [String:AnyObject]()
-        
-        let keyArray = Array(multiMedia.keys)
-        for key in keyArray{
-            if let obj = multiMedia[key] {
-               multiMediaDic.updateValue(obj, forKey: self.multiMediaName(name: multiMediaName, position: key))
-            }
-        }
-        return multiMediaDic
-    }
-    
-    
-    class func multiMediaFileNameTime(day:String,time:String) -> String{
-        return day+multiMediaFileNameTimeSperator+time
-    }
-    //xxx_12
-    class func multiMediaName(name nm:String,position pos:Int)->String{
-        return "\(nm)\(self.multiMediaNameSeparator)\(pos)"
     }
     
     //xxx<->xxx
@@ -201,18 +171,18 @@ class Item: NSObject {
     }
     
     //xxx<->xxx<->img->xx_xx;img->xx_xx;voice->xx_xx
-    class func itemString(Content content:String,mood:Int,multiMedia:[Int:AnyObject],multiMediaName:String) ->String {
+    class func itemString(Content content:String,mood:Int,multiMedia:[Int:MultiMediaFile]) ->String {
         
         var multiMediaoString:String = ""
-        let multiMediaArray = self.getMultiMediaNameArray(MultiMedia: multiMedia,multiMediaName: multiMediaName)
+        let multiMediaArray = self.getMultiMediaNameArray(multiMedia: multiMedia)
         for str in multiMediaArray {
             multiMediaoString += str
         }
         return self.itemString(content, mood: mood) + self.separator + multiMediaoString
     }
     //xxx<->xxx<->img->xx_xx;img->xx_xx;voice->xx_xx<->xx,xx,xx
-    class func itemString(Content content:String,mood:Int,GPSName:String,latitude:Double,longtitude:Double,multiMedia:[Int:AnyObject],multiMediaName:String) ->String {
+    class func itemString(Content content:String,mood:Int,GPSName:String,latitude:Double,longtitude:Double,multiMedia:[Int:MultiMediaFile]) ->String {
         
-        return self.itemString(Content: content, mood: mood, multiMedia: multiMedia, multiMediaName: multiMediaName) + self.separator + "\(GPSName)\(self.gpsSeparator)\(latitude)\(self.gpsSeparator)\(longtitude)"
+        return self.itemString(Content: content, mood: mood, multiMedia: multiMedia) + self.separator + "\(GPSName)\(self.gpsSeparator)\(latitude)\(self.gpsSeparator)\(longtitude)"
     }
 }

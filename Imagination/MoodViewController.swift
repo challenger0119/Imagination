@@ -38,7 +38,9 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     
     
     var imageVC:UIImagePickerController!
-    var multiMediaBufferDic:[Int:AnyObject]?
+    var multiMediaBufferDic:[Int:MultiMediaFile]?
+    var multiMediaInsertBuffer:[NSTextAttachment:MultiMediaFile] = Dictionary()
+    //用来存储非照片资源的地址，临时添加，后面优化  这是因为获取照片是后存文件，获取录音是先存文件，系统原因，导致使用了不同的存储方案
     
     @IBOutlet weak var content: UITextView!
     @IBOutlet weak var goodBtn: UIButton!
@@ -220,12 +222,20 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         //找到attachment  对比buffer 删除buffer中多余的attache 因为buffer只能增加
         self.content.textStorage.enumerateAttribute(NSAttachmentAttributeName, in: NSRange(location: 0,length: self.content.textStorage.length), options: NSAttributedString.EnumerationOptions(rawValue: 0), using:{
             (obj,range,pointor) in
-            if let imageAttache = obj as? NSTextAttachment {
-                if let image = imageAttache.image {
+            if let attache = obj as? NSTextAttachment {
+                let mf = self.multiMediaInsertBuffer[attache]!
+                if mf.type == .image {
+                    mf.storePath = FileManager.createImageFileWithTimestamp(image: mf.obj as! UIImage)
                     if self.multiMediaBufferDic == nil {
-                        self.multiMediaBufferDic = [range.location:image]
+                        self.multiMediaBufferDic = [range.location:mf]
                     }else{
-                        let _ = self.multiMediaBufferDic?.updateValue(image, forKey: range.location)
+                        let _ = self.multiMediaBufferDic?.updateValue(mf, forKey: range.location)
+                    }
+                }else if mf.type == .voice {
+                    if self.multiMediaBufferDic == nil {
+                        self.multiMediaBufferDic = [range.location:mf]
+                    }else{
+                        let _ = self.multiMediaBufferDic?.updateValue(mf, forKey: range.location)
                     }
                 }
             }
@@ -279,7 +289,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         
         if multimedia.isKind(of: UIImage.self) {
             let image = multimedia as! UIImage
-            let textAttach = NSTextAttachment(data:nil, ofType: nil)
+            let textAttach = NSTextAttachment(data:FileManager.imageData(image: image), ofType:MutiMediaType.image.rawValue)
             let imageHeight = image.size.height / image.size.width * imageWidth
             textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
             let imageAttributeString = NSAttributedString(attachment:textAttach)
@@ -291,11 +301,15 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 Dlog("add image at \(at)")
                 self.content.textStorage.insert(imageAttributeString, at: at)
             }
+            let mf = MultiMediaFile()
+            mf.obj = image
+            mf.type = .image
+            self.multiMediaInsertBuffer.updateValue(mf, forKey:textAttach)
         }else if multimedia.isKind(of: AudioRecord.self) {
             let audio = multimedia as! AudioRecord
             do{
                 let data = try Data.init(contentsOf: audio.recordFileURL)
-                let textAttach = NSTextAttachment(data: data, ofType: Item.MutiMediaType.voice.rawValue)
+                let textAttach = NSTextAttachment(data: data, ofType: MutiMediaType.voice.rawValue)
                 let image = UIImage.init(named: "audio")!
                 let imageHeight = image.size.height / image.size.width * imageWidth
                 textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
@@ -307,6 +321,11 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                     Dlog("add image at \(at)")
                     self.content.textStorage.insert(imageAttributeString, at: at)
                 }
+                let mf = MultiMediaFile()
+                mf.obj = audio
+                mf.type = .voice
+                mf.storePath = audio.recordFileURL.absoluteString
+                self.multiMediaInsertBuffer.updateValue(mf, forKey:textAttach)
             }catch{
                 Dlog(error.localizedDescription)
             }
@@ -318,7 +337,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     func audioRecordViewStateChanged(state: RecordState,audioRecord:AudioRecord) {
         if state == .Save {
             //以链接的形式添加
-            //addMultimediaToTextView(multimedia: audioRecord)
+            addMultimediaToTextView(multimedia: audioRecord)
         }
     }
     

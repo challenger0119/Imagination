@@ -10,14 +10,14 @@ import UIKit
 import MapKit
 class MoodShowViewController: UIViewController {
     
-    var multiMediaBufferDic:[Int:AnyObject]?
+    var multiMediaBufferDic:[Int:MultiMediaFile]?
     var text:String = ""
     var pInfo:(name:String,latitude:Double,longtitude:Double)?
     var exitAnimation:((Void)->Void)?
     var state = 0
     fileprivate var mapView:UIView?
     
-    init(contentText:String,contentDic:[Int:AnyObject]?,state:Int,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
+    init(contentText:String,contentDic:[Int:MultiMediaFile]?,state:Int,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
         self.multiMediaBufferDic = contentDic
         self.text = contentText
         self.pInfo = placeInfo
@@ -70,7 +70,7 @@ class MoodShowViewController: UIViewController {
         textView.textColor = Item.moodColor[self.state]
         self.view.addSubview(textView)
         
-        if pInfo != nil {
+        if pInfo != nil && pInfo!.latitude != 0 {
             var tframe = textView.frame
             tframe.size.height = tframe.size.height - 30
             textView.frame = tframe
@@ -97,17 +97,29 @@ class MoodShowViewController: UIViewController {
             keys.sort()
             var i:Int = 0 //插入补偿 解决排版问题
             for key in keys {
-                if let multimedia = self.multiMediaBufferDic![key] {
-                    if multimedia.isKind(of: UIImage.self) {
-                        let image = multimedia as! UIImage
-                        let textAttach = NSTextAttachment(data:nil, ofType: nil)
-                        let imageWidth = textView.frame.width - 10;
+                if let mf = self.multiMediaBufferDic![key] {
+                    let imageWidth = textView.frame.width - 10;
+                    if mf.type == .image {
+                        let image = UIImage.init(contentsOfFile: mf.storePath)!
+                        let textAttach = NSTextAttachment(data:FileManager.imageData(image: image), ofType: mf.type.rawValue)
                         let imageHeight = image.size.height / image.size.width * imageWidth
                         textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                         let imageAttributeString = NSAttributedString(attachment:textAttach)
-                        
                         mstring.insert(imageAttributeString, at: key+i)
                         i += 1
+                    }else if mf.type == .voice {
+                        do{
+                            let data = try Data.init(contentsOf: URL.init(fileURLWithPath: mf.storePath))
+                            let textAttach = NSTextAttachment(data:data, ofType: mf.type.rawValue)
+                            let image = UIImage.init(named: "audio")!
+                            let imageHeight = image.size.height / image.size.width * imageWidth
+                            textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                            let imageAttributeString = NSAttributedString(attachment:textAttach)
+                            mstring.insert(imageAttributeString, at: key+i)
+                            i += 1
+                        }catch{
+                            Dlog(error.localizedDescription)
+                        }
                     }
                 }
             }

@@ -40,6 +40,6 @@ class Time: NSObject {
         return format.string(from: date)
     }
     class func timestamp()->String{
-        return String(Date().timeIntervalSince1970)
+        return String(Int(Date().timeIntervalSince1970))
     }
 }

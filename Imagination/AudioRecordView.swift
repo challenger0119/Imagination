@@ -100,7 +100,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
             aRecord.stopRecord()
             self.meterTimer?.invalidate()
             do{
-                let atr = try FileManager.default.attributesOfItem(atPath: FileManager.audioFileDefaultPath())
+                let atr = try FileManager.default.attributesOfItem(atPath: self.aRecord.recordFileURL.absoluteString)
                 let size = atr[FileAttributeKey("NSFileSize")] as! Int
                 self.stateString = "\(String(describing: Int(size / 1024)))Kb"
                 self.stateLabel.text = stateString

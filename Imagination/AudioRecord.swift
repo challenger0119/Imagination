@@ -18,7 +18,7 @@ class AudioRecord: NSObject {
         }
     }
     override init() {
-        let audiofile = FileManager.audioFileDefaultPath()
+        let audiofile = FileManager.audioFilePathWithTimstamp()
         let session =  AVAudioSession.sharedInstance()
         let setting = [AVSampleRateKey:NSNumber(value:Float(8000.0)),
                        AVFormatIDKey:NSNumber(value:Int(kAudioFormatLinearPCM)),

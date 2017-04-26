@@ -140,7 +140,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         return true
     }
  
-    func sendBackupToMail(result:(txtfile:String,files:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?))  {
+    func sendBackupToMail(result:(txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?))  {
         if result.txtfile == dCache.EMPTY_STRING {
             let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
@@ -150,7 +150,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         sendByEmail(result.txtfile, fileName: result.txtfile+".txt",attachments: result.files)
     }
     
-    func sendByEmail(_ filePath:String,fileName:String,attachments:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?) {
+    func sendByEmail(_ filePath:String,fileName:String,attachments:[(name:String,type:MutiMediaType,obj:AnyObject?)]?) {
         let vc = MFMailComposeViewController.init()
         vc.mailComposeDelegate = self
         let sub = NSString(string: filePath)

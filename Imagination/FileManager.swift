@@ -42,25 +42,20 @@ extension FileManager {
 
 extension FileManager{
     //MARK: - Image
-    fileprivate class func imageFile(withName name:String) -> UIImage? {
-        let path = self.imageFilePathWithName(name)
-        if let data =  UIImage.init(contentsOfFile: path) {
-            return data
-        }else{
-            return nil
-        }
-    }
+    //文件目录
     fileprivate class func imageFilePath() -> String{
         return self.multiMediaFilePath() + "/Pictures"
     }
-    fileprivate class func imageFilePathWithTimestamp() -> String{
-        return self.imageFilePathWithName(FileManager.imageName(name: "default\(Time.timestamp())"))
-    }
-    fileprivate class func imageFilePathWithName(_ name:String)->String{
+    class func imageFilePathWithName(_ name:String)->String{
+        do{
+            try FileManager.default.createDirectory(atPath: FileManager.imageFilePath(), withIntermediateDirectories: true, attributes: nil)
+        }catch{
+            Dlog(error.localizedDescription)
+        }
         let tname = name.replacingOccurrences(of: ":", with: Item.oldSeparator)
         return self.imageFilePath() + "/\(tname)"
     }
-    
+    //全局设置
     static var compression:CGFloat{
         get{
             return 0.5
@@ -71,20 +66,41 @@ extension FileManager{
             return false
         }
     }
-    private func createImageFileWithName(_ name:String,image:UIImage)->Bool{
-        do{
-            try self.createDirectory(atPath: FileManager.imageFilePath(), withIntermediateDirectories: true, attributes: nil)
-        }catch{
-            Dlog(error.localizedDescription)
+    class func imageName(name:String)->String{
+        if FileManager.isPng {
+            return name+".png"
+        }else{
+            return name+".jpg"
         }
-        
-        var data:Data!
-        let path:String = FileManager.imageFilePathWithName(name)
-        data = FileManager.imageData(image: image)
-        Dlog("image file at \(path)")
-        return self.createFile(atPath: path, contents: data, attributes: nil)
     }
-    
+    class func imageData(image:UIImage) -> Data? {
+        if FileManager.isPng {
+            return UIImagePNGRepresentation(image)
+        }else{
+            return UIImageJPEGRepresentation(image, FileManager.compression)
+        }
+    }
+    //文件操作
+    fileprivate class func imageFile(withName name:String) -> UIImage? {
+        let path = self.imageFilePathWithName(name)
+        if let data =  UIImage.init(contentsOfFile: path) {
+            return data
+        }else{
+            return nil
+        }
+    }
+    fileprivate class func imageFilePathWithTimestamp() -> String{
+        return self.imageFilePathWithName(FileManager.imageName(name: "image\(Time.timestamp())"))
+    }
+    class func createImageFileWithTimestamp(image:UIImage)->String{
+        let path:String = FileManager.imageFilePathWithTimestamp()
+        let data = FileManager.imageData(image: image)
+        if FileManager.default.createFile(atPath: path, contents: data, attributes: nil) {
+            return path
+        }else{
+            return ""
+        }
+    }
     private func deleteImageFileWithName(_ name:String)->Bool{
         do{
             try self.removeItem(atPath: FileManager.imageFilePathWithName(name))
@@ -93,7 +109,6 @@ extension FileManager{
             return false
         }
     }
-    
     private class func allImageFilePaths()->[String]?{
         return FileManager.default.subpaths(atPath: self.documentsPath() + "/Pictures")
     }
@@ -111,31 +126,15 @@ extension FileManager{
         }
         return self.audioFilePath() + "/\(name)"
     }
-    class func audioFileDefaultPath()->String{
-        return self.audioFilePathWithName(name: "default.wav")
-    }
     class func audioFilePathWithTimstamp()->String{
-        return self.audioFilePathWithName(name: "default\(Time.timestamp()).wav")
+        return self.audioFilePathWithName(name: "audio\(Time.timestamp()).wav")
     }
 }
 
 extension FileManager{
     //MARK: - DataCache
-    class func imageData(image:UIImage) -> Data? {
-        if FileManager.isPng {
-            return UIImagePNGRepresentation(image)
-        }else{
-            return UIImageJPEGRepresentation(image, FileManager.compression)
-        }
-    }
-    class func imageName(name:String)->String{
-        if FileManager.isPng {
-            return name+".png"
-        }else{
-            return name+".jpg"
-        }
-    }
-    func create(Multimedia file:Any,name:String,type:Item.MutiMediaType) -> String{
+    
+    func create(Multimedia file:Any,name:String,type:MutiMediaType) -> String{
         let filename = "\(type.rawValue)\(Item.multiMediaIndicator)\(name)"
         var path = ""
         var data:Data!
@@ -186,18 +185,18 @@ extension FileManager{
             return names
         }
     }
-    class func multimediaFileWith(Name nm:String) -> (name:String,type:Item.MutiMediaType,obj:AnyObject?) {
+    class func multimediaFileWith(Name nm:String) -> (name:String,type:MutiMediaType,obj:AnyObject?) {
         let narray = nm.components(separatedBy: Item.multiMediaIndicator)
         
         switch narray[0] {
-        case Item.MutiMediaType.image.rawValue:
+        case MutiMediaType.image.rawValue:
             if let data = FileManager.imageFile(withName: nm) {
-                return (nm,Item.MutiMediaType.image,data)
+                return (nm,MutiMediaType.image,data)
             }else{
-                return (nm,Item.MutiMediaType.image,nil)
+                return (nm,MutiMediaType.image,nil)
             }
         default:
-            return (nm,Item.MutiMediaType.def,NSKeyedUnarchiver.unarchiveObject(withFile: FileManager.multiMediaFilePath(withName: nm)) as AnyObject?)
+            return (nm,MutiMediaType.def,NSKeyedUnarchiver.unarchiveObject(withFile: FileManager.multiMediaFilePath(withName: nm)) as AnyObject?)
         }
     }
 }
@@ -213,7 +212,7 @@ extension FileManager{
         let narray = tname.components(separatedBy: Item.multiMediaIndicator)
         var path = ""
         switch narray[0] {
-        case Item.MutiMediaType.image.rawValue:
+        case MutiMediaType.image.rawValue:
             path = self.imageFilePathWithName(tname)
         default:
             path = self.multiMediaFilePath() + "/\(tname)"
@@ -241,7 +240,5 @@ extension FileManager{
         Dlog("default multimedia file at \(path)")
         return self.createFile(atPath: path, contents: data, attributes: nil)
     }
-    
-    
 }
 

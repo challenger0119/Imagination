@@ -28,6 +28,7 @@
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
 		F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */; };
 		F8E6085A1EB035B6008A1030 /* audio.png in Resources */ = {isa = PBXBuildFile; fileRef = F8E608591EB035B6008A1030 /* audio.png */; };
+		F8E6085C1EB08111008A1030 /* MultiMediaFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */; };
 		F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918A1C17CAE500650406 /* MoreViewController.swift */; };
 		F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918E1C19123F00650406 /* DataPicker.swift */; };
 		F8E991911C19233800650406 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E991901C19233800650406 /* MessageUI.framework */; };
@@ -67,6 +68,7 @@
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaodeMapApi.swift; sourceTree = "<group>"; };
 		F8E608591EB035B6008A1030 /* audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = audio.png; sourceTree = "<group>"; };
+		F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiMediaFile.swift; sourceTree = "<group>"; };
 		F8E9918A1C17CAE500650406 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		F8E9918E1C19123F00650406 /* DataPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPicker.swift; sourceTree = "<group>"; };
 		F8E991901C19233800650406 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -141,6 +143,7 @@
 				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
 				F8F5D4791EADCA25007BDF2A /* UIImage+BlurImage.h */,
 				F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */,
+				F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				F8F5D47F1EADDAD9007BDF2A /* IndicatorMapViewBack.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */,
+				F8E6085C1EB08111008A1030 /* MultiMediaFile.swift in Sources */,
 				F81283981C3F82E8002985A7 /* Notification.swift in Sources */,
 				F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */,
 				F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */,

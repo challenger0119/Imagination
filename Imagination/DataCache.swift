@@ -92,23 +92,19 @@ class DataCache: NSObject {
     }
 
     //文字，心情，地理位置，多媒体
-    func newString(Content content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?,multiMedia:Dictionary<Int,AnyObject>?){
+    func newString(Content content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?,multiMedia:Dictionary<Int,MultiMediaFile>?){
         
         if let mm = multiMedia {
             if let gps = GPSPlace {
                 if Time.today() == self.currentDayName {
+                    //今天的新的记录
                     let clock = Time.clock()
-                    let today = self.currentDayName!
-                    let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
-                    self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm,multiMediaName: baseName), key: clock)
-                    
-                    store(Multimedia: mm, baseName: baseName)
+                    self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm), key: clock)
                 } else {
+                    //新的一天记录
                     let clock = Time.clock()
                     let today = Time.today()
-                    let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
-                    self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
-                    store(Multimedia: mm, baseName: baseName)
+                    self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm)], currentDayName: today)
                 }
             }else{
                 self.newString(Content: content, moodState: moodState, multiMedia: multiMedia)
@@ -118,22 +114,16 @@ class DataCache: NSObject {
         }
     }
     //文字，心情，多媒体
-    func newString(Content content:String, moodState:Int,multiMedia:Dictionary<Int,AnyObject>?){
+    func newString(Content content:String, moodState:Int,multiMedia:Dictionary<Int,MultiMediaFile>?){
         if let mm = multiMedia {
             if Time.today() == self.currentDayName {
                 let clock = Time.clock()
-                let today = self.currentDayName!
-                let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
-                self.updateLastday(Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: baseName), key: clock)
+                self.updateLastday(Item.itemString(Content: content, mood: moodState,multiMedia: mm), key: clock)
                 
-                store(Multimedia: mm, baseName: baseName)
             } else {
                 let clock = Time.clock()
                 let today = Time.today()
-                let baseName = Item.multiMediaFileNameTime(day: today, time: clock)
-                self.initLastday([clock:Item.itemString(Content: content, mood: moodState,multiMedia: mm,multiMediaName: baseName)], currentDayName: today)
-                
-                store(Multimedia: mm, baseName: baseName)
+                self.initLastday([clock:Item.itemString(Content: content, mood: moodState,multiMedia: mm)], currentDayName: today)
                 
             }
         }else{
@@ -365,7 +355,7 @@ class DataCache: NSObject {
     
     //导出
     //导出和备份不在同一逻辑下 所以不在一个目录放
-    func createExportDataFile(_ from:String,to:String) ->(txtfile:String,files:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?) {
+    func createExportDataFile(_ from:String,to:String) ->(txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?) {
         //删除原有的 导出文件只需要一份
         let mng = FileManager.default
         do {
@@ -392,9 +382,9 @@ class DataCache: NSObject {
     }
     
 
-    func createMutimedateExportDataFile(_ from:String,to:String) -> [(name:String,type:Item.MutiMediaType,obj:AnyObject?)]? {
+    func createMutimedateExportDataFile(_ from:String,to:String) -> [(name:String,type:MutiMediaType,obj:AnyObject?)]? {
        
-        var array:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?
+        var array:[(name:String,type:MutiMediaType,obj:AnyObject?)]?
         loadMultiMediaCatalogue()
         if let cata = multiMediaCatalogue {
             for str in cata{
@@ -417,7 +407,7 @@ class DataCache: NSObject {
     
     //备份
     //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
-    func backupAll() -> (txtfile:String,files:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?) {
+    func backupAll() -> (txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?) {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
             let _ = deleteDay(fileState!.filename)
@@ -430,7 +420,7 @@ class DataCache: NSObject {
         return (EMPTY_STRING,nil)
     }
     
-    func backupToNow() ->(txtfile:String,files:[(name:String,type:Item.MutiMediaType,obj:AnyObject?)]?)  {
+    func backupToNow() ->(txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?)  {
         
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
