@@ -23,6 +23,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     let TAG_DAYLIST:NSInteger = 100
     
     var locToShow:CLLocationCoordinate2D?
+    var itemBuffer:[Item] = []
 
     @IBAction func otherDay(_ sender:AnyObject) {
         
@@ -102,6 +103,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
                         }
                         //赋值moodState
                         let cc = Item.init(contentString: day[ct]!)
+                        itemBuffer.append(cc)
                         switch cc.mood {
                         case 1:cool+=1
                         case 2:ok+=1
@@ -117,6 +119,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
                 }
             }
         }
+        
         self.tableView.reloadData()
     }
     func changeTimeToDayAndTime(_ timearry:[String],day:String) -> [String]{
@@ -242,7 +245,8 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier",for: indexPath) as! CustomTableViewCell
-        let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
+        //let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
+        let cc = itemBuffer[indexPath.row]
         cell.time.text = times![(indexPath as NSIndexPath).row]
         if cc.place.latitude != 0 {
             cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.multiMediasDescrip + "\n\n@\(cc.place.name)"
@@ -259,8 +263,8 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         tableView.deselectRow(at: indexPath, animated: true)
         
         
-        let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
-
+        //let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
+        let cc = itemBuffer[indexPath.row]
         let vc = MoodShowViewController(contentText: cc.content, contentDic: cc.multiMedias, state: cc.mood, placeInfo: cc.place)
         vc.modalPresentationStyle = .overCurrentContext
         vc.view.alpha = 0

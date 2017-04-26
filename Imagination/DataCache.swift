@@ -311,8 +311,16 @@ class DataCache: NSObject {
         }
     }
     //创建文件
+    /*
     fileprivate func createBackupFileWithAddtionalInfo(_ from:String,to:String) -> String {
         return createFileAtPath(from, to: to, fileGetter: {
+            f,t in
+            return FileManager.TxtFileInDocuments("\(f)_\(t)")
+        })
+    }
+ */
+    fileprivate func createBackupFileWithAddtionalInfo(_ from:String,to:String) -> [String] {
+        return createFiles(from, to: to, fileGetter: {
             f,t in
             return FileManager.TxtFileInDocuments("\(f)_\(t)")
         })
@@ -352,9 +360,82 @@ class DataCache: NSObject {
         data.write(toFile: txtfile, atomically: true)
         return txtfile
     }
-    
+    fileprivate func createFiles(_ from:String,to:String,fileGetter:(_ from:String,_ to:String)->String)->[String]{
+       
+        let txtfile = fileGetter(from,to)
+        var filePaths = [txtfile]
+        let data = NSMutableData()
+        for dd in catalogue! {
+            if dd >= from && dd <= to {
+                //按天解析
+                if let ddtmp = loadDay(dd) {
+                    let thisday = dd + newline
+                    data.append(thisday.data(using: String.Encoding.utf8)!)
+                    var keys = Array(ddtmp.keys)
+                    keys.sort(){$0 < $1}
+                    for kk in keys {
+                        //一天中不同时刻解析
+                        let title = kk+newline
+                        data.append(title.data(using: String.Encoding.utf8)!)
+                        let item = Item(contentString:  ddtmp[kk]!)
+                        var content = item.content + newline
+                        if item.mood != 0 {
+                            content += "心情:\(item.moodString) "
+                        }
+                        if item.place.latitude != 0 {
+                            content += "位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))"
+                        }
+                        if item.mood != 0 || item.place.latitude != 0 {
+                            content += newline
+                        }
+                        data.append((content.data(using: String.Encoding.utf8))!)
+                        var multimedia = ""
+                        if let mm = item.multiMedias {
+                            for value in mm.values {
+                                filePaths.append(value.storePath)
+                                multimedia += (value.storePath as NSString).lastPathComponent+" "
+                            }
+                        }
+                        multimedia += newline;
+                        data.append((multimedia.data(using: String.Encoding.utf8))!)
+                    }
+                }
+                let over = newline+newline
+                data.append((over.data(using: String.Encoding.utf8))!)
+            }
+        }
+        data.write(toFile: txtfile, atomically: true)
+        
+        return filePaths
+    }
     //导出
     //导出和备份不在同一逻辑下 所以不在一个目录放
+    func createExportDataFile(_ from:String,to:String) ->[String] {
+        //删除原有的 导出文件只需要一份
+        let mng = FileManager.default
+        do {
+            let files = try mng.contentsOfDirectory(atPath: FileManager.pathOfNameInCaches(""))
+            if !files.isEmpty {
+                for ff in files {
+                    let ffarray = ff.components(separatedBy: ".")
+                    if ffarray.count == 2 {
+                        do{
+                            try mng.removeItem(atPath: FileManager.TxtFileInCaches(ffarray[0]))
+                        } catch {
+                            
+                        }
+                    }
+                }
+            }
+        } catch {
+            
+        }
+        return createFiles(from, to: to, fileGetter: {
+            f,t in
+            return FileManager.TxtFileInCaches("\(f)_\(t)")
+        })
+    }
+    /*
     func createExportDataFile(_ from:String,to:String) ->(txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?) {
         //删除原有的 导出文件只需要一份
         let mng = FileManager.default
@@ -380,8 +461,9 @@ class DataCache: NSObject {
             return FileManager.TxtFileInCaches("\(f)_\(t)")
         }),createMutimedateExportDataFile(from, to: to))
     }
+ */
     
-
+/*
     func createMutimedateExportDataFile(_ from:String,to:String) -> [(name:String,type:MutiMediaType,obj:AnyObject?)]? {
        
         var array:[(name:String,type:MutiMediaType,obj:AnyObject?)]?
@@ -404,9 +486,41 @@ class DataCache: NSObject {
         }
         return array
     }
-    
+    */
     //备份
     //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
+    func backupAll() -> [String] {
+        checkFileExist()
+        if fileState!.lastDate != EMPTY_STRING {
+            let _ = deleteDay(fileState!.filename)
+        }
+        if let cc = catalogue {
+            let start = cc[0]
+            let end = cc[cc.count-1]
+            return createBackupFileWithAddtionalInfo(start, to: end)
+        }
+        return []
+    }
+    
+    func backupToNow() ->[String] {
+        
+        checkFileExist()
+        if fileState!.lastDate != EMPTY_STRING {
+            //如果之前有备份 就从之前备份到今天
+            let _ = deleteDay(fileState!.filename)
+            return createBackupFileWithAddtionalInfo(fileState!.lastDate, to: Time.today())
+        } else {
+            //如果之前没有备份 就全部备份
+            if let cc = catalogue {
+                let start = cc[0]
+                let end = cc[cc.count-1]
+                return createBackupFileWithAddtionalInfo(start, to: end)
+            }
+        }
+        return []
+    }
+    
+    /*
     func backupAll() -> (txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?) {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
@@ -437,6 +551,7 @@ class DataCache: NSObject {
         }
         return (EMPTY_STRING,nil)
     }
+ */
     
     func checkFileExist() {
         let mng = FileManager.default

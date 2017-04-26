@@ -40,10 +40,10 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView .deselectRow(at: indexPath, animated: true)
         if (indexPath as NSIndexPath).row == 0 {
-            sendBackupToMail(result: dCache.backupToNow())
+            sendBackupToMail(files: dCache.backupToNow())
             updateRecentDetail()
         } else if (indexPath as NSIndexPath).row == 1 {
-            sendBackupToMail(result: dCache.backupAll())
+            sendBackupToMail(files: dCache.backupAll())
             updateRecentDetail()
         } else if (indexPath as NSIndexPath).row == 2 {
             picker = DataPicker.init(frame: CGRect(x: 20, y: (self.view.frame.height-200)/2-50, width: self.view.frame.width-40, height: 200), dele: self)
@@ -108,7 +108,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             vc.vType = AuthorityViewController.type.changePass
             self.present(vc, animated: true, completion: nil)
         } else if (indexPath as NSIndexPath).row == 6 {
-            sendByEmail("", fileName: "建议",attachments: nil)
+            sendByEmail(filePaths: [], addtional: "建议")
         }
     }
     
@@ -133,56 +133,50 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         updateReminder()
     }
     func dataPickerResult(_ first: String, second: String) {
-        sendBackupToMail(result: dCache.createExportDataFile(first, to: second))
+        sendBackupToMail(files: dCache.createExportDataFile(first, to: second))
     }
     
     func isValidateEmail(_ email:String) -> Bool {
         return true
     }
  
-    func sendBackupToMail(result:(txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?))  {
-        if result.txtfile == dCache.EMPTY_STRING {
+    func sendBackupToMail(files:[String])  {
+        if files.count == 0 {
             let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             return
         }
-        sendByEmail(result.txtfile, fileName: result.txtfile+".txt",attachments: result.files)
+        sendByEmail(filePaths: files)
     }
     
-    func sendByEmail(_ filePath:String,fileName:String,attachments:[(name:String,type:MutiMediaType,obj:AnyObject?)]?) {
+    func sendByEmail(filePaths:[String],addtional:String = "") {
         let vc = MFMailComposeViewController.init()
         vc.mailComposeDelegate = self
-        let sub = NSString(string: filePath)
-        vc.setSubject(sub.lastPathComponent)
         
-        if fileName == "建议" {
+        
+        if filePaths.count == 0 && addtional != "" {
             vc.setToRecipients(["miaoqi0119@163.com"])
-        } else {
+            vc.setSubject(addtional)
+        }else{
+            let txt = filePaths.first!
+            vc.setSubject((txt as NSString).lastPathComponent)
             if let mail = self.dCache.email {
                 vc.setToRecipients([mail])
             } else {
                 vc.setToRecipients(nil)
             }
         }
-        
-        let senddata = try? Data.init(contentsOf: URL(fileURLWithPath: filePath))
-        if let dd = senddata {
-            vc.addAttachmentData(dd, mimeType: "text/plain", fileName: sub.lastPathComponent)
-        }
-        if attachments != nil {
-            for atc in attachments! {
-                switch atc.type {
-                case .image:
-                    vc.addAttachmentData(FileManager.imageData(image: atc.obj as! UIImage)!, mimeType: "image/jpg", fileName: FileManager.imageName(name: atc.name))
-                default:
-                    vc.addAttachmentData(atc.obj as! Data, mimeType: "", fileName: atc.name)
-                }
+        for file in filePaths {
+            let senddata = try? Data.init(contentsOf: URL(fileURLWithPath: file))
+            if let dd = senddata {
+                vc.addAttachmentData(dd, mimeType: "", fileName: (file as NSString).lastPathComponent)
             }
         }
         self.present(vc, animated: true, completion: nil)
     }
     
+    //MARK: - EmailDelegate
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         self .dismiss(animated: true, completion: nil)
         if result == .sent {
