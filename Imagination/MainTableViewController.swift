@@ -27,10 +27,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CatalogueViewController") as! CatalogueViewController;
         vc.modalPresentationStyle = .overCurrentContext;
-        
+        vc.delegate = self
         if let cata = DataCache.shareInstance.catalogue_month {
             vc.content = cata.reversed()
-            vc.delegate = self
         }
         self.present(vc, animated: false, completion: {
             var tframe = self.view.frame

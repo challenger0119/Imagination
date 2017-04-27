@@ -22,8 +22,14 @@ class ImageViewController: UIViewController {
     var image:UIImage!
     override func viewDidLoad() {
         super.viewDidLoad()
-        let iview = UIImageView.init(frame: CGRect(x:0,y:0,width:self.view.frame.width,height:self.view.frame.height))
+        
+        let imagewidth = (self.view.frame.width - 20)
+        let imageHeight = (self.view.frame.height - 20) * image.size.width / image.size.height
+        
+        let iview = UIImageView.init(frame: CGRect(x:10,y:10,width:imagewidth,height:imageHeight))
         iview.image = image
+        self.view.backgroundColor = UIColor.white
+        iview.contentMode = .scaleToFill
         self.view.addSubview(iview)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(closeVC))
         
