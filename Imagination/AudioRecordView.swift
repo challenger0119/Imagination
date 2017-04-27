@@ -98,7 +98,6 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         }else{
             state = .Over
             aRecord.stopRecord()
-            self.meterTimer?.invalidate()
             do{
                 let atr = try FileManager.default.attributesOfItem(atPath: self.aRecord.recordFileURL.absoluteString)
                 let size = atr[FileAttributeKey("NSFileSize")] as! Int
@@ -108,10 +107,12 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
                 Dlog(error.localizedDescription)
             }
         }
+        self.meterTimer?.invalidate()
     }
     @IBAction func PlayBtnClicked(_ sender: UIButton) {
         state = .Playing
         aRecord.playRecord()
+        meterTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
     }
     @IBAction func saveBtnClicked(_ sender: UIButton) {
         delegate?.audioRecordViewStateChanged(state: .Save,audioRecord: aRecord)
@@ -126,8 +127,13 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
     }
     
     func updateProgress(){
-        self.aRecord.updateMeters()
-        let power = aRecord.averagePower(forChannel:0)
-        self.audoMeterView.setProgress((power+160)/160, animated: true)
+        if state == .Recording {
+            let power = aRecord.averagePower(forChannel:0)
+            self.audoMeterView.setProgress((power+160)/160, animated: true)
+        }else if state == .Playing {
+            let power = aRecord.playerAveragePower(forChannel:0)
+            self.audoMeterView.setProgress((power+160)/160, animated: true)
+        }
+        
     }
 }

@@ -42,7 +42,6 @@ class DataCache: NSObject {
     let newline = "\r\n"
     
     fileprivate let FILENAME_INDEX = "index"
-    fileprivate let MULTI_FILENAME_INDEX = "multimedia_index"
     //var isStart = true //启动标记 用于touchID
     let EMPTY_STRING = " "
     var fileState:(filename:String,lastDate:String)?
@@ -51,7 +50,6 @@ class DataCache: NSObject {
     var currentMonthName:String?
     var catalogue:[String]?
     var catalogue_month:[String]?
-    var multiMediaCatalogue:Set<String>?
     
     var email:String?{
         set{
@@ -79,18 +77,6 @@ class DataCache: NSObject {
         }
     }
     
-    fileprivate func updateMultimediaCatalogue() {
-        if let cata = multiMediaCatalogue {
-            if (cata.index(of: currentDayName!) == nil) {
-                catalogue?.append(currentDayName!)
-                storeCatalogue()
-            }
-        } else {
-            catalogue = Array.init(arrayLiteral: currentDayName!)
-            storeCatalogue()
-        }
-    }
-
     //文字，心情，地理位置，多媒体
     func newString(Content content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?,multiMedia:Dictionary<Int,MultiMediaFile>?){
         
@@ -166,14 +152,7 @@ class DataCache: NSObject {
         try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(self.currentDayName!)), options: [.atomic])
         updateCatalogue()
     }
-    func updateMultimediaCatalogue(name:String){
-        if self.multiMediaCatalogue == nil {
-            self.multiMediaCatalogue = [name]
-        }else{
-            self.multiMediaCatalogue?.insert(name)
-        }
-        storeMultiMediaCatalogue()
-    }
+
     //初始化显示数据
     func loadLastDay(){
         loadCatalogue()
@@ -238,23 +217,12 @@ class DataCache: NSObject {
             try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX)), options: [.atomic])
         }
     }
-    fileprivate func storeMultiMediaCatalogue(){
-        if multiMediaCatalogue != nil {
-            let myData = NSKeyedArchiver.archivedData(withRootObject: multiMediaCatalogue!)
-            try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(MULTI_FILENAME_INDEX)), options: [.atomic])
-        }
-    }
+
     //载入目录
     fileprivate func loadCatalogue(){
         catalogue?.removeAll()
         if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX))) {
             catalogue = (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Array)
-        }
-    }
-    fileprivate func loadMultiMediaCatalogue(){
-        multiMediaCatalogue?.removeAll()
-        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(MULTI_FILENAME_INDEX))) {
-            multiMediaCatalogue = (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Set)
         }
     }
     
@@ -304,14 +272,7 @@ class DataCache: NSObject {
         }
     }
     //创建文件
-    /*
-    fileprivate func createBackupFileWithAddtionalInfo(_ from:String,to:String) -> String {
-        return createFileAtPath(from, to: to, fileGetter: {
-            f,t in
-            return FileManager.TxtFileInDocuments("\(f)_\(t)")
-        })
-    }
- */
+
     fileprivate func createBackupFileWithAddtionalInfo(_ from:String,to:String) -> [String] {
         return createFiles(from, to: to, fileGetter: {
             f,t in
@@ -428,60 +389,8 @@ class DataCache: NSObject {
             return FileManager.TxtFileInCaches("\(f)_\(t)")
         })
     }
-    /*
-    func createExportDataFile(_ from:String,to:String) ->(txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?) {
-        //删除原有的 导出文件只需要一份
-        let mng = FileManager.default
-        do {
-            let files = try mng.contentsOfDirectory(atPath: FileManager.pathOfNameInCaches(""))
-            if !files.isEmpty {
-                for ff in files {
-                    let ffarray = ff.components(separatedBy: ".")
-                    if ffarray.count == 2 {
-                        do{
-                            try mng.removeItem(atPath: FileManager.TxtFileInCaches(ffarray[0]))
-                        } catch {
-                            
-                        }
-                    }
-                }
-            }
-        } catch {
-            
-        }
-        return (createFileAtPath(from, to: to, fileGetter: {
-            f,t in
-            return FileManager.TxtFileInCaches("\(f)_\(t)")
-        }),createMutimedateExportDataFile(from, to: to))
-    }
- */
-    
-/*
-    func createMutimedateExportDataFile(_ from:String,to:String) -> [(name:String,type:MutiMediaType,obj:AnyObject?)]? {
-       
-        var array:[(name:String,type:MutiMediaType,obj:AnyObject?)]?
-        loadMultiMediaCatalogue()
-        if let cata = multiMediaCatalogue {
-            for str in cata{
-                //图片文件命名格式:img->2017-01-07,21-17-94_0
-                let farray = str.components(separatedBy: Item.multiMediaIndicator)
-                let sarray = farray[1].components(separatedBy: Item.multiMediaFileNameTimeSperator)
-                let day = sarray[0]
-                
-                if day == from || day == to || (day > from && day < to ) {
-                    if array == nil {
-                        array = [FileManager.multimediaFileWith(Name: str)]
-                    }else{
-                        array?.append(FileManager.multimediaFileWith(Name: str))
-                    }
-                }
-            }
-        }
-        return array
-    }
-    */
     //备份
-    //备份只有一个txt 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
+    //备份只有一个 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
     func backupAll() -> [String] {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
@@ -513,39 +422,6 @@ class DataCache: NSObject {
         return []
     }
     
-    /*
-    func backupAll() -> (txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?) {
-        checkFileExist()
-        if fileState!.lastDate != EMPTY_STRING {
-            let _ = deleteDay(fileState!.filename)
-        }
-        if let cc = catalogue {
-            let start = cc[0]
-            let end = cc[cc.count-1]
-            return (createBackupFileWithAddtionalInfo(start, to: end),createMutimedateExportDataFile(start, to: end))
-        }
-        return (EMPTY_STRING,nil)
-    }
-    
-    func backupToNow() ->(txtfile:String,files:[(name:String,type:MutiMediaType,obj:AnyObject?)]?)  {
-        
-        checkFileExist()
-        if fileState!.lastDate != EMPTY_STRING {
-            //如果之前有备份 就从之前备份到今天
-            let _ = deleteDay(fileState!.filename)
-            return (createBackupFileWithAddtionalInfo(fileState!.lastDate, to: Time.today()),createMutimedateExportDataFile(fileState!.lastDate, to: Time.today()))
-        } else {
-            //如果之前没有备份 就全部备份
-            if let cc = catalogue {
-                let start = cc[0]
-                let end = cc[cc.count-1]
-               return (createBackupFileWithAddtionalInfo(start, to: end),createMutimedateExportDataFile(start, to: end))
-            }
-        }
-        return (EMPTY_STRING,nil)
-    }
- */
-    
     func checkFileExist() {
         let mng = FileManager.default
         var lastTimeEnd = EMPTY_STRING
@@ -572,16 +448,6 @@ class DataCache: NSObject {
     
     //删除方法保留 非特殊情况不使用
     
-    fileprivate func deleteTest() {
-        for ddd in catalogue! {
-            if ddd < "2015-12-05" {
-                if deleteDay(ddd) {
-                    catalogue?.remove(at: (catalogue?.index(of: ddd))!)
-                    storeCatalogue()
-                }
-            }
-        }
-    }
     fileprivate func deleteDay(_ dd:String) -> Bool{
         Dlog("deleteday:\(dd)")
         let filePath = FileManager.pathOfNameInDocuments(dd)

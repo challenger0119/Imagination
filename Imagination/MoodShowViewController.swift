@@ -46,14 +46,7 @@ class MoodShowViewController: UIViewController {
             mapView?.removeFromSuperview()
         }
     }
-    func cutImage(_ image:UIImage,frame:CGRect)->UIImage {
-        UIGraphicsBeginImageContextWithOptions(frame.size, false, UIScreen.main.scale)
-        UIBezierPath(roundedRect: frame, cornerRadius: 5).addClip()
-        image.draw(in: frame)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image!
-    }
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -91,9 +84,11 @@ class MoodShowViewController: UIViewController {
         paragraghStyle.lineBreakMode = .byCharWrapping
         paragraghStyle.allowsDefaultTighteningForTruncation = true
         
-        let font = UIFont(name: "Helvetica", size: 15.0)
-        let mstring = NSMutableAttributedString(string: self.text, attributes: [NSFontAttributeName:font!,NSParagraphStyleAttributeName:paragraghStyle,NSForegroundColorAttributeName:Item.moodColor[state]])
+        
         if self.multiMediaBufferDic != nil{
+            let font = UIFont(name: "Helvetica", size: 15.0)
+            let mstring = NSMutableAttributedString(string: self.text, attributes: [NSFontAttributeName:font!,NSParagraphStyleAttributeName:paragraghStyle,NSForegroundColorAttributeName:Item.moodColor[state]])
+            
             var keys = Array(self.multiMediaBufferDic!.keys)
             keys.sort()
             var i:Int = 0 //插入补偿 解决排版问题
@@ -104,7 +99,7 @@ class MoodShowViewController: UIViewController {
                         let image = UIImage.init(contentsOfFile: mf.storePath)!
                         let textAttach = NSTextAttachment(data:FileManager.imageData(image: image), ofType: mf.type.rawValue)
                         let imageHeight = image.size.height / image.size.width * imageWidth
-                        textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                        textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                         let imageAttributeString = NSAttributedString(attachment:textAttach)
                         mstring.insert(imageAttributeString, at: key+i)
                         i += 1
@@ -114,7 +109,7 @@ class MoodShowViewController: UIViewController {
                             let textAttach = NSTextAttachment(data:data, ofType: mf.type.rawValue)
                             let image = UIImage.init(named: "audio")!
                             let imageHeight = image.size.height / image.size.width * imageWidth
-                            textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                            textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                             let imageAttributeString = NSAttributedString(attachment:textAttach)
                             mstring.insert(imageAttributeString, at: key+i)
                             i += 1
@@ -126,9 +121,9 @@ class MoodShowViewController: UIViewController {
                             let url = URL.init(fileURLWithPath: mf.storePath)
                             let data = try Data.init(contentsOf: url)
                             let textAttach = NSTextAttachment(data:data, ofType: mf.type.rawValue)
-                            let image = self.getViedoShot(withURL: url)!
+                            let image = MultiMediaFile.viedoShot(withURL: url)!
                             let imageHeight = image.size.height / image.size.width * imageWidth
-                            textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                            textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                             let imageAttributeString = NSAttributedString(attachment:textAttach)
                             mstring.insert(imageAttributeString, at: key+i)
                             i += 1
@@ -138,24 +133,12 @@ class MoodShowViewController: UIViewController {
                     }
                 }
             }
+            textView.attributedText = mstring
         }
-        textView.attributedText = mstring
+        
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeVC)))
     }
-    func getViedoShot(withURL url:URL)->UIImage?{
-        let avasset = AVURLAsset(url: url)
-        let generator = AVAssetImageGenerator.init(asset: avasset)
-        var image:UIImage?
-        do{
-            var actualTIme:CMTime = CMTime()
-            let cimage = try generator.copyCGImage(at: CMTimeMakeWithSeconds(10, 10), actualTime: &actualTIme)
-            CMTimeShow(actualTIme)
-            image = UIImage.init(cgImage: cimage)
-        }catch{
-            Dlog(error.localizedDescription)
-        }
-        return image
-    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

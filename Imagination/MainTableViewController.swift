@@ -11,15 +11,13 @@ import CoreLocation
 class MainTableViewController: UITableViewController,CatalogueViewControllerDelegate {
 
     @IBOutlet weak var today: UINavigationItem!
-    @IBOutlet weak var done: UIBarButtonItem!
     @IBOutlet weak var backView: UIView!
     var cool = 0
     var ok = 0
     var why = 0
     
     var monthCache:Dictionary<String,Dictionary<String,String>>?
-    var times:[String]?
-    var content:[String]?
+    var times:[String] = []
     let TAG_DAYLIST:NSInteger = 100
     
     var locToShow:CLLocationCoordinate2D?
@@ -34,22 +32,16 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             vc.content = cata.reversed()
             vc.delegate = self
         }
-        
         self.present(vc, animated: false, completion: {
             var tframe = self.view.frame
-            tframe.origin.x = tableWidth;
-            tframe.size.width = self.view.frame.width-tableWidth
+            tframe.origin.x = CatalogueViewController.tableWidth;
+            tframe.size.width = self.view.frame.width - CatalogueViewController.tableWidth
             UIView.animate(withDuration: 0.2) {
                 self.navigationController?.view.frame = tframe;
             }
         })
     }
-       //MARK: - vc life circle
-    func updateMonthData() {
-        DataCache.shareInstance.loadLastMonth()
-        today.title = DataCache.shareInstance.currentMonthName
-        loadMonthData()
-    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,19 +49,23 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         NotificationCenter.default.addObserver(self, selector: #selector(updateMonthData), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
         authorityView()
     }
-    
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         self.tableView.estimatedRowHeight = 80
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
- 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         refreshMoodState()
-        
     }
     
+    //添加新mood后更新
+    func updateMonthData() {
+        DataCache.shareInstance.loadLastMonth()
+        today.title = DataCache.shareInstance.currentMonthName
+        loadMonthData()
+    }
+    //指纹识别
     func authorityView() {
         if AuthorityViewController.pWord != AuthorityViewController.NotSet{
             let vc = self.storyboard!.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController
@@ -80,48 +76,42 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
 
     func loadMonthData() {
-        monthCache = DataCache.shareInstance.lastMonth //{2015.1.2:{9:30:xxx,11:30:xxx},2015.1.3:{6:35:ddd,11:07:ddd}}
+        monthCache = DataCache.shareInstance.lastMonth //monthly record
         cool = 0
         ok = 0
         why = 0
         if let mm = monthCache {
-            var dayArray = Array(mm.keys)//[2015.1.2,2015.1.3]
-            dayArray.sort(by: {$0>$1})//[2015.1.3,2015.1.2]
-            times?.removeAll()
-            content?.removeAll()
+            var dayArray = Array(mm.keys)   //day array
+            dayArray.sort(by: {$0>$1})  //descend day array
+            times.removeAll()
+            itemBuffer.removeAll()
             for daytime in dayArray {
-                if let day = mm[daytime] {//{9:30:xxx,11:30:xxx}
-                    var tmpTimes = Array(day.keys)//[9:30,11:30]
-                    tmpTimes.sort(by: {$0>$1})//[11:30,9:30]
+                //get day by day
+                if let day = mm[daytime] {
+                    var tmpTimes = Array(day.keys)  //time record array
+                    tmpTimes.sort(by: {$0>$1})  //descend time record
                     
                     for ct in tmpTimes {
-                        if content == nil {//xxx
-                            content = Array.init(arrayLiteral: day[ct]!)
-                        }  else {
-                            content?.append(day[ct]!)
-                            
-                        }
-                        //赋值moodState
+                        //analysis one by one
+                        
                         let cc = Item.init(contentString: day[ct]!)
-                        itemBuffer.append(cc)
                         switch cc.mood {
-                        case 1:cool+=1
-                        case 2:ok+=1
-                        case 3:why+=1
-                        default:break
+                            case 1:cool+=1
+                            case 2:ok+=1
+                            case 3:why+=1
+                            default:break
                         }
+                        
+                        itemBuffer.append(cc) //store buffer
                     }
-                    if times == nil {
-                        times = Array(changeTimeToDayAndTime(tmpTimes, day: daytime))
-                    } else {
-                        times?.append(contentsOf: changeTimeToDayAndTime(tmpTimes, day: daytime))
-                    }
+                    times.append(contentsOf: changeTimeToDayAndTime(tmpTimes, day: daytime))
                 }
             }
         }
         
         self.tableView.reloadData()
     }
+    
     func changeTimeToDayAndTime(_ timearry:[String],day:String) -> [String]{
         //添加日期信息在里面 9：30 -> 2015.2.3 9:30
         var newArray = [String]()
@@ -146,7 +136,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         var left:UIView! = self.backView.viewWithTag(1)
         var center:UIView! = self.backView.viewWithTag(2)
         var right:UIView! = self.backView.viewWithTag(3)
+        
         var firstTime = false
+        
         if left == nil {
             firstTime = true
             left = UIView.init(frame: CGRect(x: 0, y: 0, width: 0, height: height))
@@ -198,11 +190,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
 
     func resumeView(andDo:@escaping ((Void)->Void)){
         var tframe = self.view.frame
-        tframe.size.width = self.view.frame.width+tableWidth
+        tframe.size.width = self.view.frame.width + CatalogueViewController.tableWidth
         tframe.origin.x = 0
-        UIView.animate(withDuration: 0.2) {
-            
-        }
+        
         UIView.animate(withDuration: 0.2, animations: { 
             self.navigationController?.view.frame = tframe;
         }) { (boo) in
@@ -212,8 +202,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         }
     }
     
-    //MARK: - DayListDelegate
-    
+    //MARK: - CatalogueViewControllerDelegate
     func catalogueDidSelectItem(item: String){
         resumeView(){
             DataCache.shareInstance.loadLastMonthToMonth(item)
@@ -221,33 +210,24 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             self.loadMonthData()
             self.refreshMoodState()
         }
-
     }
     func catalogueDidClose() {
-        resumeView(){
-            
-        }
+        resumeView(){}
     }
     
-    // MARK: - Table view data source
-
+    // MARK: - Table view data source and Delegate
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let day = content {
-            return day.count
-        }
-        return 0
+        return itemBuffer.count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier",for: indexPath) as! CustomTableViewCell
-        //let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
         let cc = itemBuffer[indexPath.row]
-        cell.time.text = times![(indexPath as NSIndexPath).row]
+        cell.time.text = times[(indexPath as NSIndexPath).row]
         if cc.place.latitude != 0 {
             cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.multiMediasDescrip + "\n\n@\(cc.place.name)"
         }else{
@@ -262,8 +242,6 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        
-        //let cc = Item(contentString: content![(indexPath as NSIndexPath).row])
         let cc = itemBuffer[indexPath.row]
         let vc = MoodShowViewController(contentText: cc.content, contentDic: cc.multiMedias, state: cc.mood, placeInfo: cc.place)
         vc.modalPresentationStyle = .overCurrentContext
@@ -274,5 +252,4 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             })
         })
     }
-
 }

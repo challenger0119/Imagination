@@ -41,8 +41,13 @@ extension FileManager {
 }
 
 extension FileManager{
+    class func multiMediaFilePath() ->String {
+        return self.documentsPath() + "/Multimedia"
+    }
+}
+
+extension FileManager{
     //MARK: - Image
-    //文件目录
     fileprivate class func imageFilePath() -> String{
         return self.multiMediaFilePath() + "/Pictures"
     }
@@ -73,6 +78,8 @@ extension FileManager{
             return name+".jpg"
         }
     }
+    
+    //文件操作
     class func imageData(image:UIImage) -> Data? {
         if FileManager.isPng {
             return UIImagePNGRepresentation(image)
@@ -80,19 +87,10 @@ extension FileManager{
             return UIImageJPEGRepresentation(image, FileManager.compression)
         }
     }
-    //文件操作
-    fileprivate class func imageFile(withName name:String) -> UIImage? {
-        let path = self.imageFilePathWithName(name)
-        if let data =  UIImage.init(contentsOfFile: path) {
-            return data
-        }else{
-            return nil
-        }
-    }
     fileprivate class func imageFilePathWithTimestamp() -> String{
         return self.imageFilePathWithName(FileManager.imageName(name: "image\(Time.timestamp())"))
     }
-    class func createImageFileWithTimestamp(image:UIImage)->String{
+    class func createImageFile(withImage image:UIImage)->String{
         let path:String = FileManager.imageFilePathWithTimestamp()
         let data = FileManager.imageData(image: image)
         if FileManager.default.createFile(atPath: path, contents: data, attributes: nil) {
@@ -100,17 +98,6 @@ extension FileManager{
         }else{
             return ""
         }
-    }
-    private func deleteImageFileWithName(_ name:String)->Bool{
-        do{
-            try self.removeItem(atPath: FileManager.imageFilePathWithName(name))
-            return true
-        }catch{
-            return false
-        }
-    }
-    private class func allImageFilePaths()->[String]?{
-        return FileManager.default.subpaths(atPath: self.documentsPath() + "/Pictures")
     }
 }
 extension FileManager{
@@ -129,6 +116,16 @@ extension FileManager{
     class func audioFilePathWithTimstamp()->String{
         return self.audioFilePathWithName(name: "audio\(Time.timestamp()).wav")
     }
+    class func createAudioFile(withPath path:String)->String{
+        let topath:String = FileManager.audioFilePathWithTimstamp()
+        do{
+            try FileManager.default.copyItem(atPath: path, toPath: topath)
+            try FileManager.default.removeItem(atPath: path)
+        }catch{
+            Dlog(error.localizedDescription)
+        }
+        return topath
+    }
 }
 
 extension FileManager{
@@ -144,26 +141,17 @@ extension FileManager{
         }
         return self.videoFilePath() + "/\(name)"
     }
-    class func videoFilePathWithTimestamp()->String{
+    fileprivate class func videoFilePathWithTimestamp()->String{
         return self.videoFilePathWithName(name: "video\(Time.timestamp()).mp4")
     }
-    class func createVideoFileWithTimestamp(path:String)->String{
+    class func createVideoFile(withPath path:String)->String{
         let topath:String = FileManager.videoFilePathWithTimestamp()
-        Dlog(path)
-        Dlog(topath)
         do{
             try FileManager.default.copyItem(atPath: path, toPath: topath)
         }catch{
             Dlog(error.localizedDescription)
         }
         return topath
-    }
-}
-
-extension FileManager{
-    //MARK: - Mutimedia file
-    class func multiMediaFilePath() ->String {
-        return self.documentsPath() + "/Multimedia"
     }
 }
 

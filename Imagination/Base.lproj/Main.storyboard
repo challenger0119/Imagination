@@ -204,7 +204,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="backView" destination="8KV-2G-h92" id="SLa-mz-Uqz"/>
-                        <outlet property="done" destination="nAF-Wd-9PP" id="F0j-Fv-2wm"/>
                         <outlet property="today" destination="3eb-e2-18j" id="SLX-xK-dyn"/>
                     </connections>
                 </tableViewController>

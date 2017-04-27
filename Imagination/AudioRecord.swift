@@ -65,6 +65,7 @@ class AudioRecord: NSObject {
         do{
             self.player = try AVAudioPlayer.init(contentsOf: self.recorder.url)
             self.player!.play()
+            self.player!.isMeteringEnabled = true
         }catch{
             Dlog(error.localizedDescription)
         }
@@ -72,15 +73,22 @@ class AudioRecord: NSObject {
     func stopPlayRecord(){
         self.player.stop()
     }
-    
-    func updateMeters(){
-        self.recorder.updateMeters()
-    }
+
     func averagePower(forChannel channel:Int)->Float{
+        self.recorder.updateMeters()
         return self.recorder.averagePower(forChannel:channel)
     }
     func peekPower(forChannel channel:Int)->Float{
+        self.recorder.updateMeters()
         return self.recorder.peakPower(forChannel: channel)
+    }
+    func playerAveragePower(forChannel channel:Int)->Float{
+        self.player.updateMeters()
+        return self.player.averagePower(forChannel:channel)
+    }
+    func playerPeekPower(forChannel channel:Int)->Float{
+        self.player.updateMeters()
+        return self.player.peakPower(forChannel: channel)
     }
     
 }

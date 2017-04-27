@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 enum MultiMediaType:String {
     case image = "Image",voice = "Voice",video = "Video",def = "multi"
 }
@@ -24,5 +25,29 @@ class MultiMediaFile: NSObject {
     
     func nameWithPosition(pos:Int)->String{
         return name + Item.multiMediaNameSeparator + String(pos)
+    }
+    //圆角图
+    class func roundCornerImage(_ image:UIImage,frame:CGRect)->UIImage {
+        UIGraphicsBeginImageContextWithOptions(frame.size, false, UIScreen.main.scale)
+        UIBezierPath(roundedRect: frame, cornerRadius: 5).addClip()
+        image.draw(in: frame)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image!
+    }
+    //视频截图
+    class func viedoShot(withURL url:URL)->UIImage?{
+        let avasset = AVURLAsset(url: url)
+        let generator = AVAssetImageGenerator.init(asset: avasset)
+        var image:UIImage?
+        do{
+            var actualTIme:CMTime = CMTime()
+            let cimage = try generator.copyCGImage(at: CMTimeMakeWithSeconds(0.5, 10), actualTime: &actualTIme)
+            CMTimeShow(actualTIme)
+            image = UIImage.init(cgImage: cimage)
+        }catch{
+            Dlog(error.localizedDescription)
+        }
+        return image
     }
 }

@@ -13,13 +13,29 @@ import AVFoundation
 class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,AudioRecordViewDelegate {
 
     let dataCache = DataCache.shareInstance
-    //var editMode = false
-    var moodState = 0
-    var keyBoardHeight:CGFloat = 216.0
-    var clockDic = Dictionary<String,String>()
-    var text:String = " "
-    let keyboardDistance:CGFloat = 10
     
+    var keyBoardHeight:CGFloat = 216.0
+    let keyboardDistance:CGFloat = 10
+    var moodState = 0 {
+        didSet{
+            if moodState == 1 {
+                self.noGoodBtn.backgroundColor = Item.defaultColor
+                self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+                self.goodBtn.backgroundColor = Item.coolColor
+                self.goodBtn.setTitleColor(UIColor.white, for: UIControlState())
+            }else if moodState == 2{
+                self.noGoodBtn.backgroundColor = Item.justOkColor
+                self.noGoodBtn.setTitleColor(UIColor.white, for: UIControlState())
+                self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+                self.goodBtn.backgroundColor = Item.defaultColor
+            }else{
+                self.noGoodBtn.backgroundColor = Item.defaultColor
+                self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+                self.goodBtn.backgroundColor = Item.defaultColor
+                self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+            }
+        }
+    }
     var place:(name:String,coor:CLLocationCoordinate2D)?{
         didSet{
             if self.place == nil {
@@ -38,9 +54,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
     }
     
-    
     var imageVC:UIImagePickerController!
-    var multiMediaBufferDic:[Int:MultiMediaFile]?
+    var multiMediaBufferDic:[Int:MultiMediaFile] = Dictionary()
     var multiMediaInsertBuffer:[NSTextAttachment:MultiMediaFile] = Dictionary()
     //用来存储非照片资源的地址，临时添加，后面优化  这是因为获取照片是后存文件，获取录音是先存文件，系统原因，导致使用了不同的存储方案
     
@@ -71,22 +86,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         
         self.content.becomeFirstResponder()
         
-        switch moodState {
-        case 1:
-            self.noGoodBtn.backgroundColor = Item.defaultColor
-            self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
-            self.goodBtn.backgroundColor = Item.coolColor
-            self.goodBtn.setTitleColor(UIColor.white, for: UIControlState())
-        case 2:
-            self.noGoodBtn.backgroundColor = Item.justOkColor
-            self.noGoodBtn.setTitleColor(UIColor.white, for: UIControlState())
-            
-            self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
-            self.goodBtn.backgroundColor = Item.defaultColor
-        default: break
-        }
-        
-        
         let backItem = UIBarButtonItem()
         backItem.title = "返回"
         self.navigationItem.backBarButtonItem = backItem
@@ -99,29 +98,16 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     @IBAction func noGoodBtnClicked() {
         if moodState == 2 {
             moodState = 0;
-            self.noGoodBtn.backgroundColor = Item.defaultColor
-            self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
-            return
+        }else{
+            moodState = 2
         }
-        moodState = 2
-        self.noGoodBtn.backgroundColor = Item.justOkColor
-        self.noGoodBtn.setTitleColor(UIColor.white, for: UIControlState())
-        
-        self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
-        self.goodBtn.backgroundColor = Item.defaultColor
     }
     @IBAction func goodBtnClicked() {
         if moodState == 1 {
             moodState = 0;
-            self.goodBtn.backgroundColor = Item.defaultColor
-            self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
-            return
+        }else{
+            moodState = 1
         }
-        moodState = 1
-        self.noGoodBtn.backgroundColor = Item.defaultColor
-        self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
-        self.goodBtn.backgroundColor = Item.coolColor
-        self.goodBtn.setTitleColor(UIColor.white, for: UIControlState())
     }
    
     func longPressAction(gesture:UILongPressGestureRecognizer){
@@ -139,13 +125,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     
     func keyboardWillShow(_ notifi:Foundation.Notification){
-        if let info = (notifi as NSNotification).userInfo {
+        if let info = notifi.userInfo {
             if let kbd = info[UIKeyboardFrameEndUserInfoKey] {
                 keyBoardHeight = (kbd as AnyObject).cgRectValue.size.height
                 self.bottomContraint.constant = keyBoardHeight + self.keyboardDistance
             }
         }
-        
     }
 
     @IBAction func done(_ sender: UIBarButtonItem) {
@@ -170,13 +155,10 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     
     func doneAction() {
         let ttt = content.text
-        if !(ttt?.isEmpty)! {
-            //最终目的地 所有有能容更新的操作都在这里 无论是手动填写还是自动填写
-            
-            analysisTextStorage() //解析出附件 暂时只有图片
-            
-            dataCache.newString(Content: ttt!, moodState: moodState, GPSPlace: self.place, multiMedia: self.multiMediaBufferDic)
-            
+        if !(ttt!.isEmpty) {
+            analysisTextStorage() //解析多媒体
+            dataCache.newString(Content: ttt!, moodState: moodState, GPSPlace: self.place, multiMedia: self.multiMediaBufferDic.count == 0 ? nil:self.multiMediaBufferDic)
+
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
             back()
         } else {
@@ -184,12 +166,11 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 //自动填写
                 switch moodState {
                 case 1: content.text = "\"不言不语，毕竟言语无法表达我今天的快乐！！\""
-                case 2: content.text = "\"可能这就是平凡的一天，但我不愿这样,不甘心。\""
+                case 2: content.text = "\"可能，这就是平凡的一天。\""
                 case 3: content.text = "\"生活不就是这样吗——开心与不开心交替出现。不是都说最有趣的路是曲曲折折的吗？加油!\""
                 default: break
                 }
                 self.doneAction()
-                
             }else{
                 back()
             }
@@ -219,34 +200,19 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         self.dismiss(animated: true, completion: nil)
     }
     
-    
     func analysisTextStorage(){
-        //找到attachment  对比buffer 删除buffer中多余的attache 因为buffer只能增加
-        self.content.textStorage.enumerateAttribute(NSAttachmentAttributeName, in: NSRange(location: 0,length: self.content.textStorage.length), options: NSAttributedString.EnumerationOptions(rawValue: 0), using:{
+         self.content.textStorage.enumerateAttribute(NSAttachmentAttributeName, in: NSRange(location: 0,length: self.content.textStorage.length), options: NSAttributedString.EnumerationOptions(rawValue: 0), using:{
             (obj,range,pointor) in
             if let attache = obj as? NSTextAttachment {
-                let mf = self.multiMediaInsertBuffer[attache]!
+                let mf = self.multiMediaInsertBuffer[attache]!  //提取最后保留的项目
                 if mf.type == .image {
-                    mf.storePath = FileManager.createImageFileWithTimestamp(image: mf.obj as! UIImage)
-                    if self.multiMediaBufferDic == nil {
-                        self.multiMediaBufferDic = [range.location:mf]
-                    }else{
-                        let _ = self.multiMediaBufferDic?.updateValue(mf, forKey: range.location)
-                    }
+                    mf.storePath = FileManager.createImageFile(withImage: mf.obj as! UIImage)
                 }else if mf.type == .voice {
-                    if self.multiMediaBufferDic == nil {
-                        self.multiMediaBufferDic = [range.location:mf]
-                    }else{
-                        let _ = self.multiMediaBufferDic?.updateValue(mf, forKey: range.location)
-                    }
+                    mf.storePath = FileManager.createAudioFile(withPath: mf.storePath)
                 }else if mf.type == .video {
-                    mf.storePath = FileManager.createVideoFileWithTimestamp(path: mf.storePath)
-                    if self.multiMediaBufferDic == nil {
-                        self.multiMediaBufferDic = [range.location:mf]
-                    }else{
-                        let _ = self.multiMediaBufferDic?.updateValue(mf, forKey: range.location)
-                    }
+                    mf.storePath = FileManager.createVideoFile(withPath: mf.storePath)
                 }
+                let _ = self.multiMediaBufferDic.updateValue(mf, forKey: range.location)
             }
         })
     }
@@ -260,19 +226,20 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     @IBAction func getImage(_ sender: UIButton) {
         closeKeyboard()
+        
         let queryVc = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         queryVc.addAction(UIAlertAction(title: "相机", style: .default, handler: { (act) in
             self.imageVC = UIImagePickerController()
-            self.imageVC.sourceType = .camera
             self.imageVC.delegate = self
+            self.imageVC.sourceType = .camera
             self.present(self.imageVC, animated: true, completion: {
                 
             })
         }))
         queryVc.addAction(UIAlertAction(title: "相册", style: .default, handler: { (act) in
             self.imageVC = UIImagePickerController()
-            self.imageVC.sourceType = .photoLibrary
             self.imageVC.delegate = self
+            self.imageVC.sourceType = .photoLibrary
             self.present(self.imageVC, animated: true, completion: {
                 
             })
@@ -297,46 +264,22 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 
             })
         }))
-        queryVc.addAction(UIAlertAction(title: "相册", style: .default, handler: { (act) in
-            self.imageVC = UIImagePickerController()
-            self.imageVC.sourceType = .photoLibrary
-            self.imageVC.delegate = self
-            self.present(self.imageVC, animated: true, completion: {
-                
-            })
-        }))
         queryVc.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
             queryVc.dismiss(animated: true, completion: nil)
         }))
         self.present(queryVc, animated: true, completion: nil)
     }
     
-    func cutImage(_ image:UIImage,frame:CGRect)->UIImage {
-        UIGraphicsBeginImageContextWithOptions(frame.size, false, UIScreen.main.scale)
-        UIBezierPath(roundedRect: frame, cornerRadius: 5).addClip()
-        image.draw(in: frame)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image!
-    }
-    
-    func addMultimediaToTextView(multimedia:AnyObject,at:Int = -1) {
+    func addMultimediaToTextView(multimedia:AnyObject) {
         let imageWidth = self.content.frame.width - 10;
         
         if multimedia.isKind(of: UIImage.self) {
             let image = multimedia as! UIImage
             let textAttach = NSTextAttachment(data:FileManager.imageData(image: image), ofType:MultiMediaType.image.rawValue)
             let imageHeight = image.size.height / image.size.width * imageWidth
-            textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+            textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
             let imageAttributeString = NSAttributedString(attachment:textAttach)
-            
-            if at == -1 {
-                self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
-            }else{
-                //查看模式
-                Dlog("add image at \(at)")
-                self.content.textStorage.insert(imageAttributeString, at: at)
-            }
+            self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
             let mf = MultiMediaFile()
             mf.obj = image
             mf.type = .image
@@ -348,19 +291,13 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 let textAttach = NSTextAttachment(data: data, ofType: MultiMediaType.voice.rawValue)
                 let image = UIImage.init(named: "audio")!
                 let imageHeight = image.size.height / image.size.width * imageWidth
-                textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                 let imageAttributeString = NSAttributedString(attachment:textAttach)
-                if at == -1 {
-                    self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
-                }else{
-                    //查看模式
-                    Dlog("add image at \(at)")
-                    self.content.textStorage.insert(imageAttributeString, at: at)
-                }
+                self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
                 let mf = MultiMediaFile()
                 mf.obj = audio
                 mf.type = .voice
-                mf.storePath = audio.recordFileURL.absoluteString
+                mf.storePath = audio.recordFileURL.path
                 self.multiMediaInsertBuffer.updateValue(mf, forKey:textAttach)
             }catch{
                 Dlog(error.localizedDescription)
@@ -371,17 +308,11 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 let url = URL.init(fileURLWithPath: video.storePath)
                 let data = try Data.init(contentsOf: url)
                 let textAttach = NSTextAttachment(data: data, ofType: MultiMediaType.video.rawValue)
-                let image = self.getViedoShot(withURL: url)!
+                let image = MultiMediaFile.viedoShot(withURL: url)!
                 let imageHeight = image.size.height / image.size.width * imageWidth
-                textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                 let imageAttributeString = NSAttributedString(attachment:textAttach)
-                if at == -1 {
-                    self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
-                }else{
-                    //查看模式
-                    Dlog("add image at \(at)")
-                    self.content.textStorage.insert(imageAttributeString, at: at)
-                }
+                self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
                 self.multiMediaInsertBuffer.updateValue(video, forKey:textAttach)
             }catch{
                 Dlog(error.localizedDescription)
@@ -389,25 +320,9 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
     }
     
-    func getViedoShot(withURL url:URL)->UIImage?{
-        let avasset = AVURLAsset(url: url)
-        let generator = AVAssetImageGenerator.init(asset: avasset)
-        var image:UIImage?
-        do{
-            var actualTIme:CMTime = CMTime()
-            let cimage = try generator.copyCGImage(at: CMTimeMakeWithSeconds(0.5, 10), actualTime: &actualTIme)
-            CMTimeShow(actualTIme)
-            image = UIImage.init(cgImage: cimage)
-        }catch{
-            Dlog(error.localizedDescription)
-        }
-        return image
-    }
-    
     //MARK: - AudioRecordViewDelegate
     func audioRecordViewStateChanged(state: RecordState,audioRecord:AudioRecord) {
         if state == .Save {
-            //以链接的形式添加
             addMultimediaToTextView(multimedia: audioRecord)
         }
     }
@@ -419,33 +334,28 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         })
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let pimg = info[UIImagePickerControllerOriginalImage] as? UIImage{
-            addMultimediaToTextView(multimedia: pimg)
-        }
-        if let type = info[UIImagePickerControllerMediaType] as? String, type == kUTTypeMovie as String {
-            if let url = info[UIImagePickerControllerMediaURL] as? URL {
-                let mf = MultiMediaFile()
-                mf.storePath = url.path
-                mf.type = .video
-                addMultimediaToTextView(multimedia: mf)
+        
+        if let type = info[UIImagePickerControllerMediaType] as? String {
+            
+            if type == kUTTypeImage as String {
+                if let pimg = info[UIImagePickerControllerOriginalImage] as? UIImage{
+                    addMultimediaToTextView(multimedia: pimg)
+                }
+            }else if type == kUTTypeMovie as String{
+                if let url = info[UIImagePickerControllerMediaURL] as? URL {
+                    let mf = MultiMediaFile()
+                    mf.storePath = url.path
+                    mf.type = .video
+                    addMultimediaToTextView(multimedia: mf)
+                }
+            }else{
+                Dlog("not excute image type:\(type)")
             }
         }
         imageVC.dismiss(animated: true, completion: {
             
         })
     }
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        if let keys = editingInfo?.keys {
-            print(keys)
-            for item in keys{
-                print(editingInfo![item]!)
-            }
-        }
-        imageVC.dismiss(animated: true, completion: {
-            self.addMultimediaToTextView(multimedia:image)
-        })
-    }
-    
 
     //MARK: -segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

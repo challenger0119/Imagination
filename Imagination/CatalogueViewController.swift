@@ -12,8 +12,9 @@ protocol CatalogueViewControllerDelegate {
     func catalogueDidClose()
 }
 let reusableCellIdentifier = "CatalogueViewControllerCell"
-let tableWidth:CGFloat = 120
+
 class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    static let tableWidth:CGFloat = 120
     var siderTable: UITableView!
     var content:[String]?
     var delegate:CatalogueViewControllerDelegate?
@@ -21,8 +22,8 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         super.viewDidLoad()
 
         var tframe = self.view.frame
-        tframe.size.width = tableWidth
-        tframe.origin.x = -tableWidth
+        tframe.size.width = CatalogueViewController.tableWidth
+        tframe.origin.x = -CatalogueViewController.tableWidth
         self.siderTable = UITableView(frame: tframe, style: .plain)
         self.siderTable.dataSource = self
         self.siderTable.delegate = self
@@ -30,8 +31,8 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         self.siderTable.separatorStyle = .none
         
         self.view.addSubview(siderTable)
-        tframe.origin.x = tableWidth
-        tframe.size.width = self.view.frame.width-tableWidth
+        tframe.origin.x = CatalogueViewController.tableWidth
+        tframe.size.width = self.view.frame.width-CatalogueViewController.tableWidth
         
         let tapview = UIView(frame: tframe)
         tapview.backgroundColor = UIColor.clear
@@ -54,7 +55,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
     }
     func dismissVC(){
         var tframe = self.siderTable.frame
-        tframe.origin.x = -tableWidth
+        tframe.origin.x = -CatalogueViewController.tableWidth
         UIView.animate(withDuration: 0.2, animations: {
             self.siderTable.frame = tframe
         }) { (boo) in
