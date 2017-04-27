@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80B691B1EB1D6BF00900635 /* AudioViewController.swift */; };
 		F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81229611BF73C6C00BDCF0E /* AppDelegate.swift */; };
 		F81229671BF73C6C00BDCF0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F81229651BF73C6C00BDCF0E /* Main.storyboard */; };
 		F812296C1BF73C6C00BDCF0E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F812296B1BF73C6C00BDCF0E /* Assets.xcassets */; };
@@ -23,6 +24,8 @@
 		F895375A1EAF71A100BFEAFC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F89537591EAF71A100BFEAFC /* AVFoundation.framework */; };
 		F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89537841EAF89DE00BFEAFC /* AudioRecord.swift */; };
 		F89753C51EB192A1003BB8EF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F89753C41EB192A1003BB8EF /* README.md */; };
+		F89753C71EB1AF28003BB8EF /* ContentShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89753C61EB1AF28003BB8EF /* ContentShowViewController.swift */; };
+		F89753C91EB1D2DF003BB8EF /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89753C81EB1D2DF003BB8EF /* ImageViewController.swift */; };
 		F8AB2A701E9D15E700B58229 /* CatalogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */; };
 		F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */; };
 		F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */; };
@@ -39,11 +42,11 @@
 		F8F5D47B1EADCA25007BDF2A /* UIImage+BlurImage.m in Sources */ = {isa = PBXBuildFile; fileRef = F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */; };
 		F8F5D47F1EADDAD9007BDF2A /* IndicatorMapViewBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F5D47E1EADDAD9007BDF2A /* IndicatorMapViewBack.swift */; };
 		F8F5D4811EADE2D1007BDF2A /* IndicatorMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F5D4801EADE2D1007BDF2A /* IndicatorMapView.swift */; };
-		F8F5D4831EADF5ED007BDF2A /* MoodShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F5D4821EADF5ED007BDF2A /* MoodShowViewController.swift */; };
 		F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F80B691B1EB1D6BF00900635 /* AudioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
 		F812295E1BF73C6C00BDCF0E /* Imagination.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Imagination.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F81229611BF73C6C00BDCF0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F81229661BF73C6C00BDCF0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -64,6 +67,8 @@
 		F89537591EAF71A100BFEAFC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F89537841EAF89DE00BFEAFC /* AudioRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecord.swift; sourceTree = "<group>"; };
 		F89753C41EB192A1003BB8EF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F89753C61EB1AF28003BB8EF /* ContentShowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentShowViewController.swift; sourceTree = "<group>"; };
+		F89753C81EB1D2DF003BB8EF /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatalogueViewController.swift; sourceTree = "<group>"; };
 		F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
@@ -81,7 +86,6 @@
 		F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+BlurImage.m"; sourceTree = "<group>"; };
 		F8F5D47E1EADDAD9007BDF2A /* IndicatorMapViewBack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorMapViewBack.swift; sourceTree = "<group>"; };
 		F8F5D4801EADE2D1007BDF2A /* IndicatorMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndicatorMapView.swift; sourceTree = "<group>"; };
-		F8F5D4821EADF5ED007BDF2A /* MoodShowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodShowViewController.swift; sourceTree = "<group>"; };
 		F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorityViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -155,7 +159,6 @@
 			children = (
 				F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */,
 				F870EF731C378CB7008EF34D /* MoodViewController.swift */,
-				F8F5D4821EADF5ED007BDF2A /* MoodShowViewController.swift */,
 				F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */,
 				F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */,
 				F8E9918A1C17CAE500650406 /* MoreViewController.swift */,
@@ -167,6 +170,9 @@
 				F8F5D4801EADE2D1007BDF2A /* IndicatorMapView.swift */,
 				F89537541EAEFC0200BFEAFC /* AudioRecordView.swift */,
 				F89537561EAEFC1200BFEAFC /* AudioRecordView.xib */,
+				F89753C61EB1AF28003BB8EF /* ContentShowViewController.swift */,
+				F89753C81EB1D2DF003BB8EF /* ImageViewController.swift */,
+				F80B691B1EB1D6BF00900635 /* AudioViewController.swift */,
 			);
 			name = "View&Controller";
 			sourceTree = "<group>";
@@ -279,13 +285,16 @@
 				F8F5D4811EADE2D1007BDF2A /* IndicatorMapView.swift in Sources */,
 				F88D3BA51C14678600A3C921 /* DayList.swift in Sources */,
 				F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */,
+				F89753C71EB1AF28003BB8EF /* ContentShowViewController.swift in Sources */,
 				F89537551EAEFC0200BFEAFC /* AudioRecordView.swift in Sources */,
 				F8F5D47B1EADCA25007BDF2A /* UIImage+BlurImage.m in Sources */,
 				F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */,
 				F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */,
+				F89753C91EB1D2DF003BB8EF /* ImageViewController.swift in Sources */,
 				F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
+				F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */,
 				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,
 				F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */,
 				F870EF761C37BBB5008EF34D /* Item.swift in Sources */,
@@ -299,7 +308,6 @@
 				F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */,
 				F8723F141E260527009CCF44 /* Reachability.m in Sources */,
 				F8AB2A701E9D15E700B58229 /* CatalogueViewController.swift in Sources */,
-				F8F5D4831EADF5ED007BDF2A /* MoodShowViewController.swift in Sources */,
 				F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

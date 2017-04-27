@@ -136,4 +136,11 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         }
         
     }
+    
+    func onlyPlayBack(fileToPlay file:String){
+        self.saveBtn.isHidden = true
+        self.startBtn.isHidden = true
+        self.pauseBtn.isHidden = true
+        self.aRecord.audioFile = URL.init(fileURLWithPath: file)
+    }
 }

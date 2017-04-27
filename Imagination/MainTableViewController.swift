@@ -243,7 +243,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         tableView.deselectRow(at: indexPath, animated: true)
         
         let cc = itemBuffer[indexPath.row]
-        let vc = MoodShowViewController(contentText: cc.content, contentDic: cc.multiMedias, state: cc.mood, placeInfo: cc.place)
+        let vc = ContentShowViewController(contentText: cc.content, contentDic: cc.multiMedias, state: cc.mood, placeInfo: cc.place)
         vc.modalPresentationStyle = .overCurrentContext
         vc.view.alpha = 0
         self.tabBarController?.present(vc, animated: false, completion: {
