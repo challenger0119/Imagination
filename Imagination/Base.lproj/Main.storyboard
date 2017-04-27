@@ -79,6 +79,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Py-s5-doF">
                                 <rect key="frame" x="221" y="607" width="31" height="30"/>
                                 <state key="normal" title="视频"/>
+                                <connections>
+                                    <action selector="getVideo:" destination="rnp-hY-qrU" eventType="touchUpInside" id="CfY-oV-x3V"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

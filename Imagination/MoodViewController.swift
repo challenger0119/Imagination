@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreLocation
+import MobileCoreServices
+import AVFoundation
 class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,AudioRecordViewDelegate {
 
     let dataCache = DataCache.shareInstance
@@ -237,6 +239,13 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                     }else{
                         let _ = self.multiMediaBufferDic?.updateValue(mf, forKey: range.location)
                     }
+                }else if mf.type == .video {
+                    mf.storePath = FileManager.createVideoFileWithTimestamp(path: mf.storePath)
+                    if self.multiMediaBufferDic == nil {
+                        self.multiMediaBufferDic = [range.location:mf]
+                    }else{
+                        let _ = self.multiMediaBufferDic?.updateValue(mf, forKey: range.location)
+                    }
                 }
             }
         })
@@ -274,6 +283,33 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         self.present(queryVc, animated: true, completion: nil)
         
     }
+    @IBAction func getVideo(_ sender: UIButton) {
+        closeKeyboard()
+        let queryVc = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        queryVc.addAction(UIAlertAction(title: "相机", style: .default, handler: { (act) in
+            self.imageVC = UIImagePickerController()
+            self.imageVC.sourceType = .camera
+            self.imageVC.mediaTypes = [kUTTypeMovie as String]
+            self.imageVC.videoQuality = .typeMedium
+            self.imageVC.cameraCaptureMode = .video
+            self.imageVC.delegate = self
+            self.present(self.imageVC, animated: true, completion: {
+                
+            })
+        }))
+        queryVc.addAction(UIAlertAction(title: "相册", style: .default, handler: { (act) in
+            self.imageVC = UIImagePickerController()
+            self.imageVC.sourceType = .photoLibrary
+            self.imageVC.delegate = self
+            self.present(self.imageVC, animated: true, completion: {
+                
+            })
+        }))
+        queryVc.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
+            queryVc.dismiss(animated: true, completion: nil)
+        }))
+        self.present(queryVc, animated: true, completion: nil)
+    }
     
     func cutImage(_ image:UIImage,frame:CGRect)->UIImage {
         UIGraphicsBeginImageContextWithOptions(frame.size, false, UIScreen.main.scale)
@@ -289,7 +325,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         
         if multimedia.isKind(of: UIImage.self) {
             let image = multimedia as! UIImage
-            let textAttach = NSTextAttachment(data:FileManager.imageData(image: image), ofType:MutiMediaType.image.rawValue)
+            let textAttach = NSTextAttachment(data:FileManager.imageData(image: image), ofType:MultiMediaType.image.rawValue)
             let imageHeight = image.size.height / image.size.width * imageWidth
             textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
             let imageAttributeString = NSAttributedString(attachment:textAttach)
@@ -309,7 +345,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             let audio = multimedia as! AudioRecord
             do{
                 let data = try Data.init(contentsOf: audio.recordFileURL)
-                let textAttach = NSTextAttachment(data: data, ofType: MutiMediaType.voice.rawValue)
+                let textAttach = NSTextAttachment(data: data, ofType: MultiMediaType.voice.rawValue)
                 let image = UIImage.init(named: "audio")!
                 let imageHeight = image.size.height / image.size.width * imageWidth
                 textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
@@ -329,8 +365,43 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             }catch{
                 Dlog(error.localizedDescription)
             }
-            
+        }else if multimedia.isKind(of: MultiMediaFile.self){
+            let video = multimedia as! MultiMediaFile
+            do{
+                let url = URL.init(fileURLWithPath: video.storePath)
+                let data = try Data.init(contentsOf: url)
+                let textAttach = NSTextAttachment(data: data, ofType: MultiMediaType.video.rawValue)
+                let image = self.getViedoShot(withURL: url)!
+                let imageHeight = image.size.height / image.size.width * imageWidth
+                textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                let imageAttributeString = NSAttributedString(attachment:textAttach)
+                if at == -1 {
+                    self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
+                }else{
+                    //查看模式
+                    Dlog("add image at \(at)")
+                    self.content.textStorage.insert(imageAttributeString, at: at)
+                }
+                self.multiMediaInsertBuffer.updateValue(video, forKey:textAttach)
+            }catch{
+                Dlog(error.localizedDescription)
+            }
         }
+    }
+    
+    func getViedoShot(withURL url:URL)->UIImage?{
+        let avasset = AVURLAsset(url: url)
+        let generator = AVAssetImageGenerator.init(asset: avasset)
+        var image:UIImage?
+        do{
+            var actualTIme:CMTime = CMTime()
+            let cimage = try generator.copyCGImage(at: CMTimeMakeWithSeconds(0.5, 10), actualTime: &actualTIme)
+            CMTimeShow(actualTIme)
+            image = UIImage.init(cgImage: cimage)
+        }catch{
+            Dlog(error.localizedDescription)
+        }
+        return image
     }
     
     //MARK: - AudioRecordViewDelegate
@@ -351,6 +422,14 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         if let pimg = info[UIImagePickerControllerOriginalImage] as? UIImage{
             addMultimediaToTextView(multimedia: pimg)
         }
+        if let type = info[UIImagePickerControllerMediaType] as? String, type == kUTTypeMovie as String {
+            if let url = info[UIImagePickerControllerMediaURL] as? URL {
+                let mf = MultiMediaFile()
+                mf.storePath = url.path
+                mf.type = .video
+                addMultimediaToTextView(multimedia: mf)
+            }
+        }
         imageVC.dismiss(animated: true, completion: {
             
         })
@@ -366,6 +445,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             self.addMultimediaToTextView(multimedia:image)
         })
     }
+    
 
     //MARK: -segue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -22,6 +22,7 @@
 		F89537571EAEFC1200BFEAFC /* AudioRecordView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F89537561EAEFC1200BFEAFC /* AudioRecordView.xib */; };
 		F895375A1EAF71A100BFEAFC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F89537591EAF71A100BFEAFC /* AVFoundation.framework */; };
 		F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89537841EAF89DE00BFEAFC /* AudioRecord.swift */; };
+		F89753C51EB192A1003BB8EF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = F89753C41EB192A1003BB8EF /* README.md */; };
 		F8AB2A701E9D15E700B58229 /* CatalogueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */; };
 		F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */; };
 		F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */; };
@@ -62,6 +63,7 @@
 		F89537561EAEFC1200BFEAFC /* AudioRecordView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AudioRecordView.xib; sourceTree = "<group>"; };
 		F89537591EAF71A100BFEAFC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F89537841EAF89DE00BFEAFC /* AudioRecord.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecord.swift; sourceTree = "<group>"; };
+		F89753C41EB192A1003BB8EF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatalogueViewController.swift; sourceTree = "<group>"; };
 		F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
@@ -172,6 +174,7 @@
 		F8730EBB1DC06E4F009112CE /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				F89753C41EB192A1003BB8EF /* README.md */,
 				F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */,
 				F81229701BF73C6C00BDCF0E /* Info.plist */,
 				F812296B1BF73C6C00BDCF0E /* Assets.xcassets */,
@@ -286,6 +289,7 @@
 				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,
 				F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */,
 				F870EF761C37BBB5008EF34D /* Item.swift in Sources */,
+				F89753C51EB192A1003BB8EF /* README.md in Sources */,
 				F8F5D47F1EADDAD9007BDF2A /* IndicatorMapViewBack.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */,

@@ -75,12 +75,15 @@ class Item: NSObject {
                         
                         let mf = MultiMediaFile()
                         switch type {
-                        case MutiMediaType.image.rawValue:
+                        case MultiMediaType.image.rawValue:
                             mf.type = .image
                             mf.storePath = FileManager.imageFilePathWithName(filename)
-                        case MutiMediaType.voice.rawValue:
+                        case MultiMediaType.voice.rawValue:
                             mf.type = .voice
                             mf.storePath = FileManager.audioFilePathWithName(name: filename)
+                        case MultiMediaType.video.rawValue:
+                            mf.type = .video
+                            mf.storePath = FileManager.videoFilePathWithName(name: filename)
                         default:
                             break
                         }
@@ -111,12 +114,15 @@ class Item: NSObject {
                             
                             let mf = MultiMediaFile()
                             switch type {
-                            case MutiMediaType.image.rawValue:
+                            case MultiMediaType.image.rawValue:
                                 mf.type = .image
                                 mf.storePath = FileManager.imageFilePathWithName(filename)
-                            case MutiMediaType.voice.rawValue:
+                            case MultiMediaType.voice.rawValue:
                                 mf.type = .voice
                                 mf.storePath = FileManager.audioFilePathWithName(name: filename)
+                            case MultiMediaType.video.rawValue:
+                                mf.type = .video
+                                mf.storePath = FileManager.videoFilePathWithName(name: filename)
                             default:
                                 break
                             }

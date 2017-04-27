@@ -151,13 +151,6 @@ class DataCache: NSObject {
         }
     }
     
-    func store(Multimedia mm:Dictionary<Int,AnyObject>,baseName:String){
-        if let names = FileManager.store(Multimedia: mm, baseName: baseName) {
-            for name in names {
-                updateMultimediaCatalogue(name: name)
-            }
-        }
-    }
     //数据更新的两个方法
     func updateLastday(_ lastdayValue:String,key:String) {
         let _ = lastDay?.updateValue(lastdayValue, forKey: key)

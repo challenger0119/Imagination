@@ -7,11 +7,11 @@
 //
 
 import UIKit
-enum MutiMediaType:String {
+enum MultiMediaType:String {
     case image = "Image",voice = "Voice",video = "Video",def = "multi"
 }
 class MultiMediaFile: NSObject {
-    var type:MutiMediaType = .def
+    var type:MultiMediaType = .def
     var storePath:String = "" {
         didSet{
             Dlog(storePath)

@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import AVFoundation
 class MoodShowViewController: UIViewController {
     
     var multiMediaBufferDic:[Int:MultiMediaFile]?
@@ -120,6 +121,20 @@ class MoodShowViewController: UIViewController {
                         }catch{
                             Dlog(error.localizedDescription)
                         }
+                    }else if mf.type == .video {
+                        do{
+                            let url = URL.init(fileURLWithPath: mf.storePath)
+                            let data = try Data.init(contentsOf: url)
+                            let textAttach = NSTextAttachment(data:data, ofType: mf.type.rawValue)
+                            let image = self.getViedoShot(withURL: url)!
+                            let imageHeight = image.size.height / image.size.width * imageWidth
+                            textAttach.image = cutImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                            let imageAttributeString = NSAttributedString(attachment:textAttach)
+                            mstring.insert(imageAttributeString, at: key+i)
+                            i += 1
+                        }catch{
+                            Dlog(error.localizedDescription)
+                        }
                     }
                 }
             }
@@ -127,7 +142,20 @@ class MoodShowViewController: UIViewController {
         textView.attributedText = mstring
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeVC)))
     }
-
+    func getViedoShot(withURL url:URL)->UIImage?{
+        let avasset = AVURLAsset(url: url)
+        let generator = AVAssetImageGenerator.init(asset: avasset)
+        var image:UIImage?
+        do{
+            var actualTIme:CMTime = CMTime()
+            let cimage = try generator.copyCGImage(at: CMTimeMakeWithSeconds(10, 10), actualTime: &actualTIme)
+            CMTimeShow(actualTIme)
+            image = UIImage.init(cgImage: cimage)
+        }catch{
+            Dlog(error.localizedDescription)
+        }
+        return image
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
