@@ -63,6 +63,14 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
                 if self.isValidateEmail(emailField.text!) {
                     self.dCache.email = emailField.text
                     self.updateRecentDetail()
+                    
+                    let alert = UIAlertController.init(title: "提示", message: "已设置！为了您的隐私，建议向该邮箱发送测试邮件😀", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "发送", style: .default, handler: {
+                        al in
+                        self.sendTestEmail(toAddr:self.dCache.email!)
+                    }))
+                    alert.addAction(UIAlertAction(title: "不用", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
                 } else {
                     let alert = UIAlertController.init(title: "提示", message: "邮箱地址格式不对", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
@@ -137,7 +145,9 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     }
     
     func isValidateEmail(_ email:String) -> Bool {
-        return true
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
+        let emailTest = NSPredicate.init(format: "SELF MATCHES %@", emailRegex)
+        return emailTest.evaluate(with: email, substitutionVariables: nil)
     }
  
     func sendBackupToMail(files:[String])  {
@@ -149,31 +159,39 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         }
         sendByEmail(filePaths: files)
     }
+    func sendTestEmail(toAddr mail:String){
+        sendByEmail(filePaths: [], addtional: "[Imagination] Hi,我在这！我将把备份文件发到这里")
+    }
     
-    func sendByEmail(filePaths:[String],addtional:String = "") {
+    
+    func sendEmail(subject:String,recipients:[String]?,attachments:[String] = []){
         let vc = MFMailComposeViewController.init()
         vc.mailComposeDelegate = self
         
+        vc.setToRecipients(recipients)
+        vc.setSubject(subject)
         
-        if filePaths.count == 0 && addtional != "" {
-            vc.setToRecipients(["miaoqi0119@163.com"])
-            vc.setSubject(addtional)
-        }else{
-            let txt = filePaths.first!
-            vc.setSubject((txt as NSString).lastPathComponent)
-            if let mail = self.dCache.email {
-                vc.setToRecipients([mail])
-            } else {
-                vc.setToRecipients(nil)
-            }
-        }
-        for file in filePaths {
+        for file in attachments {
             let senddata = try? Data.init(contentsOf: URL(fileURLWithPath: file))
             if let dd = senddata {
                 vc.addAttachmentData(dd, mimeType: "", fileName: (file as NSString).lastPathComponent)
             }
         }
         self.present(vc, animated: true, completion: nil)
+    }
+    
+    func sendByEmail(filePaths:[String],addtional:String = "") {
+        if filePaths.count == 0 && addtional != "" {
+            sendEmail(subject: addtional, recipients: ["miaoqi0119@163.com"])
+        }else{
+            let txt = filePaths.first!
+            var recip:[String]?
+            
+            if let mail = self.dCache.email {
+                recip = [mail]
+            }
+            sendEmail(subject: (txt as NSString).lastPathComponent, recipients: recip, attachments: filePaths)
+        }
     }
     
     //MARK: - EmailDelegate
