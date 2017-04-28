@@ -29,6 +29,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
     var meterTimer:Timer?
     var delegate:AudioRecordViewDelegate?
     var stateString = "Ready"
+    var audioFilePath = ""
     var state:RecordState = .None{
         didSet{
             if delegate != nil {
@@ -77,10 +78,11 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
     }
     
     var aRecord:AudioRecord!
-    override func awakeFromNib() {
-        aRecord = AudioRecord()
-    }
+ 
     @IBAction func startBtnClicked(_ sender: UIButton) {
+        if aRecord == nil {
+            aRecord = AudioRecord(withFile: self.audioFilePath)
+        }
         aRecord.startRecord()
         state = .Recording
         meterTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
@@ -99,7 +101,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
             state = .Over
             aRecord.stopRecord()
             do{
-                let atr = try FileManager.default.attributesOfItem(atPath: self.aRecord.recordFileURL.absoluteString)
+                let atr = try FileManager.default.attributesOfItem(atPath: self.aRecord.recordFileURL.path)
                 let size = atr[FileAttributeKey("NSFileSize")] as! Int
                 self.stateString = "\(String(describing: Int(size / 1024)))Kb"
                 self.stateLabel.text = stateString
@@ -110,6 +112,9 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         self.meterTimer?.invalidate()
     }
     @IBAction func PlayBtnClicked(_ sender: UIButton) {
+        if aRecord == nil {
+            aRecord = AudioRecord(withFile: self.audioFilePath)
+        }
         state = .Playing
         aRecord.playRecord()
         meterTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
@@ -119,6 +124,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         self.removeFromSuperview()
     }
     class func getView()->AudioRecordView?{
+        
         if let vv = Bundle.main.loadNibNamed("AudioRecordView", owner: nil, options: nil) {
             return vv.first as? AudioRecordView
         }else{
@@ -138,9 +144,10 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
     }
     
     func onlyPlayBack(fileToPlay file:String){
+        self.audioFilePath = file
         self.saveBtn.isHidden = true
         self.startBtn.isHidden = true
         self.pauseBtn.isHidden = true
-        self.aRecord.audioFile = URL.init(fileURLWithPath: file)
+        //self.aRecord.audioFile = URL.init(fileURLWithPath: file)
     }
 }

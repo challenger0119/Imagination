@@ -14,6 +14,7 @@
 import Foundation
 import CoreLocation
 import UIKit
+import SSZipArchive
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
@@ -141,7 +142,7 @@ class DataCache: NSObject {
     func updateLastday(_ lastdayValue:String,key:String) {
         let _ = lastDay?.updateValue(lastdayValue, forKey: key)
         let myData = NSKeyedArchiver.archivedData(withRootObject: lastDay!)
-        try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(currentDayName!)), options: [.atomic])
+        try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInLib(currentDayName!)), options: [.atomic])
         updateCatalogue()
     }
     
@@ -149,7 +150,7 @@ class DataCache: NSObject {
         self.currentDayName = currentDayName
         lastDay = lastdayDic
         let myData = NSKeyedArchiver.archivedData(withRootObject: lastDay!)
-        try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(self.currentDayName!)), options: [.atomic])
+        try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInLib(self.currentDayName!)), options: [.atomic])
         updateCatalogue()
     }
 
@@ -182,7 +183,7 @@ class DataCache: NSObject {
     }
     
     fileprivate func loadDay(_ dd:String) -> Dictionary<String,String>? {
-        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(dd))) {
+        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInLib(dd))) {
             return (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Dictionary)!
         }
         return nil
@@ -214,14 +215,14 @@ class DataCache: NSObject {
     fileprivate func storeCatalogue(){
         if catalogue != nil {
             let myData = NSKeyedArchiver.archivedData(withRootObject: catalogue!)
-            try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX)), options: [.atomic])
+            try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInLib(FILENAME_INDEX)), options: [.atomic])
         }
     }
 
     //载入目录
     fileprivate func loadCatalogue(){
         catalogue?.removeAll()
-        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX))) {
+        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInLib(FILENAME_INDEX))) {
             catalogue = (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Array)
         }
     }
@@ -274,49 +275,24 @@ class DataCache: NSObject {
     //创建文件
 
     fileprivate func createBackupFileWithAddtionalInfo(_ from:String,to:String) -> [String] {
-        return createFiles(from, to: to, fileGetter: {
+        return createFilesWithZipAttachments(from: from, to: to, pathGetter: {
             f,t in
-            return FileManager.TxtFileInDocuments("\(f)_\(t)")
+            return FileManager.backupFilePath(withName: "\(f)_\(t)")
         })
     }
     
-    fileprivate func createFileAtPath(_ from:String,to:String,fileGetter:(_ from:String,_ to:String)->String)->String{
-        let txtfile = fileGetter(from,to)
-        let data = NSMutableData()
-        for dd in catalogue! {
-            if dd >= from && dd <= to {
-                if let ddtmp = loadDay(dd) {
-                    let thisday = dd + newline
-                    data.append(thisday.data(using: String.Encoding.utf8)!)
-                    var keys = Array(ddtmp.keys)
-                    keys.sort(){$0 < $1}
-                    for kk in keys {
-                        let title = kk+newline
-                        data.append(title.data(using: String.Encoding.utf8)!)
-                        let item = Item(contentString:  ddtmp[kk]!)
-                        var content = item.content + newline
-                        if item.mood != 0 {
-                            content += "心情:\(item.moodString) "
-                        }
-                        if item.place.latitude != 0 {
-                            content += "位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))"
-                        }
-                        if item.mood != 0 || item.place.latitude != 0 {
-                            content += newline
-                        }
-                        data.append((content.data(using: String.Encoding.utf8))!)
-                    }
-                }
-                let over = newline+newline
-                data.append((over.data(using: String.Encoding.utf8))!)
-            }
-        }
-        data.write(toFile: txtfile, atomically: true)
-        return txtfile
+    fileprivate func createFilesWithZipAttachments(from:String,to:String,pathGetter:(_ from:String,_ to:String)->String)->[String]{
+        let result = self.createFiles(from, to: to, pathGetter: pathGetter)
+        let txt = result.first!
+        let attaches = result.suffix(from: 1)
+        let zipFilepath = pathGetter(from,to)+".zip"
+        SSZipArchive.createZipFile(atPath: zipFilepath, withFilesAtPaths: Array(attaches))
+        return [txt,zipFilepath]
     }
-    fileprivate func createFiles(_ from:String,to:String,fileGetter:(_ from:String,_ to:String)->String)->[String]{
+    
+    fileprivate func createFiles(_ from:String,to:String,pathGetter:(_ from:String,_ to:String)->String)->[String]{
        
-        let txtfile = fileGetter(from,to)
+        let txtfile = pathGetter(from,to) + ".txt"
         var filePaths = [txtfile]
         let data = NSMutableData()
         for dd in catalogue! {
@@ -368,13 +344,13 @@ class DataCache: NSObject {
         //删除原有的 导出文件只需要一份
         let mng = FileManager.default
         do {
-            let files = try mng.contentsOfDirectory(atPath: FileManager.pathOfNameInCaches(""))
+            let files = try mng.contentsOfDirectory(atPath: FileManager.exportFilePath())
             if !files.isEmpty {
                 for ff in files {
                     let ffarray = ff.components(separatedBy: ".")
                     if ffarray.count == 2 {
                         do{
-                            try mng.removeItem(atPath: FileManager.TxtFileInCaches(ffarray[0]))
+                            try mng.removeItem(atPath: FileManager.exportFilePath(withName: ffarray[0]))
                         } catch {
                             
                         }
@@ -384,9 +360,9 @@ class DataCache: NSObject {
         } catch {
             
         }
-        return createFiles(from, to: to, fileGetter: {
+        return createFilesWithZipAttachments(from: from, to: to, pathGetter: {
             f,t in
-            return FileManager.TxtFileInCaches("\(f)_\(t)")
+            return FileManager.exportFilePath(withName: "\(f)_\(t)")
         })
     }
     //备份
@@ -405,7 +381,6 @@ class DataCache: NSObject {
     }
     
     func backupToNow() ->[String] {
-        
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
             //如果之前有备份 就从之前备份到今天
@@ -427,7 +402,7 @@ class DataCache: NSObject {
         var lastTimeEnd = EMPTY_STRING
         var lastBackup = EMPTY_STRING
         do {
-            let files = try mng.contentsOfDirectory(atPath: FileManager.pathOfNameInDocuments(""))
+            let files = try mng.contentsOfDirectory(atPath: FileManager.backupFilePath())
             if !files.isEmpty {
                 for ff in files {
                     let ffarray = ff.components(separatedBy: ".")
@@ -450,14 +425,26 @@ class DataCache: NSObject {
     
     fileprivate func deleteDay(_ dd:String) -> Bool{
         Dlog("deleteday:\(dd)")
-        let filePath = FileManager.pathOfNameInDocuments(dd)
+        let txt = FileManager.pathOfNameInLib(dd)
+        let attach = dd.replacingOccurrences(of: "txt", with: "zip")
         let mng = FileManager.default
-        if mng.fileExists(atPath: filePath) {
+        if mng.fileExists(atPath: txt) {
             do {
-                try mng.removeItem(atPath: filePath)
+                
+                try mng.removeItem(atPath: txt)
                 return true
             } catch {
-                Dlog("删除文件错误:\(filePath)")
+                Dlog("删除文件错误:\(txt)")
+                return false
+            }
+        }
+        if mng.fileExists(atPath: attach) {
+            do {
+                
+                try mng.removeItem(atPath: attach)
+                return true
+            } catch {
+                Dlog("删除文件错误:\(attach)")
                 return false
             }
         }

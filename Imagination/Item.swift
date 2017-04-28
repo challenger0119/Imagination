@@ -77,7 +77,7 @@ class Item: NSObject {
                         switch type {
                         case MultiMediaType.image.rawValue:
                             mf.type = .image
-                            mf.storePath = FileManager.imageFilePathWithName(filename)
+                            mf.storePath = FileManager.imageFilePathWithName(name: filename)
                         case MultiMediaType.voice.rawValue:
                             mf.type = .voice
                             mf.storePath = FileManager.audioFilePathWithName(name: filename)
@@ -116,7 +116,7 @@ class Item: NSObject {
                             switch type {
                             case MultiMediaType.image.rawValue:
                                 mf.type = .image
-                                mf.storePath = FileManager.imageFilePathWithName(filename)
+                                mf.storePath = FileManager.imageFilePathWithName(name: filename)
                             case MultiMediaType.voice.rawValue:
                                 mf.type = .voice
                                 mf.storePath = FileManager.audioFilePathWithName(name: filename)

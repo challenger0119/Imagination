@@ -17,35 +17,35 @@ class AudioRecord: NSObject {
         }
     }
     var audioFile:URL!
+    let setting = [AVSampleRateKey:NSNumber(value:Float(8000.0)),
+                   AVFormatIDKey:NSNumber(value:Int(kAudioFormatLinearPCM)),
+                   AVLinearPCMBitDepthKey:NSNumber(value:Int(16)),
+                   AVNumberOfChannelsKey:NSNumber(value:Int(1)),
+                   AVLinearPCMIsFloatKey:NSNumber(value:Bool(true)),
+                   AVEncoderAudioQualityKey:NSNumber(value:Int(AVAudioQuality.high.rawValue))]
+    
     init(withFile file:String = "") {
-        var audiofile = FileManager.audioFilePathWithTimstamp()
+        var audiofile = FileManager.tmpAudioFilePath()
         if file != "" {
             audiofile = file
         }
-        let session =  AVAudioSession.sharedInstance()
-        let setting = [AVSampleRateKey:NSNumber(value:Float(8000.0)),
-                       AVFormatIDKey:NSNumber(value:Int(kAudioFormatLinearPCM)),
-                       AVLinearPCMBitDepthKey:NSNumber(value:Int(16)),
-                       AVNumberOfChannelsKey:NSNumber(value:Int(1)),
-                       AVLinearPCMIsFloatKey:NSNumber(value:Bool(true)),
-                       AVEncoderAudioQualityKey:NSNumber(value:Int(AVAudioQuality.high.rawValue))]
+        audioFile = URL(fileURLWithPath: audiofile)
         do{
-            try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
-            
-            audioFile = URL(fileURLWithPath: audiofile)
-            recorder = try AVAudioRecorder(url: audioFile,settings: setting)
-            Dlog(recorder.prepareToRecord())
-            recorder.isMeteringEnabled = true
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
         }catch{
-            
+            Dlog(error.localizedDescription)
         }
         super.init()
     }
 
     func startRecord(){
-        let tsession = AVAudioSession.sharedInstance()
         do{
-            try tsession.setActive(true)
+            if recorder == nil {
+                recorder = try AVAudioRecorder(url: audioFile,settings: setting)
+                recorder.isMeteringEnabled = true
+                Dlog("prepareToRecord \(recorder.prepareToRecord())")
+            }
+            try AVAudioSession.sharedInstance().setActive(true)
             recorder.record()
         }catch{
             Dlog(error.localizedDescription)
@@ -55,7 +55,7 @@ class AudioRecord: NSObject {
         recorder.pause()
     }
     func stopRecord(){
-         self.recorder.stop()
+        self.recorder.stop()
         let tsession = AVAudioSession.sharedInstance()
         do{
             try tsession.setActive(false)
@@ -65,21 +65,23 @@ class AudioRecord: NSObject {
        
     }
     func playRecord(){
-        let tsession = AVAudioSession.sharedInstance()
         do{
-            self.player = try AVAudioPlayer.init(contentsOf: self.audioFile)
-            self.player!.isMeteringEnabled = true
-            try tsession.setActive(true)
-            self.player!.play()
+            if player == nil {
+                self.player = try AVAudioPlayer.init(contentsOf: self.audioFile)
+                self.player.isMeteringEnabled = true
+                Dlog("prepareToPlay \(player.prepareToPlay())")
+            }
+            try AVAudioSession.sharedInstance().setActive(true)
+            
+            self.player.play()
         }catch{
             Dlog(error.localizedDescription)
         }
     }
     func stopPlayRecord(){
         self.player.stop()
-        let tsession = AVAudioSession.sharedInstance()
         do{
-            try tsession.setActive(false)
+            try AVAudioSession.sharedInstance().setActive(false)
         }catch{
             Dlog(error.localizedDescription)
         }

@@ -24,6 +24,9 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         tableView.rowHeight = UITableViewAutomaticDimension
         updateRecentDetail()
         updateReminder()
+        let backItem = UIBarButtonItem()
+        backItem.title = "返回"
+        self.navigationItem.backBarButtonItem = backItem
     }
     
     func updateRecentDetail() {

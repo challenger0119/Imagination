@@ -24,7 +24,6 @@ class AudioViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
         let audioView = AudioRecordView.getView()
-        
         audioView?.frame = CGRect(x: 0, y: (self.view.frame.height-200)/2, width: self.view.frame.width, height: 200)
         audioView?.onlyPlayBack(fileToPlay: self.filePath)
         self.view.addSubview(audioView!)

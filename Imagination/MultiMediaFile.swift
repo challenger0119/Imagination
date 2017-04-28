@@ -15,9 +15,8 @@ class MultiMediaFile: NSObject {
     var type:MultiMediaType = .def
     var storePath:String = "" {
         didSet{
-            Dlog(storePath)
+            //Dlog(storePath)
             name = (storePath as NSString).lastPathComponent
-            Dlog(name)
         }
     }
     var name:String = ""
