@@ -109,6 +109,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="HeE-rP-zJw">
+                        <barButtonItem key="leftBarButtonItem" title="取消" id="foz-5B-XcI">
+                            <connections>
+                                <action selector="didSwipDown" destination="rnp-hY-qrU" id="FN1-03-ItP"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="完成" style="done" id="B6f-hb-wZy">
                             <connections>
                                 <action selector="done:" destination="rnp-hY-qrU" id="Jwp-I2-4IM"/>
@@ -128,7 +133,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OQq-0p-uvv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4593.5" y="417.5"/>
+            <point key="canvasLocation" x="4551" y="418"/>
         </scene>
         <!--Main Table View Controller-->
         <scene sceneID="CzR-NL-bGx">

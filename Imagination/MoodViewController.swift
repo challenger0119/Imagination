@@ -176,7 +176,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             }
         }
     }
-    func didSwipDown(){
+    @IBAction func didSwipDown(){
         closeKeyboard()
         if !self.content.text.isEmpty {
             let alert = UIAlertController(title: "提示", message: "现在返回内容将丢失", preferredStyle: .alert)
@@ -309,6 +309,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 let data = try Data.init(contentsOf: url)
                 let textAttach = NSTextAttachment(data: data, ofType: MultiMediaType.video.rawValue)
                 let image = MultiMediaFile.viedoShot(withURL: url)!
+                Dlog("\(image.size.width) : \(image.size.height)")
+                Dlog(image.imageOrientation)
                 let imageHeight = image.size.height / image.size.width * imageWidth
                 textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                 let imageAttributeString = NSAttributedString(attachment:textAttach)

@@ -39,11 +39,13 @@ class MultiMediaFile: NSObject {
     class func viedoShot(withURL url:URL)->UIImage?{
         let avasset = AVURLAsset(url: url)
         let generator = AVAssetImageGenerator.init(asset: avasset)
+        generator.appliesPreferredTrackTransform = true //竖屏视频需要
         var image:UIImage?
         do{
             var actualTIme:CMTime = CMTime()
             let cimage = try generator.copyCGImage(at: CMTimeMakeWithSeconds(0.5, 10), actualTime: &actualTIme)
-            CMTimeShow(actualTIme)
+            
+            //CMTimeShow(actualTIme)
             image = UIImage.init(cgImage: cimage)
         }catch{
             Dlog(error.localizedDescription)

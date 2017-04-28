@@ -39,7 +39,13 @@ class Time: NSObject {
         format.dateFormat = "HH:mm:SS"
         return format.string(from: date)
     }
-    class func timestamp()->String{
-        return String(Int(Date().timeIntervalSince1970))
+    
+    class func timestamp()->TimeInterval{
+        return Date().timeIntervalSince1970
+    }
+    class func stringTimestamp()->String{
+        let timsp = Time.timestamp()
+        let string = String(timsp)
+        return string.replacingOccurrences(of: ".", with: "") //去掉小数点
     }
 }

@@ -180,7 +180,6 @@
 		F8730EBB1DC06E4F009112CE /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				F89753C41EB192A1003BB8EF /* README.md */,
 				F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */,
 				F81229701BF73C6C00BDCF0E /* Info.plist */,
 				F812296B1BF73C6C00BDCF0E /* Assets.xcassets */,
@@ -200,6 +199,7 @@
 		F8E608581EB035A3008A1030 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F89753C41EB192A1003BB8EF /* README.md */,
 				F8E608591EB035B6008A1030 /* audio.png */,
 			);
 			name = Resources;

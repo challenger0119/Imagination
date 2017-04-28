@@ -88,7 +88,7 @@ extension FileManager{
         }
     }
     fileprivate class func imageFilePathWithTimestamp() -> String{
-        return self.imageFilePathWithName(FileManager.imageName(name: "image\(Time.timestamp())"))
+        return self.imageFilePathWithName(FileManager.imageName(name: "image\(Time.stringTimestamp())"))
     }
     class func createImageFile(withImage image:UIImage)->String{
         let path:String = FileManager.imageFilePathWithTimestamp()
@@ -114,7 +114,7 @@ extension FileManager{
         return self.audioFilePath() + "/\(name)"
     }
     class func audioFilePathWithTimstamp()->String{
-        return self.audioFilePathWithName(name: "audio\(Time.timestamp()).wav")
+        return self.audioFilePathWithName(name: "audio\(Time.stringTimestamp()).wav")
     }
     class func createAudioFile(withPath path:String)->String{
         let topath:String = FileManager.audioFilePathWithTimstamp()
@@ -142,7 +142,7 @@ extension FileManager{
         return self.videoFilePath() + "/\(name)"
     }
     fileprivate class func videoFilePathWithTimestamp()->String{
-        return self.videoFilePathWithName(name: "video\(Time.timestamp()).mp4")
+        return self.videoFilePathWithName(name: "video\(Time.stringTimestamp()).mp4")
     }
     class func createVideoFile(withPath path:String)->String{
         let topath:String = FileManager.videoFilePathWithTimestamp()

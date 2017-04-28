@@ -81,15 +81,17 @@ class ContentShowViewController: UIViewController {
             locBtn.titleLabel?.adjustsFontSizeToFitWidth = true
             locBtn.addTarget(self, action: #selector(showMap), for: .touchUpInside)
         }
+        
         var usedHeight:CGFloat = 0
         if self.multiMediaBufferDic != nil{
             var keys = Array(self.multiMediaBufferDic!.keys)
             keys.sort()
             var keyIndex = 0
-            
-            for viewIndex in 0...keys.last! {
-                if viewIndex == keys[keyIndex] {
-                    if let mf = self.multiMediaBufferDic![viewIndex] {
+            var lastMuliIndex = -1
+            let contentend = (self.text.characters.count > keys.last!) ? (self.text.characters.count):keys.last!
+            for drawIndex in 0...contentend {
+                if keyIndex < keys.count && drawIndex == keys[keyIndex] {
+                    if let mf = self.multiMediaBufferDic![drawIndex] {
                         let imageWidth = textView.frame.width - 10;
                         if mf.type == .image {
                             let image = UIImage.init(contentsOfFile: mf.storePath)!
@@ -118,14 +120,18 @@ class ContentShowViewController: UIViewController {
                             )
                             usedHeight += imageHeight
                         }
-                        
                     }
-                }else if viewIndex == 0 || viewIndex == keys[keyIndex]+1 {
-                    let start = self.text.index(text.startIndex, offsetBy: viewIndex)
-                    if viewIndex != 0 {
-                        keyIndex += 1
+                    lastMuliIndex = drawIndex
+                    keyIndex += 1
+                }else if drawIndex == lastMuliIndex + 1 {
+                    let start = self.text.index(text.startIndex, offsetBy: lastMuliIndex + 1)
+                    var offset = 0
+                    if keyIndex < keys.count {
+                        offset = keys[keyIndex]
+                    }else{
+                        offset = contentend
                     }
-                    let end = self.text.index(text.startIndex, offsetBy: keys[keyIndex])
+                    let end = self.text.index(text.startIndex, offsetBy: offset)
                     let rg = Range(uncheckedBounds: (start,end))
                     let substring = self.text.substring(with: rg)
                     let height = (substring as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 15)], context: nil).size.height
