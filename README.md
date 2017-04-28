@@ -5,8 +5,7 @@
 决定将“毕生”所学集合于几个实用的App中，作为开发学习的demo集合，这是其中一个。
 ***
 #### 待完成：    
-2. 音频，视频
-3. 设计感提升..
+1. 设计感提升..
 
 
 #### 已完成：  
@@ -25,3 +24,5 @@
 13. iPhone SplitView样式：MainTableViewController, CatalogueViewController
 14. 图像模糊：UIImage+BlurImage
 15. UIBezierPath(Core Graphic)绘图：IndicatorMapViewBack
+16. 录音：AudioRecord
+17. 视频：MoodViewController,ContentShowViewController
