@@ -120,6 +120,9 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             self.present(vc, animated: true, completion: nil)
         } else if (indexPath as NSIndexPath).row == 6 {
             sendByEmail(filePaths: [], addtional: "建议")
+        } else if indexPath.row == 8 {
+            let webvc = WebViewController()
+            self.navigationController?.pushViewController(webvc, animated: true)
         }
     }
     

@@ -17,6 +17,7 @@
 		F81283981C3F82E8002985A7 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81283971C3F82E8002985A7 /* Notification.swift */; };
 		F856CF021EB303F000FE2822 /* MemorySpaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF011EB303F000FE2822 /* MemorySpaceController.swift */; };
 		F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */; };
+		F862AF521EB766FB0065D32B /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F862AF511EB766FB0065D32B /* WebViewController.swift */; };
 		F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF731C378CB7008EF34D /* MoodViewController.swift */; };
 		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
 		F8723F141E260527009CCF44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F8723F131E260527009CCF44 /* Reachability.m */; };
@@ -63,6 +64,7 @@
 		F81283971C3F82E8002985A7 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		F856CF011EB303F000FE2822 /* MemorySpaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceController.swift; sourceTree = "<group>"; };
 		F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceHeaderView.swift; sourceTree = "<group>"; };
+		F862AF511EB766FB0065D32B /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		F870EF731C378CB7008EF34D /* MoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodViewController.swift; sourceTree = "<group>"; };
 		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Imagination-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -142,8 +144,8 @@
 		F81229601BF73C6C00BDCF0E /* Imagination */ = {
 			isa = PBXGroup;
 			children = (
-				F8E608581EB035A3008A1030 /* Resources */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
+				F8E608581EB035A3008A1030 /* Resources */,
 				F8730EB91DC06E1A009112CE /* View&Controller */,
 				F8730EB81DC06E0D009112CE /* Model */,
 				F8730EBB1DC06E4F009112CE /* Support */,
@@ -194,6 +196,7 @@
 				F80B691B1EB1D6BF00900635 /* AudioViewController.swift */,
 				F856CF011EB303F000FE2822 /* MemorySpaceController.swift */,
 				F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */,
+				F862AF511EB766FB0065D32B /* WebViewController.swift */,
 			);
 			name = "View&Controller";
 			sourceTree = "<group>";
@@ -368,6 +371,7 @@
 				F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
 				F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */,
+				F862AF521EB766FB0065D32B /* WebViewController.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */,
 				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,
