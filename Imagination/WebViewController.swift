@@ -65,8 +65,4 @@ class WebViewController: UIViewController {
         self.navigationItem.rightBarButtonItem?.title = titlestring
         loadWeb()
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 }
