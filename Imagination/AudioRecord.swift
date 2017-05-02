@@ -9,8 +9,8 @@
 import UIKit
 import AVFoundation
 class AudioRecord: NSObject {
-    var recorder:AVAudioRecorder!
-    var player:AVAudioPlayer!
+    fileprivate var recorder:AVAudioRecorder!
+    fileprivate var player:AVAudioPlayer!  //有初始化关联，所以不能直接访问 容易出错
     var recordFileURL:URL{
         get{
             return self.recorder.url
@@ -104,4 +104,15 @@ class AudioRecord: NSObject {
         return self.player.peakPower(forChannel: channel)
     }
     
+    
+    func playerDuration()->TimeInterval{
+        if player == nil {
+            do {
+                self.player = try AVAudioPlayer.init(contentsOf: self.audioFile)
+            }catch{
+                Dlog(error.localizedDescription)
+            }
+        }
+        return player.duration
+    }
 }

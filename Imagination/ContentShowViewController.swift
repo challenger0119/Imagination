@@ -102,14 +102,15 @@ class ContentShowViewController: UIViewController {
                             )
                             usedHeight += imageHeight
                         }else if mf.type == .voice {
-                            let image = UIImage.init(named: "audio")!
-                            let imageHeight = image.size.height / image.size.width * imageWidth
-                            textView.addSubview(
-                                buttonFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:imageHeight),
-                                              backgroundImage: MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight)),
-                                              tag: keyIndex)
-                            )
-                            usedHeight += imageHeight
+                            let btn = UIButton(type: .roundedRect)
+                            btn.frame = CGRect(x:0,y:usedHeight,width:textView.frame.width,height:50)
+                            btn.tag = keyIndex
+                            let audio = AudioRecord(withFile:mf.storePath)
+                            let timeString = Time.timeIntervalToMMssString(timeInterval: audio.playerDuration())
+                            btn.setTitle("录音 \(timeString)", for: .normal)
+                            btn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
+                            textView.addSubview(btn)
+                            usedHeight += 50
                         }else if mf.type == .video {
                             let url = URL.init(fileURLWithPath: mf.storePath)
                             let image = MultiMediaFile.viedoShot(withURL: url)!
