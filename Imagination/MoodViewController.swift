@@ -57,7 +57,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     var imageVC:UIImagePickerController!
     var multiMediaBufferDic:[Int:MultiMediaFile] = Dictionary()
     var multiMediaInsertBuffer:[NSTextAttachment:MultiMediaFile] = Dictionary()
-    //用来存储非照片资源的地址，临时添加，后面优化  这是因为获取照片是后存文件，获取录音是先存文件，系统原因，导致使用了不同的存储方案
+    var font:UIFont!
     
     @IBOutlet weak var content: UITextView!
     @IBOutlet weak var goodBtn: UIButton!
@@ -68,11 +68,11 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     @IBOutlet weak var getVideoBtn: UIButton!
     @IBOutlet weak var getVoiceBtn: UIButton!
     @IBOutlet weak var getImageBtn: UIButton!
-    
     func hideFunctionBtns(){
         self.getVideoBtn.isHidden = true
         self.getVoiceBtn.isHidden = true
         self.getImageBtn.isHidden = true
+       
     }
     
     override func viewDidLoad() {
@@ -92,6 +92,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressAction(gesture:)))
         self.getLocBtn.addGestureRecognizer(longPress)
+        
+        self.font = self.content.font
     }
     
     
@@ -320,6 +322,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 Dlog(error.localizedDescription)
             }
         }
+        self.content.font = font //插入媒体后字体会变，修正
     }
     
     //MARK: - AudioRecordViewDelegate
