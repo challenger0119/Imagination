@@ -34,6 +34,7 @@ extension FileManager {
     
     class func pathOfNameInLib(_ name:String)->String{
         let path = self.libraryPath()
+        Dlog(path)
         return path + ("/"+name)
     }
     
