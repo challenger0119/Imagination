@@ -142,6 +142,10 @@ class ContentShowViewController: UIViewController {
                     usedHeight += height
                 }
             }
+        }else{
+            let height = (self.text as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 15)], context: nil).size.height
+            textView.addSubview(
+                labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: self.text, textColor: Item.moodColor[state]))
         }
         textView.contentSize = CGSize(width: textView.frame.size.width, height: usedHeight)
     }
