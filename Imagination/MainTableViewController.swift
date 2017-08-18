@@ -37,6 +37,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             tframe.size.width = self.view.frame.width - CatalogueViewController.tableWidth
             UIView.animate(withDuration: 0.2) {
                 self.navigationController?.view.frame = tframe;
+                self.view.alpha = 0.7
             }
         })
     }
@@ -212,6 +213,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
     func catalogueDidClose() {
         resumeView(){}
+        UIView.animate(withDuration: 0.5, animations: {
+            self.view.alpha = 1
+        })
     }
     
     // MARK: - Table view data source and Delegate

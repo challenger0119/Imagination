@@ -26,6 +26,11 @@ class ImageViewController: UIViewController,UIScrollViewDelegate {
     var image:UIImage!
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.white
+        
+        backScrolView.delegate = self
+        backScrolView.minimumZoomScale = 1.0
+        backScrolView.maximumZoomScale = image.size.width/self.view.frame.width > image.size.height/self.view.frame.height ? image.size.height/self.view.frame.height : image.size.width/self.view.frame.width
         backScrolView.frame = self.view.frame;
         self.view.addSubview(backScrolView);
         
@@ -33,12 +38,9 @@ class ImageViewController: UIViewController,UIScrollViewDelegate {
         let imageheight = self.view.frame.height - 20
         iview.frame = CGRect(x: 10, y: 10, width: imagewidth, height: imageheight)
         iview.image = image
-        self.view.backgroundColor = UIColor.white
         iview.contentMode = .scaleAspectFit
         backScrolView.addSubview(iview)
-        backScrolView.delegate = self
-        backScrolView.minimumZoomScale = 1.0
-        backScrolView.maximumZoomScale = 3.0
+        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(closeVC))
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTap))
         tap.numberOfTapsRequired = 2
