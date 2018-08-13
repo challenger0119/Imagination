@@ -74,7 +74,7 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
         return true
     }
     
-    func useTouchId()
+    @objc func useTouchId()
     {
         if AuthorityViewController.pWord == AuthorityViewController.NotSet {
             Dlog("not set")

@@ -15,6 +15,7 @@ class CustomTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.content.layer.cornerRadius = 3.0
+        self.content.isUserInteractionEnabled = false
     }
     
 

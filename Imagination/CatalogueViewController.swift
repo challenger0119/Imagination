@@ -64,7 +64,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
             }
         }
     }
-    func cataCancel(){
+    @objc func cataCancel(){
         dismissVC()
         self.delegate?.catalogueDidClose()
     }

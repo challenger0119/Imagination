@@ -29,7 +29,7 @@ class AudioViewController: UIViewController {
         self.view.addSubview(audioView!)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(closeVC))
     }
-    func closeVC(){
+    @objc func closeVC(){
         self.dismiss(animated: true, completion: {
             
         })

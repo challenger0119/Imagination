@@ -14,7 +14,7 @@ class ContentShowViewController: UIViewController {
     var multiMediaBufferDic:[Int:MultiMediaFile]?
     var text:String = ""
     var pInfo:(name:String,latitude:Double,longtitude:Double)?
-    var exitAnimation:((Void)->Void)?
+    var exitAnimation:(() -> Void)?
     var state = 0
     fileprivate var mapView:UIView?
     
@@ -30,7 +30,7 @@ class ContentShowViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func closeVC(){
+    @objc func closeVC(){
         UIView.animate(withDuration: 0.2, animations: {
             self.view.alpha = 0
         }, completion: {
@@ -42,12 +42,12 @@ class ContentShowViewController: UIViewController {
             }
         })
     }
-    func showMap(){
+    @objc func showMap(){
         if  mapView == nil {
             mapView = IndicatorMapView(frame: CGRect(x: 20, y: self.view.frame.height-50-200, width: self.view.frame.width-40, height: 200),coor:CLLocationCoordinate2D(latitude: pInfo!.latitude, longitude: pInfo!.longtitude))
             self.view.addSubview(mapView!)
         }else{
-            mapView?.removeFromSuperview()
+            mapView!.isHidden = !mapView!.isHidden
         }
     }
     
@@ -88,7 +88,7 @@ class ContentShowViewController: UIViewController {
             keys.sort()
             var keyIndex = 0
             var lastMuliIndex = -1
-            let contentend = (self.text.characters.count > keys.last!) ? (self.text.characters.count):keys.last!
+            let contentend = (self.text.count > keys.last!) ? (self.text.count):keys.last!
             for drawIndex in 0...contentend {
                 if keyIndex < keys.count && drawIndex == keys[keyIndex] {
                     if let mf = self.multiMediaBufferDic![drawIndex] {
@@ -133,9 +133,8 @@ class ContentShowViewController: UIViewController {
                         offset = contentend
                     }
                     let end = self.text.index(text.startIndex, offsetBy: offset)
-                    let rg = Range(uncheckedBounds: (start,end))
-                    let substring = self.text.substring(with: rg)
-                    let height = (substring as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 15)], context: nil).size.height
+                    let substring = String(self.text[start..<end])
+                    let height = (substring as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
                     textView.addSubview(
                         labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: substring, textColor: Item.moodColor[state])
                     )
@@ -143,7 +142,7 @@ class ContentShowViewController: UIViewController {
                 }
             }
         }else{
-            let height = (self.text as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSFontAttributeName:UIFont.systemFont(ofSize: 15)], context: nil).size.height
+            let height = (self.text as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
             textView.addSubview(
                 labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: self.text, textColor: Item.moodColor[state]))
         }
@@ -167,7 +166,7 @@ class ContentShowViewController: UIViewController {
         return label
     }
 
-    func btnClicked(sender:UIButton){
+    @objc func btnClicked(sender:UIButton){
         var keys = Array(self.multiMediaBufferDic!.keys)
         keys.sort()
         let mf = self.multiMediaBufferDic![keys[sender.tag]]!

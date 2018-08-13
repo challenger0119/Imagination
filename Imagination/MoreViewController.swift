@@ -126,7 +126,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         }
     }
     
-    func cancelDatePicker() {
+    @objc func cancelDatePicker() {
         self.view.viewWithTag(111)?.removeFromSuperview()
     }
     func updateReminder() {
@@ -140,7 +140,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             reminder.detailTextLabel?.text = "每天特定时段会提示更新心情"
         }
     }
-    func didSelectTime(){
+    @objc func didSelectTime(){
         self.view.viewWithTag(111)?.removeFromSuperview()
         Notification.createNotificaion(datePicker?.date)
         

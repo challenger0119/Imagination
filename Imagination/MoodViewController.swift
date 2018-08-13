@@ -112,7 +112,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
     }
    
-    func longPressAction(gesture:UILongPressGestureRecognizer){
+    @objc func longPressAction(gesture:UILongPressGestureRecognizer){
         if gesture.state == .began {
             removeLocation()
         }
@@ -121,12 +121,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         self.place = nil
         self.getLocBtn.setTitle("获取地理位置", for: .normal)
     }
-    func closeKeyboard() {
+    @objc func closeKeyboard() {
         content.resignFirstResponder()
         self.bottomContraint.constant = self.keyboardDistance;
     }
     
-    func keyboardWillShow(_ notifi:Foundation.Notification){
+    @objc func keyboardWillShow(_ notifi:Foundation.Notification){
         if let info = notifi.userInfo {
             if let kbd = info[UIKeyboardFrameEndUserInfoKey] {
                 keyBoardHeight = (kbd as AnyObject).cgRectValue.size.height
@@ -203,7 +203,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     
     func analysisTextStorage(){
-         self.content.textStorage.enumerateAttribute(NSAttachmentAttributeName, in: NSRange(location: 0,length: self.content.textStorage.length), options: NSAttributedString.EnumerationOptions(rawValue: 0), using:{
+         self.content.textStorage.enumerateAttribute(NSAttributedStringKey.attachment, in: NSRange(location: 0,length: self.content.textStorage.length), options: NSAttributedString.EnumerationOptions(rawValue: 0), using:{
             (obj,range,pointor) in
             if let attache = obj as? NSTextAttachment {
                 let mf = self.multiMediaInsertBuffer[attache]!  //提取最后保留的项目

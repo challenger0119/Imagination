@@ -31,11 +31,12 @@ class ImageViewController: UIViewController,UIScrollViewDelegate {
         backScrolView.delegate = self
         backScrolView.minimumZoomScale = 1.0
         backScrolView.maximumZoomScale = image.size.width/self.view.frame.width > image.size.height/self.view.frame.height ? image.size.height/self.view.frame.height : image.size.width/self.view.frame.width
-        backScrolView.frame = self.view.frame;
+        backScrolView.frame = self.view.bounds;
+        
         self.view.addSubview(backScrolView);
         
-        let imagewidth = self.view.frame.width - 20
-        let imageheight = self.view.frame.height - 20
+        let imagewidth = self.view.bounds.width - 20
+        let imageheight = self.view.bounds.height - 20 - self.navigationController!.navigationBar.frame.height - UIApplication.shared.statusBarFrame.height
         iview.frame = CGRect(x: 10, y: 10, width: imagewidth, height: imageheight)
         iview.image = image
         iview.contentMode = .scaleAspectFit
@@ -51,7 +52,7 @@ class ImageViewController: UIViewController,UIScrollViewDelegate {
         return self.iview
     }
     
-    func doubleTap(sender:UITapGestureRecognizer){
+    @objc func doubleTap(sender:UITapGestureRecognizer){
         if sender.state == .ended {
             if self.backScrolView.zoomScale == 1 {
                 self.backScrolView.zoom(to: rectFor(scale: 3.0, center: sender.location(in: sender.view)), animated: true)
@@ -70,17 +71,10 @@ class ImageViewController: UIViewController,UIScrollViewDelegate {
         zoomRect.origin.y = center.y - (zoomRect.size.height / 2.0);
         return zoomRect;
     }
-    func closeVC(){
+    @objc func closeVC(){
         self.dismiss(animated: true, completion: {
             
         })
-    }
-    
-    
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
 }

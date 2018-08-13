@@ -132,7 +132,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         }
     }
     
-    func updateProgress(){
+    @objc func updateProgress(){
         if state == .Recording {
             let power = aRecord.averagePower(forChannel:0)
             self.audoMeterView.setProgress((power+160)/160, animated: true)

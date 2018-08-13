@@ -60,7 +60,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
     
     //添加新mood后更新
-    func updateMonthData() {
+    @objc func updateMonthData() {
         DataCache.shareInstance.loadLastMonth()
         today.title = DataCache.shareInstance.currentMonthName
         loadMonthData()
@@ -188,7 +188,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
     
 
-    func resumeView(andDo:@escaping ((Void)->Void)){
+    func resumeView(andDo:@escaping (()->Void)){
         var tframe = self.view.frame
         tframe.size.width = self.view.frame.width + CatalogueViewController.tableWidth
         tframe.origin.x = 0

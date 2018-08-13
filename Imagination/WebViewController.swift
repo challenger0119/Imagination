@@ -55,7 +55,7 @@ class WebViewController: UIViewController {
         }
         self.web.loadRequest(request)
     }
-    func autoLogin(){
+    @objc func autoLogin(){
         autoLoginState = !autoLoginState
         if autoLoginState {
             let alert = UIAlertController(title: "提示", message: "如未登陆，请勾选密码框下的“记住我”", preferredStyle: .alert)

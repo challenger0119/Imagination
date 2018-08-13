@@ -46,7 +46,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     }
     
     
-    func conform() {
+    @objc func conform() {
         self.removeFromSuperview()
         if from == "from" {
             return
@@ -55,7 +55,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         }
         delegate.dataPickerResult(from, second: to)
     }
-    func cancel() {
+    @objc func cancel() {
         self.removeFromSuperview()
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
