@@ -38,8 +38,8 @@ class ImageViewController: UIViewController,UIScrollViewDelegate {
         let imagewidth = self.view.bounds.width - 20
         let imageheight = self.view.bounds.height - 20 - self.navigationController!.navigationBar.frame.height - UIApplication.shared.statusBarFrame.height
         iview.frame = CGRect(x: 10, y: 10, width: imagewidth, height: imageheight)
+        iview.contentMode = .scaleAspectFit // 这个要在 setImage 前面
         iview.image = image
-        iview.contentMode = .scaleAspectFit
         backScrolView.addSubview(iview)
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(closeVC))
