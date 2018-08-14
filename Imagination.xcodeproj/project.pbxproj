@@ -38,7 +38,6 @@
 		F8E6085C1EB08111008A1030 /* MultiMediaFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */; };
 		F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918A1C17CAE500650406 /* MoreViewController.swift */; };
 		F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918E1C19123F00650406 /* DataPicker.swift */; };
-		F8E991911C19233800650406 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8E991901C19233800650406 /* MessageUI.framework */; };
 		F8EFBA5F1D71DDDD00A7C3C0 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */; };
 		F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EFBA601D71E73200A7C3C0 /* Annotation.swift */; };
 		F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F28CF41C0DB9D40007EDE3 /* Time.swift */; };
@@ -79,6 +78,7 @@
 		F89753C61EB1AF28003BB8EF /* ContentShowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentShowViewController.swift; sourceTree = "<group>"; };
 		F89753C81EB1D2DF003BB8EF /* ImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatalogueViewController.swift; sourceTree = "<group>"; };
+		F8B1A365212272F300268EDE /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
@@ -86,7 +86,6 @@
 		F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiMediaFile.swift; sourceTree = "<group>"; };
 		F8E9918A1C17CAE500650406 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		F8E9918E1C19123F00650406 /* DataPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPicker.swift; sourceTree = "<group>"; };
-		F8E991901C19233800650406 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		F8EFBA601D71E73200A7C3C0 /* Annotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 		F8F28CF41C0DB9D40007EDE3 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
@@ -103,7 +102,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F895375A1EAF71A100BFEAFC /* AVFoundation.framework in Frameworks */,
-				F8E991911C19233800650406 /* MessageUI.framework in Frameworks */,
 				482A52C27D2EEB439BF7B5A7 /* Pods_Imagination.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -123,7 +121,6 @@
 		F81229551BF73C6C00BDCF0E = {
 			isa = PBXGroup;
 			children = (
-				F8E991901C19233800650406 /* MessageUI.framework */,
 				F81229601BF73C6C00BDCF0E /* Imagination */,
 				F812295F1BF73C6C00BDCF0E /* Products */,
 				F89537581EAF71A100BFEAFC /* Frameworks */,
@@ -213,6 +210,7 @@
 		F89537581EAF71A100BFEAFC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F8B1A365212272F300268EDE /* MessageUI.framework */,
 				F89537591EAF71A100BFEAFC /* AVFoundation.framework */,
 				6617760B2D13706ED0EFC492 /* Pods_Imagination.framework */,
 			);
@@ -262,9 +260,9 @@
 				TargetAttributes = {
 					F812295D1BF73C6C00BDCF0E = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 65685Y88TH;
+						DevelopmentTeam = G25KG7PJ3H;
 						LastSwiftMigration = 0940;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -521,8 +519,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65685Y88TH;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = G25KG7PJ3H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -532,13 +530,13 @@
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.myself.imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
+				PROVISIONING_PROFILE_SPECIFIER = "万能id真机调试描述文件";
 				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -549,8 +547,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65685Y88TH;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = G25KG7PJ3H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -560,12 +558,12 @@
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.myself.imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
+				PROVISIONING_PROFILE_SPECIFIER = "万能id真机调试描述文件";
 				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

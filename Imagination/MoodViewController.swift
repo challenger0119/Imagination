@@ -249,6 +249,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         queryVc.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
             queryVc.dismiss(animated: true, completion: nil)
         }))
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            queryVc.modalPresentationStyle = .popover
+            queryVc.popoverPresentationController?.sourceView = self.getImageBtn
+        }
+        
         self.present(queryVc, animated: true, completion: nil)
         
     }
@@ -269,6 +275,11 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         queryVc.addAction(UIAlertAction(title: "取消", style: .destructive, handler: { (act) in
             queryVc.dismiss(animated: true, completion: nil)
         }))
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            queryVc.modalPresentationStyle = .popover
+            queryVc.popoverPresentationController?.sourceView = self.getVideoBtn
+        }
         self.present(queryVc, animated: true, completion: nil)
     }
     

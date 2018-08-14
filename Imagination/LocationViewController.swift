@@ -31,7 +31,6 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         locManager.desiredAccuracy = kCLLocationAccuracyBest
         locManager.distanceFilter = 1000.0
         locManager.requestWhenInUseAuthorization()
-        locManager.requestAlwaysAuthorization()
         
         self.mapView.delegate = self
         

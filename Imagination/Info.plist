@@ -43,10 +43,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>获取照片</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Get Location Info</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<true/>
+	<string>获取位置信息</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>获取录音</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -61,6 +59,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
