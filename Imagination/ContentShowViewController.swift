@@ -18,6 +18,10 @@ class ContentShowViewController: UIViewController {
     var state = 0
     fileprivate var mapView:UIView?
     
+    convenience init(withItem item:Item) {
+        self.init(contentText: item.content, contentDic: item.multiMedias, state: item.mood, placeInfo: item.place)
+    }
+    
     init(contentText:String,contentDic:[Int:MultiMediaFile]?,state:Int,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
         self.multiMediaBufferDic = contentDic
         self.text = contentText
@@ -56,8 +60,7 @@ class ContentShowViewController: UIViewController {
         let imageView = UIImageView(frame: self.view.frame)
         imageView.image = UIImage.blurImage(of: UIApplication.shared.keyWindow, withBlurNumber: 1)
         self.view.addSubview(imageView)
-        
-        let closeBtn = UIButton(frame: CGRect(x: self.view.frame.width-80, y: 20, width: 80, height: 30))
+        let closeBtn = UIButton(frame: CGRect(x: self.view.frame.width - 80, y: 20, width: 80, height: 30))
         closeBtn.setTitle("Close", for: .normal)
         closeBtn.titleLabel?.textAlignment = .right
         closeBtn.setTitleColor(Item.moodColor[state], for: .normal)

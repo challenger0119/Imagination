@@ -307,7 +307,7 @@ class DataCache: NSObject {
                         //一天中不同时刻解析
                         let title = kk+newline
                         data.append(title.data(using: String.Encoding.utf8)!)
-                        let item = Item(contentString:  ddtmp[kk]!)
+                        let item = Item(withTime: dd + " " + kk, contentString: ddtmp[kk]!)
                         var content = item.content + newline
                         if item.mood != 0 {
                             content += "心情:\(item.moodString) "

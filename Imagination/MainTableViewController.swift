@@ -15,8 +15,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     var ok = 0      // 一般般状态的记录数量
     var why = 0     // 不爽状态的记录数量
     
-    var times:[String] = []     // 日期数据源
-    var itemBuffer:[Item] = []  // 内容数据源
+    var dataSource:[Item] = []  // 内容数据源
     
     // MARK: - LifeCycle
     
@@ -26,14 +25,11 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         NotificationCenter.default.addObserver(self, selector: #selector(updateMonthData), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
         authorityView()
     }
+    
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         self.tableView.estimatedRowHeight = 80
         self.tableView.rowHeight = UITableViewAutomaticDimension
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        refreshMoodState()
     }
     
     // MARK: - Method
@@ -76,50 +72,43 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         }
     }
 
+    // 解析一个月的数据生成数据源
     func loadMonthData() {
-        let monthCache = DataCache.shareInstance.lastMonth // 一个月的记录
-        cool = 0
-        ok = 0
-        why = 0
-        if let mm = monthCache {
-            var dayArray = Array(mm.keys)
-            dayArray.sort(by: {$0>$1})      // 降序排列日期 精确到天
-            times.removeAll()
-            itemBuffer.removeAll()
-            for daytime in dayArray {
-                if let day = mm[daytime] {
-                    var tmpTimes = Array(day.keys)
-                    tmpTimes.sort(by: {$0>$1})      //降序排列时间 精确到秒
-                    
-                    for ct in tmpTimes {
-                        let cc = Item(contentString: day[ct]!)
-                        switch cc.mood {
-                            case 1:cool+=1
-                            case 2:ok+=1
-                            case 3:why+=1
-                            default:break
-                        }
+        DispatchQueue.global().async {
+            let monthCache = DataCache.shareInstance.lastMonth // 一个月的记录
+            self.cool = 0
+            self.ok = 0
+            self.why = 0
+            if let mcache = monthCache {
+                var dayArray = Array(mcache.keys)
+                dayArray.sort(by: {$0>$1})      // 降序排列日期 精确到天
+                self.dataSource.removeAll()
+                for daytime in dayArray {
+                    if let day = mcache[daytime] {
+                        var tmpTimes = Array(day.keys)
+                        tmpTimes.sort(by: {$0>$1})      //降序排列时间 精确到秒以下
                         
-                        itemBuffer.append(cc)       //添加数据源
+                        for ct in tmpTimes {
+                            let cc = Item(withTime: daytime + " " + ct, contentString: day[ct]!)
+                            switch cc.mood {
+                            case 1:self.cool += 1
+                            case 2:self.ok += 1
+                            case 3:self.why += 1
+                            default:break
+                            }
+                            self.dataSource.append(cc)       //添加数据源
+                        }
                     }
-                    times.append(contentsOf: changeTimeToDayAndTime(tmpTimes, day: daytime))
                 }
             }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.refreshMoodState()
+            }
         }
-        
-        self.tableView.reloadData()
     }
     
-    func changeTimeToDayAndTime(_ timearry:[String],day:String) -> [String]{
-        //添加日期信息在里面 9：30 -> 2015.2.3 9:30
-        var newArray = [String]()
-        for tt in timearry {
-            newArray.append(day+" "+tt)
-        }
-        return newArray
-    }
-    
-    
+    // 更新状态条
     func refreshMoodState() {
         let total = cool + ok + why
         if total == 0 {
@@ -139,7 +128,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         
         if left == nil {
             firstTime = true
-            left = UIView.init(frame: CGRect(x: 0, y: 0, width: 0, height: height))
+            left = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: height))
             left.backgroundColor = Item.coolColor
             left.tag = 1;
             self.moodIndicatorView.addSubview(left)
@@ -185,7 +174,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         }
     }
     
-
+    // 关闭归档视图
     func resumeView(andDo:@escaping (()->Void)){
         var tframe = self.view.frame
         tframe.size.width = self.view.frame.width + CatalogueViewController.tableWidth
@@ -207,9 +196,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             DataCache.shareInstance.loadLastMonthToMonth(item)
             self.title = item
             self.loadMonthData()
-            self.refreshMoodState()
         }
     }
+    
     func catalogueDidClose() {
         resumeView(){}
         UIView.animate(withDuration: 0.5, animations: {
@@ -218,18 +207,20 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
     
     // MARK: - Table view data source and Delegate
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemBuffer.count
+        return dataSource.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier",for: indexPath) as! CustomTableViewCell
-        let cc = itemBuffer[indexPath.row]
-        cell.time.text = times[indexPath.row]
+        let cc = dataSource[indexPath.row]
+        cell.time.text = cc.timeString
+        // 去掉内容里面的换行 避免cell过高
         if cc.place.latitude != 0 {
             cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.multiMediasDescrip + "\n\n@\(cc.place.name)"
         }else{
@@ -244,8 +235,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let cc = itemBuffer[indexPath.row]
-        let vc = ContentShowViewController(contentText: cc.content, contentDic: cc.multiMedias, state: cc.mood, placeInfo: cc.place)
+        let vc = ContentShowViewController(withItem:dataSource[indexPath.row])
         vc.modalPresentationStyle = .overCurrentContext
         vc.view.alpha = 0
         self.tabBarController?.present(vc, animated: false, completion: {

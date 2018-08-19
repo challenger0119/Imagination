@@ -25,16 +25,17 @@ class Item: NSObject {
     static let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
     fileprivate let moodStrings = ["NA","Cool","Just OK","Confused"]
    
-    var mood:Int//心情
-    var content:String//内容
+    var timeString:String // 2018-08-19 09:23:12
+    var mood:Int    // 心情
+    var content:String  // 内容
     var color:UIColor
     var moodString:String
     var place:(name:String,latitude:Double,longtitude:Double)
     var multiMedias:[Int:MultiMediaFile]?
     var multiMediasDescrip:String = ""
     
-    init(contentString:String) {
-        
+    init(withTime time:String, contentString:String) {
+        self.timeString = time;
         var array = contentString.components(separatedBy: Item.separator)
         if array.count < 2 {
             array = contentString.components(separatedBy: Item.oldSeparator) //之前版本的
