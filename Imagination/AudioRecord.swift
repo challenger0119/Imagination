@@ -8,7 +8,8 @@
 
 import UIKit
 import AVFoundation
-class AudioRecord: NSObject {
+
+class AudioRecord {
     fileprivate var recorder:AVAudioRecorder!
     fileprivate var player:AVAudioPlayer!  //有初始化关联，所以不能直接访问 容易出错
     var recordFileURL:URL{
@@ -35,7 +36,6 @@ class AudioRecord: NSObject {
         }catch{
             Dlog(error.localizedDescription)
         }
-        super.init()
     }
 
     func startRecord(){

@@ -9,20 +9,23 @@
 import UIKit
 import CoreLocation
 import MapKit
+
 let reusableIdentifier = "MapTableViewCell"
+
 class LocationViewController: UIViewController,CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tableView: UITableView!
+    
     var locManager:CLLocationManager!
     var placeInfo:[(name:String,coor:CLLocationCoordinate2D)] = []
     var placeSelected:((_ place:(name:String,coor:CLLocationCoordinate2D))->Void)?
     let coder = CLGeocoder()
     var animation:UIActivityIndicatorView!
-    var placeToShow:CLLocationCoordinate2D? //外面传进来
+    var placeToShow:CLLocationCoordinate2D? // 外面传进来
     var onceBool:Bool = false
     
-    let lock = NSLock() //对placeInfo的操作存在线程安全问题
+    let lock = NSLock() // 对placeInfo的操作存在线程安全问题
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +41,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         tableView.dataSource = self
         animation = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         animation.frame = CGRect(x:self.view.frame.width/2-50,y:self.view.frame.height/2-50,width:100, height:100)
-        self.view .addSubview(animation)
+        self.view.addSubview(animation)
         
         if self.placeToShow != nil {
             let cor = reverseTransformCoordinate(cor: self.placeToShow!)
@@ -83,7 +86,8 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         })
     }
 
-    //MARK: -Location
+    //MARK: - Location
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //Dlog(locations)
         self.locManager.stopUpdatingLocation()
@@ -129,6 +133,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
     }
 
     //MARK: -Table
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.placeInfo.count
     }

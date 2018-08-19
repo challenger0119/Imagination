@@ -10,9 +10,11 @@ import UIKit
 import LocalAuthentication
 
 class AuthorityViewController: UIViewController,UITextFieldDelegate {
+    
     enum type{
-        case normal,changePass
+        case normal,changePass  // 正常 修改密码 两种
     }
+    
     @IBOutlet weak var password: UITextField!
     var vType = type.normal
     static let NotSet = ""

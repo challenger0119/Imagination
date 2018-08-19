@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Time: NSObject {
+class Time {
     static func now()->String{
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:SS"

@@ -36,7 +36,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   }
 }
 
-class DataCache: NSObject {
+class DataCache {
     
     static let shareInstance = DataCache()
 

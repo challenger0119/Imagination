@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 import CoreLocation
 
-class GaodeMapApi: NSObject {
+class GaodeMapApi {
     //http://lbs.amap.com/api/webservice/guide/api/georegeo/#geo
     
     
