@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Item: NSObject {
+class Item {
     static let coolColor = UIColor.orange
     static let justOkColor = UIColor.init(red: 4.0/255.0, green: 119.0/255.0, blue: 240.0/255.0, alpha: 1.0)
     static let whyColor = UIColor.red
@@ -147,7 +147,6 @@ class Item: NSObject {
         }
         self.color = Item.moodColor[self.mood]
         self.moodString = self.moodStrings[self.mood]
-        super.init()
     }
     
     class func getMultiMediaNameArray(multiMedia:[Int:MultiMediaFile])->[String]{

@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import MobileCoreServices
 import AVFoundation
+
 class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,AudioRecordViewDelegate {
 
     let dataCache = DataCache.shareInstance
@@ -36,6 +37,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             }
         }
     }
+    
     var place:(name:String,coor:CLLocationCoordinate2D)?{
         didSet{
             if self.place == nil {
@@ -68,12 +70,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     @IBOutlet weak var getVideoBtn: UIButton!
     @IBOutlet weak var getVoiceBtn: UIButton!
     @IBOutlet weak var getImageBtn: UIButton!
-    func hideFunctionBtns(){
-        self.getVideoBtn.isHidden = true
-        self.getVoiceBtn.isHidden = true
-        self.getImageBtn.isHidden = true
-       
-    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,6 +101,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             moodState = 2
         }
     }
+    
     @IBAction func goodBtnClicked() {
         if moodState == 1 {
             moodState = 0;
@@ -117,10 +115,12 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             removeLocation()
         }
     }
+    
     func removeLocation(){
         self.place = nil
         self.getLocBtn.setTitle("获取地理位置", for: .normal)
     }
+    
     @objc func closeKeyboard() {
         content.resignFirstResponder()
         self.bottomContraint.constant = self.keyboardDistance;
@@ -178,6 +178,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             }
         }
     }
+    
     @IBAction func didSwipDown(){
         closeKeyboard()
         if !self.content.text.isEmpty {
@@ -195,8 +196,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }else{
             self.dismiss(animated: true, completion: nil)
         }
-        
     }
+    
     func back() {
         closeKeyboard()
         self.dismiss(animated: true, completion: nil)
@@ -218,6 +219,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             }
         })
     }
+    
     @IBAction func getAudio(_ sender: UIButton) {
         closeKeyboard()
         if let arView = AudioRecordView.getView() {
@@ -226,6 +228,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             self.view.addSubview(arView)
         }
     }
+    
     @IBAction func getImage(_ sender: UIButton) {
         closeKeyboard()
         
@@ -256,8 +259,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
         
         self.present(queryVc, animated: true, completion: nil)
-        
     }
+    
     @IBAction func getVideo(_ sender: UIButton) {
         closeKeyboard()
         let queryVc = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

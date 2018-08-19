@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CoreLocation
+
 class MainTableViewController: UITableViewController,CatalogueViewControllerDelegate {
 
     @IBOutlet weak var moodIndicatorView: UIView!   // 心情色指示条
