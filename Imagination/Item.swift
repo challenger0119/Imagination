@@ -30,11 +30,8 @@ class Item: NSObject {
     var color:UIColor
     var moodString:String
     var place:(name:String,latitude:Double,longtitude:Double)
-    //var multiMediaFile:[String:String]?
     var multiMedias:[Int:MultiMediaFile]?
     var multiMediasDescrip:String = ""
-    
-    
     
     init(contentString:String) {
         
