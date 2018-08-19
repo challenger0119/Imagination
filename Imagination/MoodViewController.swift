@@ -71,6 +71,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     @IBOutlet weak var getVoiceBtn: UIButton!
     @IBOutlet weak var getImageBtn: UIButton!
     
+    // MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -220,6 +221,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         })
     }
     
+    // MARK: - 添加多媒体信息
+    
     @IBAction func getAudio(_ sender: UIButton) {
         closeKeyboard()
         if let arView = AudioRecordView.getView() {
@@ -340,6 +343,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     
     //MARK: - AudioRecordViewDelegate
+    
     func audioRecordViewStateChanged(state: RecordState,audioRecord:AudioRecord) {
         if state == .Save {
             addMultimediaToTextView(multimedia: audioRecord)
@@ -347,6 +351,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     
     //MARK: - UIImagePickerViewControllerDelegate
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         imageVC.dismiss(animated: true, completion: {
             
@@ -377,6 +382,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
 
     //MARK: -segue
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "moodToLocation" {
             let vc = segue.destination as! LocationViewController

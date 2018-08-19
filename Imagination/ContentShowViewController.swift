@@ -15,18 +15,18 @@ class ContentShowViewController: UIViewController {
     var text:String = ""
     var pInfo:(name:String,latitude:Double,longtitude:Double)?
     var exitAnimation:(() -> Void)?
-    var state = 0
+    var mood:MoodType
     fileprivate var mapView:UIView?
     
     convenience init(withItem item:Item) {
-        self.init(contentText: item.content, contentDic: item.multiMedias, state: item.mood, placeInfo: item.place)
+        self.init(contentText: item.content, contentDic: item.multiMedias, mood: item.mood, placeInfo: item.place)
     }
     
-    init(contentText:String,contentDic:[Int:MultiMediaFile]?,state:Int,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
+    init(contentText:String,contentDic:[Int:MultiMediaFile]?,mood:MoodType,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
         self.multiMediaBufferDic = contentDic
         self.text = contentText
         self.pInfo = placeInfo
-        self.state = state
+        self.mood = mood
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -63,7 +63,7 @@ class ContentShowViewController: UIViewController {
         let closeBtn = UIButton(frame: CGRect(x: self.view.frame.width - 80, y: 20, width: 80, height: 30))
         closeBtn.setTitle("Close", for: .normal)
         closeBtn.titleLabel?.textAlignment = .right
-        closeBtn.setTitleColor(Item.moodColor[state], for: .normal)
+        closeBtn.setTitleColor(self.mood.getColor(), for: .normal)
         closeBtn.addTarget(self, action: #selector(closeVC), for: .touchUpInside)
         self.view.addSubview(closeBtn)
         
@@ -79,7 +79,7 @@ class ContentShowViewController: UIViewController {
             let locBtn = UIButton(frame: CGRect(x: 20, y: self.view.frame.height-50, width: textView.frame.width, height: 30))
             self.view.addSubview(locBtn)
             locBtn.layer.cornerRadius = 5.0
-            locBtn.setTitleColor(Item.moodColor[state], for: .normal)
+            locBtn.setTitleColor(self.mood.getColor(), for: .normal)
             locBtn.setTitle(pInfo!.name, for: .normal)
             locBtn.titleLabel?.adjustsFontSizeToFitWidth = true
             locBtn.addTarget(self, action: #selector(showMap), for: .touchUpInside)
@@ -139,7 +139,7 @@ class ContentShowViewController: UIViewController {
                     let substring = String(self.text[start..<end])
                     let height = (substring as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
                     textView.addSubview(
-                        labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: substring, textColor: Item.moodColor[state])
+                        labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: substring, textColor: self.mood.getColor())
                     )
                     usedHeight += height
                 }
@@ -147,7 +147,7 @@ class ContentShowViewController: UIViewController {
         }else{
             let height = (self.text as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
             textView.addSubview(
-                labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: self.text, textColor: Item.moodColor[state]))
+                labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: self.text, textColor: self.mood.getColor()))
         }
         textView.contentSize = CGSize(width: textView.frame.size.width, height: usedHeight)
     }

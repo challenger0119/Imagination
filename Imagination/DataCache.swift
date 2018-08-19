@@ -309,13 +309,13 @@ class DataCache: NSObject {
                         data.append(title.data(using: String.Encoding.utf8)!)
                         let item = Item(withTime: dd + " " + kk, contentString: ddtmp[kk]!)
                         var content = item.content + newline
-                        if item.mood != 0 {
+                        if item.mood != .None {
                             content += "心情:\(item.moodString) "
                         }
                         if item.place.latitude != 0 {
                             content += "位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))"
                         }
-                        if item.mood != 0 || item.place.latitude != 0 {
+                        if item.mood != .None || item.place.latitude != 0 {
                             content += newline
                         }
                         data.append((content.data(using: String.Encoding.utf8))!)

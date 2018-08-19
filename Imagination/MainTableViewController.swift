@@ -91,9 +91,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
                         for ct in tmpTimes {
                             let cc = Item(withTime: daytime + " " + ct, contentString: day[ct]!)
                             switch cc.mood {
-                            case 1:self.cool += 1
-                            case 2:self.ok += 1
-                            case 3:self.why += 1
+                            case .Cool: self.cool += 1
+                            case .OK: self.ok += 1
+                            case .Why: self.why += 1
                             default:break
                             }
                             self.dataSource.append(cc)       //添加数据源

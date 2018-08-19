@@ -8,6 +8,16 @@
 
 import UIKit
 
+enum MoodType:Int {
+    case None,Cool,OK,Why   // 爽 一般 问苍天
+}
+
+extension MoodType{
+    func getColor() -> UIColor {
+        return Item.moodColor[self.rawValue]
+    }
+}
+
 class Item {
     static let coolColor = UIColor.orange
     static let justOkColor = UIColor.init(red: 4.0/255.0, green: 119.0/255.0, blue: 240.0/255.0, alpha: 1.0)
@@ -22,11 +32,11 @@ class Item {
     static let multiMediaNameSeparator = "_"
     static let multiMediaFileNameTimeSperator = Item.gpsSeparator //不干扰情况下，一时想不到别的了...
     
-    static let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
+    fileprivate static let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
     fileprivate let moodStrings = ["NA","Cool","Just OK","Confused"]
    
     var timeString:String // 2018-08-19 09:23:12
-    var mood:Int    // 心情
+    var mood:MoodType    // 心情
     var content:String  // 内容
     var color:UIColor
     var moodString:String
@@ -42,7 +52,7 @@ class Item {
         }
         if array.count >= 2 {
             self.content = array[0]
-            self.mood = Int(array[1])!
+            self.mood =  MoodType(rawValue: Int(array[1])!)!
             
             if array.count == 2 {
                 self.place = ("",0,0)
@@ -142,11 +152,11 @@ class Item {
         } else {
             //容错，不会出现的地方 因为Array至少=2
             self.content = contentString
-            self.mood = 0
+            self.mood = .None
             self.place = ("",0,0)
         }
-        self.color = Item.moodColor[self.mood]
-        self.moodString = self.moodStrings[self.mood]
+        self.color = Item.moodColor[self.mood.rawValue]
+        self.moodString = self.moodStrings[self.mood.rawValue]
     }
     
     class func getMultiMediaNameArray(multiMedia:[Int:MultiMediaFile])->[String]{
