@@ -1,12 +1,26 @@
 PODS:
+  - Realm (3.7.4):
+    - Realm/Headers (= 3.7.4)
+  - Realm/Headers (3.7.4)
+  - RealmSwift (3.7.4):
+    - Realm (= 3.7.4)
   - SSZipArchive (1.2)
 
 DEPENDENCIES:
+  - RealmSwift
   - SSZipArchive
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Realm
+    - RealmSwift
+    - SSZipArchive
+
 SPEC CHECKSUMS:
+  Realm: a469bb59e33f9926102ccaea4349822c53b9117e
+  RealmSwift: a45861b21c180f5cf0f122144b9759fa8dde3e9e
   SSZipArchive: 251093c65f98d6ea282c50bc404bfa631d9fd721
 
-PODFILE CHECKSUM: 24edadb166713c112770d079d67ca586836f4b5b
+PODFILE CHECKSUM: 3e3f0b168d4662adcc4b692ee4c7db2ed4f0bc8f
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.5.3
