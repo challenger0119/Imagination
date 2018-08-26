@@ -19,7 +19,9 @@ class AudioViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     var filePath:String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
@@ -29,6 +31,7 @@ class AudioViewController: UIViewController {
         self.view.addSubview(audioView!)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(closeVC))
     }
+    
     @objc func closeVC(){
         self.dismiss(animated: true, completion: {
             

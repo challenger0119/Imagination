@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import AVKit
 import AVFoundation
+
 class ContentShowViewController: UIViewController {
     var multiMediaBufferDic:[Int:MultiMediaFile]?
     var text:String = ""
@@ -46,6 +47,7 @@ class ContentShowViewController: UIViewController {
             }
         })
     }
+    
     @objc func showMap(){
         if  mapView == nil {
             mapView = IndicatorMapView(frame: CGRect(x: 20, y: self.view.frame.height-50-200, width: self.view.frame.width-40, height: 200),coor:CLLocationCoordinate2D(latitude: pInfo!.latitude, longitude: pInfo!.longtitude))

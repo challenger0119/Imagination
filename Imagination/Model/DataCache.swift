@@ -83,14 +83,11 @@ class DataCache {
         
         if let mm = multiMedia {
             if let gps = GPSPlace {
-                if Time.today() == self.currentDayName {
-                    //今天的新的记录
-                    let clock = Time.clock()
+                let clock = Time.clock()
+                let today = Time.today()
+                if today == self.currentDayName {
                     self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm), key: clock)
                 } else {
-                    //新的一天记录
-                    let clock = Time.clock()
-                    let today = Time.today()
                     self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm)], currentDayName: today)
                 }
             }else{
@@ -100,23 +97,22 @@ class DataCache {
             self.newStringContent(content, moodState: moodState, GPSPlace: GPSPlace)
         }
     }
+    
     //文字，心情，多媒体
     func newString(Content content:String, moodState:Int,multiMedia:Dictionary<Int,MultiMediaFile>?){
         if let mm = multiMedia {
-            if Time.today() == self.currentDayName {
-                let clock = Time.clock()
+            let clock = Time.clock()
+            let today = Time.today()
+            if today == self.currentDayName {
                 self.updateLastday(Item.itemString(Content: content, mood: moodState,multiMedia: mm), key: clock)
-                
             } else {
-                let clock = Time.clock()
-                let today = Time.today()
                 self.initLastday([clock:Item.itemString(Content: content, mood: moodState,multiMedia: mm)], currentDayName: today)
-                
             }
         }else{
             self.newStringContent(content, moodState: moodState)
         }
     }
+    
     //文字，心情，地理位置
     func newStringContent(_ content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?){
         if let gps = GPSPlace {
@@ -281,6 +277,7 @@ class DataCache {
         })
     }
     
+    // 将多媒体文件压缩为zip
     fileprivate func createFilesWithZipAttachments(from:String,to:String,pathGetter:(_ from:String,_ to:String)->String)->[String]{
         let result = self.createFiles(from, to: to, pathGetter: pathGetter)
         let txt = result.first!
@@ -290,6 +287,7 @@ class DataCache {
         return [txt,zipFilepath]
     }
     
+    // 将制定时间节点的数据中的文字信息和多媒体类型信息生成一个文件 返回包含了该文件路径和里面包含的多媒体文件的路径的数组
     fileprivate func createFiles(_ from:String,to:String,pathGetter:(_ from:String,_ to:String)->String)->[String]{
        
         let txtfile = pathGetter(from,to) + ".txt"
@@ -304,41 +302,47 @@ class DataCache {
                     var keys = Array(ddtmp.keys)
                     keys.sort(){$0 < $1}
                     for kk in keys {
-                        //一天中不同时刻解析
                         let title = kk+newline
-                        data.append(title.data(using: String.Encoding.utf8)!)
+                        data.append(title.data(using: String.Encoding.utf8)!)   // 记录日期
+                        
                         let item = Item(withTime: dd + " " + kk, contentString: ddtmp[kk]!)
                         var content = item.content + newline
                         if item.mood != .None {
+                            // 有记录心情 解析保存心情
                             content += "心情:\(item.moodString) "
                         }
                         if item.place.latitude != 0 {
+                            // 有记录位置 解析保存位置
                             content += "位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))"
                         }
                         if item.mood != .None || item.place.latitude != 0 {
+                            // 有数据就回车换行
                             content += newline
                         }
-                        data.append((content.data(using: String.Encoding.utf8))!)
+                        data.append((content.data(using: String.Encoding.utf8))!)   // 记录内容
+                        
                         var multimedia = ""
                         if let mm = item.multiMedias {
                             for value in mm.values {
-                                filePaths.append(value.storePath)
+                                filePaths.append(value.storePath)   // 加入多媒体文件路径
                                 multimedia += (value.storePath as NSString).lastPathComponent+" "
                             }
                         }
                         multimedia += newline;
-                        data.append((multimedia.data(using: String.Encoding.utf8))!)
+                        data.append((multimedia.data(using: String.Encoding.utf8))!)    // 记录多媒体文件名称
                     }
                 }
                 let over = newline+newline
                 data.append((over.data(using: String.Encoding.utf8))!)
             }
         }
-        data.write(toFile: txtfile, atomically: true)
+        data.write(toFile: txtfile, atomically: true) // 写入本地文件
         
         return filePaths
     }
-    //导出
+    
+    //MARK: - 导出
+    
     //导出和备份不在同一逻辑下 所以不在一个目录放
     func createExportDataFile(_ from:String,to:String) ->[String] {
         //删除原有的 导出文件只需要一份
@@ -365,7 +369,9 @@ class DataCache {
             return FileManager.exportFilePath(withName: "\(f)_\(t)")
         })
     }
-    //备份
+    
+    //MARK: - 备份
+    
     //备份只有一个 要么是上次全部备份留下的 要么就是上次最近备份留下的 程序只关心这个备份截止日期
     func backupAll() -> [String] {
         checkFileExist()
@@ -422,7 +428,6 @@ class DataCache {
     }
     
     //删除方法保留 非特殊情况不使用
-    
     fileprivate func deleteDay(_ dd:String) -> Bool{
         Dlog("deleteday:\(dd)")
         let txt = FileManager.pathOfNameInLib(dd)
@@ -450,71 +455,4 @@ class DataCache {
         }
         return false
     }
-    
-    
-    //修正目录错误的临时方法
-    /*
-    func changeFileToDocuments() {
-        if let cc = catalogue {
-            let mng = FileManager.defaultManager()
-            let ccpath = FileManager.pathOfName(FILENAME_INDEX)
-            if mng.fileExistsAtPath(ccpath) {
-                do {
-                    try mng.copyItemAtPath(ccpath, toPath: FileManager.pathOfNameInDocuments(FILENAME_INDEX))
-                } catch {
-                    print("删除copyItemAtPath错误:\(ccpath)")
-                }
-            }
-            for dd in cc  {
-                let filePath = FileManager.pathOfName(dd)
-                if mng.fileExistsAtPath(filePath) {
-                    do {
-                        try mng.copyItemAtPath(filePath, toPath: FileManager.pathOfNameInDocuments(dd))
-                    } catch {
-                        print("删除copyItemAtPath错误:\(filePath)")
-                    }
-                }
-            }
-        }
-    }
-    
-    func deleteFileInLib() {
-        let mng = FileManager.defaultManager()
-        if let cc = catalogue {
-            
-            let ccpath = FileManager.pathOfName(FILENAME_INDEX)
-            if mng.fileExistsAtPath(ccpath) {
-                do {
-                    try mng.removeItemAtPath(ccpath)
-                } catch {
-                    print("删除错误:\(ccpath)")
-                }
-            }
-            for dd in cc  {
-                let filePath = FileManager.pathOfName(dd)
-                if mng.fileExistsAtPath(filePath) {
-                    do {
-                        try mng.removeItemAtPath(filePath)
-                    } catch {
-                        print("删除错误:\(filePath)")
-                    }
-                }
-            }
-        }
-        var p1 = FileManager.pathOfName("2015-12-4_2015-12-10.txt")
-        if mng.fileExistsAtPath(p1) {
-            do {
-                try mng.removeItemAtPath(p1)
-            } catch {
-            }
-        }
-        p1 = FileManager.pathOfName("2015-12-04_2015-12-10.txt")
-        if mng.fileExistsAtPath(p1) {
-            do {
-                try mng.removeItemAtPath(p1)
-            } catch {
-            }
-        }
-    }
-    */
 }

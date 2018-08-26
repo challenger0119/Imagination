@@ -7,9 +7,11 @@
 //
 
 import UIKit
+
 protocol DataPickerDelegate {
     func dataPickerResult(_ first:String,second:String)
 }
+
 class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     let catalogue = DataCache.shareInstance.catalogue
     var from:String
@@ -19,7 +21,6 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         self.from = "from"
         self.to = "to"
         
-        
         self.delegate = dele
         super.init(frame: frame)
         self.frame = frame
@@ -27,10 +28,10 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         self.layer.borderColor = UIColor.black.cgColor
         self.layer.borderWidth = 0.3
         self.layer.cornerRadius = 5
-        let conform = UIButton.init(frame: CGRect(x: self.frame.size.width - 50, y: 5,width: 30, height: 30))
-        conform.setImage(UIImage.init(named: "check"), for: UIControlState())
-        conform.addTarget(self, action: #selector(DataPicker.conform), for: UIControlEvents.touchUpInside)
-        self.addSubview(conform)
+        let confirm = UIButton.init(frame: CGRect(x: self.frame.size.width - 50, y: 5,width: 30, height: 30))
+        confirm.setImage(UIImage.init(named: "check"), for: UIControlState())
+        confirm.addTarget(self, action: #selector(DataPicker.confirm), for: UIControlEvents.touchUpInside)
+        self.addSubview(confirm)
         let cancel = UIButton.init(frame: CGRect(x: 20, y: 5,width: 30, height: 30))
         cancel.setImage(UIImage.init(named: "cancel"), for: UIControlState())
         cancel.addTarget(self, action: #selector(DataPicker.cancel), for: UIControlEvents.touchUpInside)
@@ -46,7 +47,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     }
     
     
-    @objc func conform() {
+    @objc func confirm() {
         self.removeFromSuperview()
         if from == "from" {
             return
@@ -55,9 +56,11 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         }
         delegate.dataPickerResult(from, second: to)
     }
+    
     @objc func cancel() {
         self.removeFromSuperview()
     }
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if row != 0 {
             if component == 0 {

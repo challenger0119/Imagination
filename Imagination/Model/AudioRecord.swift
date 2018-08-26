@@ -51,9 +51,11 @@ class AudioRecord {
             Dlog(error.localizedDescription)
         }
     }
+    
     func pauseRecord(){
         recorder.pause()
     }
+    
     func stopRecord(){
         self.recorder.stop()
         let tsession = AVAudioSession.sharedInstance()
@@ -62,8 +64,8 @@ class AudioRecord {
         }catch{
             Dlog(error.localizedDescription)
         }
-       
     }
+    
     func playRecord(){
         do{
             if player == nil {
@@ -78,6 +80,7 @@ class AudioRecord {
             Dlog(error.localizedDescription)
         }
     }
+    
     func stopPlayRecord(){
         self.player.stop()
         do{
@@ -91,19 +94,21 @@ class AudioRecord {
         self.recorder.updateMeters()
         return self.recorder.averagePower(forChannel:channel)
     }
+    
     func peekPower(forChannel channel:Int)->Float{
         self.recorder.updateMeters()
         return self.recorder.peakPower(forChannel: channel)
     }
+    
     func playerAveragePower(forChannel channel:Int)->Float{
         self.player.updateMeters()
         return self.player.averagePower(forChannel:channel)
     }
+    
     func playerPeekPower(forChannel channel:Int)->Float{
         self.player.updateMeters()
         return self.player.peakPower(forChannel: channel)
     }
-    
     
     func playerDuration()->TimeInterval{
         if player == nil {

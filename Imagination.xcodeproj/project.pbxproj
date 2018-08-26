@@ -111,6 +111,70 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		50265E212132A7DD00ABC1B4 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */,
+				F870EF731C378CB7008EF34D /* MoodViewController.swift */,
+				F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */,
+				F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */,
+				F8E9918A1C17CAE500650406 /* MoreViewController.swift */,
+				F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */,
+				F89753C61EB1AF28003BB8EF /* ContentShowViewController.swift */,
+				F89753C81EB1D2DF003BB8EF /* ImageViewController.swift */,
+				F80B691B1EB1D6BF00900635 /* AudioViewController.swift */,
+				F856CF011EB303F000FE2822 /* MemorySpaceController.swift */,
+				F862AF511EB766FB0065D32B /* WebViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		50265E222132A7DD00ABC1B4 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				F821991E1EB821D800992353 /* audio.png */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		50265E232132A7DD00ABC1B4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F89537841EAF89DE00BFEAFC /* AudioRecord.swift */,
+				F8723F121E260527009CCF44 /* Reachability.h */,
+				F8723F131E260527009CCF44 /* Reachability.m */,
+				F812297C1BF777AB00BDCF0E /* DataCache.swift */,
+				F8D5C4081C01EE8600179853 /* FileManager.swift */,
+				F8F28CF41C0DB9D40007EDE3 /* Time.swift */,
+				F8EFBA601D71E73200A7C3C0 /* Annotation.swift */,
+				F87E8F7D1D7ADDFF002954B9 /* Log.swift */,
+				F870EF751C37BBB5008EF34D /* Item.swift */,
+				F81283971C3F82E8002985A7 /* Notification.swift */,
+				F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */,
+				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
+				F8F5D4791EADCA25007BDF2A /* UIImage+BlurImage.h */,
+				F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */,
+				F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */,
+				50995463212919A500BECAFD /* PhoneModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		50265E242132A80D00ABC1B4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F8F5D4801EADE2D1007BDF2A /* IndicatorMapView.swift */,
+				F8F5D47E1EADDAD9007BDF2A /* IndicatorMapViewBack.swift */,
+				F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */,
+				F89537541EAEFC0200BFEAFC /* AudioRecordView.swift */,
+				F89537561EAEFC1200BFEAFC /* AudioRecordView.xib */,
+				F8E9918E1C19123F00650406 /* DataPicker.swift */,
+				F88D3BA41C14678600A3C921 /* DayList.swift */,
+				F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		A0272B83476D20074022DF28 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,62 +205,14 @@
 		F81229601BF73C6C00BDCF0E /* Imagination */ = {
 			isa = PBXGroup;
 			children = (
+				50265E242132A80D00ABC1B4 /* View */,
+				50265E212132A7DD00ABC1B4 /* Controller */,
+				50265E232132A7DD00ABC1B4 /* Model */,
+				50265E222132A7DD00ABC1B4 /* Resource */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
-				F8E608581EB035A3008A1030 /* Resources */,
-				F8730EB91DC06E1A009112CE /* View&Controller */,
-				F8730EB81DC06E0D009112CE /* Model */,
 				F8730EBB1DC06E4F009112CE /* Support */,
 			);
 			path = Imagination;
-			sourceTree = "<group>";
-		};
-		F8730EB81DC06E0D009112CE /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				F89537841EAF89DE00BFEAFC /* AudioRecord.swift */,
-				F8723F121E260527009CCF44 /* Reachability.h */,
-				F8723F131E260527009CCF44 /* Reachability.m */,
-				F812297C1BF777AB00BDCF0E /* DataCache.swift */,
-				F8D5C4081C01EE8600179853 /* FileManager.swift */,
-				F8F28CF41C0DB9D40007EDE3 /* Time.swift */,
-				F8EFBA601D71E73200A7C3C0 /* Annotation.swift */,
-				F87E8F7D1D7ADDFF002954B9 /* Log.swift */,
-				F870EF751C37BBB5008EF34D /* Item.swift */,
-				F81283971C3F82E8002985A7 /* Notification.swift */,
-				F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */,
-				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
-				F8F5D4791EADCA25007BDF2A /* UIImage+BlurImage.h */,
-				F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */,
-				F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */,
-				50995463212919A500BECAFD /* PhoneModel.swift */,
-			);
-			name = Model;
-			sourceTree = "<group>";
-		};
-		F8730EB91DC06E1A009112CE /* View&Controller */ = {
-			isa = PBXGroup;
-			children = (
-				F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */,
-				F870EF731C378CB7008EF34D /* MoodViewController.swift */,
-				F8FC2A791BFC26EB001D1AEB /* AuthorityViewController.swift */,
-				F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */,
-				F8E9918A1C17CAE500650406 /* MoreViewController.swift */,
-				F8E9918E1C19123F00650406 /* DataPicker.swift */,
-				F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */,
-				F88D3BA41C14678600A3C921 /* DayList.swift */,
-				F8AB2A6F1E9D15E700B58229 /* CatalogueViewController.swift */,
-				F8F5D47E1EADDAD9007BDF2A /* IndicatorMapViewBack.swift */,
-				F8F5D4801EADE2D1007BDF2A /* IndicatorMapView.swift */,
-				F89537541EAEFC0200BFEAFC /* AudioRecordView.swift */,
-				F89537561EAEFC1200BFEAFC /* AudioRecordView.xib */,
-				F89753C61EB1AF28003BB8EF /* ContentShowViewController.swift */,
-				F89753C81EB1D2DF003BB8EF /* ImageViewController.swift */,
-				F80B691B1EB1D6BF00900635 /* AudioViewController.swift */,
-				F856CF011EB303F000FE2822 /* MemorySpaceController.swift */,
-				F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */,
-				F862AF511EB766FB0065D32B /* WebViewController.swift */,
-			);
-			name = "View&Controller";
 			sourceTree = "<group>";
 		};
 		F8730EBB1DC06E4F009112CE /* Support */ = {
@@ -218,14 +234,6 @@
 				6617760B2D13706ED0EFC492 /* Pods_Imagination.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F8E608581EB035A3008A1030 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				F821991E1EB821D800992353 /* audio.png */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -536,7 +544,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Model/Imagination-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -564,7 +572,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Model/Imagination-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -87,11 +87,13 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         state = .Recording
         meterTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
     }
+    
     @IBAction func PauseBtnClicked(_ sender: UIButton) {
         aRecord.pauseRecord()
         state = .Pausing
         meterTimer?.invalidate()
     }
+    
     @IBAction func StopBtnClicked(_ sender: UIButton) {
 
         if state == .Playing {
@@ -111,6 +113,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         }
         self.meterTimer?.invalidate()
     }
+    
     @IBAction func PlayBtnClicked(_ sender: UIButton) {
         if aRecord == nil {
             aRecord = AudioRecord(withFile: self.audioFilePath)
@@ -119,10 +122,12 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         aRecord.playRecord()
         meterTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
     }
+    
     @IBAction func saveBtnClicked(_ sender: UIButton) {
         delegate?.audioRecordViewStateChanged(state: .Save,audioRecord: aRecord)
         self.removeFromSuperview()
     }
+    
     class func getView()->AudioRecordView?{
         
         if let vv = Bundle.main.loadNibNamed("AudioRecordView", owner: nil, options: nil) {
