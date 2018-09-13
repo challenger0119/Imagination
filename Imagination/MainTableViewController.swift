@@ -12,6 +12,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
 
     @IBOutlet weak var today: UINavigationItem!
     @IBOutlet weak var backView: UIView!
+    
     var cool = 0
     var ok = 0
     var why = 0
@@ -42,6 +43,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         })
     }
     
+    //MARK: - LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,12 +61,15 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         refreshMoodState()
     }
     
+    //MARK: - Data Process
+    
     //添加新mood后更新
     @objc func updateMonthData() {
         DataCache.shareInstance.loadLastMonth()
         today.title = DataCache.shareInstance.currentMonthName
         loadMonthData()
     }
+    
     //指纹识别
     func authorityView() {
         if AuthorityViewController.pWord != AuthorityViewController.NotSet{
@@ -203,6 +208,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
     
     //MARK: - CatalogueViewControllerDelegate
+    
     func catalogueDidSelectItem(item: String){
         resumeView(){
             DataCache.shareInstance.loadLastMonthToMonth(item)
