@@ -27,3 +27,16 @@
 16. 录音：AudioRecord
 17. 视频：MoodViewController,ContentShowViewController
 18. Zip压缩文件：DataCache
+
+
+
+
+
+Realm 表
+
+talbe name : item
+
+| id   | content | mood | timestamp | time_string | multi_media | location        |
+| ---- | ------- | ---- | --------- | ----------- | ----------- | --------------- |
+| Int  | string  | int  | double    | string      | [string]    | [double,double] |
+
