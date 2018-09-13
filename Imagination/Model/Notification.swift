@@ -10,7 +10,7 @@ import UIKit
 /*
 这里的notification 只适应于只有一个noti的情况（因为cancelAllNoti等操作） 这样写简化运算 对于这个软件没必要复杂 目前只需要一个
 */
-class Notification: NSObject {
+class Notification {
     static let notiKey = "noti"
     static let notiValue = "imagination"
     static let notiBody = "今天心情如何？记录了吗？"

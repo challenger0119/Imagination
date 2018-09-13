@@ -67,6 +67,7 @@ class MemorySpaceController: UITableViewController {
             Dlog(error.localizedDescription)
             return
         }
+        
         cellcontent.append(videoInfos)
         cellcontent.append(audioInfos)
         cellcontent.append(imageInfos)

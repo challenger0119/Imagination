@@ -9,20 +9,26 @@
 import Foundation
 import UIKit
 
+// 系统文件操作
 extension FileManager {
     //MARK: - Base
     
+    // 用户可以看到的目录
     class func documentsPath()->String{
         return NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory,FileManager.SearchPathDomainMask.userDomainMask, true)[0] as String
     }
     
+    // APP维护的缓存目录 一定程度可删除再生的
     class func cachesPath()->String{
         return NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory,FileManager.SearchPathDomainMask.userDomainMask, true)[0] as String
     }
     
+    // APP存储的用户不可看到的目录
     class func libraryPath()->String{
         return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0] as String
     }
+    
+    // 系统维护的缓存目录 可删除再生
     class func tempsPath()->String{
         return NSTemporaryDirectory()
     }
@@ -52,7 +58,10 @@ extension FileManager {
     }
 }
 
+// APP基本文件操作
 extension FileManager{
+    
+    // 创建子文件夹
     class func createSubDirectory(dirPath:String){
         do{
             try FileManager.default.createDirectory(atPath: dirPath, withIntermediateDirectories: true, attributes: nil)
@@ -60,29 +69,38 @@ extension FileManager{
             Dlog(error.localizedDescription)
         }
     }
+    
+    // lib中多媒体文件夹
     class func multiMediaFilePath() ->String {
         let path = self.libraryPath() + "/Multimedia"
         createSubDirectory(dirPath: path)
         return path
     }
+    
+    // 用户可看到的备份文件 可以自己通过iTunes拿出来
     class func backupFilePath()->String{
         let path = self.documentsPath() + "/Backup"
         createSubDirectory(dirPath: path)
         return path
     }
+    
+    // 用户可看到的导出文件 可以自己通过iTunes拿出来
     class func exportFilePath()->String{
         let path = self.documentsPath() + "/Export"
         createSubDirectory(dirPath: path)
         return path
     }
+    
     class func exportFilePath(withName name:String)->String{
         return self.exportFilePath() + "/\(name)"
     }
+    
     class func backupFilePath(withName name:String)->String{
         return self.backupFilePath() + "/\(name)"
     }
 }
 
+// 图片文件操作
 extension FileManager{
     //MARK: - Image
     class func imageFilePath() -> String{
@@ -99,11 +117,13 @@ extension FileManager{
             return 0.5
         }
     }
+    
     static var isPng:Bool {
         get{
             return false
         }
     }
+    
     class func imageName(name:String)->String{
         if FileManager.isPng {
             return name+".png"
@@ -111,6 +131,7 @@ extension FileManager{
             return name+".jpg"
         }
     }
+    
     static var imageFormat:String {
         get{
             if self.isPng {
@@ -128,9 +149,11 @@ extension FileManager{
             return UIImageJPEGRepresentation(image, FileManager.compression)
         }
     }
+    
     fileprivate class func imageFilePathWithTimestamp() -> String{
         return self.imageFilePathWithName(name: FileManager.imageName(name: "image\(Time.stringTimestamp())"))
     }
+    
     class func createImageFile(withImage image:UIImage)->String{
         let path:String = FileManager.imageFilePathWithTimestamp()
         let data = FileManager.imageData(image: image)
@@ -141,6 +164,8 @@ extension FileManager{
         }
     }
 }
+
+// 音频文件
 extension FileManager{
     //MARK: - Audio
     class func audioFilePath()->String{
@@ -171,6 +196,7 @@ extension FileManager{
     }
 }
 
+// 视频文件
 extension FileManager{
     // video
     class func videoFilePath() -> String{

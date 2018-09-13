@@ -7,5 +7,5 @@ target 'Imagination' do
 
   # Pods for Imagination
   pod 'SSZipArchive'
-  pod 'RealSwift'
+  pod 'RealmSwift'
 end

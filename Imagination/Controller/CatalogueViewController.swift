@@ -11,6 +11,7 @@ protocol CatalogueViewControllerDelegate {
     func catalogueDidSelectItem(item:String)
     func catalogueDidClose()
 }
+
 let reusableCellIdentifier = "CatalogueViewControllerCell"
 
 class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
@@ -42,6 +43,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         tframe.size.height = 20
         self.siderTable.tableHeaderView = UIView(frame: tframe)
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         var tframe = self.siderTable.frame
@@ -53,6 +55,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
             }
         }
     }
+    
     func dismissVC(){
         var tframe = self.siderTable.frame
         tframe.origin.x = -CatalogueViewController.tableWidth
@@ -64,6 +67,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
             }
         }
     }
+    
     @objc func cataCancel(){
         dismissVC()
         self.delegate?.catalogueDidClose()
@@ -73,6 +77,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.content != nil {
             return self.content!.count

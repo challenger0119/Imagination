@@ -8,10 +8,12 @@
 
 import UIKit
 import AVFoundation
+
 enum MultiMediaType:String {
     case image = "Image",voice = "Voice",video = "Video",def = "multi"
 }
-class MultiMediaFile: NSObject {
+
+class MultiMediaFile {
     var type:MultiMediaType = .def
     var storePath:String = "" {
         didSet{

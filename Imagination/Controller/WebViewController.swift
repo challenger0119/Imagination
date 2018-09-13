@@ -23,6 +23,7 @@ class WebViewController: UIViewController {
             UserDefaults.standard.set(newValue, forKey: "autoLoginState")
         }
     }
+    
     var titlestring:String {
         get{
             if autoLoginState {
@@ -32,6 +33,7 @@ class WebViewController: UIViewController {
             }
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.web = UIWebView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
@@ -55,6 +57,7 @@ class WebViewController: UIViewController {
         }
         self.web.loadRequest(request)
     }
+    
     @objc func autoLogin(){
         autoLoginState = !autoLoginState
         if autoLoginState {

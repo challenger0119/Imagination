@@ -8,7 +8,8 @@
 
 import UIKit
 import AVFoundation
-class AudioRecord: NSObject {
+
+class AudioRecord {
     fileprivate var recorder:AVAudioRecorder!
     fileprivate var player:AVAudioPlayer!  //有初始化关联，所以不能直接访问 容易出错
     var recordFileURL:URL{
@@ -35,7 +36,6 @@ class AudioRecord: NSObject {
         }catch{
             Dlog(error.localizedDescription)
         }
-        super.init()
     }
 
     func startRecord(){
@@ -51,9 +51,11 @@ class AudioRecord: NSObject {
             Dlog(error.localizedDescription)
         }
     }
+    
     func pauseRecord(){
         recorder.pause()
     }
+    
     func stopRecord(){
         self.recorder.stop()
         let tsession = AVAudioSession.sharedInstance()
@@ -62,8 +64,8 @@ class AudioRecord: NSObject {
         }catch{
             Dlog(error.localizedDescription)
         }
-       
     }
+    
     func playRecord(){
         do{
             if player == nil {
@@ -78,6 +80,7 @@ class AudioRecord: NSObject {
             Dlog(error.localizedDescription)
         }
     }
+    
     func stopPlayRecord(){
         self.player.stop()
         do{
@@ -91,19 +94,21 @@ class AudioRecord: NSObject {
         self.recorder.updateMeters()
         return self.recorder.averagePower(forChannel:channel)
     }
+    
     func peekPower(forChannel channel:Int)->Float{
         self.recorder.updateMeters()
         return self.recorder.peakPower(forChannel: channel)
     }
+    
     func playerAveragePower(forChannel channel:Int)->Float{
         self.player.updateMeters()
         return self.player.averagePower(forChannel:channel)
     }
+    
     func playerPeekPower(forChannel channel:Int)->Float{
         self.player.updateMeters()
         return self.player.peakPower(forChannel: channel)
     }
-    
     
     func playerDuration()->TimeInterval{
         if player == nil {

@@ -7,23 +7,34 @@
 //
 
 import UIKit
-import CoreLocation
+
 class MainTableViewController: UITableViewController,CatalogueViewControllerDelegate {
 
     @IBOutlet weak var today: UINavigationItem!
-    @IBOutlet weak var backView: UIView!
+    @IBOutlet weak var moodIndicatorView: UIView!   // 心情色指示条
+    var cool = 0    // 舒服状态的记录数量
+    var ok = 0      // 一般般状态的记录数量
+    var why = 0     // 不爽状态的记录数量
+    var dataSource:[Item] = []  // 内容数据源
     
-    var cool = 0
-    var ok = 0
-    var why = 0
+    // MARK: - LifeCycle
     
-    var monthCache:Dictionary<String,Dictionary<String,String>>?
-    var times:[String] = []
-    let TAG_DAYLIST:NSInteger = 100
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        updateMonthData()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateMonthData), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
+        authorityView()
+    }
     
-    var locToShow:CLLocationCoordinate2D?
-    var itemBuffer:[Item] = []
-
+    override func viewWillAppear(_ animated: Bool){
+        super.viewWillAppear(animated)
+        self.tableView.estimatedRowHeight = 80
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    // MARK: - Method
+    
+    // 显示/关闭日期归档
     @IBAction func otherDay(_ sender:AnyObject) {
         
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CatalogueViewController") as! CatalogueViewController;
@@ -42,35 +53,15 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             }
         })
     }
-    
-    //MARK: - LifeCycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        updateMonthData()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateMonthData), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
-        authorityView()
-    }
-    override func viewWillAppear(_ animated: Bool){
-        super.viewWillAppear(animated)
-        self.tableView.estimatedRowHeight = 80
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        refreshMoodState()
-    }
-    
-    //MARK: - Data Process
-    
-    //添加新mood后更新
+    // 添加新mood后更新
     @objc func updateMonthData() {
         DataCache.shareInstance.loadLastMonth()
-        today.title = DataCache.shareInstance.currentMonthName
+        self.title = DataCache.shareInstance.currentMonthName
+        
         loadMonthData()
     }
-    
-    //指纹识别
+
+    // 指纹识别
     func authorityView() {
         if AuthorityViewController.pWord != AuthorityViewController.NotSet{
             let vc = self.storyboard!.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController
@@ -80,88 +71,78 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         }
     }
 
+    // 解析一个月的数据生成数据源
     func loadMonthData() {
-        monthCache = DataCache.shareInstance.lastMonth //monthly record
-        cool = 0
-        ok = 0
-        why = 0
-        if let mm = monthCache {
-            var dayArray = Array(mm.keys)   //day array
-            dayArray.sort(by: {$0>$1})  //descend day array
-            times.removeAll()
-            itemBuffer.removeAll()
-            for daytime in dayArray {
-                //get day by day
-                if let day = mm[daytime] {
-                    var tmpTimes = Array(day.keys)  //time record array
-                    tmpTimes.sort(by: {$0>$1})  //descend time record
-                    
-                    for ct in tmpTimes {
-                        //analysis one by one
+        DispatchQueue.global().async {
+            let monthCache = DataCache.shareInstance.lastMonth // 一个月的记录
+            self.cool = 0
+            self.ok = 0
+            self.why = 0
+            if let mcache = monthCache {
+                var dayArray = Array(mcache.keys)
+                dayArray.sort(by: {$0>$1})      // 降序排列日期 精确到天
+                self.dataSource.removeAll()
+                for daytime in dayArray {
+                    if let day = mcache[daytime] {
+                        var tmpTimes = Array(day.keys)
+                        tmpTimes.sort(by: {$0>$1})      //降序排列时间 精确到秒以下
                         
-                        let cc = Item.init(contentString: day[ct]!)
-                        switch cc.mood {
-                            case 1:cool+=1
-                            case 2:ok+=1
-                            case 3:why+=1
+                        for ct in tmpTimes {
+                            let cc = Item(withTime: daytime + " " + ct, contentString: day[ct]!)
+                            switch cc.mood {
+                            case .Cool: self.cool += 1
+                            case .OK: self.ok += 1
+                            case .Why: self.why += 1
                             default:break
+                            }
+                            self.dataSource.append(cc)       //添加数据源
                         }
-                        
-                        itemBuffer.append(cc) //store buffer
                     }
-                    times.append(contentsOf: changeTimeToDayAndTime(tmpTimes, day: daytime))
                 }
             }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.refreshMoodState()
+            }
         }
-        
-        self.tableView.reloadData()
     }
     
-    func changeTimeToDayAndTime(_ timearry:[String],day:String) -> [String]{
-        //添加日期信息在里面 9：30 -> 2015.2.3 9:30
-        var newArray = [String]()
-        for tt in timearry {
-            newArray.append(day+" "+tt)
-        }
-        return newArray
-    }
-    
-    
+    // 更新状态条
     func refreshMoodState() {
         let total = cool + ok + why
         if total == 0 {
             //如果没有moodState 就return
             return
         }
-        let partition_a = self.backView.frame.width * CGFloat(cool) / CGFloat(total)
-        let partition_b = self.backView.frame.width * CGFloat(cool + ok) / CGFloat(total)
-        let height = self.backView.frame.height / 2
+        let partition_a = self.moodIndicatorView.frame.width * CGFloat(cool) / CGFloat(total)
+        let partition_b = self.moodIndicatorView.frame.width * CGFloat(cool + ok) / CGFloat(total)
+        let height = self.moodIndicatorView.frame.height / 2
         
         
-        var left:UIView! = self.backView.viewWithTag(1)
-        var center:UIView! = self.backView.viewWithTag(2)
-        var right:UIView! = self.backView.viewWithTag(3)
+        var left:UIView! = self.moodIndicatorView.viewWithTag(1)
+        var center:UIView! = self.moodIndicatorView.viewWithTag(2)
+        var right:UIView! = self.moodIndicatorView.viewWithTag(3)
         
         var firstTime = false
         
         if left == nil {
             firstTime = true
-            left = UIView.init(frame: CGRect(x: 0, y: 0, width: 0, height: height))
+            left = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: height))
             left.backgroundColor = Item.coolColor
             left.tag = 1;
-            self.backView.addSubview(left)
+            self.moodIndicatorView.addSubview(left)
         }
         if center == nil{
             center = UIView.init(frame: CGRect(x: partition_a, y: 0, width: 0, height: height))
             center.backgroundColor = Item.justOkColor
             center.tag = 2;
-            self.backView.addSubview(center)
+            self.moodIndicatorView.addSubview(center)
         }
         if right == nil{
             right = UIView.init(frame: CGRect(x: partition_b, y: 0,width: 0, height: height))
             right.backgroundColor = Item.whyColor
             right.tag = 3;
-            self.backView.addSubview(right)
+            self.moodIndicatorView.addSubview(right)
         }
         
         if firstTime == true {
@@ -177,7 +158,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
                         finish in
                         if finish {
                             UIView.animate(withDuration: 0.1, animations: {
-                                right.frame = CGRect(x: partition_b, y: 0, width: self.backView.frame.width - partition_b, height: height)
+                                right.frame = CGRect(x: partition_b, y: 0, width: self.moodIndicatorView.frame.width - partition_b, height: height)
                             })
                         }
                     })
@@ -187,12 +168,12 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             UIView.animate(withDuration: 0.1, animations: {
                 left.frame = CGRect(x: 0, y: 0, width: partition_a, height: height)
                 center.frame = CGRect(x: partition_a, y: 0, width: partition_b - partition_a, height: height)
-                right.frame = CGRect(x: partition_b, y: 0, width: self.backView.frame.width - partition_b, height: height)
+                right.frame = CGRect(x: partition_b, y: 0, width: self.moodIndicatorView.frame.width - partition_b, height: height)
             })
         }
     }
     
-
+    // 关闭归档视图
     func resumeView(andDo:@escaping (()->Void)){
         var tframe = self.view.frame
         tframe.size.width = self.view.frame.width + CatalogueViewController.tableWidth
@@ -207,16 +188,16 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         }
     }
     
-    //MARK: - CatalogueViewControllerDelegate
+    // MARK: - CatalogueViewControllerDelegate
     
     func catalogueDidSelectItem(item: String){
         resumeView(){
             DataCache.shareInstance.loadLastMonthToMonth(item)
-            self.today.title = item
+            self.title = item
             self.loadMonthData()
-            self.refreshMoodState()
         }
     }
+    
     func catalogueDidClose() {
         resumeView(){}
         UIView.animate(withDuration: 0.5, animations: {
@@ -225,18 +206,20 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
     
     // MARK: - Table view data source and Delegate
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return itemBuffer.count
+        return dataSource.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier",for: indexPath) as! CustomTableViewCell
-        let cc = itemBuffer[indexPath.row]
-        cell.time.text = times[(indexPath as NSIndexPath).row]
+        let cc = dataSource[indexPath.row]
+        cell.time.text = cc.timeString
+        // 去掉内容里面的换行 避免cell过高
         if cc.place.latitude != 0 {
             cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.multiMediasDescrip + "\n\n@\(cc.place.name)"
         }else{
@@ -251,8 +234,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let cc = itemBuffer[indexPath.row]
-        let vc = ContentShowViewController(contentText: cc.content, contentDic: cc.multiMedias, state: cc.mood, placeInfo: cc.place)
+        let vc = ContentShowViewController(withItem:dataSource[indexPath.row])
         vc.modalPresentationStyle = .overCurrentContext
         vc.view.alpha = 0
         self.tabBarController?.present(vc, animated: false, completion: {

@@ -11,6 +11,7 @@ import MessageUI
 
 class MoreViewController: UITableViewController,DataPickerDelegate,MFMailComposeViewControllerDelegate {
     let dCache = DataCache.shareInstance
+    let pickerViewTag = 111
     var picker:DataPicker?
     var datePicker:UIDatePicker?
     
@@ -42,16 +43,16 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView .deselectRow(at: indexPath, animated: true)
-        if (indexPath as NSIndexPath).row == 0 {
+        if indexPath.row == 0 {
             sendBackupToMail(files: dCache.backupToNow())
             updateRecentDetail()
-        } else if (indexPath as NSIndexPath).row == 1 {
+        } else if indexPath.row == 1 {
             sendBackupToMail(files: dCache.backupAll())
             updateRecentDetail()
-        } else if (indexPath as NSIndexPath).row == 2 {
+        } else if indexPath.row == 2 {
             picker = DataPicker.init(frame: CGRect(x: 20, y: (self.view.frame.height-200)/2-50, width: self.view.frame.width-40, height: 200), dele: self)
             self.view.addSubview(picker!)
-        } else if (indexPath as NSIndexPath).row == 3 {
+        } else if indexPath.row == 3 {
             let alert = UIAlertController.init(title: "设置邮箱", message: "请输入邮箱地址", preferredStyle: UIAlertControllerStyle.alert)
             alert.addTextField(configurationHandler: {
                 (email:UITextField) -> Void in
@@ -82,7 +83,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
                 }))
             alert.addAction(UIAlertAction.init(title: "取消", style: UIAlertActionStyle.cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
-        } else if (indexPath as NSIndexPath).row == 4 {
+        } else if indexPath.row == 4 {
             if Notification.isReminder {
                 Notification.isReminder = false
                 Notification.cancelAllNotifications()
@@ -96,7 +97,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             pickerBack.layer.borderWidth = 0.5
             pickerBack.layer.cornerRadius = 5
             pickerBack.layer.masksToBounds = true
-            pickerBack.tag = 111
+            pickerBack.tag = pickerViewTag
             let btn = UIButton.init(frame: CGRect(x: pickerBack.frame.width - 50, y: 0, width: 50, height: 34))
             btn.setTitle("完成", for: UIControlState())
             btn.setTitleColor(UIColor.black, for: UIControlState())
@@ -113,12 +114,12 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             datePicker?.timeZone = TimeZone.current
             pickerBack.addSubview(datePicker!)
             self.view.addSubview(pickerBack)
-        } else if (indexPath as NSIndexPath).row == 5 {
+        } else if indexPath.row == 5 {
             let storeboad = UIStoryboard.init(name: "Main", bundle: Bundle.main)
             let vc = storeboad.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController
             vc.vType = AuthorityViewController.type.changePass
             self.present(vc, animated: true, completion: nil)
-        } else if (indexPath as NSIndexPath).row == 6 {
+        } else if indexPath.row == 6 {
             sendByEmail(filePaths: [], addtional: "建议")
         } else if indexPath.row == 8 {
             let webvc = WebViewController()
@@ -127,8 +128,9 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
     }
     
     @objc func cancelDatePicker() {
-        self.view.viewWithTag(111)?.removeFromSuperview()
+        self.view.viewWithTag(pickerViewTag)?.removeFromSuperview()
     }
+    
     func updateReminder() {
         if Notification.isReminder {
             reminder.textLabel?.text = "关闭每日提醒"
@@ -140,12 +142,14 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             reminder.detailTextLabel?.text = "每天特定时段会提示更新心情"
         }
     }
+    
     @objc func didSelectTime(){
         self.view.viewWithTag(111)?.removeFromSuperview()
         Notification.createNotificaion(datePicker?.date)
         
         updateReminder()
     }
+    
     func dataPickerResult(_ first: String, second: String) {
         sendBackupToMail(files: dCache.createExportDataFile(first, to: second))
     }
@@ -165,6 +169,7 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         }
         sendByEmail(filePaths: files)
     }
+    
     func sendTestEmail(toAddr mail:String){
         sendByEmail(filePaths: [], addtional: "[Imagination] Hi,我在这！我将把备份文件发到这里")
     }

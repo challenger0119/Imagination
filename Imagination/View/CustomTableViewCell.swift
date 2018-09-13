@@ -17,12 +17,4 @@ class CustomTableViewCell: UITableViewCell {
         self.content.layer.cornerRadius = 3.0
         self.content.isUserInteractionEnabled = false
     }
-    
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }
