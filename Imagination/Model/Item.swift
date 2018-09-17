@@ -7,18 +7,35 @@
 //
 
 import UIKit
+import RealmSwift
 
 enum MoodType:Int {
     case None,Cool,OK,Why   // 爽 一般 问苍天
 }
 
 extension MoodType{
+    
     func getColor() -> UIColor {
         return Item.moodColor[self.rawValue]
     }
+    
+    func getDescription() -> String{
+        switch self {
+        case .Cool:
+            return "Cool"
+        case .OK:
+            return "Just OK"
+        case .Why:
+            return "Confused"
+        default:
+            return "NA"
+        }
+    }
 }
 
-class Item {
+class Item:Object{
+    
+    // MARK: - static
     static let coolColor = UIColor.orange
     static let justOkColor = UIColor.init(red: 4.0/255.0, green: 119.0/255.0, blue: 240.0/255.0, alpha: 1.0)
     static let whyColor = UIColor.red
@@ -33,27 +50,39 @@ class Item {
     static let multiMediaFileNameTimeSperator = Item.gpsSeparator //不干扰情况下，一时想不到别的了...
     
     fileprivate static let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
-    fileprivate let moodStrings = ["NA","Cool","Just OK","Confused"]
    
-    var timeString:String // 2018-08-19 09:23:12
-    var mood:MoodType    // 心情
-    var content:String  // 内容
-    var color:UIColor
-    var moodString:String
-    var place:(name:String,latitude:Double,longtitude:Double)
-    var multiMedias:[Int:MultiMediaFile]?
-    var multiMediasDescrip:String = ""
+    // MARK: - DB properties
+    @objc dynamic var timestamp:TimeInterval = 0
+    @objc dynamic var dayString:String = ""
+    @objc dynamic var monthString:String = ""
+    @objc dynamic var content:String = ""
+    @objc dynamic var mood:Int = 0
+    @objc dynamic var location:String = ""
     
-    init(withTime time:String, contentString:String) {
-        self.timeString = time;
+    let medias = List<Media>()
+    
+    override class func primaryKey() -> String? {
+        return "timestamp"
+    }
+    
+    // MARK: - non-DB properties
+    var place:(name:String,latitude:Double,longtitude:Double)? = nil
+    var multiMedias:[Int:Media]? = nil
+    var multiMediasDescrip:String? = nil
+    
+    override class func ignoredProperties() -> [String] {
+        return ["place","multiMedias","multiMediasDescrip"]
+    }
+    
+    /*
+    convenience init(withTime time:String, contentString:String) {
+        
         var array = contentString.components(separatedBy: Item.separator)
         if array.count < 2 {
             array = contentString.components(separatedBy: Item.oldSeparator) //之前版本的
         }
         if array.count >= 2 {
             self.content = array[0]
-            self.mood =  MoodType(rawValue: Int(array[1])!)!
-            
             if array.count == 2 {
                 self.place = ("",0,0)
             }else{
@@ -152,50 +181,47 @@ class Item {
         } else {
             //容错，不会出现的地方 因为Array至少=2
             self.content = contentString
-            self.mood = .None
             self.place = ("",0,0)
         }
-        self.color = Item.moodColor[self.mood.rawValue]
-        self.moodString = self.moodStrings[self.mood.rawValue]
     }
+    */
     
-    class func getMultiMediaNameArray(multiMedia:[Int:MultiMediaFile])->[String]{
-        var multiMediaoArray = [String]()
-        let keyArray = Array(multiMedia.keys)
-        for key in keyArray{
-            if let obj = multiMedia[key] {
-                var tmpStr = "\(obj.type.rawValue)\(self.multiMediaIndicator)\(obj.nameWithPosition(pos: key))"
-                if keyArray.index(of: key) != keyArray.count-1 {
-                    tmpStr += self.multiMediaSeparator
-                }
-                multiMediaoArray.append(tmpStr)
-            }
-        }
-        return multiMediaoArray
+    
+    class func locationStringWithName(GPSName:String,latitude:Double,longtitude:Double) -> String{
+        return "\(GPSName)\(self.gpsSeparator)\(latitude)\(self.gpsSeparator)\(longtitude)"
     }
     
     //xxx<->xxx
-    class func itemString(_ content:String,mood:Int) ->String {
-        return content + self.separator + "\(mood)"
+    class func itemString(_ content:String,mood:Int) ->Item {
+        let item = Item()
+        item.content = content
+        item.mood = mood
+        return item
     }
+    
     //xxx<->xxx<->xx,xx,xx
-    class func itemString(_ content:String,mood:Int,GPSName:String,latitude:Double,longtitude:Double) ->String {
-        return self.itemString(content, mood: mood) + self.separator + "\(GPSName)\(self.gpsSeparator)\(latitude)\(self.gpsSeparator)\(longtitude)"
+    class func itemString(_ content:String,mood:Int,GPSName:String,latitude:Double,longtitude:Double) -> Item {
+        let item = self.itemString(content, mood: mood)
+        item.location = self.locationStringWithName(GPSName: GPSName, latitude: latitude, longtitude: longtitude)
+        return item
     }
     
     //xxx<->xxx<->img->xx_xx;img->xx_xx;voice->xx_xx
-    class func itemString(Content content:String,mood:Int,multiMedia:[Int:MultiMediaFile]) ->String {
+    class func itemString(Content content:String,mood:Int,multiMedia:[Int:Media]) -> Item {
+        let item = self.itemString(content, mood: mood)
         
-        var multiMediaoString:String = ""
-        let multiMediaArray = self.getMultiMediaNameArray(multiMedia: multiMedia)
-        for str in multiMediaArray {
-            multiMediaoString += str
+        multiMedia.forEach { (key, value) in
+            value.position = key
+            item.medias.append(value)
         }
-        return self.itemString(content, mood: mood) + self.separator + multiMediaoString
-    }
-    //xxx<->xxx<->img->xx_xx;img->xx_xx;voice->xx_xx<->xx,xx,xx
-    class func itemString(Content content:String,mood:Int,GPSName:String,latitude:Double,longtitude:Double,multiMedia:[Int:MultiMediaFile]) ->String {
         
-        return self.itemString(Content: content, mood: mood, multiMedia: multiMedia) + self.separator + "\(GPSName)\(self.gpsSeparator)\(latitude)\(self.gpsSeparator)\(longtitude)"
+        return item
+    }
+    
+    //xxx<->xxx<->img->xx_xx;img->xx_xx;voice->xx_xx<->xx,xx,xx
+    class func itemString(Content content:String,mood:Int,GPSName:String,latitude:Double,longtitude:Double,multiMedia:[Int:Media]) -> Item {
+        let item = self.itemString(Content: content, mood: mood, multiMedia: multiMedia)
+        item.location = self.locationStringWithName(GPSName: GPSName, latitude: latitude, longtitude: longtitude)
+        return item
     }
 }

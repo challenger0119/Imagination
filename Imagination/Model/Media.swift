@@ -1,32 +1,39 @@
 //
-//  MultiMediaFile.swift
+//  Media.swift
 //  Imagination
 //
-//  Created by Star on 2017/4/26.
-//  Copyright © 2017年 Star. All rights reserved.
+//  Created by Star on 2018/9/17.
+//  Copyright © 2018年 Star. All rights reserved.
 //
 
 import UIKit
 import AVFoundation
+import RealmSwift
 
-enum MultiMediaType:String {
-    case image = "Image",voice = "Voice",video = "Video",def = "multi"
+enum MediaType:String {
+    case image = "Image", voice = "Voice", video = "Video", def = "multi"
 }
 
-class MultiMediaFile {
-    var type:MultiMediaType = .def
-    var storePath:String = "" {
+class Media: Object {
+    
+    @objc var position:Int = 0
+    @objc var name:String = ""
+    @objc var type:String = MediaType.def.rawValue {
         didSet{
-            //Dlog(storePath)
-            name = (storePath as NSString).lastPathComponent
+            self.mediaType = MediaType(rawValue: type)!
         }
     }
-    var name:String = ""
+    @objc var path:String = ""
+    
+    var mediaType:MediaType = .def
     var obj:AnyObject?
     
-    func nameWithPosition(pos:Int)->String{
-        return name + Item.multiMediaNameSeparator + String(pos)
+    let ofItem = LinkingObjects(fromType: Item.self, property: "medias")
+    
+    override class func ignoredProperties() -> [String] {
+        return ["mediaType","obj"]
     }
+    
     //圆角图
     class func roundCornerImage(_ image:UIImage,frame:CGRect)->UIImage {
         UIGraphicsBeginImageContextWithOptions(frame.size, false, UIScreen.main.scale)
@@ -36,6 +43,7 @@ class MultiMediaFile {
         UIGraphicsEndImageContext()
         return image!
     }
+    
     //视频截图
     class func viedoShot(withURL url:URL)->UIImage?{
         let avasset = AVURLAsset(url: url)

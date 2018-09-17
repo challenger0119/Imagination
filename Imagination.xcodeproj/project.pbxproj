@@ -16,6 +16,7 @@
 		F812296F1BF73C6C00BDCF0E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */; };
 		F812297D1BF777AB00BDCF0E /* DataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F812297C1BF777AB00BDCF0E /* DataCache.swift */; };
 		F81283981C3F82E8002985A7 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81283971C3F82E8002985A7 /* Notification.swift */; };
+		F81316EA214F94B700FA0FCC /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81316E9214F94B700FA0FCC /* Media.swift */; };
 		F821991F1EB821D800992353 /* audio.png in Resources */ = {isa = PBXBuildFile; fileRef = F821991E1EB821D800992353 /* audio.png */; };
 		F856CF021EB303F000FE2822 /* MemorySpaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF011EB303F000FE2822 /* MemorySpaceController.swift */; };
 		F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */; };
@@ -36,7 +37,6 @@
 		F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */; };
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
 		F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */; };
-		F8E6085C1EB08111008A1030 /* MultiMediaFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */; };
 		F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918A1C17CAE500650406 /* MoreViewController.swift */; };
 		F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918E1C19123F00650406 /* DataPicker.swift */; };
 		F8EFBA5F1D71DDDD00A7C3C0 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */; };
@@ -62,6 +62,7 @@
 		F81229701BF73C6C00BDCF0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F812297C1BF777AB00BDCF0E /* DataCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCache.swift; sourceTree = "<group>"; };
 		F81283971C3F82E8002985A7 /* Notification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		F81316E9214F94B700FA0FCC /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		F821991E1EB821D800992353 /* audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = audio.png; sourceTree = "<group>"; };
 		F856CF011EB303F000FE2822 /* MemorySpaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceController.swift; sourceTree = "<group>"; };
 		F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceHeaderView.swift; sourceTree = "<group>"; };
@@ -85,7 +86,6 @@
 		F8C1F5911C3BBA4A00447ED2 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaodeMapApi.swift; sourceTree = "<group>"; };
-		F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiMediaFile.swift; sourceTree = "<group>"; };
 		F8E9918A1C17CAE500650406 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		F8E9918E1C19123F00650406 /* DataPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPicker.swift; sourceTree = "<group>"; };
 		F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
@@ -154,8 +154,8 @@
 				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
 				F8F5D4791EADCA25007BDF2A /* UIImage+BlurImage.h */,
 				F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */,
-				F8E6085B1EB08111008A1030 /* MultiMediaFile.swift */,
 				50995463212919A500BECAFD /* PhoneModel.swift */,
+				F81316E9214F94B700FA0FCC /* Media.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -368,6 +368,7 @@
 				F8F5D47B1EADCA25007BDF2A /* UIImage+BlurImage.m in Sources */,
 				F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */,
 				F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */,
+				F81316EA214F94B700FA0FCC /* Media.swift in Sources */,
 				F89753C91EB1D2DF003BB8EF /* ImageViewController.swift in Sources */,
 				F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
@@ -382,7 +383,6 @@
 				50995464212919A500BECAFD /* PhoneModel.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */,
-				F8E6085C1EB08111008A1030 /* MultiMediaFile.swift in Sources */,
 				F81283981C3F82E8002985A7 /* Notification.swift in Sources */,
 				F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */,
 				F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */,

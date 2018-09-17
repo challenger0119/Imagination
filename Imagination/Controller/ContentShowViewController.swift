@@ -12,7 +12,7 @@ import AVKit
 import AVFoundation
 
 class ContentShowViewController: UIViewController {
-    var multiMediaBufferDic:[Int:MultiMediaFile]?
+    var multiMediaBufferDic:[Int:Media]?
     var text:String = ""
     var pInfo:(name:String,latitude:Double,longtitude:Double)?
     var exitAnimation:(() -> Void)?
@@ -23,7 +23,7 @@ class ContentShowViewController: UIViewController {
         self.init(contentText: item.content, contentDic: item.multiMedias, mood: item.mood, placeInfo: item.place)
     }
     
-    init(contentText:String,contentDic:[Int:MultiMediaFile]?,mood:MoodType,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
+    init(contentText:String,contentDic:[Int:Media]?,mood:MoodType,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
         self.multiMediaBufferDic = contentDic
         self.text = contentText
         self.pInfo = placeInfo

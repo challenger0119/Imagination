@@ -57,8 +57,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     
     var imageVC:UIImagePickerController!
-    var multiMediaBufferDic:[Int:MultiMediaFile] = Dictionary()
-    var multiMediaInsertBuffer:[NSTextAttachment:MultiMediaFile] = Dictionary()
+    var multiMediaBufferDic:[Int:Media] = Dictionary()
+    var multiMediaInsertBuffer:[NSTextAttachment:Media] = Dictionary()
     var font:UIFont!
     
     @IBOutlet weak var content: UITextView!
@@ -160,7 +160,18 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         let ttt = content.text
         if !(ttt!.isEmpty) {
             analysisTextStorage() //解析多媒体
-            dataCache.newString(Content: ttt!, moodState: moodState, GPSPlace: self.place, multiMedia: self.multiMediaBufferDic.count == 0 ? nil:self.multiMediaBufferDic)
+            
+            let item = Item()
+            item.content = ttt!
+            item.mood = moodState
+            if let plc = place {
+               item.location = Item.locationStringWithName(GPSName: plc.name, latitude: plc.coor.latitude, longtitude: plc.coor.longitude)
+            }
+            self.multiMediaBufferDic.forEach { (key, value) in
+                value.position = key
+                item.medias.append(value)
+            }
+            dataCache.storeItem(item)
 
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
             back()
@@ -209,12 +220,15 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             (obj,range,pointor) in
             if let attache = obj as? NSTextAttachment {
                 let mf = self.multiMediaInsertBuffer[attache]!  //提取最后保留的项目
-                if mf.type == .image {
-                    mf.storePath = FileManager.createImageFile(withImage: mf.obj as! UIImage)
-                }else if mf.type == .voice {
-                    mf.storePath = FileManager.createAudioFile(withPath: mf.storePath)
-                }else if mf.type == .video {
-                    mf.storePath = FileManager.createVideoFile(withPath: mf.storePath)
+                switch mf.mediaType {
+                case .image:
+                    mf.path = FileManager.createImageFile(withImage: mf.obj as! UIImage)
+                case .voice:
+                    mf.path = FileManager.createAudioFile(withPath: mf.path)
+                case .video:
+                    mf.path = FileManager.createVideoFile(withPath: mf.path)
+                default:
+                    break
                 }
                 let _ = self.multiMediaBufferDic.updateValue(mf, forKey: range.location)
             }
@@ -294,44 +308,44 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         
         if multimedia.isKind(of: UIImage.self) {
             let image = multimedia as! UIImage
-            let textAttach = NSTextAttachment(data:FileManager.imageData(image: image), ofType:MultiMediaType.image.rawValue)
+            let textAttach = NSTextAttachment(data:FileManager.imageData(image: image), ofType:MediaType.image.rawValue)
             let imageHeight = image.size.height / image.size.width * imageWidth
-            textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+            textAttach.image = Media.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
             let imageAttributeString = NSAttributedString(attachment:textAttach)
             self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
-            let mf = MultiMediaFile()
+            let mf = Media()
             mf.obj = image
-            mf.type = .image
+            mf.mediaType = .image
             self.multiMediaInsertBuffer.updateValue(mf, forKey:textAttach)
         }else if multimedia.isKind(of: AudioRecord.self) {
             let audio = multimedia as! AudioRecord
             do{
                 let data = try Data.init(contentsOf: audio.recordFileURL)
-                let textAttach = NSTextAttachment(data: data, ofType: MultiMediaType.voice.rawValue)
+                let textAttach = NSTextAttachment(data: data, ofType: MediaType.voice.rawValue)
                 let image = UIImage.init(named: "audio")!
                 let imageHeight = image.size.height / image.size.width * imageWidth
-                textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                textAttach.image = Media.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                 let imageAttributeString = NSAttributedString(attachment:textAttach)
                 self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
-                let mf = MultiMediaFile()
+                let mf = Media()
                 mf.obj = audio
-                mf.type = .voice
-                mf.storePath = audio.recordFileURL.path
+                mf.mediaType = .voice
+                mf.path = audio.recordFileURL.path
                 self.multiMediaInsertBuffer.updateValue(mf, forKey:textAttach)
             }catch{
                 Dlog(error.localizedDescription)
             }
-        }else if multimedia.isKind(of: MultiMediaFile.self){
-            let video = multimedia as! MultiMediaFile
+        }else if multimedia.isKind(of: Media.self){
+            let video = multimedia as! Media
             do{
-                let url = URL.init(fileURLWithPath: video.storePath)
+                let url = URL.init(fileURLWithPath: video.path)
                 let data = try Data.init(contentsOf: url)
-                let textAttach = NSTextAttachment(data: data, ofType: MultiMediaType.video.rawValue)
-                let image = MultiMediaFile.viedoShot(withURL: url)!
+                let textAttach = NSTextAttachment(data: data, ofType: MediaType.video.rawValue)
+                let image = Media.viedoShot(withURL: url)!
                 Dlog("\(image.size.width) : \(image.size.height)")
                 Dlog(image.imageOrientation)
                 let imageHeight = image.size.height / image.size.width * imageWidth
-                textAttach.image = MultiMediaFile.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                textAttach.image = Media.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
                 let imageAttributeString = NSAttributedString(attachment:textAttach)
                 self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
                 self.multiMediaInsertBuffer.updateValue(video, forKey:textAttach)
@@ -367,9 +381,9 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 }
             }else if type == kUTTypeMovie as String{
                 if let url = info[UIImagePickerControllerMediaURL] as? URL {
-                    let mf = MultiMediaFile()
-                    mf.storePath = url.path
-                    mf.type = .video
+                    let mf = Media()
+                    mf.path = url.path
+                    mf.mediaType = .video
                     addMultimediaToTextView(multimedia: mf)
                 }
             }else{

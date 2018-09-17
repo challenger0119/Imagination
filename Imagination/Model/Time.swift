@@ -9,37 +9,43 @@
 import Foundation
 
 class Time {
-    static func now()->String{
+    class func now() -> String{
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:SS"
         return format.string(from: Date())
     }
     
-    static func today()->String{
+    class func today() -> String{
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
         return format.string(from: Date())
     }
     
-    static func clock()->String{
+    class func clock() -> String{
         let format = DateFormatter()
         format.dateFormat = "HH:mm:SS"
         return format.string(from: Date())
     }
     
-    static func dateFromString(_ time:String) -> Date? {
+    class func dateFromString(_ time:String) -> Date? {
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd HH:mm:SS"
         return format.date(from: time)
     }
     
-    static func dayOfDate(_ date:Date) -> String {
+    class func dayOfDate(_ date:Date) -> String {
         let format = DateFormatter()
         format.dateFormat = "yyyy-MM-dd"
         return format.string(from: date)
     }
     
-    static func clockOfDate(_ date:Date) -> String {
+    class func monthStringOfDate(_ date:Date) -> String{
+        let format = DateFormatter()
+        format.dateFormat = "yyyy-MM"
+        return format.string(from: date)
+    }
+    
+    class func clockOfDate(_ date:Date) -> String {
         let format = DateFormatter()
         format.dateFormat = "HH:mm:SS"
         return format.string(from: date)

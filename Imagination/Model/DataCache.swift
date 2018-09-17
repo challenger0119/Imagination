@@ -15,6 +15,7 @@ import Foundation
 import CoreLocation
 import UIKit
 import SSZipArchive
+import RealmSwift
 
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
   switch (lhs, rhs) {
@@ -39,18 +40,20 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 class DataCache {
     
     static let shareInstance = DataCache()
-
+    var realm:Realm
+    
     let newline = "\r\n"
     
     fileprivate let FILENAME_INDEX = "index"
     //var isStart = true //启动标记 用于touchID
     let EMPTY_STRING = " "
+    
     var fileState:(filename:String,lastDate:String)?
   
-    var currentDayName:String?
-    var currentMonthName:String?
-    var catalogue:[String]?
-    var catalogue_month:[String]?
+    var currentDayName:String = ""
+    var currentMonthName:String = ""
+    var catalogue:[String] = []
+    var catalogue_month:[String] = []
     
     var email:String?{
         set{
@@ -60,142 +63,44 @@ class DataCache {
             return UserDefaults.standard.object(forKey: "email") as? String
         }
     }
-    //[2015.11.20,2015.11.30,2015.12.2]
-    var lastYear:Dictionary<String,Dictionary<String,String>>?
-    //{[2015.11.20:{[9.30:sxx],[9.52]:dff]}],[2015.11.30:{[8.50:fdfd],[12.50:erre]}]}
-    var lastDay:Dictionary<String,String>?
-    var lastMonth:Dictionary<String,Dictionary<String,String>>?
     
-    fileprivate func updateCatalogue() {
-        if let cata = catalogue {
-            if (cata.index(of: currentDayName!) == nil) {
-                catalogue?.append(currentDayName!)
-                storeCatalogue()
+    init() {
+        do{
+            self.realm = try Realm()
+            self.loadCategory()
+        }catch{
+            debugPrint(error.localizedDescription)
+        }
+    }
+    
+    func storeItem(_ item:Item) {
+        let date = Date()
+        item.timestamp = date.timeIntervalSince1970
+        item.dayString = Time.dayOfDate(date)
+        item.monthString = Time.monthStringOfDate(date)
+        do{
+            try realm.write {
+                realm.add(item)
             }
-        } else {
-            catalogue = Array.init(arrayLiteral: currentDayName!)
-            storeCatalogue()
+        }catch{
+            debugPrint(error.localizedDescription)
         }
-    }
-    
-    //文字，心情，地理位置，多媒体
-    func newString(Content content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?,multiMedia:Dictionary<Int,MultiMediaFile>?){
-        
-        if let mm = multiMedia {
-            if let gps = GPSPlace {
-                let clock = Time.clock()
-                let today = Time.today()
-                if today == self.currentDayName {
-                    self.updateLastday(Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm), key: clock)
-                } else {
-                    self.initLastday([clock:Item.itemString(Content: content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude,multiMedia: mm)], currentDayName: today)
-                }
-            }else{
-                self.newString(Content: content, moodState: moodState, multiMedia: multiMedia)
-            }
-        }else{
-            self.newStringContent(content, moodState: moodState, GPSPlace: GPSPlace)
-        }
-    }
-    
-    //文字，心情，多媒体
-    func newString(Content content:String, moodState:Int,multiMedia:Dictionary<Int,MultiMediaFile>?){
-        if let mm = multiMedia {
-            let clock = Time.clock()
-            let today = Time.today()
-            if today == self.currentDayName {
-                self.updateLastday(Item.itemString(Content: content, mood: moodState,multiMedia: mm), key: clock)
-            } else {
-                self.initLastday([clock:Item.itemString(Content: content, mood: moodState,multiMedia: mm)], currentDayName: today)
-            }
-        }else{
-            self.newStringContent(content, moodState: moodState)
-        }
-    }
-    
-    //文字，心情，地理位置
-    func newStringContent(_ content:String, moodState:Int,GPSPlace:(name:String,coor:CLLocationCoordinate2D)?){
-        if let gps = GPSPlace {
-            if Time.today() == self.currentDayName {
-                self.updateLastday(Item.itemString(content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude), key: Time.clock())
-            } else {
-                self.initLastday([Time.clock():Item.itemString(content, mood: moodState,GPSName: gps.name,latitude:gps.coor.latitude,longtitude:gps.coor.longitude)], currentDayName: Time.today())
-            }
-        }else{
-            self.newStringContent(content, moodState: moodState)
-        }
-    }
-    //文字，心情
-    func newStringContent(_ content:String, moodState:Int) {
-        if Time.today() == self.currentDayName {
-            self.updateLastday(Item.itemString(content, mood: moodState), key: Time.clock())
-        } else {
-            self.initLastday([Time.clock():Item.itemString(content, mood: moodState)], currentDayName: Time.today())
-        }
-    }
-    
-    //数据更新的两个方法
-    func updateLastday(_ lastdayValue:String,key:String) {
-        let _ = lastDay?.updateValue(lastdayValue, forKey: key)
-        let myData = NSKeyedArchiver.archivedData(withRootObject: lastDay!)
-        try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInLib(currentDayName!)), options: [.atomic])
-        updateCatalogue()
-    }
-    
-    func initLastday(_ lastdayDic:Dictionary<String,String>,currentDayName:String) {
-        self.currentDayName = currentDayName
-        lastDay = lastdayDic
-        let myData = NSKeyedArchiver.archivedData(withRootObject: lastDay!)
-        try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInLib(self.currentDayName!)), options: [.atomic])
-        updateCatalogue()
     }
 
+    
     //初始化显示数据
-    func loadLastDay(){
-        loadCatalogue()
-        if let DAYS = catalogue {
-            currentDayName = DAYS[DAYS.count-1]//lastDay
-            lastDay = loadDay(currentDayName!)
-        }
+    func loadDay(dayString:String, result:((Results<Item>) -> Void)){
+        result(self.realm.objects(Item.self).filter("dayString == \(dayString)"))
     }
     
-    func loadLastMonth(){
-        loadCatalogue_month()
-        if let Months = catalogue_month {
-            currentMonthName = Months[Months.count-1]//lastMonth
-            lastMonth = loadMonth(currentMonthName!)
-        }
-        loadLastDay()
-    }
-    
-    //载入特定时间
-    func loadLastDayToDay(_ dd:String) {
-        currentDayName = dd
-        lastDay = loadDay(currentDayName!)
-    }
-    func loadLastMonthToMonth(_ mm:String) {
-        currentMonthName = mm
-        lastMonth = loadMonth(currentMonthName!)
-    }
-    
-    fileprivate func loadDay(_ dd:String) -> Dictionary<String,String>? {
-        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInLib(dd))) {
-            return (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Dictionary)!
-        }
-        return nil
-    }
-    
-    fileprivate func loadMonth(_ mm:String) -> Dictionary<String,Dictionary<String,String>>? {
-        if let cts = catalogue {
-            var lMonth = Dictionary<String,Dictionary<String,String>>()
-            for ct in cts {
-                if isThisMonth(mm, dd: ct) {
-                    lMonth.updateValue((self.loadDay(ct)!), forKey: ct)
-                }
+    func loadCategory(){
+        let items = self.realm.objects(Item.self).sorted(byKeyPath: "dayString", ascending: false)
+        var tmpDayString = ""
+        items.forEach { (it) in
+            if it.dayString != tmpDayString {
+                catalogue.append(it.dayString)
+                tmpDayString = it.dayString
             }
-            return lMonth
-        } else {
-            return nil
         }
     }
     
@@ -207,42 +112,7 @@ class DataCache {
             return false
         }
     }
-    //存储目录
-    fileprivate func storeCatalogue(){
-        if catalogue != nil {
-            let myData = NSKeyedArchiver.archivedData(withRootObject: catalogue!)
-            try? myData.write(to: URL(fileURLWithPath: FileManager.pathOfNameInLib(FILENAME_INDEX)), options: [.atomic])
-        }
-    }
-
-    //载入目录
-    fileprivate func loadCatalogue(){
-        catalogue?.removeAll()
-        if let mydata = try? Data.init(contentsOf: URL(fileURLWithPath: FileManager.pathOfNameInLib(FILENAME_INDEX))) {
-            catalogue = (NSKeyedUnarchiver.unarchiveObject(with: mydata) as? Array)
-        }
-    }
     
-    fileprivate func loadCatalogue_month(){
-        self.loadCatalogue()
-        catalogue_month?.removeAll()
-        var montharray = [Int]()
-        if let cts = catalogue {
-            for ct in cts {
-                if isSameMonth(monthOfCatalogue(ct), arr: montharray)  {
-                    continue;
-                } else {
-                    if catalogue_month == nil {
-                        catalogue_month = Array.init(arrayLiteral: self.cutDateToMonth(ct))
-                    } else {
-                        catalogue_month?.append(self.cutDateToMonth(ct))
-                    }
-                    montharray.append(monthOfCatalogue(ct))
-                }
-                
-            }
-        }
-    }
     fileprivate func isSameMonth(_ mm:Int,arr:[Int]) -> Bool {
         //字典没有顺序所以记录之前有的月份 然后比较
         for ii in arr {
@@ -293,10 +163,10 @@ class DataCache {
         let txtfile = pathGetter(from,to) + ".txt"
         var filePaths = [txtfile]
         let data = NSMutableData()
-        for dd in catalogue! {
+        for dd in catalogue {
             if dd >= from && dd <= to {
                 //按天解析
-                if let ddtmp = loadDay(dd) {
+                loadDay(dayString: dd) { (items) in
                     let thisday = dd + newline
                     data.append(thisday.data(using: String.Encoding.utf8)!)
                     var keys = Array(ddtmp.keys)
@@ -378,9 +248,9 @@ class DataCache {
         if fileState!.lastDate != EMPTY_STRING {
             let _ = deleteDay(fileState!.filename)
         }
-        if let cc = catalogue {
-            let start = cc[0]
-            let end = cc[cc.count-1]
+        if catalogue.count > 0 {
+            let start = catalogue[0]
+            let end = catalogue[catalogue.count-1]
             return createBackupFileWithAddtionalInfo(start, to: end)
         }
         return []
@@ -394,9 +264,9 @@ class DataCache {
             return createBackupFileWithAddtionalInfo(fileState!.lastDate, to: Time.today())
         } else {
             //如果之前没有备份 就全部备份
-            if let cc = catalogue {
-                let start = cc[0]
-                let end = cc[cc.count-1]
+            if catalogue.count > 0 {
+                let start = catalogue[0]
+                let end = catalogue[catalogue.count-1]
                 return createBackupFileWithAddtionalInfo(start, to: end)
             }
         }
