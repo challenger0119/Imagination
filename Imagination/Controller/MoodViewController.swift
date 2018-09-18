@@ -13,7 +13,7 @@ import AVFoundation
 
 class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,AudioRecordViewDelegate {
 
-    let dataCache = DataCache.shareInstance
+    let dataCache = DataCache.share
     
     var keyBoardHeight:CGFloat = 216.0
     let keyboardDistance:CGFloat = 10
@@ -333,6 +333,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 mf.path = audio.recordFileURL.path
                 self.multiMediaInsertBuffer.updateValue(mf, forKey:textAttach)
             }catch{
+
                 Dlog(error.localizedDescription)
             }
         }else if multimedia.isKind(of: Media.self){

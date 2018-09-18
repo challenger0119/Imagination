@@ -95,15 +95,6 @@ class ContentShowViewController: UIViewController {
                     let mf = medias[keyIndex]
                     let imageWidth = textView.frame.width - 10;
                     if mf.mediaType == .image {
-                        let lib = FileManager.libraryPath()
-                        var paths = try! FileManager.default.contentsOfDirectory(atPath: lib)
-                        debugPrint(paths)
-                        let media = lib + "/" + paths.last!
-                        paths = try! FileManager.default.contentsOfDirectory(atPath: media)
-                        debugPrint(paths)
-                        let pic = media + "/" + paths.last!
-                        debugPrint(try! FileManager.default.contentsOfDirectory(atPath: pic))
-                        debugPrint(FileManager.default.fileExists(atPath: mf.path))
                         
                         if let image = UIImage(contentsOfFile: mf.path) {
                             let imageHeight = image.size.height / image.size.width * imageWidth

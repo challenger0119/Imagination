@@ -41,7 +41,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CatalogueViewController") as! CatalogueViewController;
         vc.modalPresentationStyle = .overCurrentContext;
         vc.delegate = self
-        vc.content = DataCache.shareInstance.catalogue_month
+        vc.content = DataCache.share.catalogue_month
         self.present(vc, animated: false, completion: {
             var tframe = self.view.frame
             tframe.origin.x = CatalogueViewController.tableWidth;
@@ -54,9 +54,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
     // 添加新mood后更新
     @objc func updateMonthData() {
-        DataCache.shareInstance.loadCategory()
-        self.title = DataCache.shareInstance.currentMonthName
-        loadMonthData(DataCache.shareInstance.currentMonthName)
+        DataCache.share.loadCategory()
+        self.title = DataCache.share.currentMonthName
+        loadMonthData(DataCache.share.currentMonthName)
     }
 
     // 指纹识别
@@ -72,7 +72,6 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     // 解析一个月的数据生成数据源
     func loadMonthData(_ month:String) {
         guard !month.isEmpty else {
-            debugPrint("no date to load")
             return
         }
         
@@ -80,7 +79,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         self.ok = 0
         self.why = 0
         
-        func itemProcess(items:Results<Item>){
+        DataCache.share.loadMonth(monthString: month, result: { (items) in
             self.dataSource.removeAll()
             for cc in items {
                 switch cc.moodType {
@@ -91,10 +90,6 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
                 }
                 self.dataSource.append(cc)       //添加数据源
             }
-        }
-        
-        DataCache.shareInstance.loadMonth(monthString: month, result: { (items) in
-            itemProcess(items: items)
         })
         
         self.tableView.reloadData()

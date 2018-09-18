@@ -14,6 +14,6 @@ func Dlog<T>(_ message: T,
                     line: Int = #line)
 {
     #if DEBUG
-        print("\((file as NSString).lastPathComponent)[\(line)], \(method): \(message)")
+        debugPrint("\((file as NSString).lastPathComponent)[\(line)], \(method): \(message)")
     #endif
 }

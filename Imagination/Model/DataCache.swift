@@ -19,23 +19,21 @@ import RealmSwift
 
 class DataCache {
     
-    static let shareInstance = DataCache()
-    var realm:Realm!
+    static let share = DataCache()
     
-    let newline = "\r\n"
+    fileprivate var realm:Realm!        // 数据库 同一个数据库只能在出生的线程工作
+
+    var catalogue:[String] = []         // 目录：精确到日
+    var catalogue_month:[String] = []   // 目录：精确到月
+
+    fileprivate let EMPTY_STRING = " "  // 空字符串
+    fileprivate var fileState:(filename:String,lastDate:String)? = nil  // 导出文件状态
     
-    fileprivate let FILENAME_INDEX = "index"
-    //var isStart = true //启动标记 用于touchID
-    let EMPTY_STRING = " "
-    
-    var fileState:(filename:String,lastDate:String)? = nil
-  
-    var currentDayName:String = ""
-    var _currentMonthName:String = ""
+    fileprivate var _currentMonthName:String = ""   // 当前显示月份
     var currentMonthName:String {
         get{
             if _currentMonthName == "" && self.catalogue_month.count > 0 {
-               _currentMonthName = self.catalogue_month.first!
+                _currentMonthName = self.catalogue_month.first!
             }
             return _currentMonthName
         }
@@ -43,29 +41,20 @@ class DataCache {
             _currentMonthName = newValue
         }
     }
-    var catalogue:[String] = []
-    var catalogue_month:[String] = []
-    
-    var email:String? {
-        set{
-            if email != nil {
-                UserDefaults.standard.set(newValue, forKey: "email")
-            }
-        }
-        get{
-            return UserDefaults.standard.object(forKey: "email") as? String
-        }
-    }
     
     init() {
         do{
             self.realm = try Realm()
-            self.loadCategory()
         }catch{
-            debugPrint(error.localizedDescription)
+            Dlog(error.localizedDescription)
         }
     }
-    
+}
+
+// MARK: - 数据库操作
+
+extension DataCache{
+    // 存储数据
     func storeItem(_ item:Item) {
         let date = Date()
         item.timestamp = date.timeIntervalSince1970
@@ -74,27 +63,22 @@ class DataCache {
                 realm.add(item)
             }
         }catch{
-            debugPrint(error.localizedDescription)
-        }
-    }
-
-    func loadLastMonth(result:((Results<Item>) -> Void)) {
-        if self.catalogue.count > 0 {
-            self.loadMonth(monthString: self.catalogue.first!) { (items) in
-                result(items)
-            }
+            Dlog(error.localizedDescription)
         }
     }
     
+    // 加载某月数据
     func loadMonth(monthString:String, result:((Results<Item>) -> Void)){
         self.currentMonthName = monthString
         result(self.realm.objects(Item.self).filter("monthString == '\(monthString)'"))
     }
-    //初始化显示数据
+    
+    // 加载某天数据
     func loadDay(dayString:String, result:((Results<Item>) -> Void)){
         result(self.realm.objects(Item.self).filter("dayString == '\(dayString)'"))
     }
     
+    // 加载目录
     func loadCategory(){
         self.catalogue_month.removeAll()
         self.catalogue.removeAll()
@@ -114,45 +98,13 @@ class DataCache {
             }
         }
     }
-    
-    fileprivate func isThisMonth(_ thismonth:String,dd:String) -> Bool {
-        let arr = dd.components(separatedBy: "-")
-        if arr.count == 3 {
-            return (arr[0]+"-"+arr[1]) == thismonth
-        }else{
-            return false
-        }
-    }
-    
-    fileprivate func isSameMonth(_ mm:Int,arr:[Int]) -> Bool {
-        //字典没有顺序所以记录之前有的月份 然后比较
-        for ii in arr {
-            if mm == ii {
-                return true
-            }
-        }
-        return false
-    }
-    
-    fileprivate func cutDateToMonth(_ ss:String) -> String {
-        let arr = ss.components(separatedBy: "-")
-        if arr.count == 3 {
-            return arr[0]+"-"+arr[1]
-        }else{
-            return ss
-        }
-    }
-    
-    fileprivate func monthOfCatalogue(_ cata:String) -> Int {
-        let arr = cata.components(separatedBy: "-")
-        if arr.count == 3 {
-            return Int(arr[1])!
-        }else{
-            return 0 //解析错误
-        }
-    }
-    //创建文件
+}
 
+
+// MARK: - 创建备份与导出文件
+
+extension DataCache {
+    
     fileprivate func createBackupFileWithAddtionalInfo(_ from:String,to:String) -> [String] {
         return createFilesWithZipAttachments(from: from, to: to, pathGetter: {
             f,t in
@@ -172,7 +124,8 @@ class DataCache {
     
     // 将制定时间节点的数据中的文字信息和多媒体类型信息生成一个文件 返回包含了该文件路径和里面包含的多媒体文件的路径的数组
     fileprivate func createFiles(_ from:String,to:String,pathGetter:(_ from:String,_ to:String)->String)->[String]{
-       
+        let newline = "\r\n"    // 换行
+        
         let txtfile = pathGetter(from,to) + ".txt"
         var filePaths = [txtfile]
         let data = NSMutableData()
@@ -195,7 +148,7 @@ class DataCache {
                         if let place = item.location {
                             content += "位置:\(place.name),GPS(latitude:\(place.latitude),longtitude:\(place.longtitude))"
                         }
-                     
+                        
                         if item.moodType != .None || item.location != nil{
                             // 有数据就回车换行
                             content += newline
@@ -335,5 +288,20 @@ class DataCache {
             }
         }
         return false
+    }
+}
+
+
+// MARK: - 设置项
+extension DataCache{
+    var email:String? {
+        set{
+            if email != nil {
+                UserDefaults.standard.set(newValue, forKey: "email")
+            }
+        }
+        get{
+            return UserDefaults.standard.object(forKey: "email") as? String
+        }
     }
 }
