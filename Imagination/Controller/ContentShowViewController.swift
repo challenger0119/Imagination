@@ -10,24 +10,21 @@ import UIKit
 import CoreLocation
 import AVKit
 import AVFoundation
+import RealmSwift
 
 class ContentShowViewController: UIViewController {
-    var multiMediaBufferDic:[Int:Media]?
+    var multiMedias:List<Media>?
     var text:String = ""
-    var pInfo:(name:String,latitude:Double,longtitude:Double)?
+    var pInfo:Location?
     var exitAnimation:(() -> Void)?
     var mood:MoodType
     fileprivate var mapView:UIView?
     
-    convenience init(withItem item:Item) {
-        self.init(contentText: item.content, contentDic: item.multiMedias, mood: item.moodType, placeInfo: item.place)
-    }
-    
-    init(contentText:String,contentDic:[Int:Media]?,mood:MoodType,placeInfo:(name:String,latitude:Double,longtitude:Double)?) {
-        self.multiMediaBufferDic = contentDic
-        self.text = contentText
-        self.pInfo = placeInfo
-        self.mood = mood
+    init(withItem item:Item) {
+        self.multiMedias = item.medias
+        self.text = item.content
+        self.pInfo = item.location
+        self.mood = item.moodType
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -88,37 +85,27 @@ class ContentShowViewController: UIViewController {
         }
         
         var usedHeight:CGFloat = 0
-        if self.multiMediaBufferDic != nil{
-            var keys = Array(self.multiMediaBufferDic!.keys)
-            keys.sort()
+        if let medias = self.multiMedias{
             var keyIndex = 0
             var lastMuliIndex = -1
-            let contentend = (self.text.count > keys.last!) ? (self.text.count):keys.last!
+            let contentend = (self.text.count > medias.last!.position) ? (self.text.count):medias.last!.position
             for drawIndex in 0...contentend {
-                if keyIndex < keys.count && drawIndex == keys[keyIndex] {
-                    if let mf = self.multiMediaBufferDic![drawIndex] {
-                        let imageWidth = textView.frame.width - 10;
-                        if mf.mediaType == .image {
-                            let image = UIImage.init(contentsOfFile: mf.path)!
-                            let imageHeight = image.size.height / image.size.width * imageWidth
-                            textView.addSubview(
-                                buttonFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:imageHeight),
-                                              backgroundImage: Media.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight)), tag: keyIndex)
-                            )
-                            usedHeight += imageHeight
-                        }else if mf.mediaType == .voice {
-                            let btn = UIButton(type: .roundedRect)
-                            btn.frame = CGRect(x:0,y:usedHeight,width:textView.frame.width,height:50)
-                            btn.tag = keyIndex
-                            let audio = AudioRecord(withFile:mf.path)
-                            let timeString = Time.timeIntervalToMMssString(timeInterval: audio.playerDuration())
-                            btn.setTitle("录音 \(timeString)", for: .normal)
-                            btn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
-                            textView.addSubview(btn)
-                            usedHeight += 50
-                        }else if mf.mediaType == .video {
-                            let url = URL.init(fileURLWithPath: mf.path)
-                            let image = Media.viedoShot(withURL: url)!
+                if keyIndex < medias.count && drawIndex == medias[keyIndex].position {
+                    
+                    let mf = medias[keyIndex]
+                    let imageWidth = textView.frame.width - 10;
+                    if mf.mediaType == .image {
+                        let lib = FileManager.libraryPath()
+                        var paths = try! FileManager.default.contentsOfDirectory(atPath: lib)
+                        debugPrint(paths)
+                        let media = lib + "/" + paths.last!
+                        paths = try! FileManager.default.contentsOfDirectory(atPath: media)
+                        debugPrint(paths)
+                        let pic = media + "/" + paths.last!
+                        debugPrint(try! FileManager.default.contentsOfDirectory(atPath: pic))
+                        debugPrint(FileManager.default.fileExists(atPath: mf.path))
+                        
+                        if let image = UIImage(contentsOfFile: mf.path) {
                             let imageHeight = image.size.height / image.size.width * imageWidth
                             textView.addSubview(
                                 buttonFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:imageHeight),
@@ -126,14 +113,34 @@ class ContentShowViewController: UIViewController {
                             )
                             usedHeight += imageHeight
                         }
+                    }else if mf.mediaType == .voice {
+                        let btn = UIButton(type: .roundedRect)
+                        btn.frame = CGRect(x:0,y:usedHeight,width:textView.frame.width,height:50)
+                        btn.tag = keyIndex
+                        let audio = AudioRecord(withFile:mf.path)
+                        let timeString = Time.timeIntervalToMMssString(timeInterval: audio.playerDuration())
+                        btn.setTitle("录音 \(timeString)", for: .normal)
+                        btn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
+                        textView.addSubview(btn)
+                        usedHeight += 50
+                    }else if mf.mediaType == .video {
+                        let url = URL.init(fileURLWithPath: mf.path)
+                        let image = Media.viedoShot(withURL: url)!
+                        let imageHeight = image.size.height / image.size.width * imageWidth
+                        textView.addSubview(
+                            buttonFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:imageHeight),
+                                          backgroundImage: Media.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight)), tag: keyIndex)
+                        )
+                        usedHeight += imageHeight
                     }
+                    
                     lastMuliIndex = drawIndex
                     keyIndex += 1
                 }else if drawIndex == lastMuliIndex + 1 {
                     let start = self.text.index(text.startIndex, offsetBy: lastMuliIndex + 1)
                     var offset = 0
-                    if keyIndex < keys.count {
-                        offset = keys[keyIndex]
+                    if keyIndex < medias.count {
+                        offset = medias[keyIndex].position
                     }else{
                         offset = contentend
                     }
@@ -172,9 +179,8 @@ class ContentShowViewController: UIViewController {
     }
 
     @objc func btnClicked(sender:UIButton){
-        var keys = Array(self.multiMediaBufferDic!.keys)
-        keys.sort()
-        let mf = self.multiMediaBufferDic![keys[sender.tag]]!
+        
+        let mf = self.multiMedias![sender.tag]
         switch mf.mediaType {
         case .image:
             let vc = ImageViewController(withImage: UIImage.init(contentsOfFile: mf.path)!)

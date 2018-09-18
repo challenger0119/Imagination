@@ -20,19 +20,19 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     var moodState = 0 {
         didSet{
             if moodState == 1 {
-                self.noGoodBtn.backgroundColor = Item.defaultColor
+                self.noGoodBtn.backgroundColor = MoodType.defaultColor
                 self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
-                self.goodBtn.backgroundColor = Item.coolColor
+                self.goodBtn.backgroundColor = MoodType.coolColor
                 self.goodBtn.setTitleColor(UIColor.white, for: UIControlState())
             }else if moodState == 2{
-                self.noGoodBtn.backgroundColor = Item.justOkColor
+                self.noGoodBtn.backgroundColor = MoodType.justOkColor
                 self.noGoodBtn.setTitleColor(UIColor.white, for: UIControlState())
                 self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
-                self.goodBtn.backgroundColor = Item.defaultColor
+                self.goodBtn.backgroundColor = MoodType.defaultColor
             }else{
-                self.noGoodBtn.backgroundColor = Item.defaultColor
+                self.noGoodBtn.backgroundColor = MoodType.defaultColor
                 self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
-                self.goodBtn.backgroundColor = Item.defaultColor
+                self.goodBtn.backgroundColor = MoodType.defaultColor
                 self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
             }
         }
@@ -165,7 +165,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             item.content = ttt!
             item.mood = moodState
             if let plc = place {
-               item.location = Item.locationStringWithName(GPSName: plc.name, latitude: plc.coor.latitude, longtitude: plc.coor.longitude)
+               item.location = Location(withName: plc.name, latitude: plc.coor.latitude, longtitude: plc.coor.longitude)
             }
             self.multiMediaBufferDic.forEach { (key, value) in
                 value.position = key

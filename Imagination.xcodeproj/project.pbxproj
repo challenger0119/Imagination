@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		482A52C27D2EEB439BF7B5A7 /* Pods_Imagination.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6617760B2D13706ED0EFC492 /* Pods_Imagination.framework */; };
 		50995464212919A500BECAFD /* PhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50995463212919A500BECAFD /* PhoneModel.swift */; };
+		F804D3A42150CA7E0028DAD3 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804D3A32150CA7E0028DAD3 /* Location.swift */; };
 		F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80B691B1EB1D6BF00900635 /* AudioViewController.swift */; };
 		F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81229611BF73C6C00BDCF0E /* AppDelegate.swift */; };
 		F81229671BF73C6C00BDCF0E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F81229651BF73C6C00BDCF0E /* Main.storyboard */; };
@@ -53,6 +54,7 @@
 		50995463212919A500BECAFD /* PhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
 		6617760B2D13706ED0EFC492 /* Pods_Imagination.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Imagination.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70134F5EE603F78D03C4878 /* Pods-Imagination.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imagination.release.xcconfig"; path = "Pods/Target Support Files/Pods-Imagination/Pods-Imagination.release.xcconfig"; sourceTree = "<group>"; };
+		F804D3A32150CA7E0028DAD3 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		F80B691B1EB1D6BF00900635 /* AudioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
 		F812295E1BF73C6C00BDCF0E /* Imagination.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Imagination.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F81229611BF73C6C00BDCF0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */,
 				50995463212919A500BECAFD /* PhoneModel.swift */,
 				F81316E9214F94B700FA0FCC /* Media.swift */,
+				F804D3A32150CA7E0028DAD3 /* Location.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -366,6 +369,7 @@
 				F89753C71EB1AF28003BB8EF /* ContentShowViewController.swift in Sources */,
 				F89537551EAEFC0200BFEAFC /* AudioRecordView.swift in Sources */,
 				F8F5D47B1EADCA25007BDF2A /* UIImage+BlurImage.m in Sources */,
+				F804D3A42150CA7E0028DAD3 /* Location.swift in Sources */,
 				F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */,
 				F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */,
 				F81316EA214F94B700FA0FCC /* Media.swift in Sources */,

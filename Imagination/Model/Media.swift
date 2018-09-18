@@ -16,16 +16,23 @@ enum MediaType:String {
 
 class Media: Object {
     
-    @objc var position:Int = 0
-    @objc var name:String = ""
-    @objc var type:String = MediaType.def.rawValue {
+    @objc dynamic var position:Int = 0
+    @objc dynamic var name:String = ""
+    @objc dynamic var type:String = MediaType.def.rawValue
+    @objc dynamic var path:String = "" {
         didSet{
-            self.mediaType = MediaType(rawValue: type)!
+            self.name = (path as NSString).lastPathComponent
         }
     }
-    @objc var path:String = ""
     
-    var mediaType:MediaType = .def
+    var mediaType:MediaType{
+        get{
+            return MediaType(rawValue: self.type)!
+        }
+        set{
+            self.type = newValue.rawValue
+        }
+    }
     var obj:AnyObject?
     
     let ofItem = LinkingObjects(fromType: Item.self, property: "medias")

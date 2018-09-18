@@ -122,19 +122,19 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         if left == nil {
             firstTime = true
             left = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: height))
-            left.backgroundColor = Item.coolColor
+            left.backgroundColor = MoodType.coolColor
             left.tag = 1;
             self.moodIndicatorView.addSubview(left)
         }
         if center == nil{
             center = UIView.init(frame: CGRect(x: partition_a, y: 0, width: 0, height: height))
-            center.backgroundColor = Item.justOkColor
+            center.backgroundColor = MoodType.justOkColor
             center.tag = 2;
             self.moodIndicatorView.addSubview(center)
         }
         if right == nil{
             right = UIView.init(frame: CGRect(x: partition_b, y: 0,width: 0, height: height))
-            right.backgroundColor = Item.whyColor
+            right.backgroundColor = MoodType.whyColor
             right.tag = 3;
             self.moodIndicatorView.addSubview(right)
         }
@@ -213,10 +213,10 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         let cc = dataSource[indexPath.row]
         cell.time.text = cc.dayString + " " + cc.timeString
         // 去掉内容里面的换行 避免cell过高
-        if cc.place.latitude != 0 {
-            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.getMediaDescription() + "\n\n@\(cc.place.name)"
+        if let plc = cc.location {
+            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "") + cc.getMediaDescription() + "\n\n@\(plc.name)"
         }else{
-            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.getMediaDescription()
+            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "") + cc.getMediaDescription()
         }
         cell.time.textColor = cc.moodType.getColor()
         cell.content.textColor = cc.moodType.getColor()

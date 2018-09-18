@@ -99,7 +99,8 @@ class DataCache {
         self.catalogue_month.removeAll()
         self.catalogue.removeAll()
         
-        let items = self.realm.objects(Item.self).sorted(byKeyPath: "timestamp", ascending: false)
+        var items = self.realm.objects(Item.self)
+        items = items.sorted(byKeyPath: "timestamp", ascending: false)
         var tmpDayString = ""
         var tmpMonthString = ""
         items.forEach { (it) in
@@ -191,19 +192,19 @@ class DataCache {
                             // 有记录心情 解析保存心情
                             content += "心情:\(item.moodType.rawValue) "
                         }
-                        if item.place.latitude != 0 {
-                            // 有记录位置 解析保存位置
-                            content += "位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))"
+                        if let place = item.location {
+                            content += "位置:\(place.name),GPS(latitude:\(place.latitude),longtitude:\(place.longtitude))"
                         }
-                        if item.moodType != .None || item.place.latitude != 0 {
+                     
+                        if item.moodType != .None || item.location != nil{
                             // 有数据就回车换行
                             content += newline
                         }
                         data.append((content.data(using: String.Encoding.utf8))!)   // 记录内容
                         
                         var multimedia = ""
-                        if let mm = item.multiMedias {
-                            for value in mm.values {
+                        if item.medias.count > 0 {
+                            for value in item.medias {
                                 filePaths.append(value.path)   // 加入多媒体文件路径
                                 multimedia += (value.path as NSString).lastPathComponent+" "
                             }
