@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainTableViewController: UITableViewController,CatalogueViewControllerDelegate {
 
@@ -21,9 +22,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateMonthData()
         NotificationCenter.default.addObserver(self, selector: #selector(updateMonthData), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
         authorityView()
+        self.updateMonthData()
     }
     
     override func viewWillAppear(_ animated: Bool){
@@ -40,9 +41,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         let vc = self.storyboard?.instantiateViewController(withIdentifier: "CatalogueViewController") as! CatalogueViewController;
         vc.modalPresentationStyle = .overCurrentContext;
         vc.delegate = self
-        if let cata = DataCache.shareInstance.catalogue_month {
-            vc.content = cata.reversed()
-        }
+        vc.content = DataCache.shareInstance.catalogue_month
         self.present(vc, animated: false, completion: {
             var tframe = self.view.frame
             tframe.origin.x = CatalogueViewController.tableWidth;
@@ -55,10 +54,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
     // 添加新mood后更新
     @objc func updateMonthData() {
-        DataCache.shareInstance.loadLastMonth()
+        DataCache.shareInstance.loadCategory()
         self.title = DataCache.shareInstance.currentMonthName
-        
-        loadMonthData()
+        loadMonthData(DataCache.shareInstance.currentMonthName)
     }
 
     // 指纹识别
@@ -72,39 +70,35 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
 
     // 解析一个月的数据生成数据源
-    func loadMonthData() {
-        DispatchQueue.global().async {
-            let monthCache = DataCache.shareInstance.lastMonth // 一个月的记录
-            self.cool = 0
-            self.ok = 0
-            self.why = 0
-            if let mcache = monthCache {
-                var dayArray = Array(mcache.keys)
-                dayArray.sort(by: {$0>$1})      // 降序排列日期 精确到天
-                self.dataSource.removeAll()
-                for daytime in dayArray {
-                    if let day = mcache[daytime] {
-                        var tmpTimes = Array(day.keys)
-                        tmpTimes.sort(by: {$0>$1})      //降序排列时间 精确到秒以下
-                        
-                        for ct in tmpTimes {
-                            let cc = Item(withTime: daytime + " " + ct, contentString: day[ct]!)
-                            switch cc.mood {
-                            case .Cool: self.cool += 1
-                            case .OK: self.ok += 1
-                            case .Why: self.why += 1
-                            default:break
-                            }
-                            self.dataSource.append(cc)       //添加数据源
-                        }
-                    }
+    func loadMonthData(_ month:String) {
+        guard !month.isEmpty else {
+            debugPrint("no date to load")
+            return
+        }
+        
+        self.cool = 0
+        self.ok = 0
+        self.why = 0
+        
+        func itemProcess(items:Results<Item>){
+            self.dataSource.removeAll()
+            for cc in items {
+                switch cc.moodType {
+                case .Cool: self.cool += 1
+                case .OK: self.ok += 1
+                case .Why: self.why += 1
+                default:break
                 }
-            }
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-                self.refreshMoodState()
+                self.dataSource.append(cc)       //添加数据源
             }
         }
+        
+        DataCache.shareInstance.loadMonth(monthString: month, result: { (items) in
+            itemProcess(items: items)
+        })
+        
+        self.tableView.reloadData()
+        self.refreshMoodState()
     }
     
     // 更新状态条
@@ -192,9 +186,8 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     
     func catalogueDidSelectItem(item: String){
         resumeView(){
-            DataCache.shareInstance.loadLastMonthToMonth(item)
             self.title = item
-            self.loadMonthData()
+            self.loadMonthData(item)
         }
     }
     
@@ -218,15 +211,15 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier",for: indexPath) as! CustomTableViewCell
         let cc = dataSource[indexPath.row]
-        cell.time.text = cc.timeString
+        cell.time.text = cc.dayString + " " + cc.timeString
         // 去掉内容里面的换行 避免cell过高
         if cc.place.latitude != 0 {
-            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.multiMediasDescrip + "\n\n@\(cc.place.name)"
+            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.getMediaDescription() + "\n\n@\(cc.place.name)"
         }else{
-            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.multiMediasDescrip
+            cell.content.text = cc.content.replacingOccurrences(of: "\n", with: "")+cc.getMediaDescription()
         }
-        cell.time.textColor = cc.color
-        cell.content.textColor = cc.color
+        cell.time.textColor = cc.moodType.getColor()
+        cell.content.textColor = cc.moodType.getColor()
         
         return cell
     }

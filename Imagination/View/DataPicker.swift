@@ -64,9 +64,9 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if row != 0 {
             if component == 0 {
-                from = catalogue![row-1]
+                from = catalogue[row-1]
             } else {
-                to = catalogue![row-1]
+                to = catalogue[row-1]
             }
             Dlog("\(from)-\(to)")
         }
@@ -87,7 +87,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
                     tmp.text = "To"
                 }
             } else {
-                tmp.text = catalogue![row-1]
+                tmp.text = catalogue[row-1]
             }
             return tmp
         } else {
@@ -100,7 +100,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
                     label.text = "To"
                 }
             } else {
-                label.text = catalogue![row-1]
+                label.text = catalogue[row-1]
             }
             return label
         }
@@ -112,10 +112,6 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if let cata = catalogue {
-            return cata.count+1
-        } else {
-            return 1
-        }
+        return catalogue.count + 1
     }
 }

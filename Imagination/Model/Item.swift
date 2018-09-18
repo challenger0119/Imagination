@@ -52,28 +52,51 @@ class Item:Object{
     fileprivate static let moodColor = [UIColor.darkGray,Item.coolColor,Item.justOkColor,Item.whyColor]
    
     // MARK: - DB properties
-    @objc dynamic var timestamp:TimeInterval = 0
-    @objc dynamic var dayString:String = ""
+    @objc dynamic var timestamp:TimeInterval = 0 {
+        didSet{
+            let date = Date(timeIntervalSince1970: timestamp)
+            self.dayString = Time.dayOfDate(date)
+            self.monthString = Time.monthStringOfDate(date)
+            self.timeString = Time.clockOfDate(date)
+        }
+    }
+    
     @objc dynamic var monthString:String = ""
+    @objc dynamic var dayString:String = ""
+    @objc dynamic var timeString:String = ""
     @objc dynamic var content:String = ""
     @objc dynamic var mood:Int = 0
-    @objc dynamic var location:String = ""
+    @objc dynamic var location:String = "" {
+        didSet{
+            var sb = location.components(separatedBy: Item.gpsSeparator)
+            self.place = (sb[0] ,Double(sb[1])!,Double(sb[2])!)
+        }
+    }
     
     let medias = List<Media>()
     
     override class func primaryKey() -> String? {
-        return "timestamp"
+        return "timeString"
     }
     
     // MARK: - non-DB properties
-    var place:(name:String,latitude:Double,longtitude:Double)? = nil
+    var place:(name:String,latitude:Double,longtitude:Double) = ("",0,0)
     var multiMedias:[Int:Media]? = nil
-    var multiMediasDescrip:String? = nil
+    var moodType:MoodType = .None
+    
     
     override class func ignoredProperties() -> [String] {
-        return ["place","multiMedias","multiMediasDescrip"]
+        return ["place","multiMedias","moodType"]
     }
     
+    
+    func getMediaDescription() -> String{
+        var mediaDescription:String = ""
+        self.medias.forEach { (md) in
+            mediaDescription += "[\(md.mediaType.rawValue)]"
+        }
+        return mediaDescription
+    }
     /*
     convenience init(withTime time:String, contentString:String) {
         

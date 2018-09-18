@@ -17,30 +17,10 @@ import UIKit
 import SSZipArchive
 import RealmSwift
 
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 class DataCache {
     
     static let shareInstance = DataCache()
-    var realm:Realm
+    var realm:Realm!
     
     let newline = "\r\n"
     
@@ -48,16 +28,29 @@ class DataCache {
     //var isStart = true //启动标记 用于touchID
     let EMPTY_STRING = " "
     
-    var fileState:(filename:String,lastDate:String)?
+    var fileState:(filename:String,lastDate:String)? = nil
   
     var currentDayName:String = ""
-    var currentMonthName:String = ""
+    var _currentMonthName:String = ""
+    var currentMonthName:String {
+        get{
+            if _currentMonthName == "" && self.catalogue_month.count > 0 {
+               _currentMonthName = self.catalogue_month.first!
+            }
+            return _currentMonthName
+        }
+        set{
+            _currentMonthName = newValue
+        }
+    }
     var catalogue:[String] = []
     var catalogue_month:[String] = []
     
-    var email:String?{
+    var email:String? {
         set{
-            UserDefaults.standard.set(newValue, forKey: "email")
+            if email != nil {
+                UserDefaults.standard.set(newValue, forKey: "email")
+            }
         }
         get{
             return UserDefaults.standard.object(forKey: "email") as? String
@@ -76,8 +69,6 @@ class DataCache {
     func storeItem(_ item:Item) {
         let date = Date()
         item.timestamp = date.timeIntervalSince1970
-        item.dayString = Time.dayOfDate(date)
-        item.monthString = Time.monthStringOfDate(date)
         do{
             try realm.write {
                 realm.add(item)
@@ -87,19 +78,38 @@ class DataCache {
         }
     }
 
+    func loadLastMonth(result:((Results<Item>) -> Void)) {
+        if self.catalogue.count > 0 {
+            self.loadMonth(monthString: self.catalogue.first!) { (items) in
+                result(items)
+            }
+        }
+    }
     
+    func loadMonth(monthString:String, result:((Results<Item>) -> Void)){
+        self.currentMonthName = monthString
+        result(self.realm.objects(Item.self).filter("monthString == '\(monthString)'"))
+    }
     //初始化显示数据
     func loadDay(dayString:String, result:((Results<Item>) -> Void)){
-        result(self.realm.objects(Item.self).filter("dayString == \(dayString)"))
+        result(self.realm.objects(Item.self).filter("dayString == '\(dayString)'"))
     }
     
     func loadCategory(){
-        let items = self.realm.objects(Item.self).sorted(byKeyPath: "dayString", ascending: false)
+        self.catalogue_month.removeAll()
+        self.catalogue.removeAll()
+        
+        let items = self.realm.objects(Item.self).sorted(byKeyPath: "timestamp", ascending: false)
         var tmpDayString = ""
+        var tmpMonthString = ""
         items.forEach { (it) in
             if it.dayString != tmpDayString {
                 catalogue.append(it.dayString)
                 tmpDayString = it.dayString
+            }
+            if it.monthString != tmpMonthString {
+                catalogue_month.append(it.monthString)
+                tmpMonthString = it.monthString
             }
         }
     }
@@ -122,6 +132,7 @@ class DataCache {
         }
         return false
     }
+    
     fileprivate func cutDateToMonth(_ ss:String) -> String {
         let arr = ss.components(separatedBy: "-")
         if arr.count == 3 {
@@ -130,6 +141,7 @@ class DataCache {
             return ss
         }
     }
+    
     fileprivate func monthOfCatalogue(_ cata:String) -> Int {
         let arr = cata.components(separatedBy: "-")
         if arr.count == 3 {
@@ -169,23 +181,21 @@ class DataCache {
                 loadDay(dayString: dd) { (items) in
                     let thisday = dd + newline
                     data.append(thisday.data(using: String.Encoding.utf8)!)
-                    var keys = Array(ddtmp.keys)
-                    keys.sort(){$0 < $1}
-                    for kk in keys {
-                        let title = kk+newline
+                    let sortedItems = items.sorted(byKeyPath: "timestamp", ascending: false)    // 按时间排序当天的数据
+                    for item in sortedItems {
+                        let title = Time.clockOfDate(Date(timeIntervalSince1970: item.timestamp)) + newline
                         data.append(title.data(using: String.Encoding.utf8)!)   // 记录日期
                         
-                        let item = Item(withTime: dd + " " + kk, contentString: ddtmp[kk]!)
                         var content = item.content + newline
-                        if item.mood != .None {
+                        if item.moodType != .None {
                             // 有记录心情 解析保存心情
-                            content += "心情:\(item.moodString) "
+                            content += "心情:\(item.moodType.rawValue) "
                         }
                         if item.place.latitude != 0 {
                             // 有记录位置 解析保存位置
                             content += "位置:\(item.place.name),GPS(latitude:\(item.place.latitude),longtitude:\(item.place.longtitude))"
                         }
-                        if item.mood != .None || item.place.latitude != 0 {
+                        if item.moodType != .None || item.place.latitude != 0 {
                             // 有数据就回车换行
                             content += newline
                         }
@@ -194,8 +204,8 @@ class DataCache {
                         var multimedia = ""
                         if let mm = item.multiMedias {
                             for value in mm.values {
-                                filePaths.append(value.storePath)   // 加入多媒体文件路径
-                                multimedia += (value.storePath as NSString).lastPathComponent+" "
+                                filePaths.append(value.path)   // 加入多媒体文件路径
+                                multimedia += (value.path as NSString).lastPathComponent+" "
                             }
                         }
                         multimedia += newline;
