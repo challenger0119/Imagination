@@ -36,9 +36,9 @@
 
 Table name : Item
 
-| timestamp | content | mood | timeString | dayString | monthString | location | medias      |
-| --------- | ------- | ---- | ---------- | --------- | ----------- | -------- | ----------- |
-| Double    | String  | Int  | String     | String    | String      | Location | List<Media> |
+| timestamp | content | mood | timeString | dayString | monthString | location | medias        |
+| --------- | ------- | ---- | ---------- | --------- | ----------- | -------- | ------------- |
+| Double    | String  | Int  | String     | String    | String      | Location | List\<Media\> |
 
 Table name: Location
 
