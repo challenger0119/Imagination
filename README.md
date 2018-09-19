@@ -5,7 +5,6 @@
 ***
 #### 待完成：    
 1. 设计感提升..
-2. 集成Realm
 
 
 #### 已完成：  
@@ -15,8 +14,8 @@
 4. 本地通知：Notification  
 5. 调试期打印：Log  
 6. 地图、定位：LocationViewController，Annotation  
-7. 富文本：MoodViewController  
-8. 图像：MoodViewController  
+7. 富文本：MoodViewController, ContentShowViewController
+8. 图像：MoodViewController, ContentShowViewController
 9. 指纹识别：AuthorityViewController  
 10. 视图动画：DayList，MainTableViewController  
 11. 时间日期：Time  
@@ -24,19 +23,32 @@
 13. iPhone SplitView样式：MainTableViewController, CatalogueViewController
 14. 图像模糊：UIImage+BlurImage
 15. UIBezierPath(Core Graphic)绘图：IndicatorMapViewBack
-16. 录音：AudioRecord
-17. 视频：MoodViewController,ContentShowViewController
+16. 录音：AudioRecord, ContentShowViewController
+17. 视频：MoodViewController, ContentShowViewController
 18. Zip压缩文件：DataCache
+19. 集成Realm数据库: DataCache, Item, Media, Location
 
 
 
+### 文档
 
+#### Realm 表结构
 
-Realm 表
+Table name : Item
 
-talbe name : item
+| timestamp | content | mood | timeString | dayString | monthString | location | medias      |
+| --------- | ------- | ---- | ---------- | --------- | ----------- | -------- | ----------- |
+| Double    | String  | Int  | String     | String    | String      | Location | List<Media> |
 
-| id   | content | mood | timestamp | time_string | multi_media | location        |
-| ---- | ------- | ---- | --------- | ----------- | ----------- | --------------- |
-| Int  | string  | int  | double    | string      | [string]    | [double,double] |
+Table name: Location
+
+| name   | latitude | longtitude |
+| ------ | -------- | ---------- |
+| String | Double   | Double     |
+
+Table name: Media
+
+| name   | path   | type   | position |
+| ------ | ------ | ------ | -------- |
+| String | String | String | Int      |
 
