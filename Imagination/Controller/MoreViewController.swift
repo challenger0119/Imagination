@@ -9,10 +9,9 @@
 import UIKit
 import MessageUI
 
-class MoreViewController: UITableViewController,DataPickerDelegate,MFMailComposeViewControllerDelegate {
+class MoreViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     let dCache = DataCache.share
     let pickerViewTag = 111
-    var picker:DataPicker?
     var datePicker:UIDatePicker?
     
     
@@ -50,8 +49,14 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
             sendBackupToMail(files: dCache.backupAll())
             updateRecentDetail()
         } else if indexPath.row == 2 {
-            picker = DataPicker.init(frame: CGRect(x: 20, y: (self.view.frame.height-200)/2-50, width: self.view.frame.width-40, height: 200), dele: self)
-            self.view.addSubview(picker!)
+            if let pickerVC = self.storyboard?.instantiateViewController(withIdentifier: "DataPickerViewController") as? DataPickerViewController {
+                pickerVC.selected = {
+                    from, to in
+                    self.sendBackupToMail(files: self.dCache.createExportDataFile(from, to: to))
+                }
+                pickerVC.modalPresentationStyle = .overCurrentContext
+                self.tabBarController?.present(pickerVC, animated: false, completion: nil)
+            }
         } else if indexPath.row == 3 {
             let alert = UIAlertController.init(title: "设置邮箱", message: "请输入邮箱地址", preferredStyle: UIAlertControllerStyle.alert)
             alert.addTextField(configurationHandler: {
@@ -148,10 +153,6 @@ class MoreViewController: UITableViewController,DataPickerDelegate,MFMailCompose
         Notification.createNotificaion(datePicker?.date)
         
         updateReminder()
-    }
-    
-    func dataPickerResult(_ first: String, second: String) {
-        sendBackupToMail(files: dCache.createExportDataFile(first, to: second))
     }
     
     func isValidateEmail(_ email:String) -> Bool {

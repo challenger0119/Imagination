@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		482A52C27D2EEB439BF7B5A7 /* Pods_Imagination.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6617760B2D13706ED0EFC492 /* Pods_Imagination.framework */; };
 		50995464212919A500BECAFD /* PhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50995463212919A500BECAFD /* PhoneModel.swift */; };
+		509B2F0D2153E27500D5A926 /* DataPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */; };
 		F804D3A42150CA7E0028DAD3 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804D3A32150CA7E0028DAD3 /* Location.swift */; };
 		F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80B691B1EB1D6BF00900635 /* AudioViewController.swift */; };
 		F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81229611BF73C6C00BDCF0E /* AppDelegate.swift */; };
@@ -39,7 +40,6 @@
 		F8D5C4091C01EE8600179853 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8D5C4081C01EE8600179853 /* FileManager.swift */; };
 		F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */; };
 		F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918A1C17CAE500650406 /* MoreViewController.swift */; };
-		F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8E9918E1C19123F00650406 /* DataPicker.swift */; };
 		F8EFBA5F1D71DDDD00A7C3C0 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */; };
 		F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8EFBA601D71E73200A7C3C0 /* Annotation.swift */; };
 		F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F28CF41C0DB9D40007EDE3 /* Time.swift */; };
@@ -52,6 +52,7 @@
 /* Begin PBXFileReference section */
 		1848615C1FCBAE6983817833 /* Pods-Imagination.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imagination.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Imagination/Pods-Imagination.debug.xcconfig"; sourceTree = "<group>"; };
 		50995463212919A500BECAFD /* PhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
+		509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPickerViewController.swift; sourceTree = "<group>"; };
 		6617760B2D13706ED0EFC492 /* Pods_Imagination.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Imagination.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70134F5EE603F78D03C4878 /* Pods-Imagination.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imagination.release.xcconfig"; path = "Pods/Target Support Files/Pods-Imagination/Pods-Imagination.release.xcconfig"; sourceTree = "<group>"; };
 		F804D3A32150CA7E0028DAD3 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
@@ -89,7 +90,6 @@
 		F8D5C4081C01EE8600179853 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaodeMapApi.swift; sourceTree = "<group>"; };
 		F8E9918A1C17CAE500650406 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
-		F8E9918E1C19123F00650406 /* DataPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPicker.swift; sourceTree = "<group>"; };
 		F8EFBA5E1D71DDDD00A7C3C0 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewController.swift; sourceTree = "<group>"; };
 		F8EFBA601D71E73200A7C3C0 /* Annotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
 		F8F28CF41C0DB9D40007EDE3 /* Time.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
@@ -127,6 +127,7 @@
 				F80B691B1EB1D6BF00900635 /* AudioViewController.swift */,
 				F856CF011EB303F000FE2822 /* MemorySpaceController.swift */,
 				F862AF511EB766FB0065D32B /* WebViewController.swift */,
+				509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -171,7 +172,6 @@
 				F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */,
 				F89537541EAEFC0200BFEAFC /* AudioRecordView.swift */,
 				F89537561EAEFC1200BFEAFC /* AudioRecordView.xib */,
-				F8E9918E1C19123F00650406 /* DataPicker.swift */,
 				F88D3BA41C14678600A3C921 /* DayList.swift */,
 				F8C1F58F1C3BBA2A00447ED2 /* CustomTableViewCell.swift */,
 			);
@@ -380,6 +380,7 @@
 				F862AF521EB766FB0065D32B /* WebViewController.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */,
+				509B2F0D2153E27500D5A926 /* DataPickerViewController.swift in Sources */,
 				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,
 				F8DAA5DC1E24B28200021288 /* GaodeMapApi.swift in Sources */,
 				F870EF761C37BBB5008EF34D /* Item.swift in Sources */,
@@ -392,7 +393,6 @@
 				F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */,
 				F8723F141E260527009CCF44 /* Reachability.m in Sources */,
 				F8AB2A701E9D15E700B58229 /* CatalogueViewController.swift in Sources */,
-				F8E9918F1C19123F00650406 /* DataPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,65 +1,75 @@
 //
-//  DataPicker.swift
+//  DataPickerViewController.swift
 //  Imagination
 //
-//  Created by Star on 15/12/10.
-//  Copyright © 2015年 Star. All rights reserved.
+//  Created by YouJuny on 2018/9/20.
+//  Copyright © 2018年 Star. All rights reserved.
 //
 
 import UIKit
 
-protocol DataPickerDelegate {
-    func dataPickerResult(_ first:String,second:String)
-}
+class DataPickerViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
-class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
+    @IBOutlet var backView: UIView!
+    @IBOutlet var pickerView: UIPickerView!
+    
     let catalogue = DataCache.share.catalogue
-    var from:String
-    var to:String
-    let delegate:DataPickerDelegate
-    init(frame: CGRect, dele:DataPickerDelegate) {
-        self.from = "from"
-        self.to = "to"
-        
-        self.delegate = dele
-        super.init(frame: frame)
-        self.frame = frame
-        self.backgroundColor = UIColor.white
-        self.layer.borderColor = UIColor.black.cgColor
-        self.layer.borderWidth = 0.3
-        self.layer.cornerRadius = 5
-        let confirm = UIButton.init(frame: CGRect(x: self.frame.size.width - 50, y: 5,width: 30, height: 30))
-        confirm.setImage(UIImage.init(named: "check"), for: UIControlState())
-        confirm.addTarget(self, action: #selector(DataPicker.confirm), for: UIControlEvents.touchUpInside)
-        self.addSubview(confirm)
-        let cancel = UIButton.init(frame: CGRect(x: 20, y: 5,width: 30, height: 30))
-        cancel.setImage(UIImage.init(named: "cancel"), for: UIControlState())
-        cancel.addTarget(self, action: #selector(DataPicker.cancel), for: UIControlEvents.touchUpInside)
-        self.addSubview(cancel)
-        let pickerView = UIPickerView.init(frame: CGRect(x: 0, y: 30, width: self.frame.size.width, height: self.frame.size.height-30))
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        self.addSubview(pickerView)
+    var from:String = "from"
+    var to:String = "to"
+    var selected:((_ from:String, _ to:String) -> Void)?
+    var blurImageView:UIImageView?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
+        self.view.alpha = 0;
+        self.pickerView.delegate = self
+        self.pickerView.dataSource = self
+        self.backView.layer.cornerRadius = 10
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(withDuration: 0.2) {
+            self.view.alpha = 1.0
+        }
     }
     
+    func exit(action:@escaping (() -> Void)){
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.alpha = 0
+        }) { (finish) in
+            if finish {
+                self.dismiss(animated: false, completion: {
+                    action()
+                })
+            }
+        }
+    }
     
-    @objc func confirm() {
-        self.removeFromSuperview()
+    @IBAction func cancel(_ sender: Any) {
+        self.exit {
+            
+        }
+    }
+    
+    @IBAction func selected(_ sender: Any) {
         if from == "from" {
             return
         } else if to == "to" {
             return
+        }else{
+            self.exit {
+                if self.selected != nil {
+                    self.selected!(self.from, self.to)
+                }
+            }
         }
-        delegate.dataPickerResult(from, second: to)
     }
     
-    @objc func cancel() {
-        self.removeFromSuperview()
-    }
+    
+    // MARK: - UIPickerViewDelegate
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if row != 0 {
@@ -106,6 +116,7 @@ class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
         }
     }
     
+    // MARK: - UIPickerViewDataSource
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
