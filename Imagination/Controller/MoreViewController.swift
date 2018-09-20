@@ -10,7 +10,7 @@ import UIKit
 import MessageUI
 
 class MoreViewController: UITableViewController,DataPickerDelegate,MFMailComposeViewControllerDelegate {
-    let dCache = DataCache.shareInstance
+    let dCache = DataCache.share
     let pickerViewTag = 111
     var picker:DataPicker?
     var datePicker:UIDatePicker?

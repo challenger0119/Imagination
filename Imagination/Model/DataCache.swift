@@ -26,8 +26,8 @@ class DataCache {
     var catalogue:[String] = []         // 目录：精确到日
     var catalogue_month:[String] = []   // 目录：精确到月
 
-    fileprivate let EMPTY_STRING = " "  // 空字符串
-    fileprivate var fileState:(filename:String,lastDate:String)? = nil  // 导出文件状态
+    let EMPTY_STRING = " "  // 空字符串
+    var fileState:(filename:String,lastDate:String)? = nil  // 导出文件状态
     
     fileprivate var _currentMonthName:String = ""   // 当前显示月份
     var currentMonthName:String {

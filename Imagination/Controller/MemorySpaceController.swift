@@ -13,15 +13,18 @@ let memoryReusableIdentifier = "memoryReusableIdentifier"
 
 class MemorySpaceController: UITableViewController {
 
+    enum SectionType:String {
+        case Video = "视频", Audio = "录音", Image = "照片", Deletable = "可酌情删除的数据"
+    }
     
-    let sectionName = ["视频","录音","照片","可酌情删除的数据"]
     struct FileInfo {
         var name:String
         var size:Int
         var suffix:String
     }
     
-    var cellcontent:[[FileInfo]] = []
+    var cellcontent:[(data:[FileInfo],type:SectionType)] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
@@ -30,11 +33,12 @@ class MemorySpaceController: UITableViewController {
     }
     
     func loadData(){
-        var videoInfos:[FileInfo] = []
-        var audioInfos:[FileInfo] = []
-        var imageInfos:[FileInfo] = []
-        
+
         do {
+            var videoInfos:[FileInfo] = []
+            var audioInfos:[FileInfo] = []
+            var imageInfos:[FileInfo] = []
+            
             var files:[String] = []
             let videos = try FileManager.default.contentsOfDirectory(atPath: FileManager.videoFilePath())
             files.append(contentsOf: videos)
@@ -44,34 +48,41 @@ class MemorySpaceController: UITableViewController {
             files.append(contentsOf: images)
             for file in files {
                 let nameArray = file.components(separatedBy: ".")
-                switch nameArray[1] {
-                case FileManager.imageFormat:
-                    let atr = try FileManager.default.attributesOfItem(atPath: FileManager.imageFilePathWithName(name: file))
-                    let size = atr[FileAttributeKey("NSFileSize")] as! Int
-                    imageInfos.append(FileInfo(name: nameArray[0], size:size,suffix:nameArray[1]))
-                case FileManager.audioFormat:
-                    let atr = try FileManager.default.attributesOfItem(atPath: FileManager.audioFilePathWithName(name: file))
-                    let size = atr[FileAttributeKey("NSFileSize")] as! Int
-                    audioInfos.append(FileInfo(name: nameArray[0], size: size,suffix:nameArray[1]))
-                case FileManager.videoFormat:
-                    let atr = try FileManager.default.attributesOfItem(atPath: FileManager.videoFilePathWithName(name: file))
-                    let size = atr[FileAttributeKey("NSFileSize")] as! Int
-                    videoInfos.append(FileInfo(name: nameArray[0], size: size,suffix:nameArray[1]))
-                    
-                default:
-                    break
+                if nameArray.count >= 2 {
+                    switch nameArray[1] {
+                    case FileManager.imageFormat:
+                        let attr = try FileManager.default.attributesOfItem(atPath: FileManager.imageFilePathWithName(name: file))
+                        let size = attr[.size] as! Int
+                        imageInfos.append(FileInfo(name: nameArray[0], size:size,suffix:nameArray[1]))
+                    case FileManager.audioFormat:
+                        let attr = try FileManager.default.attributesOfItem(atPath: FileManager.audioFilePathWithName(name: file))
+                        let size = attr[.size] as! Int
+                        audioInfos.append(FileInfo(name: nameArray[0], size: size,suffix:nameArray[1]))
+                    case FileManager.videoFormat:
+                        let attr = try FileManager.default.attributesOfItem(atPath: FileManager.videoFilePathWithName(name: file))
+                        let size = attr[.size] as! Int
+                        videoInfos.append(FileInfo(name: nameArray[0], size: size,suffix:nameArray[1]))
+                        
+                    default:
+                        break
+                    }
                 }
+            }
+            if videoInfos.count > 0 {
+                cellcontent.append((videoInfos, .Video))
+            }
+            if audioInfos.count > 0 {
+                cellcontent.append((audioInfos, .Audio))
+            }
+            if imageInfos.count > 0 {
+                cellcontent.append((imageInfos, .Image))
             }
         }catch{
             
             Dlog(error.localizedDescription)
             return
         }
-        
-        cellcontent.append(videoInfos)
-        cellcontent.append(audioInfos)
-        cellcontent.append(imageInfos)
-        
+
         var otherInfos:[FileInfo] = []
         var tsize:Int = 0
         do{
@@ -97,16 +108,13 @@ class MemorySpaceController: UITableViewController {
                 }
             }
             otherInfos.append(FileInfo(name: "导出文件", size: tsize,suffix:""))
+            
+            cellcontent.append((otherInfos, .Deletable))
         }catch{
             Dlog(error.localizedDescription)
         }
-        cellcontent.append(otherInfos)
+        
         self.tableView.reloadData()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
@@ -116,17 +124,19 @@ class MemorySpaceController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cellcontent[section].count
+        return cellcontent[section].data.count
     }
+    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
     }
+    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let view = MemorySpaceHeaderView(frame: CGRect(x: 0, y: 0, width: self.tableView.frame.width, height: 40))
-        view.leftLabel.text = sectionName[section]
+        view.leftLabel.text = cellcontent[section].type.rawValue
         var fsize:Int = 0
-        for finfo in cellcontent[section]{
+        for finfo in cellcontent[section].data{
             fsize += finfo.size / 1024
         }
         if fsize / 1024 > 0 {
@@ -140,8 +150,8 @@ class MemorySpaceController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: memoryReusableIdentifier, for: indexPath)
 
-        cell.textLabel?.text = cellcontent[indexPath.section][indexPath.row].name
-        let fsize = cellcontent[indexPath.section][indexPath.row].size / 1024
+        cell.textLabel?.text = cellcontent[indexPath.section].data[indexPath.row].name
+        let fsize = cellcontent[indexPath.section].data[indexPath.row].size / 1024
         if fsize / 1024 > 0 {
             cell.detailTextLabel?.text = String.init(format: "%.1f", Float(fsize) / 1024)+"MB"
         }else{
@@ -154,36 +164,32 @@ class MemorySpaceController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
         
-        if indexPath.section != cellcontent.count - 1 {
-            let file = cellcontent[indexPath.section][indexPath.row]
-            switch file.suffix {
-            case FileManager.imageFormat:
-                let vc = ImageViewController(withImage: UIImage.init(contentsOfFile: FileManager.imageFilePathWithName(name: file.name+"."+file.suffix))!)
-                let nav = UINavigationController(rootViewController: vc)
-                nav.navigationBar.isTranslucent = false
-                self.present(nav, animated: true, completion: {
-                    
-                })
-            case FileManager.audioFormat:
-                let vc = AudioViewController(withFile: file.name+"."+file.suffix)
-                let nav = UINavigationController(rootViewController: vc)
-                nav.navigationBar.isTranslucent = false
-                self.present(nav, animated: true, completion: {
-                    
-                })
-            case FileManager.videoFormat:
-                let playView = AVPlayerViewController()
-                let playitem = AVPlayerItem(asset: AVAsset(url: URL.init(fileURLWithPath: FileManager.videoFilePathWithName(name: file.name+"."+file.suffix))))
-                let player = AVPlayer(playerItem: playitem)
-                playView.player = player
-                self.present(playView, animated: true, completion: {
-                })
+        let type = cellcontent[indexPath.section].type
+        let file = cellcontent[indexPath.section].data[indexPath.row]
+        switch type {
+        case .Video:
+            let playView = AVPlayerViewController()
+            let playitem = AVPlayerItem(asset: AVAsset(url: URL.init(fileURLWithPath: FileManager.videoFilePathWithName(name: file.name+"."+file.suffix))))
+            let player = AVPlayer(playerItem: playitem)
+            playView.player = player
+            self.present(playView, animated: true, completion: {
+            })
+        case .Audio:
+            let vc = AudioViewController(withFile: file.name+"."+file.suffix)
+            let nav = UINavigationController(rootViewController: vc)
+            nav.navigationBar.isTranslucent = false
+            self.present(nav, animated: true, completion: {
                 
-            default:
-                break
-            }
-        }else{
-            let alert = UIAlertController(title: "提示", message: cellcontent[indexPath.section][indexPath.row].name+"是系统备份与导出过程的残留，下次使用会自动更新，可以删除", preferredStyle: .alert)
+            })
+        case .Image:
+            let vc = ImageViewController(withImage: UIImage.init(contentsOfFile: FileManager.imageFilePathWithName(name: file.name+"."+file.suffix))!)
+            let nav = UINavigationController(rootViewController: vc)
+            nav.navigationBar.isTranslucent = false
+            self.present(nav, animated: true, completion: {
+                
+            })
+        case .Deletable:
+            let alert = UIAlertController(title: "提示", message: file.name+"是备份或导出过程的缓存，只保存最近一次，左滑可以删除", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "好的", style: .destructive, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
@@ -192,17 +198,12 @@ class MemorySpaceController: UITableViewController {
     //MARK: - UITableViewDelegate
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == 3{
-            return true
-        }else{
-            return false
-        }
+        return cellcontent[indexPath.section].type == .Deletable
     }
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
             if indexPath.row == 0{
                 do{
                     let backupfile = try FileManager.default.contentsOfDirectory(atPath: FileManager.backupFilePath())
@@ -211,7 +212,7 @@ class MemorySpaceController: UITableViewController {
                             Dlog("delete fail \(file)")
                         }
                     }
-                    cellcontent[indexPath.section][indexPath.row].size = 0
+                    cellcontent[indexPath.section].data[indexPath.row].size = 0
                 }catch{
                     Dlog(error.localizedDescription)
                 }
@@ -224,13 +225,12 @@ class MemorySpaceController: UITableViewController {
                             Dlog("delete fail \(file)")
                         }
                     }
-                    cellcontent[indexPath.section][indexPath.row].size = 0
+                    cellcontent[indexPath.section].data[indexPath.row].size = 0
                 }catch{
                     Dlog(error.localizedDescription)
                 }
             }
-            tableView.reloadRows(at: [indexPath], with: .right)
-            //tableView.deleteRows(at: [indexPath], with: .fade)
+            tableView.reloadData()
         }
         
     }

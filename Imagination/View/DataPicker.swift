@@ -13,7 +13,7 @@ protocol DataPickerDelegate {
 }
 
 class DataPicker: UIView,UIPickerViewDelegate,UIPickerViewDataSource {
-    let catalogue = DataCache.shareInstance.catalogue
+    let catalogue = DataCache.share.catalogue
     var from:String
     var to:String
     let delegate:DataPickerDelegate
