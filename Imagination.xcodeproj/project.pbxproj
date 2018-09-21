@@ -262,9 +262,9 @@
 				TargetAttributes = {
 					F812295D1BF73C6C00BDCF0E = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = G25KG7PJ3H;
+						DevelopmentTeam = 65685Y88TH;
 						LastSwiftMigration = 0940;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -517,8 +517,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = G25KG7PJ3H;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65685Y88TH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -529,7 +529,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.myself.imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
-				PROVISIONING_PROFILE_SPECIFIER = "万能id真机调试描述文件";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Model/Imagination-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -545,8 +545,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = G25KG7PJ3H;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 65685Y88TH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -557,7 +557,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.myself.imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
-				PROVISIONING_PROFILE_SPECIFIER = "万能id真机调试描述文件";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Model/Imagination-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
