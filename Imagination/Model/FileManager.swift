@@ -144,9 +144,9 @@ extension FileManager{
     //文件操作
     class func imageData(image:UIImage) -> Data? {
         if FileManager.isPng {
-            return UIImagePNGRepresentation(image)
+            return image.pngData()
         }else{
-            return UIImageJPEGRepresentation(image, FileManager.compression)
+            return image.jpegData(compressionQuality: FileManager.compression)
         }
     }
     

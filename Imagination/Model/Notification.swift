@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 /*
 这里的notification 只适应于只有一个noti的情况（因为cancelAllNoti等操作） 这样写简化运算 对于这个软件没必要复杂 目前只需要一个
 */

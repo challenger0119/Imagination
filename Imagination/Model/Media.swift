@@ -59,7 +59,7 @@ class Media: Object {
         var image:UIImage?
         do{
             var actualTIme:CMTime = CMTime()
-            let cimage = try generator.copyCGImage(at: CMTimeMakeWithSeconds(0.5, 10), actualTime: &actualTIme)
+            let cimage = try generator.copyCGImage(at: CMTimeMakeWithSeconds(0.5, preferredTimescale: 10), actualTime: &actualTIme)
             
             //CMTimeShow(actualTIme)
             image = UIImage.init(cgImage: cimage)

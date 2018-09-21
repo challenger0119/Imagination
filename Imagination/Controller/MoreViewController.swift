@@ -21,7 +21,7 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         updateRecentDetail()
         updateReminder()
         let backItem = UIBarButtonItem()
@@ -58,22 +58,22 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
                 self.tabBarController?.present(pickerVC, animated: false, completion: nil)
             }
         } else if indexPath.row == 3 {
-            let alert = UIAlertController.init(title: "设置邮箱", message: "请输入邮箱地址", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController.init(title: "设置邮箱", message: "请输入邮箱地址", preferredStyle: UIAlertController.Style.alert)
             alert.addTextField(configurationHandler: {
                 (email:UITextField) -> Void in
-                email.clearButtonMode = UITextFieldViewMode.whileEditing
+                email.clearButtonMode = UITextField.ViewMode.whileEditing
                 if let mail =  self.dCache.email {
                     email.placeholder = mail
                 }
                 })
-            alert.addAction(UIAlertAction.init(title: "确定", style: UIAlertActionStyle.default, handler: {
+            alert.addAction(UIAlertAction.init(title: "确定", style: UIAlertAction.Style.default, handler: {
                 (confirm:UIAlertAction) -> Void in
                 let emailField = (alert.textFields?.first)! as UITextField
                 if self.isValidateEmail(emailField.text!) {
                     self.dCache.email = emailField.text
                     self.updateRecentDetail()
                     
-                    let alert = UIAlertController.init(title: "提示", message: "已设置！为了您的隐私，建议向该邮箱发送测试邮件😀", preferredStyle: UIAlertControllerStyle.alert)
+                    let alert = UIAlertController.init(title: "提示", message: "已设置！为了您的隐私，建议向该邮箱发送测试邮件😀", preferredStyle: UIAlertController.Style.alert)
                     alert.addAction(UIAlertAction(title: "发送", style: .default, handler: {
                         al in
                         self.sendTestEmail(toAddr:self.dCache.email!)
@@ -81,12 +81,12 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
                     alert.addAction(UIAlertAction(title: "不用", style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 } else {
-                    let alert = UIAlertController.init(title: "提示", message: "邮箱地址格式不对", preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
+                    let alert = UIAlertController.init(title: "提示", message: "邮箱地址格式不对", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertAction.Style.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }
                 }))
-            alert.addAction(UIAlertAction.init(title: "取消", style: UIAlertActionStyle.cancel, handler: nil))
+            alert.addAction(UIAlertAction.init(title: "取消", style: UIAlertAction.Style.cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
         } else if indexPath.row == 4 {
             if Notification.isReminder {
@@ -102,15 +102,15 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
             pickerBack.tag = pickerViewTag
             let btn = UIButton.init(frame: CGRect(x: pickerBack.frame.width - 52, y: 8, width: 40, height: 40))
             btn.setImage(UIImage(named: "check"), for: .normal)
-            btn.addTarget(self, action: #selector(didSelectTime), for: UIControlEvents.touchUpInside)
+            btn.addTarget(self, action: #selector(didSelectTime), for: UIControl.Event.touchUpInside)
             pickerBack.addSubview(btn)
             let cancelBtn = UIButton(frame: CGRect(x: 12, y: 8, width: 40, height: 40))
             cancelBtn.setImage(UIImage(named: "cancel"), for: .normal)
-            cancelBtn.addTarget(self, action: #selector(cancelDatePicker), for: UIControlEvents.touchUpInside)
+            cancelBtn.addTarget(self, action: #selector(cancelDatePicker), for: UIControl.Event.touchUpInside)
             pickerBack.addSubview(cancelBtn)
             
             datePicker = UIDatePicker(frame:CGRect(x: 0, y: 48, width: pickerBack.frame.width, height: 216))
-            datePicker!.datePickerMode = UIDatePickerMode.time
+            datePicker!.datePickerMode = UIDatePicker.Mode.time
             datePicker?.timeZone = TimeZone.current
             pickerBack.addSubview(datePicker!)
             self.view.addSubview(pickerBack)
@@ -159,8 +159,8 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
  
     func sendBackupToMail(files:[String])  {
         if files.count == 0 {
-            let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             return
         }
@@ -206,8 +206,8 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         self .dismiss(animated: true, completion: nil)
         if result == .sent {
-            let alert = UIAlertController.init(title: "提示", message: "发送成功", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil))
+            let alert = UIAlertController.init(title: "提示", message: "发送成功", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
     }

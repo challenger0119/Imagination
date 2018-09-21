@@ -32,7 +32,7 @@ class AudioRecord {
         }
         audioFile = URL(fileURLWithPath: audiofile)
         do{
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try AVAudioSession.sharedInstance().setCategory(.playAndRecord, mode: .default, options: [])
         }catch{
             Dlog(error.localizedDescription)
         }
@@ -120,4 +120,9 @@ class AudioRecord {
         }
         return player.duration
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVAudioSessionCategory(_ input: AVAudioSession.Category) -> String {
+	return input.rawValue
 }

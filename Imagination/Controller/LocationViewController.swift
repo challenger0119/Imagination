@@ -39,7 +39,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         
         tableView.delegate = self
         tableView.dataSource = self
-        animation = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        animation = UIActivityIndicatorView(style: .gray)
         animation.frame = CGRect(x:self.view.frame.width/2-50,y:self.view.frame.height/2-50,width:100, height:100)
         self.view.addSubview(animation)
         
@@ -60,7 +60,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
             if error == nil {
                 
                 if let place = pls?.first {
-                    let region = MKCoordinateRegionMakeWithDistance(place.location!.coordinate, 1500, 1500)
+                    let region = MKCoordinateRegion.init(center: place.location!.coordinate, latitudinalMeters: 1500, longitudinalMeters: 1500)
                     self.mapView.setRegion(region, animated: true)
                     self.mapView.addAnnotation(Annotation(coor: place.location!.coordinate,pMark: place))
                     if additionalWork != nil {
@@ -171,7 +171,7 @@ class LocationViewController: UIViewController,CLLocationManagerDelegate,UITable
         }
     }
     //拖拽红点后调用
-    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationViewDragState, fromOldState oldState: MKAnnotationViewDragState) {
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, didChange newState: MKAnnotationView.DragState, fromOldState oldState: MKAnnotationView.DragState) {
         let cor = reverseTransformCoordinate(cor: view.annotation!.coordinate)
         if newState == .ending {
             animation.startAnimating()

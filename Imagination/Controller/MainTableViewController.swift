@@ -30,7 +30,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     override func viewWillAppear(_ animated: Bool){
         super.viewWillAppear(animated)
         self.tableView.estimatedRowHeight = 80
-        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableView.automaticDimension
     }
     
     // MARK: - Method

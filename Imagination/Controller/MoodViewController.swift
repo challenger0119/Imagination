@@ -21,19 +21,19 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         didSet{
             if moodState == 1 {
                 self.noGoodBtn.backgroundColor = MoodType.defaultColor
-                self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+                self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControl.State())
                 self.goodBtn.backgroundColor = MoodType.coolColor
-                self.goodBtn.setTitleColor(UIColor.white, for: UIControlState())
+                self.goodBtn.setTitleColor(UIColor.white, for: UIControl.State())
             }else if moodState == 2{
                 self.noGoodBtn.backgroundColor = MoodType.justOkColor
-                self.noGoodBtn.setTitleColor(UIColor.white, for: UIControlState())
-                self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+                self.noGoodBtn.setTitleColor(UIColor.white, for: UIControl.State())
+                self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControl.State())
                 self.goodBtn.backgroundColor = MoodType.defaultColor
             }else{
                 self.noGoodBtn.backgroundColor = MoodType.defaultColor
-                self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+                self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControl.State())
                 self.goodBtn.backgroundColor = MoodType.defaultColor
-                self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControlState())
+                self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControl.State())
             }
         }
     }
@@ -80,7 +80,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         swipGesture.direction = .down
         self.view.addGestureRecognizer(swipGesture)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         self.content.becomeFirstResponder()
         
@@ -129,7 +129,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     
     @objc func keyboardWillShow(_ notifi:Foundation.Notification){
         if let info = notifi.userInfo {
-            if let kbd = info[UIKeyboardFrameEndUserInfoKey] {
+            if let kbd = info[UIResponder.keyboardFrameEndUserInfoKey] {
                 keyBoardHeight = (kbd as AnyObject).cgRectValue.size.height
                 self.bottomContraint.constant = keyBoardHeight + self.keyboardDistance
             }
@@ -216,7 +216,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
     
     func analysisTextStorage(){
-         self.content.textStorage.enumerateAttribute(NSAttributedStringKey.attachment, in: NSRange(location: 0,length: self.content.textStorage.length), options: NSAttributedString.EnumerationOptions(rawValue: 0), using:{
+         self.content.textStorage.enumerateAttribute(NSAttributedString.Key.attachment, in: NSRange(location: 0,length: self.content.textStorage.length), options: NSAttributedString.EnumerationOptions(rawValue: 0), using:{
             (obj,range,pointor) in
             if let attache = obj as? NSTextAttachment {
                 let mf = self.multiMediaInsertBuffer[attache]!  //提取最后保留的项目
@@ -372,16 +372,19 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             
         })
     }
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         
-        if let type = info[UIImagePickerControllerMediaType] as? String {
+        if let type = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaType)] as? String {
             
             if type == kUTTypeImage as String {
-                if let pimg = info[UIImagePickerControllerOriginalImage] as? UIImage{
+                if let pimg = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage{
                     addMultimediaToTextView(multimedia: pimg)
                 }
             }else if type == kUTTypeMovie as String{
-                if let url = info[UIImagePickerControllerMediaURL] as? URL {
+                if let url = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] as? URL {
                     let mf = Media()
                     mf.path = url.path
                     mf.mediaType = .video
@@ -408,4 +411,14 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }
     }
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

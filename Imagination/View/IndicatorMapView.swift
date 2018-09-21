@@ -19,7 +19,7 @@ class IndicatorMapView: UIView,MKMapViewDelegate {
         mapView.clipsToBounds = true
         backView.addSubview(mapView)
         
-        let animation = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        let animation = UIActivityIndicatorView(style: .gray)
         animation.frame = CGRect(x:self.frame.width/2-50,y:self.frame.height/2-50,width:100, height:100)
         self.addSubview(animation)
         animation.startAnimating()
@@ -31,7 +31,7 @@ class IndicatorMapView: UIView,MKMapViewDelegate {
             animation.stopAnimating()
             if error == nil {
                 if let place = pls?.first {
-                    let region = MKCoordinateRegionMakeWithDistance(place.location!.coordinate, 1500, 1500)
+                    let region = MKCoordinateRegion.init(center: place.location!.coordinate, latitudinalMeters: 1500, longitudinalMeters: 1500)
                     mapView.setRegion(region, animated: true)
                     mapView.addAnnotation(Annotation(coor: place.location!.coordinate,pMark: place))
                 }

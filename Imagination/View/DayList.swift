@@ -78,7 +78,7 @@ class DayList: UIView,UITableViewDelegate,UITableViewDataSource {
             cell.textLabel?.text = content[(indexPath as NSIndexPath).row]
             return cell
         } else {
-            let cell = UITableViewCell.init(style: UITableViewCellStyle.default, reuseIdentifier: "daylistcell")
+            let cell = UITableViewCell.init(style: UITableViewCell.CellStyle.default, reuseIdentifier: "daylistcell")
             cell.textLabel?.text = content[(indexPath as NSIndexPath).row]
             return cell
         }

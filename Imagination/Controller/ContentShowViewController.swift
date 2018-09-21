@@ -138,7 +138,7 @@ class ContentShowViewController: UIViewController {
                     }
                     let end = self.text.index(text.startIndex, offsetBy: offset)
                     let substring = String(self.text[start..<end])
-                    let height = (substring as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
+                    let height = (substring as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
                     textView.addSubview(
                         labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: substring, textColor: self.mood.getColor())
                     )
@@ -146,7 +146,7 @@ class ContentShowViewController: UIViewController {
                 }
             }
         }else{
-            let height = (self.text as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedStringKey.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
+            let height = (self.text as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
             textView.addSubview(
                 labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: self.text, textColor: self.mood.getColor()))
         }

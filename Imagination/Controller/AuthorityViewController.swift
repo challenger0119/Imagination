@@ -56,15 +56,15 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
             password.isSecureTextEntry = false
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(useTouchId), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(useTouchId), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     func checkAuthority(_ passwd:String?){
         if passwd == AuthorityViewController.pWord {
             self.dismiss(animated: true, completion: nil)
         }else{
-            let alert = UIAlertController.init(title: "提示", message: "抱歉，证据不足哦！（忘记密码不要怕，重新启动会有指纹识别）", preferredStyle: UIAlertControllerStyle.alert)
-            let action = UIAlertAction.init(title: "好的", style: UIAlertActionStyle.default, handler: nil)
+            let alert = UIAlertController.init(title: "提示", message: "抱歉，证据不足哦！（忘记密码不要怕，重新启动会有指纹识别）", preferredStyle: UIAlertController.Style.alert)
+            let action = UIAlertAction.init(title: "好的", style: UIAlertAction.Style.default, handler: nil)
             alert.addAction(action)
             self.present(alert, animated: true, completion: nil)
         }
