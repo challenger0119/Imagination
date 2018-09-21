@@ -96,29 +96,25 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
                 return
             }
             
-            let pickerBack = UIView.init(frame: CGRect(x: self.view.frame.width/2-150, y: self.view.frame.height/2-170, width: 300, height: 250))
+            let pickerBack = UIView(frame: CGRect(x: 20, y: self.view.frame.height/2-133, width: self.view.frame.width - 40, height: 266))
             pickerBack.backgroundColor = UIColor.white
-            pickerBack.layer.borderColor = UIColor.black.cgColor
-            pickerBack.layer.borderWidth = 0.5
-            pickerBack.layer.cornerRadius = 5
-            pickerBack.layer.masksToBounds = true
+            pickerBack.layer.cornerRadius = 10
             pickerBack.tag = pickerViewTag
-            let btn = UIButton.init(frame: CGRect(x: pickerBack.frame.width - 50, y: 0, width: 50, height: 34))
-            btn.setTitle("完成", for: UIControlState())
-            btn.setTitleColor(UIColor.black, for: UIControlState())
+            let btn = UIButton.init(frame: CGRect(x: pickerBack.frame.width - 52, y: 8, width: 40, height: 40))
+            btn.setImage(UIImage(named: "check"), for: .normal)
             btn.addTarget(self, action: #selector(didSelectTime), for: UIControlEvents.touchUpInside)
             pickerBack.addSubview(btn)
-            let cancelBtn = UIButton.init(frame: CGRect(x: 0, y: 0, width: 50, height: 34))
-            cancelBtn.setTitle("取消", for: UIControlState())
-            cancelBtn.setTitleColor(UIColor.black, for: UIControlState())
+            let cancelBtn = UIButton(frame: CGRect(x: 12, y: 8, width: 40, height: 40))
+            cancelBtn.setImage(UIImage(named: "cancel"), for: .normal)
             cancelBtn.addTarget(self, action: #selector(cancelDatePicker), for: UIControlEvents.touchUpInside)
             pickerBack.addSubview(cancelBtn)
             
-            datePicker = UIDatePicker.init(frame:CGRect(x: 0, y: 34, width: 300, height: 216))
+            datePicker = UIDatePicker(frame:CGRect(x: 0, y: 48, width: pickerBack.frame.width, height: 216))
             datePicker!.datePickerMode = UIDatePickerMode.time
             datePicker?.timeZone = TimeZone.current
             pickerBack.addSubview(datePicker!)
             self.view.addSubview(pickerBack)
+            
         } else if indexPath.row == 5 {
             let storeboad = UIStoryboard.init(name: "Main", bundle: Bundle.main)
             let vc = storeboad.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController

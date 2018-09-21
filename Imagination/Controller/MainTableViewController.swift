@@ -42,7 +42,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         vc.modalPresentationStyle = .overCurrentContext;
         vc.delegate = self
         vc.content = DataCache.share.catalogue_month
-        self.present(vc, animated: false, completion: {
+        self.tabBarController?.present(vc, animated: false, completion: {
             var tframe = self.view.frame
             tframe.origin.x = CatalogueViewController.tableWidth;
             tframe.size.width = self.view.frame.width - CatalogueViewController.tableWidth

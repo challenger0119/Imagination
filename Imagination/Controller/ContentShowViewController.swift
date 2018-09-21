@@ -13,7 +13,7 @@ import AVFoundation
 import RealmSwift
 
 class ContentShowViewController: UIViewController {
-    var multiMedias:List<Media>?
+    var multiMedias:List<Media>
     var text:String = ""
     var pInfo:Location?
     var exitAnimation:(() -> Void)?
@@ -85,7 +85,8 @@ class ContentShowViewController: UIViewController {
         }
         
         var usedHeight:CGFloat = 0
-        if let medias = self.multiMedias{
+        if self.multiMedias.count > 0{
+            let medias = self.multiMedias
             var keyIndex = 0
             var lastMuliIndex = -1
             let contentend = (self.text.count > medias.last!.position) ? (self.text.count):medias.last!.position
@@ -171,7 +172,7 @@ class ContentShowViewController: UIViewController {
 
     @objc func btnClicked(sender:UIButton){
         
-        let mf = self.multiMedias![sender.tag]
+        let mf = self.multiMedias[sender.tag]
         switch mf.mediaType {
         case .image:
             let vc = ImageViewController(withImage: UIImage.init(contentsOfFile: mf.path)!)
