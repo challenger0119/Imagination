@@ -8,16 +8,22 @@
 
 import UIKit
 import CoreData
-
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings.init(types: [UIUserNotificationType.alert,UIUserNotificationType.sound,UIUserNotificationType.badge], categories: nil))
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound,.badge]) { (success, error) in
+            if error != nil {
+                Dlog(error?.localizedDescription)
+            }else{
+                Dlog("requestAuthorization \(success)")
+            }
+        }
         
         Notification.testToRescheduleNotificationToNextDay()
         return true
@@ -25,11 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillResignActive(_ application: UIApplication) {
         
-        application.applicationIconBadgeNumber -= 1
-    }
-
-    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
-        Dlog(notification.alertBody)
         application.applicationIconBadgeNumber -= 1
     }
 
