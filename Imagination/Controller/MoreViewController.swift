@@ -168,7 +168,7 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
     }
     
     func sendTestEmail(toAddr mail:String){
-        sendByEmail(filePaths: [], addtional: "[Imagination] Hi,我在这！我将把备份文件发到这里")
+        sendEmail(subject: "[Imagination] Hi,我在这！我将把备份文件发到这里", recipients: [mail])
     }
     
     

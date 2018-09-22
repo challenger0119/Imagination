@@ -296,7 +296,7 @@ extension DataCache {
 extension DataCache{
     var email:String? {
         set{
-            if email != nil {
+            if newValue != nil {
                 UserDefaults.standard.set(newValue, forKey: "email")
             }
         }
