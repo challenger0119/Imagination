@@ -17,6 +17,8 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
     
     @IBOutlet weak var password: UITextField!
     var vType = type.normal
+    let authenticationContext = LAContext()
+    
     static let NotSet = ""
     
     static var pWord:String?{
@@ -82,8 +84,6 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
             Dlog("not set")
             return
         }
-      
-        let authenticationContext = LAContext()
         var error: NSError?
         
         let isTouchIdAvailable = authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
@@ -95,10 +95,17 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
                 (success, error) -> Void in
                 if success
                 {
-                    self.dismiss(animated: true, completion: nil)
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                    
                 }
             })
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
 }

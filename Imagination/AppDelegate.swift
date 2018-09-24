@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         pvc.present(vc, animated: true, completion: nil)
                     }
                 }else {
-                    let storeboad = UIStoryboard.init(name: "Main", bundle: Bundle.main)
+                    let storeboad = UIStoryboard(name: "Main", bundle: Bundle.main)
                     let vc = storeboad.instantiateViewController(withIdentifier: "authority")
                     rootController.present(vc, animated: true, completion: nil)
                 }

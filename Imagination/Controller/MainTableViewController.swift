@@ -23,8 +23,11 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateMonthData), name: NSNotification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
-        authorityView()
         self.updateMonthData()
+        OperationQueue.main.addOperation {
+            self.authorityView() // 排个队，当前controller 呈现后显示鉴权页面
+        }
+ 
     }
     
     override func viewWillAppear(_ animated: Bool){
@@ -33,6 +36,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         self.tableView.rowHeight = UITableView.automaticDimension
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     // MARK: - Method
     
     // 显示/关闭日期归档
@@ -63,7 +69,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     func authorityView() {
         if AuthorityViewController.pWord != AuthorityViewController.NotSet{
             let vc = self.storyboard!.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController
-            self.present(vc, animated: true, completion: {
+            self.tabBarController?.present(vc, animated: true, completion: {
                 vc.useTouchId()
             })
         }
@@ -90,10 +96,11 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
                 }
                 self.dataSource.append(cc)       //添加数据源
             }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.refreshMoodState()
+            }
         })
-        
-        self.tableView.reloadData()
-        self.refreshMoodState()
     }
     
     // 更新状态条
@@ -172,6 +179,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             self.navigationController?.view.frame = tframe;
         }) { (boo) in
             if boo {
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.view.alpha = 1
+                })
                 andDo()
             }
         }
@@ -188,9 +198,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     
     func catalogueDidClose() {
         resumeView(){}
-        UIView.animate(withDuration: 0.5, animations: {
-            self.view.alpha = 1
-        })
+        
     }
     
     // MARK: - Table view data source and Delegate
