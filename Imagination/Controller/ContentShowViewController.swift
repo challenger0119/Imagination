@@ -13,7 +13,7 @@ import AVFoundation
 import RealmSwift
 
 class ContentShowViewController: UIViewController {
-    var multiMedias:List<Media>
+    var multiMedias:Results<Media>
     var text:String = ""
     var pInfo:Location?
     var exitAnimation:(() -> Void)?
@@ -21,7 +21,7 @@ class ContentShowViewController: UIViewController {
     fileprivate var mapView:UIView?
     
     init(withItem item:Item) {
-        self.multiMedias = item.medias
+        self.multiMedias = item.medias.sorted(byKeyPath: "position", ascending: true)
         self.text = item.content
         self.pInfo = item.location
         self.mood = item.moodType

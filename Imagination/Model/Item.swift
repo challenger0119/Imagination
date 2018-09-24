@@ -60,7 +60,7 @@ class Item:Object{
     @objc dynamic var mood:Int = 0
     @objc dynamic var location:Location? = nil;
     
-    let medias = List<Media>()
+    let medias = List<Media>()  // **获取的到值顺序不保证
     
     override class func primaryKey() -> String? {
         return "timeString"
