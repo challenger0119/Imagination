@@ -162,11 +162,20 @@ extension DataCache {
     fileprivate func createFiles(_ from:String,to:String,pathGetter:(_ from:String,_ to:String)->String)->[String]{
         let newline = "\r\n"    // 换行
         
-        let txtfile = pathGetter(from,to) + ".txt"
+        // 检查顺序
+        var finalFrom = from
+        var finalTo = to
+        if finalFrom.compare(finalTo) == .orderedDescending {
+            let tmp = finalTo
+            finalTo = finalFrom
+            finalFrom = tmp
+        }
+        
+        let txtfile = pathGetter(finalFrom,finalTo) + ".txt"
         var filePaths = [txtfile]
         let data = NSMutableData()
         for dd in catalogue {
-            if dd >= from && dd <= to {
+            if dd >= finalFrom && dd <= finalTo {
                 //按天解析
                 loadDay(dayString: dd) { (items) in
                     let thisday = dd + newline
