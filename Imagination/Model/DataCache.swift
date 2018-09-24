@@ -44,12 +44,48 @@ class DataCache {
     
     init() {
         do{
+            DataCache.realmMigrationg()
             self.realm = try Realm()
         }catch{
             Dlog(error.localizedDescription)
         }
     }
+    
+    // 当表的结构发生改变后
+    class func realmMigrationg(){
+        
+        let dbDIR = FileManager.pathOfNameInLib("DataBase")
+        if !FileManager.default.fileExists(atPath: dbDIR) {
+            do{
+                try FileManager.default.createDirectory(atPath: dbDIR, withIntermediateDirectories: true, attributes: nil)
+                
+            }catch{
+                Dlog(error.localizedDescription)
+            }
+        }
+        let dbFileURL = URL(fileURLWithPath: dbDIR + "/db.realm")
+        
+        let newVersion:UInt64 = 1   // 修改多媒体路径为相对路径
+        let config = Realm.Configuration(fileURL:dbFileURL, schemaVersion: newVersion, migrationBlock: { (migration, oldVersion) in
+            Dlog("need migration \(oldVersion) - \(newVersion)")
+            if oldVersion < newVersion {
+                migration.enumerateObjects(ofType: Media.className(), { (oldObj, newObj) in
+                    let oldPath = oldObj!["path"] as! String
+                    let pathComponents = oldPath.components(separatedBy: FileManager.multiMediaDirRelativePath())
+                    if pathComponents.count > 1 {
+                        newObj!["path"] = pathComponents.last!
+                    }
+                })
+            }
+        }, deleteRealmIfMigrationNeeded: false, shouldCompactOnLaunch: { (totalBytes, usedBytes) -> Bool in
+            
+            return (usedBytes < totalBytes / 2)
+        })
+        
+        Realm.Configuration.defaultConfiguration = config
+    }
 }
+
 
 // MARK: - 数据库操作
 
@@ -158,8 +194,8 @@ extension DataCache {
                         var multimedia = ""
                         if item.medias.count > 0 {
                             for value in item.medias {
-                                filePaths.append(value.path)   // 加入多媒体文件路径
-                                multimedia += (value.path as NSString).lastPathComponent+" "
+                                filePaths.append(value.storePath)   // 加入多媒体文件路径
+                                multimedia += (value.storePath as NSString).lastPathComponent+" "
                             }
                         }
                         multimedia += newline;

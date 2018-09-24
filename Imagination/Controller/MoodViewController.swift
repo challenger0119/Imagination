@@ -222,11 +222,11 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 let mf = self.multiMediaInsertBuffer[attache]!  //提取最后保留的项目
                 switch mf.mediaType {
                 case .image:
-                    mf.path = FileManager.createImageFile(withImage: mf.obj as! UIImage)
+                    mf.storePath = FileManager.createImageFile(withImage: mf.obj as! UIImage)
                 case .voice:
-                    mf.path = FileManager.createAudioFile(withPath: mf.path)
+                    mf.storePath = FileManager.createAudioFile(withPath: mf.storePath)
                 case .video:
-                    mf.path = FileManager.createVideoFile(withPath: mf.path)
+                    mf.storePath = FileManager.createVideoFile(withPath: mf.storePath)
                 default:
                     break
                 }
@@ -330,7 +330,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 let mf = Media()
                 mf.obj = audio
                 mf.mediaType = .voice
-                mf.path = audio.recordFileURL.path
+                mf.storePath = audio.recordFileURL.path
                 self.multiMediaInsertBuffer.updateValue(mf, forKey:textAttach)
             }catch{
 
@@ -339,7 +339,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }else if multimedia.isKind(of: Media.self){
             let video = multimedia as! Media
             do{
-                let url = URL.init(fileURLWithPath: video.path)
+                let url = URL(fileURLWithPath: video.storePath)
                 let data = try Data.init(contentsOf: url)
                 let textAttach = NSTextAttachment(data: data, ofType: MediaType.video.rawValue)
                 let image = Media.viedoShot(withURL: url)!
@@ -386,7 +386,7 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
             }else if type == kUTTypeMovie as String{
                 if let url = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] as? URL {
                     let mf = Media()
-                    mf.path = url.path
+                    mf.storePath = url.path
                     mf.mediaType = .video
                     addMultimediaToTextView(multimedia: mf)
                 }

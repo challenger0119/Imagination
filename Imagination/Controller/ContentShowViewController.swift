@@ -97,7 +97,7 @@ class ContentShowViewController: UIViewController {
                     let imageWidth = textView.frame.width - 10;
                     if mf.mediaType == .image {
                         
-                        if let image = UIImage(contentsOfFile: mf.path) {
+                        if let image = UIImage(contentsOfFile: mf.storePath) {
                             let imageHeight = image.size.height / image.size.width * imageWidth
                             textView.addSubview(
                                 buttonFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:imageHeight),
@@ -109,14 +109,14 @@ class ContentShowViewController: UIViewController {
                         let btn = UIButton(type: .roundedRect)
                         btn.frame = CGRect(x:0,y:usedHeight,width:textView.frame.width,height:50)
                         btn.tag = keyIndex
-                        let audio = AudioRecord(withFile:mf.path)
+                        let audio = AudioRecord(withFile:mf.storePath)
                         let timeString = Time.timeIntervalToMMssString(timeInterval: audio.playerDuration())
                         btn.setTitle("录音 \(timeString)", for: .normal)
                         btn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
                         textView.addSubview(btn)
                         usedHeight += 50
                     }else if mf.mediaType == .video {
-                        let url = URL.init(fileURLWithPath: mf.path)
+                        let url = URL.init(fileURLWithPath: mf.storePath)
                         let image = Media.viedoShot(withURL: url)!
                         let imageHeight = image.size.height / image.size.width * imageWidth
                         textView.addSubview(
@@ -175,7 +175,7 @@ class ContentShowViewController: UIViewController {
         let mf = self.multiMedias[sender.tag]
         switch mf.mediaType {
         case .image:
-            let vc = ImageViewController(withImage: UIImage.init(contentsOfFile: mf.path)!)
+            let vc = ImageViewController(withImage: UIImage(contentsOfFile: mf.storePath)!)
             let nav = UINavigationController(rootViewController: vc)
             nav.navigationBar.isTranslucent = false
             self.present(nav, animated: true, completion: {
@@ -184,13 +184,13 @@ class ContentShowViewController: UIViewController {
             
         case .video:
             let playView = AVPlayerViewController()
-            let playitem = AVPlayerItem(asset: AVAsset(url: URL.init(fileURLWithPath: mf.path)))
+            let playitem = AVPlayerItem(asset: AVAsset(url: URL.init(fileURLWithPath: mf.storePath)))
             let player = AVPlayer(playerItem: playitem)
             playView.player = player
             self.present(playView, animated: true, completion: {
             })
         case .voice:
-            let vc = AudioViewController(withFile: mf.path)
+            let vc = AudioViewController(withFile: mf.storePath)
             let nav = UINavigationController(rootViewController: vc)
             nav.navigationBar.isTranslucent = false
             self.present(nav, animated: true, completion: {

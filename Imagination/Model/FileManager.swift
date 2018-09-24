@@ -69,7 +69,7 @@ extension FileManager{
             Dlog(error.localizedDescription)
         }
     }
-    
+
     // lib中多媒体文件夹
     class func multiMediaFilePath() ->String {
         let path = self.libraryPath() + "/Multimedia"
@@ -97,6 +97,10 @@ extension FileManager{
     
     class func backupFilePath(withName name:String)->String{
         return self.backupFilePath() + "/\(name)"
+    }
+    
+    class func multiMediaDirRelativePath() -> String{
+        return "Library/Multimedia"
     }
 }
 

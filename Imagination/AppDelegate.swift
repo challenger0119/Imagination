@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import UserNotifications
+import RealmSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -24,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 Dlog("requestAuthorization \(success)")
             }
         }
+        
         
         Notification.testToRescheduleNotificationToNextDay()
         return true
@@ -129,6 +131,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             }
         }
     }
-
 }
 

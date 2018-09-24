@@ -19,7 +19,7 @@ class Media: Object {
     @objc dynamic var position:Int = 0
     @objc dynamic var name:String = ""
     @objc dynamic var type:String = MediaType.def.rawValue
-    @objc dynamic var path:String = "" {
+    @objc fileprivate dynamic var path:String = "" {
         didSet{
             self.name = (path as NSString).lastPathComponent
         }
@@ -33,12 +33,23 @@ class Media: Object {
             self.type = newValue.rawValue
         }
     }
-    var obj:AnyObject?
     
+    var obj:AnyObject?
+    var storePath:String{
+        get{
+            return FileManager.multiMediaFilePath() + self.path
+        }
+        set{
+            let pathComponents = newValue.components(separatedBy: FileManager.multiMediaDirRelativePath())
+            if pathComponents.count >= 2 {
+               self.path = pathComponents.last!
+            }
+        }
+    }
     let ofItem = LinkingObjects(fromType: Item.self, property: "medias")
     
     override class func ignoredProperties() -> [String] {
-        return ["mediaType","obj"]
+        return ["mediaType","obj","storePath"]
     }
     
     //圆角图
