@@ -42,6 +42,10 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         
         tframe.size.height = 20
         self.siderTable.tableHeaderView = UIView(frame: tframe)
+        
+        let swipeToClose = UISwipeGestureRecognizer(target: self, action: #selector(cataCancel))
+        swipeToClose.direction = .left
+        self.view.addGestureRecognizer(swipeToClose)
     }
     
     override func viewDidAppear(_ animated: Bool) {

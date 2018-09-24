@@ -56,16 +56,10 @@ class ContentShowViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // 模糊背景
         let imageView = UIImageView(frame: self.view.frame)
         imageView.image = UIImage.blurImage(of: UIApplication.shared.keyWindow, withBlurNumber: 1)
         self.view.addSubview(imageView)
-        
-        let closeBtn = UIButton(frame: CGRect(x: self.view.frame.width - 80, y: 20, width: 80, height: 30))
-        closeBtn.setTitle("Close", for: .normal)
-        closeBtn.titleLabel?.textAlignment = .right
-        closeBtn.setTitleColor(self.mood.getColor(), for: .normal)
-        closeBtn.addTarget(self, action: #selector(closeVC), for: .touchUpInside)
-        self.view.addSubview(closeBtn)
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeVC)))
         

@@ -106,12 +106,13 @@ extension DataCache{
     // 加载某月数据
     func loadMonth(monthString:String, result:((Results<Item>) -> Void)){
         self.currentMonthName = monthString
-        result(self.realm.objects(Item.self).filter("monthString == '\(monthString)'"))
+        
+        result(self.realm.objects(Item.self).filter("monthString == '\(monthString)'").sorted(byKeyPath: "timestamp", ascending: false))
     }
     
     // 加载某天数据
     func loadDay(dayString:String, result:((Results<Item>) -> Void)){
-        result(self.realm.objects(Item.self).filter("dayString == '\(dayString)'"))
+        result(self.realm.objects(Item.self).filter("dayString == '\(dayString)'").sorted(byKeyPath: "timestamp", ascending: false))
     }
     
     // 加载目录

@@ -28,6 +28,9 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             self.authorityView() // 排个队，当前controller 呈现后显示鉴权页面
         }
  
+        let swipeToChangeMonthGesture = UISwipeGestureRecognizer(target: self, action: #selector(otherDay(_:)))
+        swipeToChangeMonthGesture.direction = .right
+        self.view.addGestureRecognizer(swipeToChangeMonthGesture)
     }
     
     override func viewWillAppear(_ animated: Bool){
