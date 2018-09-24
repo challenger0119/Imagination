@@ -59,6 +59,7 @@ class ContentShowViewController: UIViewController {
         let imageView = UIImageView(frame: self.view.frame)
         imageView.image = UIImage.blurImage(of: UIApplication.shared.keyWindow, withBlurNumber: 1)
         self.view.addSubview(imageView)
+        
         let closeBtn = UIButton(frame: CGRect(x: self.view.frame.width - 80, y: 20, width: 80, height: 30))
         closeBtn.setTitle("Close", for: .normal)
         closeBtn.titleLabel?.textAlignment = .right
@@ -66,6 +67,7 @@ class ContentShowViewController: UIViewController {
         closeBtn.addTarget(self, action: #selector(closeVC), for: .touchUpInside)
         self.view.addSubview(closeBtn)
         
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeVC)))
         
         let textView = UIScrollView(frame: CGRect(x: 20, y: 50, width: self.view.frame.width-40, height: self.view.frame.height-70))
         textView.layer.cornerRadius = 5.0
@@ -161,6 +163,7 @@ class ContentShowViewController: UIViewController {
         btn.addTarget(self, action: #selector(btnClicked), for: .touchUpInside)
         return btn
     }
+    
     func labelFactory(frame:CGRect,content:String,textColor:UIColor)->UILabel{
         let label = UILabel(frame: frame)
         label.text = content
@@ -200,10 +203,4 @@ class ContentShowViewController: UIViewController {
             break
         }
     }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
 }

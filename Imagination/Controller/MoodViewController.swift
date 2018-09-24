@@ -83,7 +83,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         self.content.becomeFirstResponder()
-        
+    
         let backItem = UIBarButtonItem()
         backItem.title = "返回"
         self.navigationItem.backBarButtonItem = backItem
@@ -92,6 +92,10 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         self.getLocBtn.addGestureRecognizer(longPress)
         
         self.font = self.content.font
+        
+        let paraStyle = NSMutableParagraphStyle()
+        paraStyle.lineSpacing = Theme.lineSpace
+        self.content.typingAttributes = [.font:self.font,.paragraphStyle:paraStyle]
     }
     
     

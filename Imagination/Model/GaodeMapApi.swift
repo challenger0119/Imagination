@@ -30,7 +30,6 @@ class GaodeMapApi {
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, respond, error) in
             
-            
             if let dd = data {
                 do {
                     let dic  = try JSONSerialization.jsonObject(with: dd) as! Dictionary<String,AnyObject>
