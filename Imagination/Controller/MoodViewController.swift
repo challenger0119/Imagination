@@ -224,9 +224,13 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 case .image:
                     mf.storePath = FileManager.createImageFile(withImage: mf.obj as! UIImage)
                 case .voice:
-                    mf.storePath = FileManager.createAudioFile(withPath: mf.storePath)
+                    if let path = mf.tmpStorePath {
+                       mf.storePath = FileManager.createAudioFile(withPath: path)
+                    }
                 case .video:
-                    mf.storePath = FileManager.createVideoFile(withPath: mf.storePath)
+                    if let path = mf.tmpStorePath {
+                        mf.storePath = FileManager.createVideoFile(withPath: path)
+                    }
                 default:
                     break
                 }
@@ -330,7 +334,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
                 let mf = Media()
                 mf.obj = audio
                 mf.mediaType = .voice
-                mf.storePath = audio.recordFileURL.path
+                mf.tmpStorePath = audio.recordFileURL.path
                 self.multiMediaInsertBuffer.updateValue(mf, forKey:textAttach)
             }catch{
 
@@ -339,17 +343,20 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         }else if multimedia.isKind(of: Media.self){
             let video = multimedia as! Media
             do{
-                let url = URL(fileURLWithPath: video.storePath)
-                let data = try Data.init(contentsOf: url)
-                let textAttach = NSTextAttachment(data: data, ofType: MediaType.video.rawValue)
-                let image = Media.viedoShot(withURL: url)!
-                Dlog("\(image.size.width) : \(image.size.height)")
-                Dlog(image.imageOrientation)
-                let imageHeight = image.size.height / image.size.width * imageWidth
-                textAttach.image = Media.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
-                let imageAttributeString = NSAttributedString(attachment:textAttach)
-                self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
-                self.multiMediaInsertBuffer.updateValue(video, forKey:textAttach)
+                if let path = video.tmpStorePath {
+                    let url = URL(fileURLWithPath: path)
+                    let data = try Data(contentsOf: url)
+                    let textAttach = NSTextAttachment(data: data, ofType: MediaType.video.rawValue)
+                    let image = Media.viedoShot(withURL: url)!
+                    Dlog("\(image.size.width) : \(image.size.height)")
+                    Dlog(image.imageOrientation)
+                    let imageHeight = image.size.height / image.size.width * imageWidth
+                    textAttach.image = Media.roundCornerImage(image, frame: CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight))
+                    let imageAttributeString = NSAttributedString(attachment:textAttach)
+                    self.content.textStorage.insert(imageAttributeString, at: self.content.selectedRange.location)
+                    self.multiMediaInsertBuffer.updateValue(video, forKey:textAttach)
+                }
+                
             }catch{
                 Dlog(error.localizedDescription)
             }
@@ -373,20 +380,16 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         })
     }
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-// Local variable inserted by Swift 4.2 migrator.
-let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-
-        
-        if let type = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaType)] as? String {
+        if let type = info[.mediaType] as? String {
             
             if type == kUTTypeImage as String {
-                if let pimg = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage{
+                if let pimg = info[.originalImage] as? UIImage{
                     addMultimediaToTextView(multimedia: pimg)
                 }
             }else if type == kUTTypeMovie as String{
-                if let url = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.mediaURL)] as? URL {
+                if let url = info[.mediaURL] as? URL {
                     let mf = Media()
-                    mf.storePath = url.path
+                    mf.tmpStorePath = url.path
                     mf.mediaType = .video
                     addMultimediaToTextView(multimedia: mf)
                 }
@@ -411,14 +414,4 @@ let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
         }
     }
     
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
-	return input.rawValue
 }

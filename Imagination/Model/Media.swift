@@ -35,6 +35,7 @@ class Media: Object {
     }
     
     var obj:AnyObject?
+    var tmpStorePath:String?    // 保存前临时路径
     var storePath:String{
         get{
             return FileManager.multiMediaFilePath() + self.path
@@ -49,7 +50,7 @@ class Media: Object {
     let ofItem = LinkingObjects(fromType: Item.self, property: "medias")
     
     override class func ignoredProperties() -> [String] {
-        return ["mediaType","obj","storePath"]
+        return ["mediaType","obj","storePath","tmpStorePath"]
     }
     
     //圆角图
