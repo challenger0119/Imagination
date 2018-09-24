@@ -21,7 +21,6 @@
 		F81316EA214F94B700FA0FCC /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81316E9214F94B700FA0FCC /* Media.swift */; };
 		F856CF021EB303F000FE2822 /* MemorySpaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF011EB303F000FE2822 /* MemorySpaceController.swift */; };
 		F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */; };
-		F862AF521EB766FB0065D32B /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F862AF511EB766FB0065D32B /* WebViewController.swift */; };
 		F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF731C378CB7008EF34D /* MoodViewController.swift */; };
 		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
 		F8723F141E260527009CCF44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F8723F131E260527009CCF44 /* Reachability.m */; };
@@ -67,7 +66,6 @@
 		F81316E9214F94B700FA0FCC /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		F856CF011EB303F000FE2822 /* MemorySpaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceController.swift; sourceTree = "<group>"; };
 		F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceHeaderView.swift; sourceTree = "<group>"; };
-		F862AF511EB766FB0065D32B /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		F870EF731C378CB7008EF34D /* MoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodViewController.swift; sourceTree = "<group>"; };
 		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Imagination-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -124,7 +122,6 @@
 				F89753C81EB1D2DF003BB8EF /* ImageViewController.swift */,
 				F80B691B1EB1D6BF00900635 /* AudioViewController.swift */,
 				F856CF011EB303F000FE2822 /* MemorySpaceController.swift */,
-				F862AF511EB766FB0065D32B /* WebViewController.swift */,
 				509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */,
 			);
 			path = Controller;
@@ -180,6 +177,7 @@
 		F81229551BF73C6C00BDCF0E = {
 			isa = PBXGroup;
 			children = (
+				50265E242132A80D00ABC1B4 /* View */,
 				F81229601BF73C6C00BDCF0E /* Imagination */,
 				F812295F1BF73C6C00BDCF0E /* Products */,
 				F89537581EAF71A100BFEAFC /* Frameworks */,
@@ -198,7 +196,6 @@
 		F81229601BF73C6C00BDCF0E /* Imagination */ = {
 			isa = PBXGroup;
 			children = (
-				50265E242132A80D00ABC1B4 /* View */,
 				50265E212132A7DD00ABC1B4 /* Controller */,
 				50265E232132A7DD00ABC1B4 /* Model */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
@@ -365,7 +362,6 @@
 				F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
 				F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */,
-				F862AF521EB766FB0065D32B /* WebViewController.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */,
 				509B2F0D2153E27500D5A926 /* DataPickerViewController.swift in Sources */,

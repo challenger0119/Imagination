@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="DOF-yU-Hl6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="DOF-yU-Hl6">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -135,7 +132,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OQq-0p-uvv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4551" y="418"/>
+            <point key="canvasLocation" x="7281.6000000000004" y="376.01199400299851"/>
         </scene>
         <!--Main Table View Controller-->
         <scene sceneID="CzR-NL-bGx">
@@ -215,7 +212,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUu-gi-bbh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3128" y="491"/>
+            <point key="canvasLocation" x="5004.8000000000002" y="441.67916041979015"/>
         </scene>
         <!--功能区-->
         <scene sceneID="aEs-Rf-MJZ">
@@ -409,30 +406,6 @@
                                             <segue destination="NTt-LZ-VHX" kind="push" id="pxP-BA-vya"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="PMc-HP-5VK" detailTextLabel="H7c-av-Rip" style="IBUITableViewCellStyleValue1" id="vqk-uF-u6h">
-                                        <rect key="frame" x="0.0" y="387" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vqk-uF-u6h" id="6P9-hU-aGD">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Wuzhi.me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PMc-HP-5VK">
-                                                    <rect key="frame" x="16" y="12" width="76" height="20.5"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="推荐一个专注日记的网站" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" id="H7c-av-Rip">
-                                                    <rect key="frame" x="205" y="17" width="135" height="14.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -450,7 +423,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zjt-YD-0dx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2367" y="1219"/>
+            <point key="canvasLocation" x="3787.1999999999998" y="1096.5517241379312"/>
         </scene>
         <!--Memory Space Controller-->
         <scene sceneID="uUq-yR-805">
@@ -496,7 +469,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NK1-7f-i5B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2367" y="2067"/>
+            <point key="canvasLocation" x="3787.1999999999998" y="1859.3703148425789"/>
         </scene>
         <!--Location View Controller-->
         <scene sceneID="lVa-wJ-tRc">
@@ -557,7 +530,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QfU-4x-Fta" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2822" y="1219"/>
+            <point key="canvasLocation" x="4515.1999999999998" y="1096.5517241379312"/>
         </scene>
         <!--Authority-->
         <scene sceneID="Fs2-Uy-bvV">
@@ -600,7 +573,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Les-sJ-7WN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1302.4000000000001" y="1231.6133333333332"/>
+            <point key="canvasLocation" x="2083.8400000000001" y="1107.8980509745127"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ezd-nQ-Pck">
@@ -619,7 +592,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZSH-5u-4f1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2580.5" y="541.5"/>
+            <point key="canvasLocation" x="4128.8000000000002" y="487.10644677661173"/>
         </scene>
         <!--Catalogue View Controller-->
         <scene sceneID="jpt-k9-02C">
@@ -637,7 +610,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QkE-HL-l4q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3128" y="-267"/>
+            <point key="canvasLocation" x="5004.8000000000002" y="-240.17991004497753"/>
         </scene>
         <!--Data Picker View Controller-->
         <scene sceneID="IN0-jv-075">
@@ -700,7 +673,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OUh-1i-04Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3786" y="-340"/>
+            <point key="canvasLocation" x="6057.6000000000004" y="-305.84707646176912"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="vIc-mH-bvg">
@@ -719,7 +692,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iP0-hP-oBY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1492.2666666666667" y="504.57333333333332"/>
+            <point key="canvasLocation" x="2387.6266666666666" y="453.88905547226392"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zbq-GL-R77">
@@ -739,7 +712,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p6w-q7-oXA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1934.9333333333334" y="1219.3066666666666"/>
+            <point key="canvasLocation" x="3095.8933333333334" y="1096.8275862068965"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Cok-1R-a7C">
@@ -758,7 +731,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PkQ-g3-4sC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3786" y="418"/>
+            <point key="canvasLocation" x="6057.6000000000004" y="376.01199400299851"/>
         </scene>
     </scenes>
     <resources>

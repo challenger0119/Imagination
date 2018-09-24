@@ -18,6 +18,7 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
     @IBOutlet weak var resent: UITableViewCell!
     @IBOutlet weak var setEmail: UITableViewCell!
     @IBOutlet weak var reminder: UITableViewCell!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
@@ -40,6 +41,9 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
             }
         }
     }
+    
+    // MARK: - UITableViewDelegate
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView .deselectRow(at: indexPath, animated: true)
         if indexPath.row == 0 {
@@ -122,11 +126,10 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
             self.present(vc, animated: true, completion: nil)
         } else if indexPath.row == 6 {
             sendByEmail(filePaths: [], addtional: "建议")
-        } else if indexPath.row == 8 {
-            let webvc = WebViewController()
-            self.navigationController?.pushViewController(webvc, animated: true)
         }
     }
+    
+    // MARK: - Method
     
     @objc func cancelDatePicker() {
         self.view.viewWithTag(pickerViewTag)?.removeFromSuperview()
@@ -211,6 +214,4 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
-    
 }
