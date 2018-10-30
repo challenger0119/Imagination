@@ -22,6 +22,8 @@
 		F81316EA214F94B700FA0FCC /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81316E9214F94B700FA0FCC /* Media.swift */; };
 		F856CF021EB303F000FE2822 /* MemorySpaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF011EB303F000FE2822 /* MemorySpaceController.swift */; };
 		F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */; };
+		F868516721882B3600E1F715 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F868516621882B3500E1F715 /* iflyMSC.framework */; };
+		F868516921882BED00E1F715 /* VoiceInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868516821882BED00E1F715 /* VoiceInputViewController.swift */; };
 		F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF731C378CB7008EF34D /* MoodViewController.swift */; };
 		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
 		F8723F141E260527009CCF44 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F8723F131E260527009CCF44 /* Reachability.m */; };
@@ -68,6 +70,8 @@
 		F81316E9214F94B700FA0FCC /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		F856CF011EB303F000FE2822 /* MemorySpaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceController.swift; sourceTree = "<group>"; };
 		F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceHeaderView.swift; sourceTree = "<group>"; };
+		F868516621882B3500E1F715 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
+		F868516821882BED00E1F715 /* VoiceInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceInputViewController.swift; sourceTree = "<group>"; };
 		F870EF731C378CB7008EF34D /* MoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodViewController.swift; sourceTree = "<group>"; };
 		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Imagination-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -103,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F868516721882B3600E1F715 /* iflyMSC.framework in Frameworks */,
 				F895375A1EAF71A100BFEAFC /* AVFoundation.framework in Frameworks */,
 				482A52C27D2EEB439BF7B5A7 /* Pods_Imagination.framework in Frameworks */,
 			);
@@ -125,6 +130,7 @@
 				F80B691B1EB1D6BF00900635 /* AudioViewController.swift */,
 				F856CF011EB303F000FE2822 /* MemorySpaceController.swift */,
 				509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */,
+				F868516821882BED00E1F715 /* VoiceInputViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -180,7 +186,7 @@
 		F81229551BF73C6C00BDCF0E = {
 			isa = PBXGroup;
 			children = (
-				50265E242132A80D00ABC1B4 /* View */,
+				F868516321882AAD00E1F715 /* Libs */,
 				F81229601BF73C6C00BDCF0E /* Imagination */,
 				F812295F1BF73C6C00BDCF0E /* Products */,
 				F89537581EAF71A100BFEAFC /* Frameworks */,
@@ -201,10 +207,19 @@
 			children = (
 				50265E212132A7DD00ABC1B4 /* Controller */,
 				50265E232132A7DD00ABC1B4 /* Model */,
+				50265E242132A80D00ABC1B4 /* View */,
 				F81229651BF73C6C00BDCF0E /* Main.storyboard */,
 				F8730EBB1DC06E4F009112CE /* Support */,
 			);
 			path = Imagination;
+			sourceTree = "<group>";
+		};
+		F868516321882AAD00E1F715 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				F868516621882B3500E1F715 /* iflyMSC.framework */,
+			);
+			path = Libs;
 			sourceTree = "<group>";
 		};
 		F8730EBB1DC06E4F009112CE /* Support */ = {
@@ -262,9 +277,9 @@
 				TargetAttributes = {
 					F812295D1BF73C6C00BDCF0E = {
 						CreatedOnToolsVersion = 7.1;
-						DevelopmentTeam = 65685Y88TH;
+						DevelopmentTeam = G25KG7PJ3H;
 						LastSwiftMigration = 1000;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -362,6 +377,7 @@
 				F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */,
 				F81316EA214F94B700FA0FCC /* Media.swift in Sources */,
 				F89753C91EB1D2DF003BB8EF /* ImageViewController.swift in Sources */,
+				F868516921882BED00E1F715 /* VoiceInputViewController.swift in Sources */,
 				F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */,
 				502E1B2821592BCA00397B03 /* Theme.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
@@ -517,11 +533,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65685Y88TH;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = G25KG7PJ3H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Libs",
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -529,7 +546,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.myself.imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "万能id真机调试描述文件";
 				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Model/Imagination-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -545,11 +562,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 65685Y88TH;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = G25KG7PJ3H;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Libs",
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -557,7 +575,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.myself.imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = "万能id真机调试描述文件";
 				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Model/Imagination-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;

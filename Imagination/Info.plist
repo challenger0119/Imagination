@@ -20,20 +20,6 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>3d031655be1812c7d3bf13778746424ffb2f1e01</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -46,7 +32,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>获取位置信息</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>获取录音</string>
+	<string>获取录音和语音输入</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>获取照片</string>
 	<key>UIFileSharingEnabled</key>
