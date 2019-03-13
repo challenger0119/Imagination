@@ -15,12 +15,12 @@ extension FileManager {
     
     // 用户可以看到的目录
     class func documentsPath()->String{
-        return NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory,FileManager.SearchPathDomainMask.userDomainMask, true)[0] as String
+        return NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0] as String
     }
     
     // APP维护的缓存目录 一定程度可删除再生的
     class func cachesPath()->String{
-        return NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory,FileManager.SearchPathDomainMask.userDomainMask, true)[0] as String
+        return NSSearchPathForDirectoriesInDomains(.cachesDirectory,.userDomainMask, true)[0] as String
     }
     
     // APP存储的用户不可看到的目录

@@ -17,9 +17,9 @@ extension MoodType{
     
     // MARK: - static
     static let coolColor = UIColor.orange
-    static let justOkColor = UIColor.init(red: 4.0/255.0, green: 119.0/255.0, blue: 240.0/255.0, alpha: 1.0)
+    static let justOkColor = UIColor(red: 4.0/255.0, green: 119.0/255.0, blue: 240.0/255.0, alpha: 1.0)
     static let whyColor = UIColor.red
-    static let defaultColor = UIColor.init(red: 239.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1)
+    static let defaultColor = UIColor(red: 239.0/255.0, green: 239.0/255.0, blue: 244.0/255.0, alpha: 1)
     
     fileprivate static let moodColor = [UIColor.darkGray,MoodType.coolColor,MoodType.justOkColor,MoodType.whyColor]
     
