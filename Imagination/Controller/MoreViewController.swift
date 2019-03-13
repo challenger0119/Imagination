@@ -176,7 +176,13 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
     
     
     func sendEmail(subject:String,recipients:[String]?,attachments:[String] = []){
-        let vc = MFMailComposeViewController.init()
+        guard MFMailComposeViewController.canSendMail() else {
+            let alert = UIAlertController.init(title: "提示", message: "请先配置系统邮箱", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        let vc = MFMailComposeViewController()
         vc.mailComposeDelegate = self
         
         vc.setToRecipients(recipients)

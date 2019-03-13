@@ -7,14 +7,10 @@
 //
 
 import UIKit
-import IFlyMSC
 
 class VoiceInputViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
-
 }

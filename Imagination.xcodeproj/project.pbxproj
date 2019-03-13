@@ -22,7 +22,6 @@
 		F81316EA214F94B700FA0FCC /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81316E9214F94B700FA0FCC /* Media.swift */; };
 		F856CF021EB303F000FE2822 /* MemorySpaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF011EB303F000FE2822 /* MemorySpaceController.swift */; };
 		F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */; };
-		F868516721882B3600E1F715 /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F868516621882B3500E1F715 /* iflyMSC.framework */; };
 		F868516921882BED00E1F715 /* VoiceInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F868516821882BED00E1F715 /* VoiceInputViewController.swift */; };
 		F870EF741C378CB7008EF34D /* MoodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF731C378CB7008EF34D /* MoodViewController.swift */; };
 		F870EF761C37BBB5008EF34D /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = F870EF751C37BBB5008EF34D /* Item.swift */; };
@@ -70,7 +69,6 @@
 		F81316E9214F94B700FA0FCC /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		F856CF011EB303F000FE2822 /* MemorySpaceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceController.swift; sourceTree = "<group>"; };
 		F856CF031EB322C200FE2822 /* MemorySpaceHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemorySpaceHeaderView.swift; sourceTree = "<group>"; };
-		F868516621882B3500E1F715 /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
 		F868516821882BED00E1F715 /* VoiceInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceInputViewController.swift; sourceTree = "<group>"; };
 		F870EF731C378CB7008EF34D /* MoodViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoodViewController.swift; sourceTree = "<group>"; };
 		F870EF751C37BBB5008EF34D /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F868516721882B3600E1F715 /* iflyMSC.framework in Frameworks */,
 				F895375A1EAF71A100BFEAFC /* AVFoundation.framework in Frameworks */,
 				482A52C27D2EEB439BF7B5A7 /* Pods_Imagination.framework in Frameworks */,
 			);
@@ -217,7 +214,6 @@
 		F868516321882AAD00E1F715 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
-				F868516621882B3500E1F715 /* iflyMSC.framework */,
 			);
 			path = Libs;
 			sourceTree = "<group>";
