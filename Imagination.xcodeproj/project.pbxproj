@@ -183,7 +183,6 @@
 		F81229551BF73C6C00BDCF0E = {
 			isa = PBXGroup;
 			children = (
-				F868516321882AAD00E1F715 /* Libs */,
 				F81229601BF73C6C00BDCF0E /* Imagination */,
 				F812295F1BF73C6C00BDCF0E /* Products */,
 				F89537581EAF71A100BFEAFC /* Frameworks */,
@@ -209,13 +208,6 @@
 				F8730EBB1DC06E4F009112CE /* Support */,
 			);
 			path = Imagination;
-			sourceTree = "<group>";
-		};
-		F868516321882AAD00E1F715 /* Libs */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Libs;
 			sourceTree = "<group>";
 		};
 		F8730EBB1DC06E4F009112CE /* Support */ = {
@@ -534,7 +526,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Libs",
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -563,7 +554,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/Libs",
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
