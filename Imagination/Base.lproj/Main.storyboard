@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="DOF-yU-Hl6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="DOF-yU-Hl6">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -132,7 +132,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OQq-0p-uvv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7281.6000000000004" y="376.01199400299851"/>
+            <point key="canvasLocation" x="7278" y="245"/>
         </scene>
         <!--Main Table View Controller-->
         <scene sceneID="CzR-NL-bGx">
@@ -212,7 +212,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUu-gi-bbh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5004.8000000000002" y="441.67916041979015"/>
+            <point key="canvasLocation" x="4514" y="244"/>
         </scene>
         <!--功能区-->
         <scene sceneID="aEs-Rf-MJZ">
@@ -406,6 +406,30 @@
                                             <segue destination="NTt-LZ-VHX" kind="push" id="pxP-BA-vya"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="d7G-Rf-kEK" detailTextLabel="I82-gu-JvF" style="IBUITableViewCellStyleValue1" id="gpF-mg-nQL">
+                                        <rect key="frame" x="0.0" y="387" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gpF-mg-nQL" id="0Cg-cH-aBH">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Wuzhi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="d7G-Rf-kEK">
+                                                    <rect key="frame" x="16" y="12" width="47.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="推荐：一个简洁的日记网站" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" id="I82-gu-JvF">
+                                                    <rect key="frame" x="192.5" y="17" width="147.5" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -423,7 +447,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zjt-YD-0dx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3787.1999999999998" y="1096.5517241379312"/>
+            <point key="canvasLocation" x="2913" y="1035"/>
         </scene>
         <!--Memory Space Controller-->
         <scene sceneID="uUq-yR-805">
@@ -469,7 +493,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NK1-7f-i5B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3787.1999999999998" y="1859.3703148425789"/>
+            <point key="canvasLocation" x="2913" y="1801"/>
         </scene>
         <!--Location View Controller-->
         <scene sceneID="lVa-wJ-tRc">
@@ -530,7 +554,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QfU-4x-Fta" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4515.1999999999998" y="1096.5517241379312"/>
+            <point key="canvasLocation" x="7278" y="1035"/>
         </scene>
         <!--Authority-->
         <scene sceneID="Fs2-Uy-bvV">
@@ -573,7 +597,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Les-sJ-7WN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2083.8400000000001" y="1107.8980509745127"/>
+            <point key="canvasLocation" x="1194" y="1048"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ezd-nQ-Pck">
@@ -592,7 +616,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZSH-5u-4f1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4128.8000000000002" y="487.10644677661173"/>
+            <point key="canvasLocation" x="3270" y="245"/>
         </scene>
         <!--Catalogue View Controller-->
         <scene sceneID="jpt-k9-02C">
@@ -610,7 +634,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QkE-HL-l4q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5004.8000000000002" y="-240.17991004497753"/>
+            <point key="canvasLocation" x="4513" y="-454"/>
         </scene>
         <!--Data Picker View Controller-->
         <scene sceneID="IN0-jv-075">
@@ -673,7 +697,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OUh-1i-04Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6057.6000000000004" y="-305.84707646176912"/>
+            <point key="canvasLocation" x="5890" y="-455"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="vIc-mH-bvg">
@@ -692,7 +716,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iP0-hP-oBY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2387.6266666666666" y="453.88905547226392"/>
+            <point key="canvasLocation" x="2207" y="246"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zbq-GL-R77">
@@ -712,7 +736,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p6w-q7-oXA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3095.8933333333334" y="1096.8275862068965"/>
+            <point key="canvasLocation" x="2207" y="1036"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Cok-1R-a7C">
@@ -731,11 +755,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PkQ-g3-4sC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6057.6000000000004" y="376.01199400299851"/>
+            <point key="canvasLocation" x="5967" y="243"/>
         </scene>
     </scenes>
     <resources>
-        <image name="cancel" width="25" height="25"/>
-        <image name="check" width="25" height="25"/>
+        <image name="cancel" width="50" height="50"/>
+        <image name="check" width="50" height="50"/>
     </resources>
 </document>

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B43AD312251D4430090BE3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B43AD302251D4430090BE3A /* WebViewController.swift */; };
 		482A52C27D2EEB439BF7B5A7 /* Pods_Imagination.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6617760B2D13706ED0EFC492 /* Pods_Imagination.framework */; };
 		502E1B2821592BCA00397B03 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502E1B2721592BCA00397B03 /* Theme.swift */; };
 		50995464212919A500BECAFD /* PhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50995463212919A500BECAFD /* PhoneModel.swift */; };
@@ -51,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		1848615C1FCBAE6983817833 /* Pods-Imagination.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imagination.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Imagination/Pods-Imagination.debug.xcconfig"; sourceTree = "<group>"; };
+		1B43AD302251D4430090BE3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		502E1B2721592BCA00397B03 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		50995463212919A500BECAFD /* PhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
 		509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPickerViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				F856CF011EB303F000FE2822 /* MemorySpaceController.swift */,
 				509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */,
 				F868516821882BED00E1F715 /* VoiceInputViewController.swift */,
+				1B43AD302251D4430090BE3A /* WebViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -310,7 +313,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Imagination/Pods-Imagination-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Imagination/Pods-Imagination-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
@@ -323,7 +326,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Imagination/Pods-Imagination-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Imagination/Pods-Imagination-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DEB747CE973B93AAD56DC12C /* [CP] Check Pods Manifest.lock */ = {
@@ -369,6 +372,7 @@
 				F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */,
 				502E1B2821592BCA00397B03 /* Theme.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
+				1B43AD312251D4430090BE3A /* WebViewController.swift in Sources */,
 				F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */,

@@ -126,6 +126,11 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
             self.present(vc, animated: true, completion: nil)
         } else if indexPath.row == 6 {
             sendByEmail(filePaths: [], addtional: "建议")
+        } else if indexPath.row == 7 {
+            // storyboard
+        } else if indexPath.row == 8 {
+            let webVC = WebViewController(withURLString: "https://wuzhi.me")
+            navigationController?.pushViewController(webVC, animated: true)
         }
     }
     
