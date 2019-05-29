@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 import MapKit
 
-let reusableIdentifier = "MapTableViewCell"
+private let reusableIdentifier = "MapTableViewCell"
 
 class LocationViewController: UIViewController,CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate,MKMapViewDelegate {
 

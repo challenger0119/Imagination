@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="DOF-yU-Hl6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="DOF-yU-Hl6">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -430,6 +430,30 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="aCf-xK-ale" detailTextLabel="ETF-lO-yu2" style="IBUITableViewCellStyleValue1" id="PdN-Hn-Kcg">
+                                        <rect key="frame" x="0.0" y="431" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PdN-Hn-Kcg" id="loP-hT-IbZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="WebDAV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aCf-xK-ale">
+                                                    <rect key="frame" x="16" y="12" width="67.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="关联网盘" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" id="ETF-lO-yu2">
+                                                    <rect key="frame" x="290.5" y="17" width="49.5" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -448,6 +472,73 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zjt-YD-0dx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2913" y="1035"/>
+        </scene>
+        <!--输入账号-->
+        <scene sceneID="Gb3-w2-UXT">
+            <objects>
+                <viewController storyboardIdentifier="WebDAVLoginViewController" title="输入账号" id="K6v-i5-i9P" customClass="WebDAVLoginViewController" customModule="Imagination" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fNI-CJ-9LV"/>
+                        <viewControllerLayoutGuide type="bottom" id="UVq-1A-2l8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eL3-51-NaY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="服务器地址" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hex-cn-vPA">
+                                <rect key="frame" x="20" y="28" width="335" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="eVn-F6-JSg"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="登录密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cw7-Ca-Fg8">
+                                <rect key="frame" x="20" y="76" width="335" height="40"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftG-vq-Cfn">
+                                <rect key="frame" x="172" y="318.5" width="31" height="30"/>
+                                <state key="normal" title="确定"/>
+                                <connections>
+                                    <action selector="confirm:" destination="K6v-i5-i9P" eventType="touchUpInside" id="ty5-F9-aFG"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="登录密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YEW-6y-Kbp">
+                                <rect key="frame" x="20" y="124" width="335" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="YEW-6y-Kbp" secondAttribute="trailing" constant="20" symbolic="YES" id="31v-4J-6Xb"/>
+                            <constraint firstItem="ftG-vq-Cfn" firstAttribute="centerY" secondItem="eL3-51-NaY" secondAttribute="centerY" id="HUd-Sp-aq0"/>
+                            <constraint firstItem="ftG-vq-Cfn" firstAttribute="centerX" secondItem="eL3-51-NaY" secondAttribute="centerX" id="RGc-MM-hSr"/>
+                            <constraint firstItem="YEW-6y-Kbp" firstAttribute="top" secondItem="Cw7-Ca-Fg8" secondAttribute="bottom" constant="8" symbolic="YES" id="Xws-4j-owp"/>
+                            <constraint firstItem="hex-cn-vPA" firstAttribute="leading" secondItem="eL3-51-NaY" secondAttribute="leading" constant="20" symbolic="YES" id="ZTq-7K-Iz2"/>
+                            <constraint firstAttribute="trailing" secondItem="hex-cn-vPA" secondAttribute="trailing" constant="20" symbolic="YES" id="dEe-Dk-4gn"/>
+                            <constraint firstItem="Cw7-Ca-Fg8" firstAttribute="height" secondItem="hex-cn-vPA" secondAttribute="height" id="ddM-jr-jCn"/>
+                            <constraint firstItem="hex-cn-vPA" firstAttribute="top" secondItem="fNI-CJ-9LV" secondAttribute="bottom" constant="8" symbolic="YES" id="ekS-ag-eMY"/>
+                            <constraint firstItem="Cw7-Ca-Fg8" firstAttribute="leading" secondItem="eL3-51-NaY" secondAttribute="leading" constant="20" symbolic="YES" id="lKb-vl-kV2"/>
+                            <constraint firstItem="YEW-6y-Kbp" firstAttribute="leading" secondItem="eL3-51-NaY" secondAttribute="leading" constant="20" symbolic="YES" id="lR9-yZ-qF1"/>
+                            <constraint firstItem="Cw7-Ca-Fg8" firstAttribute="top" secondItem="hex-cn-vPA" secondAttribute="bottom" constant="8" symbolic="YES" id="n7x-D3-5Y1"/>
+                            <constraint firstAttribute="trailing" secondItem="Cw7-Ca-Fg8" secondAttribute="trailing" constant="20" symbolic="YES" id="pcu-tg-CRz"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="passwordTextField" destination="YEW-6y-Kbp" id="Aoq-4b-Cwe"/>
+                        <outlet property="serverTextField" destination="hex-cn-vPA" id="pVF-i1-SFc"/>
+                        <outlet property="usernameTextField" destination="Cw7-Ca-Fg8" id="Y7a-9t-sRM"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="j86-jA-Lmp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3664.8000000000002" y="1137.481259370315"/>
         </scene>
         <!--Memory Space Controller-->
         <scene sceneID="uUq-yR-805">
@@ -649,24 +740,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vSd-wu-7ux">
-                                <rect key="frame" x="16" y="189" width="343" height="289"/>
+                                <rect key="frame" x="16" y="190.5" width="343" height="286"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eUc-cf-L2g">
-                                        <rect key="frame" x="20" y="20" width="25" height="25"/>
+                                        <rect key="frame" x="20" y="20" width="16" height="22"/>
                                         <state key="normal" image="cancel"/>
                                         <connections>
                                             <action selector="cancel:" destination="oLd-9H-sGI" eventType="touchUpInside" id="aTr-3x-cd0"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Lh-JF-bw1">
-                                        <rect key="frame" x="298" y="20" width="25" height="25"/>
+                                        <rect key="frame" x="307" y="20" width="16" height="22"/>
                                         <state key="normal" image="check"/>
                                         <connections>
                                             <action selector="selected:" destination="oLd-9H-sGI" eventType="touchUpInside" id="2x1-BX-HhW"/>
                                         </connections>
                                     </button>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5KS-QT-Mrs">
-                                        <rect key="frame" x="20" y="53" width="303" height="216"/>
+                                        <rect key="frame" x="20" y="50" width="303" height="216"/>
                                     </pickerView>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -759,7 +850,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="cancel" width="50" height="50"/>
-        <image name="check" width="50" height="50"/>
+        <image name="cancel" width="25" height="25"/>
+        <image name="check" width="25" height="25"/>
     </resources>
 </document>

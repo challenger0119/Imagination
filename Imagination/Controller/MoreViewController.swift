@@ -131,6 +131,8 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
         } else if indexPath.row == 8 {
             let webVC = WebViewController(withURLString: "https://wuzhi.me")
             navigationController?.pushViewController(webVC, animated: true)
+        } else if indexPath.row == 9 {
+            navigationController?.pushViewController(WebDAVViewController(), animated: true)
         }
     }
     
