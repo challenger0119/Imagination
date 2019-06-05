@@ -11,6 +11,7 @@ import Foundation
 struct WebDAVConfig {
 
     private static let userDefault = UserDefaults(suiteName: "WebDAVConfig")
+    let serverName: String
     let server: String
     let username: String
     let password: String
@@ -19,6 +20,7 @@ struct WebDAVConfig {
         guard server.isEmpty == false else {
             return
         }
+        WebDAVConfig.userDefault?.set(serverName, forKey: "serverName")
         WebDAVConfig.userDefault?.set(server, forKey: "server")
         WebDAVConfig.userDefault?.set(username, forKey: "username")
         WebDAVConfig.userDefault?.set(password, forKey: "password")
@@ -26,11 +28,16 @@ struct WebDAVConfig {
 
     static func recent() -> WebDAVConfig? {
         if let server = WebDAVConfig.userDefault?.object(forKey: "server") as? String {
+            let serverName: String = WebDAVConfig.userDefault?.object(forKey: "serverName") as! String
             let username: String = WebDAVConfig.userDefault?.object(forKey: "username") as! String
             let password: String = WebDAVConfig.userDefault?.object(forKey: "password") as! String
-            return WebDAVConfig(server: server, username: username, password: password)
+            return WebDAVConfig(serverName: serverName, server: server, username: username, password: password)
         } else {
             return nil
         }
+    }
+
+    static func emptyConfig() -> WebDAVConfig {
+        return WebDAVConfig(serverName: "", server: "", username: "", password: "")
     }
 }

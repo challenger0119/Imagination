@@ -9,11 +9,13 @@
 import UIKit
 
 class WebDAV: NSObject, URLSessionTaskDelegate {
+    static let shared = WebDAV()
+
     let config: WebDAVConfig
     var session: URLSession?
     
-    init(config: WebDAVConfig) {
-        self.config = config
+    override init() {
+        self.config = WebDAVConfig.recent() ?? WebDAVConfig.emptyConfig()
         super.init()
         self.session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     }

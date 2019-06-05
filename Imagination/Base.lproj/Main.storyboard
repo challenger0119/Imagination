@@ -406,8 +406,32 @@
                                             <segue destination="NTt-LZ-VHX" kind="push" id="pxP-BA-vya"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="d7G-Rf-kEK" detailTextLabel="I82-gu-JvF" style="IBUITableViewCellStyleValue1" id="gpF-mg-nQL">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="aCf-xK-ale" detailTextLabel="ETF-lO-yu2" style="IBUITableViewCellStyleValue1" id="PdN-Hn-Kcg">
                                         <rect key="frame" x="0.0" y="387" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PdN-Hn-Kcg" id="loP-hT-IbZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="云存储" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aCf-xK-ale">
+                                                    <rect key="frame" x="16" y="12" width="52" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="关联支持WebDAV网盘，将自动同步备份" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" id="ETF-lO-yu2">
+                                                    <rect key="frame" x="119" y="17" width="221" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="d7G-Rf-kEK" detailTextLabel="I82-gu-JvF" style="IBUITableViewCellStyleValue1" id="gpF-mg-nQL">
+                                        <rect key="frame" x="0.0" y="431" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gpF-mg-nQL" id="0Cg-cH-aBH">
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -430,30 +454,6 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="aCf-xK-ale" detailTextLabel="ETF-lO-yu2" style="IBUITableViewCellStyleValue1" id="PdN-Hn-Kcg">
-                                        <rect key="frame" x="0.0" y="431" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PdN-Hn-Kcg" id="loP-hT-IbZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="WebDAV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aCf-xK-ale">
-                                                    <rect key="frame" x="16" y="12" width="67.5" height="20.5"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="关联网盘" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" id="ETF-lO-yu2">
-                                                    <rect key="frame" x="290.5" y="17" width="49.5" height="14.5"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -464,6 +464,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="oCH-Ul-Iu8"/>
                     <connections>
+                        <outlet property="cloundSyncCell" destination="PdN-Hn-Kcg" id="uvS-4K-IIj"/>
                         <outlet property="reminder" destination="ZeP-TP-a3e" id="XhN-N1-Zaw"/>
                         <outlet property="resent" destination="HND-OE-bhH" id="KJg-jR-6d5"/>
                         <outlet property="setEmail" destination="6IQ-m3-JEl" id="xKq-sM-2Cu"/>
@@ -485,8 +486,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftG-vq-Cfn">
+                                <rect key="frame" x="172" y="318.5" width="31" height="30"/>
+                                <state key="normal" title="确定"/>
+                                <connections>
+                                    <action selector="confirm:" destination="K6v-i5-i9P" eventType="touchUpInside" id="ty5-F9-aFG"/>
+                                </connections>
+                            </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="服务器地址" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hex-cn-vPA">
-                                <rect key="frame" x="20" y="28" width="335" height="40"/>
+                                <rect key="frame" x="20" y="76" width="335" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="eVn-F6-JSg"/>
                                 </constraints>
@@ -495,20 +503,22 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="登录密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cw7-Ca-Fg8">
-                                <rect key="frame" x="20" y="76" width="335" height="40"/>
+                                <rect key="frame" x="20" y="124" width="335" height="40"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ftG-vq-Cfn">
-                                <rect key="frame" x="172" y="318.5" width="31" height="30"/>
-                                <state key="normal" title="确定"/>
-                                <connections>
-                                    <action selector="confirm:" destination="K6v-i5-i9P" eventType="touchUpInside" id="ty5-F9-aFG"/>
-                                </connections>
-                            </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="登录密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YEW-6y-Kbp">
-                                <rect key="frame" x="20" y="124" width="335" height="30"/>
+                                <rect key="frame" x="20" y="172" width="335" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="服务器名称" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E0g-TX-5JX">
+                                <rect key="frame" x="20" y="28" width="335" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="GeI-Xg-nBl"/>
+                                </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -518,20 +528,24 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="YEW-6y-Kbp" secondAttribute="trailing" constant="20" symbolic="YES" id="31v-4J-6Xb"/>
                             <constraint firstItem="ftG-vq-Cfn" firstAttribute="centerY" secondItem="eL3-51-NaY" secondAttribute="centerY" id="HUd-Sp-aq0"/>
+                            <constraint firstItem="E0g-TX-5JX" firstAttribute="top" secondItem="fNI-CJ-9LV" secondAttribute="bottom" constant="8" symbolic="YES" id="LFH-m3-R5N"/>
+                            <constraint firstItem="E0g-TX-5JX" firstAttribute="leading" secondItem="eL3-51-NaY" secondAttribute="leading" constant="20" symbolic="YES" id="LW9-Tb-hMi"/>
                             <constraint firstItem="ftG-vq-Cfn" firstAttribute="centerX" secondItem="eL3-51-NaY" secondAttribute="centerX" id="RGc-MM-hSr"/>
+                            <constraint firstAttribute="trailing" secondItem="E0g-TX-5JX" secondAttribute="trailing" constant="20" symbolic="YES" id="UEu-yQ-uSD"/>
                             <constraint firstItem="YEW-6y-Kbp" firstAttribute="top" secondItem="Cw7-Ca-Fg8" secondAttribute="bottom" constant="8" symbolic="YES" id="Xws-4j-owp"/>
                             <constraint firstItem="hex-cn-vPA" firstAttribute="leading" secondItem="eL3-51-NaY" secondAttribute="leading" constant="20" symbolic="YES" id="ZTq-7K-Iz2"/>
                             <constraint firstAttribute="trailing" secondItem="hex-cn-vPA" secondAttribute="trailing" constant="20" symbolic="YES" id="dEe-Dk-4gn"/>
                             <constraint firstItem="Cw7-Ca-Fg8" firstAttribute="height" secondItem="hex-cn-vPA" secondAttribute="height" id="ddM-jr-jCn"/>
-                            <constraint firstItem="hex-cn-vPA" firstAttribute="top" secondItem="fNI-CJ-9LV" secondAttribute="bottom" constant="8" symbolic="YES" id="ekS-ag-eMY"/>
                             <constraint firstItem="Cw7-Ca-Fg8" firstAttribute="leading" secondItem="eL3-51-NaY" secondAttribute="leading" constant="20" symbolic="YES" id="lKb-vl-kV2"/>
                             <constraint firstItem="YEW-6y-Kbp" firstAttribute="leading" secondItem="eL3-51-NaY" secondAttribute="leading" constant="20" symbolic="YES" id="lR9-yZ-qF1"/>
                             <constraint firstItem="Cw7-Ca-Fg8" firstAttribute="top" secondItem="hex-cn-vPA" secondAttribute="bottom" constant="8" symbolic="YES" id="n7x-D3-5Y1"/>
                             <constraint firstAttribute="trailing" secondItem="Cw7-Ca-Fg8" secondAttribute="trailing" constant="20" symbolic="YES" id="pcu-tg-CRz"/>
+                            <constraint firstItem="hex-cn-vPA" firstAttribute="top" secondItem="E0g-TX-5JX" secondAttribute="bottom" constant="8" symbolic="YES" id="wt9-9p-70N"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="passwordTextField" destination="YEW-6y-Kbp" id="Aoq-4b-Cwe"/>
+                        <outlet property="serverNameTextField" destination="E0g-TX-5JX" id="WEg-Qj-Xsg"/>
                         <outlet property="serverTextField" destination="hex-cn-vPA" id="pVF-i1-SFc"/>
                         <outlet property="usernameTextField" destination="Cw7-Ca-Fg8" id="Y7a-9t-sRM"/>
                     </connections>
@@ -740,24 +754,24 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vSd-wu-7ux">
-                                <rect key="frame" x="16" y="190.5" width="343" height="286"/>
+                                <rect key="frame" x="16" y="189" width="343" height="289"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eUc-cf-L2g">
-                                        <rect key="frame" x="20" y="20" width="16" height="22"/>
+                                        <rect key="frame" x="20" y="20" width="25" height="25"/>
                                         <state key="normal" image="cancel"/>
                                         <connections>
                                             <action selector="cancel:" destination="oLd-9H-sGI" eventType="touchUpInside" id="aTr-3x-cd0"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Lh-JF-bw1">
-                                        <rect key="frame" x="307" y="20" width="16" height="22"/>
+                                        <rect key="frame" x="298" y="20" width="25" height="25"/>
                                         <state key="normal" image="check"/>
                                         <connections>
                                             <action selector="selected:" destination="oLd-9H-sGI" eventType="touchUpInside" id="2x1-BX-HhW"/>
                                         </connections>
                                     </button>
                                     <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5KS-QT-Mrs">
-                                        <rect key="frame" x="20" y="50" width="303" height="216"/>
+                                        <rect key="frame" x="20" y="53" width="303" height="216"/>
                                     </pickerView>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
