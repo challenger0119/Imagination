@@ -27,7 +27,7 @@ class WebDAVLoginViewController: UIViewController {
     }
 
     @IBAction func confirm(_ sender: Any) {
-        let serverName = serverTextField.text ?? ""
+        let serverName = serverNameTextField.text ?? ""
         let server = serverTextField.text ?? ""
         let username = usernameTextField.text ?? ""
         let password = passwordTextField.text ?? ""

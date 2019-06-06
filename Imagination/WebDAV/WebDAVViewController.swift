@@ -15,6 +15,7 @@ class WebDAVViewController: UIViewController {
 
     let table = UITableView()
     let path: String?
+    var loginItem: UIBarButtonItem!
     var items = [WebDAVItem]()
 
     init(path: String? = nil) {
@@ -26,18 +27,79 @@ class WebDAVViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func addLoginTip() {
+        let loginTipLabel = UILabel(frame: view.bounds)
+        loginTipLabel.text = "登陆一个支持WebDAV的网盘\n可以实现备份文件自动同步云端"
+        loginTipLabel.numberOfLines = 0
+        loginTipLabel.textColor = .darkGray
+        loginTipLabel.textAlignment = .center
+        loginTipLabel.font = UIFont.systemFont(ofSize: 15)
+        view.addSubview(loginTipLabel)
+    }
+
+    func addLoginItem() {
+        loginItem = UIBarButtonItem(title: "Login", style: .plain, target: self, action: #selector(login))
+        self.navigationItem.rightBarButtonItem = loginItem
+    }
+
+    func loadData() {
+        if let config  = WebDAVConfig.recent() {
+            self.table.isHidden = false
+            loginItem.title = "Logout"
+            title = config.serverName
+            WebDAV.shared.loadPath(path) { (items) in
+                DispatchQueue.main.async {
+                    self.items = items
+                    self.table.reloadData()
+                    self.title = self.items.first?.displayname
+                }
+            }
+        } else {
+            loginItem.title = "Login"
+            presentLogin()
+        }
+    }
+
+    func presentLogin() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "WebDAVLoginViewController") as! WebDAVLoginViewController
+        vc.resultHandler = { (result) in
+            switch result {
+            case .login: self.loadData()
+            case .cancel: break
+            }
+        }
+        let nav = UINavigationController(rootViewController: vc)
+        self.present(nav, animated: true, completion: nil)
+    }
+
+    @objc
+    func login(_ sender: UIBarButtonItem) {
+        if sender.title == "Login" {
+            presentLogin()
+        } else {
+            WebDAVConfig.reset()
+        }
+    }
+}
+
+extension WebDAVViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
+        addLoginTip()
+        addLoginItem()
+
         view.addSubview(table)
         table.frame = view.bounds
         table.delegate = self
         table.dataSource = self
         table.separatorStyle = .none
-        table.sectionHeaderHeight = 50
         table.register(UITableViewCell.self, forCellReuseIdentifier: reusableIdentifier)
+        table.isHidden = true
         loadData()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -46,28 +108,6 @@ class WebDAVViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
-    }
-
-    func loadData() {
-        if let _  = WebDAVConfig.recent() {
-            WebDAV.shared.loadPath(path) { (items) in
-                DispatchQueue.main.async {
-                    self.items = items
-                    self.table.reloadData()
-                }
-            }
-        } else {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "WebDAVLoginViewController") as! WebDAVLoginViewController
-            vc.resultHandler = { (result) in
-                switch result {
-                case .login: self.loadData()
-                case .cancel: break
-                }
-            }
-            let nav = UINavigationController(rootViewController: vc)
-            self.present(nav, animated: true, completion: nil)
-        }
     }
 }
 
@@ -90,17 +130,6 @@ extension WebDAVViewController: UITableViewDataSource {
         }
         cell.textLabel?.text = item.displayname
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let backView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.size.width, height: tableView.sectionHeaderHeight))
-        backView.backgroundColor = .lightGray
-        let label = UILabel(frame: CGRect(x: 10, y: 0, width: tableView.bounds.size.width - 10, height: tableView.sectionHeaderHeight))
-        label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.textColor = .darkGray
-        label.text = items.first?.displayname
-        backView.addSubview(label)
-        return backView
     }
 }
 

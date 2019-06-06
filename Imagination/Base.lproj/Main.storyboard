@@ -500,19 +500,19 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" textContentType="url"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="登录密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cw7-Ca-Fg8">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="用户名" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cw7-Ca-Fg8">
                                 <rect key="frame" x="20" y="124" width="335" height="40"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" textContentType="username"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="登录密码" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YEW-6y-Kbp">
-                                <rect key="frame" x="20" y="172" width="335" height="30"/>
+                                <rect key="frame" x="20" y="172" width="335" height="40"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" textContentType="password"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="服务器名称" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="E0g-TX-5JX">
                                 <rect key="frame" x="20" y="28" width="335" height="40"/>
@@ -521,11 +521,12 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" textContentType="organization"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="YEW-6y-Kbp" firstAttribute="height" secondItem="Cw7-Ca-Fg8" secondAttribute="height" id="1G1-e5-Wn4"/>
                             <constraint firstAttribute="trailing" secondItem="YEW-6y-Kbp" secondAttribute="trailing" constant="20" symbolic="YES" id="31v-4J-6Xb"/>
                             <constraint firstItem="ftG-vq-Cfn" firstAttribute="centerY" secondItem="eL3-51-NaY" secondAttribute="centerY" id="HUd-Sp-aq0"/>
                             <constraint firstItem="E0g-TX-5JX" firstAttribute="top" secondItem="fNI-CJ-9LV" secondAttribute="bottom" constant="8" symbolic="YES" id="LFH-m3-R5N"/>

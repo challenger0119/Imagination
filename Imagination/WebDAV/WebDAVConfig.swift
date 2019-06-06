@@ -40,4 +40,11 @@ struct WebDAVConfig {
     static func emptyConfig() -> WebDAVConfig {
         return WebDAVConfig(serverName: "", server: "", username: "", password: "")
     }
+
+    static func reset() {
+        WebDAVConfig.userDefault?.removeObject(forKey: "serverName")
+        WebDAVConfig.userDefault?.removeObject(forKey: "server")
+        WebDAVConfig.userDefault?.removeObject(forKey: "username")
+        WebDAVConfig.userDefault?.removeObject(forKey: "password")
+    }
 }
