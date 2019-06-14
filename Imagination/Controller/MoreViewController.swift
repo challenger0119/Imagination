@@ -12,7 +12,7 @@ import MessageUI
 class MoreViewController: UITableViewController, MFMailComposeViewControllerDelegate {
     let dCache = DataCache.share
     let pickerViewTag = 111
-    var datePicker:UIDatePicker?
+    var datePicker: UIDatePicker?
 
     @IBOutlet weak var resent: UITableViewCell!
     @IBOutlet weak var setEmail: UITableViewCell!
@@ -52,8 +52,8 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
     func updateReminder() {
         if Notification.isReminder {
             reminder.textLabel?.text = "关闭每日提醒"
-            if let clock = Notification.fireDate {
-                reminder.detailTextLabel?.text = Time.clockOfDate(clock)
+            if let clock = Notification.fireTime {
+                reminder.detailTextLabel?.text = "\(clock.hour):\(clock.minute)"
             }
         } else {
             reminder.textLabel?.text = "开启每日提醒"
@@ -69,8 +69,8 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
     
     @objc func didSelectTime(){
         self.view.viewWithTag(111)?.removeFromSuperview()
-        Notification.createNotificaion(datePicker?.date)
-        
+        let time = Time.hourAndMinute(ofDate: datePicker!.date)
+        Notification.createNotificaion(at: time.0, minute: time.1, identifier: "notification")
         updateReminder()
     }
     

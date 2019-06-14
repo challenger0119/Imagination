@@ -17,27 +17,30 @@ class Notification {
     static let notiValue = "imagination"
     static let notiBody = "今天心情如何？记录了吗？"
     static let notiAction = "记"
-    static let keyForFiredate = "firedate"
+    static let keyForHour = "fireTimeHour"
+    static let keyForMinute = "fireTimeMinute"
     static let keyForReminder = "noti_everyday"
     static let keyForNewMoodAdded = "newMoodAdded"
     
-    static var fireDate:Date?{
+    static var fireTime: (hour: Int, minute: Int)?{
         get{
-            if let nn = UserDefaults.standard.object(forKey: Notification.keyForFiredate) as? Date {
-                return nn
+            if let hour = UserDefaults.standard.object(forKey: Notification.keyForHour) as? Int, let minute = UserDefaults.standard.object(forKey: Notification.keyForMinute) as? Int {
+                return (hour, minute)
             } else {
                 return nil
             }
         }
         set{
-            UserDefaults.standard.set(newValue, forKey: Notification.keyForFiredate)
+            guard let value = newValue else { return }
+            UserDefaults.standard.set(value.hour, forKey: Notification.keyForHour)
+            UserDefaults.standard.set(value.minute, forKey: Notification.keyForMinute)
         }
     }
     
-    static var isReminder:Bool{
+    static var isReminder: Bool {
         get{
-            if let nn = UserDefaults.standard.object(forKey: Notification.keyForReminder) as? NSNumber {
-                return nn.boolValue
+            if let nn = UserDefaults.standard.object(forKey: Notification.keyForReminder) as? Bool {
+                return nn
             } else {
                 return false
             }
@@ -47,49 +50,27 @@ class Notification {
         }
     }
     
-    static func createNotificaion(_ fireDate:Date?, identifier:String = "") {
-        if let fire = fireDate {
-            Notification.isReminder = true
-            
-            let notiContent = UNMutableNotificationContent()
-            notiContent.sound = .default
-            notiContent.badge = NSNumber(integerLiteral: 1)
-            notiContent.body = Notification.notiBody
-            notiContent.title = Notification.notiAction
-            notiContent.userInfo = [Notification.notiKey:Notification.notiValue]
-            
-            let timeComponents = Calendar.current.dateComponents([.hour,.minute,.second], from: fire)
-            let notiTrigger = UNCalendarNotificationTrigger(dateMatching: timeComponents, repeats: true)
-            let notiRequest = UNNotificationRequest(identifier: identifier, content: notiContent, trigger: notiTrigger)
-            UNUserNotificationCenter.current().add(notiRequest) { (error) in
-                if error != nil  {
-                    Dlog(error?.localizedDescription)
-                }
-            }
-            Notification.fireDate = fire
-        }
-    }
-    
-    //逻辑：1，有通知（才有执行必要）；2，存储了firedate（必须有，容错）；4，firedate day<= today(未调整，一天中启动十次软件 未调整只会出现一次不通过)；3，firedate clock > clock（需要调整，一天中启动十次软件 需调整可能9次不通过，所以这个判断放在前面）5，调整（找到对应noti 调整 其实这里 可以不要info）
-    
-    static func testToRescheduleNotificationToNextDay() {
-        if Notification.isReminder {
-            if let dd = Notification.fireDate {
-                if Time.clockOfDate(dd) > Time.clock() && Time.dayOfDate(dd) <= Time.today(){
-                    UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                    if let next = Time.dateFromString(Time.today() + " " + Time.clockOfDate(dd)) {
-                        Notification.createNotificaion(Date(timeInterval: 24*60*60, since: next))
-                    }
-                }
+    static func createNotificaion(at hour: Int, minute: Int, identifier:String = "notification") {
+        Notification.isReminder = true
+
+        let notiContent = UNMutableNotificationContent()
+        notiContent.sound = .default
+        notiContent.badge = NSNumber(integerLiteral: 1)
+        notiContent.body = Notification.notiBody
+        notiContent.title = Notification.notiAction
+        notiContent.userInfo = [Notification.notiKey:Notification.notiValue]
+
+        let notiTrigger = UNCalendarNotificationTrigger(dateMatching: DateComponents(hour: hour, minute: minute), repeats: true)
+        let notiRequest = UNNotificationRequest(identifier: identifier, content: notiContent, trigger: notiTrigger)
+        UNUserNotificationCenter.current().add(notiRequest) { (error) in
+            if error != nil  {
+                Dlog(error?.localizedDescription)
             }
         }
+        Notification.fireTime = (hour, minute)
     }
     
     static func cancelAllNotifications() {
-        UNUserNotificationCenter.current().getPendingNotificationRequests { (requests) in
-            if requests.count > 0 {
-                UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-            }
-        }
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
 }

@@ -43,11 +43,23 @@ class WebDAV: NSObject, URLSessionTaskDelegate {
             print("URL create error")
         }
     }
-    
-    // MARK: - URLSessionDelegate
+
+    func uploadFile(filePath: String, atPath path: String) {
+        if let url = URL(string: path) {
+            var request = URLRequest(url: url)
+            request.httpMethod = "PUT"
+            self.session?.uploadTask(with: request, fromFile: URL(fileURLWithPath: filePath), completionHandler: { (data, response, error) in
+                print(error ?? "no error")
+            })
+        } else {
+            print("invalid path")
+        }
+    }
+}
+
+// MARK: - URLSessionDelegate
+extension WebDAV {
     func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         completionHandler(.useCredential, URLCredential(user: config.username, password: config.password, persistence: .forSession))
     }
-    
-    
 }

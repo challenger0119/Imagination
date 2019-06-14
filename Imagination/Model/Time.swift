@@ -61,12 +61,16 @@ class Time {
         return string.replacingOccurrences(of: ".", with: "") //去掉小数点
     }
     
-    class func timeIntervalToMMssString(timeInterval:TimeInterval)->String{
+    class func timeIntervalToMMssString(timeInterval:TimeInterval) -> String{
         let intTimeInterval = Int(timeInterval)
         let minute = intTimeInterval / 60
         let secend = intTimeInterval % 60
         let mstring = minute < 10 ? "0\(minute)":"\(minute)"
         let sstring = secend < 10 ? "0\(secend)":"\(secend)"
         return "\(mstring):\(sstring)"
+    }
+
+    class func hourAndMinute(ofDate date: Date) -> (Int, Int) {
+        return (Calendar.current.component(.hour, from: date), Calendar.current.component(.minute, from: date))
     }
 }

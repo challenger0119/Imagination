@@ -89,7 +89,7 @@ class DataCache {
 
 // MARK: - 数据库操作
 
-extension DataCache{
+extension DataCache {
     // 存储数据
     func storeItem(_ item:Item) {
         let date = Date()

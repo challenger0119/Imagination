@@ -25,9 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 Dlog("requestAuthorization \(success)")
             }
         }
-        
-        
-        Notification.testToRescheduleNotificationToNextDay()
         return true
     }
     
@@ -36,12 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         application.applicationIconBadgeNumber -= 1
     }
 
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        //启动的时候查看今天的提醒发送没 没有就取消
-        Notification.testToRescheduleNotificationToNextDay()
-    }
-    
     func applicationDidEnterBackground(_ application: UIApplication) {
         showAuthorityView()
     }
