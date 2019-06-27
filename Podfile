@@ -7,5 +7,6 @@ target 'Imagination' do
 
   # Pods for Imagination
   pod 'SSZipArchive'
-  pod 'RealmSwift'
+  pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa.git', branch: 'tg/xcode-11-b1', submodules: true
+  pod 'Realm', :git => 'https://github.com/realm/realm-cocoa.git', :branch => 'tg/xcode-11-b1', submodules: true
 end

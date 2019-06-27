@@ -4,3 +4,5 @@
 
 #import "Reachability.h"
 #import "UIImage+BlurImage.h"
+#import "WTClient.h"
+#import "WTHTTPConnection.h"

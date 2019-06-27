@@ -19,21 +19,24 @@ struct SyncItem {
 }
 
 class WebDavMananger {
+    static let mananger: WebDavMananger = WebDavMananger()
 
     let webDav = WebDAV()
 
-    var syncQueue: [SyncItem] = []
-
-    func syncFiles(ofPath path: String  ) {
-        syncQueue.forEach { (item) in
-            if !item.isSyncing {
-                webDav.uploadFile(filePath: item.filePath, atPath: path)
-            }
-        }
+    var destination: String {
+        return webDav.config.server + "/Imagination"
     }
+    var syncQueue: [SyncItem] = []
 
     func synchronization() {
         let fileDir = FileManager.backupFilePath()
-
+        do {
+            let files = try FileManager.default.subpathsOfDirectory(atPath: fileDir)
+            files.forEach { (f) in
+                webDav.uploadFile(filePath: "\(fileDir)/\(f)", atPath: destination + "/\(f)")
+            }
+        } catch {
+            print(error)
+        }
     }
 }

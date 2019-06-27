@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1B43AD312251D4430090BE3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B43AD302251D4430090BE3A /* WebViewController.swift */; };
 		1B5954EE22AFA9EA002240AA /* WebDavMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5954ED22AFA9EA002240AA /* WebDavMananger.swift */; };
+		1B5A4B8422B3B4C20046FA5D /* WTClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5A4B8122B3B4C20046FA5D /* WTClient.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1B5A4B8522B3B4C20046FA5D /* WTHTTPConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B5A4B8222B3B4C20046FA5D /* WTHTTPConnection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1BBCFA98227477A600368296 /* WebDAVViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBCFA97227477A600368296 /* WebDAVViewController.swift */; };
 		1BBCFA9A227477CC00368296 /* WebDAVLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBCFA99227477CC00368296 /* WebDAVLoginViewController.swift */; };
 		1BBCFA9C2274780300368296 /* WebDAVConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBCFA9B2274780300368296 /* WebDAVConfig.swift */; };
@@ -61,6 +63,10 @@
 		1848615C1FCBAE6983817833 /* Pods-Imagination.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imagination.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Imagination/Pods-Imagination.debug.xcconfig"; sourceTree = "<group>"; };
 		1B43AD302251D4430090BE3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		1B5954ED22AFA9EA002240AA /* WebDavMananger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavMananger.swift; sourceTree = "<group>"; };
+		1B5A4B8022B3B4C20046FA5D /* WTHTTPConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WTHTTPConnection.h; sourceTree = "<group>"; };
+		1B5A4B8122B3B4C20046FA5D /* WTClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WTClient.m; sourceTree = "<group>"; };
+		1B5A4B8222B3B4C20046FA5D /* WTHTTPConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WTHTTPConnection.m; sourceTree = "<group>"; };
+		1B5A4B8322B3B4C20046FA5D /* WTClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WTClient.h; sourceTree = "<group>"; };
 		1BBCFA97227477A600368296 /* WebDAVViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVViewController.swift; sourceTree = "<group>"; };
 		1BBCFA99227477CC00368296 /* WebDAVLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVLoginViewController.swift; sourceTree = "<group>"; };
 		1BBCFA9B2274780300368296 /* WebDAVConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVConfig.swift; sourceTree = "<group>"; };
@@ -129,6 +135,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B5A4B7C22B3B4910046FA5D /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				1B5A4B7F22B3B4C20046FA5D /* WTClient */,
+			);
+			path = Libs;
+			sourceTree = "<group>";
+		};
+		1B5A4B7F22B3B4C20046FA5D /* WTClient */ = {
+			isa = PBXGroup;
+			children = (
+				1B5A4B8022B3B4C20046FA5D /* WTHTTPConnection.h */,
+				1B5A4B8122B3B4C20046FA5D /* WTClient.m */,
+				1B5A4B8222B3B4C20046FA5D /* WTHTTPConnection.m */,
+				1B5A4B8322B3B4C20046FA5D /* WTClient.h */,
+			);
+			path = WTClient;
+			sourceTree = "<group>";
+		};
 		1BBCFA962274775900368296 /* WebDAV */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,7 +202,6 @@
 				F870EF751C37BBB5008EF34D /* Item.swift */,
 				F81283971C3F82E8002985A7 /* Notification.swift */,
 				F8DAA5DB1E24B28200021288 /* GaodeMapApi.swift */,
-				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
 				F8F5D4791EADCA25007BDF2A /* UIImage+BlurImage.h */,
 				F8F5D47A1EADCA25007BDF2A /* UIImage+BlurImage.m */,
 				50995463212919A500BECAFD /* PhoneModel.swift */,
@@ -232,6 +256,7 @@
 		F81229601BF73C6C00BDCF0E /* Imagination */ = {
 			isa = PBXGroup;
 			children = (
+				1B5A4B7C22B3B4910046FA5D /* Libs */,
 				1BBCFA962274775900368296 /* WebDAV */,
 				50265E212132A7DD00ABC1B4 /* Controller */,
 				50265E232132A7DD00ABC1B4 /* Model */,
@@ -245,6 +270,7 @@
 		F8730EBB1DC06E4F009112CE /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
 				F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */,
 				F81229701BF73C6C00BDCF0E /* Info.plist */,
 				F812296B1BF73C6C00BDCF0E /* Assets.xcassets */,
@@ -423,6 +449,8 @@
 				F81283981C3F82E8002985A7 /* Notification.swift in Sources */,
 				F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */,
 				F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */,
+				1B5A4B8422B3B4C20046FA5D /* WTClient.m in Sources */,
+				1B5A4B8522B3B4C20046FA5D /* WTHTTPConnection.m in Sources */,
 				F8723F141E260527009CCF44 /* Reachability.m in Sources */,
 				1BC6B5A7226DEE4E00C689F2 /* WebDAVParser.swift in Sources */,
 				F8AB2A701E9D15E700B58229 /* CatalogueViewController.swift in Sources */,
@@ -575,7 +603,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Model/Imagination-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
@@ -603,7 +631,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Model/Imagination-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -29,8 +29,15 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
         let backItem = UIBarButtonItem()
         backItem.title = "返回"
         self.navigationItem.backBarButtonItem = backItem
+        let rightItem = UIBarButtonItem(title: "Sync", style: .plain, target: self, action: #selector(syncCloud))
+        self.navigationItem.rightBarButtonItem = rightItem
     }
-    
+
+    @objc
+    func syncCloud() {
+        WebDavMananger.mananger.synchronization()
+    }
+
     func updateRecentDetail() {
         dCache.checkFileExist()
         if let fs = dCache.fileState {

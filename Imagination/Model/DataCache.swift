@@ -256,7 +256,7 @@ extension DataCache {
     func backupAll() -> [String] {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
-            let _ = deleteDay(fileState!.filename)
+            let _ = deleteDay(fileState!.filename, atDirectory: FileManager.backupFilePath())
         }
         if catalogue.count > 0 {
             let start = catalogue[0]
@@ -270,7 +270,7 @@ extension DataCache {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
             //如果之前有备份 就从之前备份到今天
-            let _ = deleteDay(fileState!.filename)
+            let _ = deleteDay(fileState!.filename, atDirectory: FileManager.backupFilePath())
             return createBackupFileWithAddtionalInfo(fileState!.lastDate, to: Time.today())
         } else {
             //如果之前没有备份 就全部备份
@@ -306,11 +306,11 @@ extension DataCache {
         }
         fileState = (lastBackup,lastTimeEnd)
     }
-    
-    //删除方法保留 非特殊情况不使用
-    fileprivate func deleteDay(_ dd:String) -> Bool{
+
+
+    fileprivate func deleteDay(_ dd:String, atDirectory directory: String) -> Bool{
         Dlog("deleteday:\(dd)")
-        let txt = FileManager.pathOfNameInLib(dd)
+        let txt = "\(directory)/\(dd)"
         let attach = dd.replacingOccurrences(of: "txt", with: "zip")
         let mng = FileManager.default
         if mng.fileExists(atPath: txt) {
