@@ -8,10 +8,8 @@
 
 import UIKit
 
-class WebDavMananger {
-    static let shared: WebDavMananger = WebDavMananger()
-
-    let webDav = WebDAV()
+class WebDavSyncMananger {
+    static let shared: WebDavSyncMananger = WebDavSyncMananger()
 
     var syncDirHref: String {
         didSet {
@@ -34,7 +32,7 @@ class WebDavMananger {
                 let files = try FileManager.default.subpathsOfDirectory(atPath: fileDir)
                 files.forEach { (f) in
                     let path = syncDirHref.hasSuffix("/") ? syncDirHref + f : syncDirHref + "/\(f)"
-                    webDav.uploadFile(filePath: "\(fileDir)/\(f)", atPath: path)
+                    WebDAV.shared.uploadFile(filePath: "\(fileDir)/\(f)", atPath: path)
                 }
             } catch {
                 print(error)

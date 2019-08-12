@@ -87,10 +87,10 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
             self.present(alert, animated: true, completion: nil)
             return
         }
-        WebDavMananger.shared.synchronization()
+        WebDavSyncMananger.shared.synchronization()
         var tip = ""
         let didSendMail = sendByEmail(filePaths: files)
-        let canSyncClound = !WebDavMananger.shared.syncDirHref.isEmpty
+        let canSyncClound = !WebDavSyncMananger.shared.syncDirHref.isEmpty
         if !didSendMail && !canSyncClound {
             tip = "为了数据安全，请考虑设置邮箱或者WebDAV云存储(坚果云)同步备份"
         } else if didSendMail && canSyncClound {
