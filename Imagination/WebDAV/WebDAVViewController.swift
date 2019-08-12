@@ -7,13 +7,12 @@
 //
 
 import UIKit
-import QuickLook
 
 private let reusableIdentifier = "WebDAVCell"
 
 class WebDAVViewController: UIViewController {
 
-    let table = UITableView()
+    let table = UITableView(frame: .zero, style: .grouped)
     let path: String?
     var loginItem: UIBarButtonItem!
     var items = [WebDAVItem]()
@@ -81,6 +80,7 @@ class WebDAVViewController: UIViewController {
             presentLogin()
         } else {
             WebDAVConfig.reset()
+            loadData()
         }
     }
 }
@@ -96,7 +96,7 @@ extension WebDAVViewController {
         table.frame = view.bounds
         table.delegate = self
         table.dataSource = self
-        table.separatorStyle = .none
+        table.separatorStyle = .singleLine
         table.register(UITableViewCell.self, forCellReuseIdentifier: reusableIdentifier)
         table.isHidden = true
         loadData()
@@ -142,13 +142,13 @@ extension WebDAVViewController: UITableViewDataSource {
 extension WebDAVViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
         let item = items[indexPath.row + 1]
         if item.isDirectory {
             self.navigationController?.pushViewController(WebDAVViewController(path: item.href), animated: true)
         } else {
-            let vc = UIDocumentInteractionController(url: URL(fileURLWithPath: item.href))
-            vc.delegate = self
-            vc.presentPreview(animated: true)
+            openURL(url: URL(string: item.href)!)
         }
     }
 
@@ -192,5 +192,45 @@ extension WebDAVViewController: UITableViewDelegate {
 extension WebDAVViewController: UIDocumentInteractionControllerDelegate {
     func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
         return self
+    }
+}
+
+extension WebDAVViewController {
+    func openURL(url: URL) {
+        let tmp = FileManager.tempsPath() + url.lastPathComponent
+        let tmpURL = URL(fileURLWithPath: tmp)
+        if FileManager.default.fileExists(atPath: tmp) {
+            DispatchQueue.main.async {
+                let vc = UIDocumentInteractionController(url: tmpURL)
+                vc.delegate = self
+                vc.presentPreview(animated: true)
+            }
+        } else {
+            let activity = UIActivityIndicatorView(style: .gray)
+            activity.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+            activity.center = view.center
+            view.addSubview(activity)
+            activity.startAnimating()
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+            URLSession.shared.downloadTask(with: request) { (fileURL, response, error) in
+                DispatchQueue.main.async {
+                    activity.stopAnimating()
+                    activity.removeFromSuperview()
+                }
+                if let file = fileURL {
+                    do {
+                        try FileManager.default.copyItem(at: file, to: tmpURL)
+                        DispatchQueue.main.async {
+                            let vc = UIDocumentInteractionController(url: tmpURL)
+                            vc.delegate = self
+                            vc.presentPreview(animated: true)
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
+            }.resume()
+        }
     }
 }

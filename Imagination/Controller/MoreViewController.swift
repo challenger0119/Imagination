@@ -80,27 +80,39 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
         return emailTest.evaluate(with: email, substitutionVariables: nil)
     }
  
-    func sendBackupToMail(files:[String])  {
+    func syncBackup(files:[String])  {
         if files.count == 0 {
             let alert = UIAlertController.init(title: "提示", message: "无内容可备份", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertAction.Style.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
             return
         }
-        sendByEmail(filePaths: files)
+        WebDavMananger.shared.synchronization()
+        var tip = ""
+        let didSendMail = sendByEmail(filePaths: files)
+        let canSyncClound = !WebDavMananger.shared.syncDirHref.isEmpty
+        if !didSendMail && !canSyncClound {
+            tip = "为了数据安全，请考虑设置邮箱或者WebDAV云存储(坚果云)同步备份"
+        } else if didSendMail && canSyncClound {
+            tip = "备份将同步到邮箱和云端"
+        } else if didSendMail {
+            tip = "备份将同步到邮箱"
+        } else if canSyncClound {
+            tip = "备份将同步到云端"
+        }
+        let alert = UIAlertController(title: "提示", message: tip, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func sendTestEmail(toAddr mail:String){
         sendEmail(subject: "[Imagination] Hi,我在这！我将把备份文件发到这里", recipients: [mail])
     }
     
-    
-    func sendEmail(subject:String,recipients:[String]?,attachments:[String] = []){
+    @discardableResult
+    func sendEmail(subject:String,recipients:[String]?,attachments:[String] = []) -> Bool {
         guard MFMailComposeViewController.canSendMail() else {
-            let alert = UIAlertController.init(title: "提示", message: "请先配置系统邮箱", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction.init(title: "好的", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return
+            return false
         }
         let vc = MFMailComposeViewController()
         vc.mailComposeDelegate = self
@@ -115,11 +127,13 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
             }
         }
         self.present(vc, animated: true, completion: nil)
+        return true
     }
-    
-    func sendByEmail(filePaths:[String],addtional:String = "") {
+
+    @discardableResult
+    func sendByEmail(filePaths:[String],addtional:String = "") -> Bool {
         if filePaths.count == 0 && addtional != "" {
-            sendEmail(subject: addtional, recipients: ["miaoqi0119@163.com"])
+            return sendEmail(subject: addtional, recipients: ["miaoqi0119@163.com"])
         }else{
             let txt = filePaths.first!
             var recip:[String]?
@@ -127,7 +141,7 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
             if let mail = self.dCache.email {
                 recip = [mail]
             }
-            sendEmail(subject: (txt as NSString).lastPathComponent, recipients: recip, attachments: filePaths)
+            return sendEmail(subject: (txt as NSString).lastPathComponent, recipients: recip, attachments: filePaths)
         }
     }
     
@@ -146,18 +160,16 @@ extension MoreViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView .deselectRow(at: indexPath, animated: true)
         if indexPath.row == 0 {
-            sendBackupToMail(files: dCache.backupToNow())
+            syncBackup(files: dCache.backupToNow())
             updateRecentDetail()
-            WebDavMananger.shared.synchronization()
         } else if indexPath.row == 1 {
-            sendBackupToMail(files: dCache.backupAll())
+            syncBackup(files: dCache.backupAll())
             updateRecentDetail()
-            WebDavMananger.shared.synchronization()
         } else if indexPath.row == 2 {
             if let pickerVC = self.storyboard?.instantiateViewController(withIdentifier: "DataPickerViewController") as? DataPickerViewController {
                 pickerVC.selected = {
                     from, to in
-                    self.sendBackupToMail(files: self.dCache.createExportDataFile(from, to: to))
+                    self.syncBackup(files: self.dCache.createExportDataFile(from, to: to))
                 }
                 pickerVC.modalPresentationStyle = .overCurrentContext
                 self.tabBarController?.present(pickerVC, animated: false, completion: nil)

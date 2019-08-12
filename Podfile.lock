@@ -1,45 +1,27 @@
 PODS:
-  - Realm (3.16.1):
-    - Realm/Headers (= 3.16.1)
-  - Realm/Headers (3.16.1)
-  - RealmSwift (3.16.1):
-    - Realm (= 3.16.1)
+  - Realm (3.17.3):
+    - Realm/Headers (= 3.17.3)
+  - Realm/Headers (3.17.3)
+  - RealmSwift (3.17.3):
+    - Realm (= 3.17.3)
   - SSZipArchive (2.1.4)
 
 DEPENDENCIES:
-  - Realm (from `https://github.com/realm/realm-cocoa.git`, branch `tg/xcode-11-b1`)
-  - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `tg/xcode-11-b1`)
+  - Realm
+  - RealmSwift
   - SSZipArchive
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Realm
+    - RealmSwift
     - SSZipArchive
 
-EXTERNAL SOURCES:
-  Realm:
-    :branch: tg/xcode-11-b1
-    :git: https://github.com/realm/realm-cocoa.git
-    :submodules: true
-  RealmSwift:
-    :branch: tg/xcode-11-b1
-    :git: https://github.com/realm/realm-cocoa.git
-    :submodules: true
-
-CHECKOUT OPTIONS:
-  Realm:
-    :commit: 2e58dfe78e5f641262c4c5c7e5a13f05b434c610
-    :git: https://github.com/realm/realm-cocoa.git
-    :submodules: true
-  RealmSwift:
-    :commit: 2e58dfe78e5f641262c4c5c7e5a13f05b434c610
-    :git: https://github.com/realm/realm-cocoa.git
-    :submodules: true
-
 SPEC CHECKSUMS:
-  Realm: 601cacc51d8be3b17a377ef787be0f6ee0e76cf1
-  RealmSwift: 486f2e09d5a8ccff63ed66e48d0846b111deb5e5
+  Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
+  RealmSwift: b7fdc2d18616621c31df5c7a398a45a2163f8eb0
   SSZipArchive: 41455d4b8d2b6ab93990820b50dc697c2554a322
 
-PODFILE CHECKSUM: a1a2bb19f367f2324b56ae56334529c04a3b776e
+PODFILE CHECKSUM: f19f6734813f389f5d776c21c9a23889932c7f2e
 
 COCOAPODS: 1.7.5

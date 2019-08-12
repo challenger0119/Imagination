@@ -59,7 +59,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     var imageVC:UIImagePickerController!
     var multiMediaBufferDic:[Int:Media] = Dictionary()
     var multiMediaInsertBuffer:[NSTextAttachment:Media] = Dictionary()
-    var font:UIFont!
+    var font: UIFont = UIFont.systemFont(ofSize: 14)
     
     @IBOutlet weak var content: UITextView!
     @IBOutlet weak var goodBtn: UIButton!
@@ -91,14 +91,14 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressAction(gesture:)))
         self.getLocBtn.addGestureRecognizer(longPress)
         
-        self.font = self.content.font
+        self.font = self.content.font ?? UIFont.systemFont(ofSize: 14)
         
         let paraStyle = NSMutableParagraphStyle()
         paraStyle.lineSpacing = Theme.lineSpace
-        self.content.typingAttributes = [.font:self.font,.paragraphStyle:paraStyle]
+        self.content.typingAttributes = [.font: self.font,.paragraphStyle: paraStyle]
     }
     
-    
+
     @IBAction func noGoodBtnClicked() {
         if moodState == 2 {
             moodState = 0;

@@ -33,7 +33,8 @@ class WebDavMananger {
             do {
                 let files = try FileManager.default.subpathsOfDirectory(atPath: fileDir)
                 files.forEach { (f) in
-                    webDav.uploadFile(filePath: "\(fileDir)/\(f)", atPath: syncDirHref + f)
+                    let path = syncDirHref.hasSuffix("/") ? syncDirHref + f : syncDirHref + "/\(f)"
+                    webDav.uploadFile(filePath: "\(fileDir)/\(f)", atPath: path)
                 }
             } catch {
                 print(error)
