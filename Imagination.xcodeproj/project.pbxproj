@@ -147,8 +147,8 @@
 			isa = PBXGroup;
 			children = (
 				1B5A4B8022B3B4C20046FA5D /* WTHTTPConnection.h */,
-				1B5A4B8122B3B4C20046FA5D /* WTClient.m */,
 				1B5A4B8222B3B4C20046FA5D /* WTHTTPConnection.m */,
+				1B5A4B8122B3B4C20046FA5D /* WTClient.m */,
 				1B5A4B8322B3B4C20046FA5D /* WTClient.h */,
 			);
 			path = WTClient;
