@@ -29,13 +29,6 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
         let backItem = UIBarButtonItem()
         backItem.title = "返回"
         self.navigationItem.backBarButtonItem = backItem
-        let rightItem = UIBarButtonItem(title: "Sync", style: .plain, target: self, action: #selector(syncCloud))
-        self.navigationItem.rightBarButtonItem = rightItem
-    }
-
-    @objc
-    func syncCloud() {
-        WebDavMananger.mananger.synchronization()
     }
 
     func updateRecentDetail() {
@@ -155,9 +148,11 @@ extension MoreViewController {
         if indexPath.row == 0 {
             sendBackupToMail(files: dCache.backupToNow())
             updateRecentDetail()
+            WebDavMananger.shared.synchronization()
         } else if indexPath.row == 1 {
             sendBackupToMail(files: dCache.backupAll())
             updateRecentDetail()
+            WebDavMananger.shared.synchronization()
         } else if indexPath.row == 2 {
             if let pickerVC = self.storyboard?.instantiateViewController(withIdentifier: "DataPickerViewController") as? DataPickerViewController {
                 pickerVC.selected = {

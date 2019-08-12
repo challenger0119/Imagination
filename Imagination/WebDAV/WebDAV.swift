@@ -8,14 +8,16 @@
 
 import UIKit
 
-class WebDAV: NSObject, URLSessionTaskDelegate {
+class WebDAV: NSObject {
     static let shared = WebDAV()
 
     let config: WebDAVConfig
     var session: URLSession?
+    let credential: URLCredential
 
     override init() {
         self.config = WebDAVConfig.recent() ?? WebDAVConfig.emptyConfig()
+        self.credential = URLCredential(user: config.username, password: config.password, persistence: .forSession)
         super.init()
         self.session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     }
@@ -49,8 +51,35 @@ class WebDAV: NSObject, URLSessionTaskDelegate {
             var request = URLRequest(url: url)
             request.httpMethod = "PUT"
             self.session?.uploadTask(with: request, fromFile: URL(fileURLWithPath: filePath), completionHandler: { (data, response, error) in
-                print(error ?? "no error")
+                print(response ?? "No response")
             }).resume()
+        } else {
+            print("invalid path")
+        }
+    }
+    
+    func createDir(dir: String, atPath path: String, complete: @escaping (Error?) -> Void) {
+        if let url = URL(string: path) {
+            var request = URLRequest(url: url)
+            request.httpMethod = "PUT"
+            self.session?.dataTask(with: request, completionHandler: { (data, response, error) in
+                print(response ?? "No response")
+                complete(error)
+            }).resume()
+        } else {
+            print("invalid path")
+        }
+    }
+
+    func delete(path: String, complete: @escaping (Error?) -> Void) {
+        if let url = URL(string: path) {
+            var request = URLRequest(url: url)
+            request.httpMethod = "DELETE"
+            self.session?.dataTask(with: request, completionHandler: { (data, response, error) in
+                print(response ?? "No response")
+                complete(error)
+            }).resume()
+
         } else {
             print("invalid path")
         }
@@ -58,8 +87,12 @@ class WebDAV: NSObject, URLSessionTaskDelegate {
 }
 
 // MARK: - URLSessionDelegate
-extension WebDAV {
+extension WebDAV: URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        completionHandler(.useCredential, URLCredential(user: config.username, password: config.password, persistence: .forSession))
+        completionHandler(.useCredential, credential)
+    }
+
+    func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+        print("didSendBodyData \(bytesSent) / \(totalBytesSent) / \(totalBytesExpectedToSend)")
     }
 }

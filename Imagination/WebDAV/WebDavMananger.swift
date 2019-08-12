@@ -8,36 +8,36 @@
 
 import UIKit
 
-struct SyncItem {
-    let filePath: String
-    var isSyncing: Bool = false
-    var error: Error?
-
-    init(filePath: String) {
-        self.filePath = filePath
-    }
-}
-
 class WebDavMananger {
-    static let mananger: WebDavMananger = WebDavMananger()
+    static let shared: WebDavMananger = WebDavMananger()
 
     let webDav = WebDAV()
 
-    var destination: String {
-        let subDir = "我的坚果云/ImaginationSync"
-        return webDav.config.server + subDir.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
+    var syncDirHref: String {
+        didSet {
+            UserDefaults.standard.set(syncDirHref, forKey: "WebDavMananger.syncDirHref")
+        }
     }
-    var syncQueue: [SyncItem] = []
+
+    init() {
+        if let href = UserDefaults.standard.object(forKey: "WebDavMananger.syncDirHref") as? String {
+            self.syncDirHref = href
+        } else {
+            self.syncDirHref = ""
+        }
+    }
 
     func synchronization() {
-        let fileDir = FileManager.backupFilePath()
-        do {
-            let files = try FileManager.default.subpathsOfDirectory(atPath: fileDir)
-            files.forEach { (f) in
-                webDav.uploadFile(filePath: "\(fileDir)/\(f)", atPath: destination + "/\(f)")
+        if !syncDirHref.isEmpty {
+            let fileDir = FileManager.backupFilePath()
+            do {
+                let files = try FileManager.default.subpathsOfDirectory(atPath: fileDir)
+                files.forEach { (f) in
+                    webDav.uploadFile(filePath: "\(fileDir)/\(f)", atPath: syncDirHref + f)
+                }
+            } catch {
+                print(error)
             }
-        } catch {
-            print(error)
         }
     }
 }

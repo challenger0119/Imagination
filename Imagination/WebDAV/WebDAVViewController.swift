@@ -126,7 +126,11 @@ extension WebDAVViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reusableIdentifier, for: indexPath)
         let item = items[indexPath.row + 1]
         if item.isDirectory {
-            cell.accessoryType = .detailButton
+            if item.href == WebDavMananger.shared.syncDirHref {
+                cell.accessoryType = .detailDisclosureButton
+            } else {
+                cell.accessoryType = .detailButton
+            }
         } else {
             cell.accessoryType = .none
         }
@@ -136,6 +140,7 @@ extension WebDAVViewController: UITableViewDataSource {
 }
 
 extension WebDAVViewController: UITableViewDelegate {
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = items[indexPath.row + 1]
         if item.isDirectory {
@@ -144,6 +149,42 @@ extension WebDAVViewController: UITableViewDelegate {
             let vc = UIDocumentInteractionController(url: URL(fileURLWithPath: item.href))
             vc.delegate = self
             vc.presentPreview(animated: true)
+        }
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let item = items[indexPath.row + 1]
+        let alert = UIAlertController(title: "提示", message: "即将删除\(item.displayname), 确定？", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "删除", style: .destructive, handler: { (_) in
+            WebDAV.shared.delete(path: item.href) { (error) in
+                if error == nil {
+                    DispatchQueue.main.async {
+                        self.items.remove(at: indexPath.row + 1)
+                        self.table.reloadData()
+                    }
+                }
+            }
+
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        let item = items[indexPath.row + 1]
+        if WebDavMananger.shared.syncDirHref == item.href {
+            let alert = UIAlertController(title: nil, message: "该目录已设为同步目录，可设置其他目录修改", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好", style: .default, handler: { (_) in
+            }))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: nil, message: "是否将该目录设为同步目录", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "否", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "是", style: .default, handler: { (_) in
+                WebDavMananger.shared.syncDirHref = item.href
+                self.table.reloadData()
+            }))
+            self.present(alert, animated: true, completion: nil)
         }
     }
 }
