@@ -24,7 +24,8 @@ class WebDavMananger {
     let webDav = WebDAV()
 
     var destination: String {
-        return webDav.config.server + "/Imagination"
+        let subDir = "我的坚果云/ImaginationSync"
+        return webDav.config.server + subDir.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
     }
     var syncQueue: [SyncItem] = []
 

@@ -51,7 +51,9 @@ class WebDAVViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.items = items
                     self.table.reloadData()
-                    self.title = self.items.first?.displayname
+                    if self.path != nil {
+                        self.title = self.items.first?.displayname
+                    }
                 }
             }
         } else {

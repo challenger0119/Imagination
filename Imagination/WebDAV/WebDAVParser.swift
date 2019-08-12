@@ -19,9 +19,13 @@ class WebDAVParser: NSObject, XMLParserDelegate {
     var currentItem = WebDAVItem()
     var currentProperty: String = ""
     
-    init(rootHref: String, data: Data, resultHandler: @escaping WebDAVParserHandler) {
+    init(host: String, rootHref: String, data: Data, resultHandler: @escaping WebDAVParserHandler) {
         self.rootHref = rootHref
-        self.lastHref = "/" + rootHref.split(separator: "/").last! + "/"
+        if let hostRange = rootHref.range(of: host) {
+            self.lastHref = String(rootHref[hostRange.upperBound..<rootHref.endIndex])
+        } else {
+            self.lastHref = ""
+        }
         self.parser = XMLParser(data: data)
         self.parserHandler = resultHandler
         super.init()
@@ -92,7 +96,7 @@ class WebDAVParser: NSObject, XMLParserDelegate {
                 value = rootHref + "\(value)"
             }
         }
-        if self.currentItem.set(key: self.currentProperty, value: value){
+        if self.currentItem.set(key: self.currentProperty, value: value) {
             self.items.append(self.currentItem)
             self.currentItem = WebDAVItem()
         }

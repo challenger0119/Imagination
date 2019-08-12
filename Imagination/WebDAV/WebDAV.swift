@@ -13,7 +13,7 @@ class WebDAV: NSObject, URLSessionTaskDelegate {
 
     let config: WebDAVConfig
     var session: URLSession?
-    
+
     override init() {
         self.config = WebDAVConfig.recent() ?? WebDAVConfig.emptyConfig()
         super.init()
@@ -33,7 +33,7 @@ class WebDAV: NSObject, URLSessionTaskDelegate {
                     print(e)
                 }else{
                     print(String(data: data!, encoding: .utf8)!)
-                    let parser = WebDAVParser(rootHref: request.url!.absoluteString, data: data!, resultHandler: { (items) in
+                    let parser = WebDAVParser(host: url.host!, rootHref: request.url!.absoluteString, data: data!, resultHandler: { (items) in
                         result(items)
                     })
                     parser.parser.parse()
@@ -50,7 +50,7 @@ class WebDAV: NSObject, URLSessionTaskDelegate {
             request.httpMethod = "PUT"
             self.session?.uploadTask(with: request, fromFile: URL(fileURLWithPath: filePath), completionHandler: { (data, response, error) in
                 print(error ?? "no error")
-            })
+            }).resume()
         } else {
             print("invalid path")
         }
