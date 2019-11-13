@@ -28,7 +28,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         self.siderTable = UITableView(frame: tframe, style: .plain)
         self.siderTable.dataSource = self
         self.siderTable.delegate = self
-        self.siderTable.backgroundColor = UIColor.lightGray
+        self.siderTable.backgroundColor = UIColor(white: 0.8, alpha: 1.0)
         self.siderTable.separatorStyle = .none
         
         self.view.addSubview(siderTable)
