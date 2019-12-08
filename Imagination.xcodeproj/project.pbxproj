@@ -576,10 +576,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 0.0.1;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination;
+				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
-				PROVISIONING_PROFILE_SPECIFIER = imaginationdev;
+				PROVISIONING_PROFILE_SPECIFIER = allcan;
 				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

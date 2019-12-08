@@ -97,7 +97,10 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         paraStyle.lineSpacing = Theme.lineSpace
         self.content.typingAttributes = [.font: self.font,.paragraphStyle: paraStyle]
     }
-    
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     @IBAction func noGoodBtnClicked() {
         if moodState == 2 {
