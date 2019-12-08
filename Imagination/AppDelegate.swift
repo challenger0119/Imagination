@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 Dlog("requestAuthorization \(success)")
             }
         }
+        Notification.getNewHitokotoBody()
         return true
     }
     
@@ -56,7 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-
         self.saveContext()
     }
 
