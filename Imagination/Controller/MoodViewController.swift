@@ -85,7 +85,7 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         self.content.becomeFirstResponder()
     
         let backItem = UIBarButtonItem()
-        backItem.title = "返回"
+        backItem.title = I18N.string("back")
         self.navigationItem.backBarButtonItem = backItem
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressAction(gesture:)))

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B18E726239CAE3F007D3F38 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1B18E728239CAE3F007D3F38 /* Localizable.strings */; };
+		1B18E72B239CAF24007D3F38 /* I18N.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B18E72A239CAF24007D3F38 /* I18N.swift */; };
 		1B43AD312251D4430090BE3A /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B43AD302251D4430090BE3A /* WebViewController.swift */; };
 		1B5954EE22AFA9EA002240AA /* WebDavSyncMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5954ED22AFA9EA002240AA /* WebDavSyncMananger.swift */; };
 		1BBCFA98227477A600368296 /* WebDAVViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BBCFA97227477A600368296 /* WebDAVViewController.swift */; };
@@ -59,6 +61,9 @@
 
 /* Begin PBXFileReference section */
 		1848615C1FCBAE6983817833 /* Pods-Imagination.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imagination.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Imagination/Pods-Imagination.debug.xcconfig"; sourceTree = "<group>"; };
+		1B18E727239CAE3F007D3F38 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1B18E729239CAE75007D3F38 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		1B18E72A239CAF24007D3F38 /* I18N.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = I18N.swift; sourceTree = "<group>"; };
 		1B43AD302251D4430090BE3A /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		1B5954ED22AFA9EA002240AA /* WebDavSyncMananger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSyncMananger.swift; sourceTree = "<group>"; };
 		1BBCFA97227477A600368296 /* WebDAVViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDAVViewController.swift; sourceTree = "<group>"; };
@@ -129,6 +134,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B18E723239CAE39007D3F38 /* Localizable */ = {
+			isa = PBXGroup;
+			children = (
+				1B18E728239CAE3F007D3F38 /* Localizable.strings */,
+				1B18E72A239CAF24007D3F38 /* I18N.swift */,
+			);
+			path = Localizable;
+			sourceTree = "<group>";
+		};
 		1BBCFA962274775900368296 /* WebDAV */ = {
 			isa = PBXGroup;
 			children = (
@@ -244,6 +258,7 @@
 		F8730EBB1DC06E4F009112CE /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				1B18E723239CAE39007D3F38 /* Localizable */,
 				F8723F111E260526009CCF44 /* Imagination-Bridging-Header.h */,
 				F812296D1BF73C6C00BDCF0E /* LaunchScreen.storyboard */,
 				F81229701BF73C6C00BDCF0E /* Info.plist */,
@@ -310,6 +325,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = F81229551BF73C6C00BDCF0E;
 			productRefGroup = F812295F1BF73C6C00BDCF0E /* Products */;
@@ -326,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B18E726239CAE3F007D3F38 /* Localizable.strings in Resources */,
 				F89537571EAEFC1200BFEAFC /* AudioRecordView.xib in Resources */,
 				F812296F1BF73C6C00BDCF0E /* LaunchScreen.storyboard in Resources */,
 				F812296C1BF73C6C00BDCF0E /* Assets.xcassets in Resources */,
@@ -411,6 +428,7 @@
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
 				F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */,
 				509B2F0D2153E27500D5A926 /* DataPickerViewController.swift in Sources */,
+				1B18E72B239CAF24007D3F38 /* I18N.swift in Sources */,
 				F87E8F7E1D7ADDFF002954B9 /* Log.swift in Sources */,
 				1B5954EE22AFA9EA002240AA /* WebDavSyncMananger.swift in Sources */,
 				1BC6B5A9226DF01E00C689F2 /* WebDAVItem.swift in Sources */,
@@ -433,6 +451,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		1B18E728239CAE3F007D3F38 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1B18E727239CAE3F007D3F38 /* en */,
+				1B18E729239CAE75007D3F38 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		F81229651BF73C6C00BDCF0E /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
