@@ -88,21 +88,18 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
             return
         }
         WebDavSyncMananger.shared.synchronization()
-        var tip = ""
-        let didSendMail = sendByEmail(filePaths: files)
-        let canSyncClound = !WebDavSyncMananger.shared.syncDirHref.isEmpty
-        if !didSendMail && !canSyncClound {
-            tip = "为了数据安全，请考虑设置邮箱或者WebDAV云存储(坚果云)同步备份"
-        } else if didSendMail && canSyncClound {
-            tip = "备份将同步到邮箱和云端"
-        } else if didSendMail {
-            tip = "备份将同步到邮箱"
-        } else if canSyncClound {
-            tip = "备份将同步到云端"
+        let canSyncCloud = !WebDavSyncMananger.shared.syncDirHref.isEmpty
+
+        if !canSyncCloud {
+            sendByEmail(filePaths: files)
+        } else {
+            let alert = UIAlertController(title: I18N.string("提示"), message: I18N.string("数据将同步WebDAV存储：\(WebDAV.shared.config.serverName)，可稍后查看，也可选择立即发送到邮箱"), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: I18N.string("发送到邮箱"), style: .default, handler: { (_) in
+                self.sendByEmail(filePaths: files)
+            }))
+            alert.addAction(UIAlertAction(title: I18N.string("不用了"), style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
-        let alert = UIAlertController(title: "提示", message: tip, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "好的", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
     }
     
     func sendTestEmail(toAddr mail:String){
