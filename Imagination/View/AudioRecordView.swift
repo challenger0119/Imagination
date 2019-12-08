@@ -32,7 +32,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
     var audioFilePath = ""
     var state:RecordState = .None{
         didSet{
-            if delegate != nil {
+            if delegate != nil, let aRecord = aRecord {
                 delegate?.audioRecordViewStateChanged(state: state,audioRecord: aRecord)
             }
             switch state {
@@ -77,24 +77,27 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
         }
     }
     
-    var aRecord:AudioRecord!
+    var aRecord: AudioRecord?
  
     @IBAction func startBtnClicked(_ sender: UIButton) {
         if aRecord == nil {
             aRecord = AudioRecord(withFile: self.audioFilePath)
         }
-        aRecord.startRecord()
+        aRecord?.startRecord()
         state = .Recording
         meterTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
     }
     
     @IBAction func PauseBtnClicked(_ sender: UIButton) {
-        aRecord.pauseRecord()
+        aRecord?.pauseRecord()
         state = .Pausing
         meterTimer?.invalidate()
     }
     
     @IBAction func StopBtnClicked(_ sender: UIButton) {
+        guard let aRecord = aRecord else {
+            return
+        }
 
         if state == .Playing {
             state = .Over
@@ -103,7 +106,7 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
             state = .Over
             aRecord.stopRecord()
             do{
-                let atr = try FileManager.default.attributesOfItem(atPath: self.aRecord.recordFileURL.path)
+                let atr = try FileManager.default.attributesOfItem(atPath: aRecord.recordFileURL.path)
                 let size = atr[FileAttributeKey("NSFileSize")] as! Int
                 self.stateString = "\(String(describing: Int(size / 1024)))Kb"
                 self.stateLabel.text = stateString
@@ -119,11 +122,14 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
             aRecord = AudioRecord(withFile: self.audioFilePath)
         }
         state = .Playing
-        aRecord.playRecord()
+        aRecord?.playRecord()
         meterTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
     }
     
     @IBAction func saveBtnClicked(_ sender: UIButton) {
+        guard let aRecord = aRecord else {
+            return
+        }
         delegate?.audioRecordViewStateChanged(state: .Save,audioRecord: aRecord)
         self.removeFromSuperview()
     }
@@ -138,6 +144,10 @@ class AudioRecordView: UIView,AVAudioRecorderDelegate {
     }
     
     @objc func updateProgress(){
+        guard let aRecord = aRecord else {
+            return
+        }
+
         if state == .Recording {
             let power = aRecord.averagePower(forChannel:0)
             self.audoMeterView.setProgress((power+160)/160, animated: true)
