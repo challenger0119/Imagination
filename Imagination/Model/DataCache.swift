@@ -149,35 +149,42 @@ extension DataCache {
             return FileManager.backupFilePath(withName: "\(f)_\(t)")
         })
     }
-    
+
     // 将多媒体文件压缩为zip
-    fileprivate func createFilesWithZipAttachments(from:String,to:String,pathGetter:(_ from:String,_ to:String)->String)->[String]{
-        let result = self.createFiles(from, to: to, pathGetter: pathGetter)
-        let txt = result.first!
-        let attaches = result.suffix(from: 1)
-        let zipFilepath = pathGetter(from,to)+".zip"
-        SSZipArchive.createZipFile(atPath: zipFilepath, withFilesAtPaths: Array(attaches))
-        return [txt,zipFilepath]
-    }
-    
-    // 将制定时间节点的数据中的文字信息和多媒体类型信息生成一个文件 返回包含了该文件路径和里面包含的多媒体文件的路径的数组
-    fileprivate func createFiles(_ from:String,to:String,pathGetter:(_ from:String,_ to:String)->String)->[String]{
-        let newline = "\r\n"    // 换行
-        
-        // 检查顺序
-        var finalFrom = from
-        var finalTo = to
-        if finalFrom.compare(finalTo) == .orderedDescending {
-            let tmp = finalTo
-            finalTo = finalFrom
-            finalFrom = tmp
+    fileprivate func createFilesWithZipAttachments(from: String, to: String, pathGetter:(_ from: String,_ to: String) -> String) -> [String] {
+
+        /// make sure date in file name is ascending
+        func arrangedFileName(_ from: String, to: String) -> (from: String, to: String) {
+            var finalFrom = from
+            var finalTo = to
+            if finalFrom.compare(finalTo) == .orderedDescending {
+                let tmp = finalTo
+                finalTo = finalFrom
+                finalFrom = tmp
+            }
+            return (finalFrom, finalTo)
         }
-        
-        let txtfile = pathGetter(finalFrom,finalTo) + ".txt"
+
+        let arrangeFT = arrangedFileName(from, to: to)
+        let result = self.createFiles(arrangeFT.from, to: arrangeFT.to, pathGetter: pathGetter)
+        if let txt = result.first {
+            let attaches = result.dropFirst()
+            let zipFilepath = pathGetter(from,to) + ".zip"
+            SSZipArchive.createZipFile(atPath: zipFilepath, withFilesAtPaths: Array(attaches))
+            return [txt, zipFilepath]
+        } else {
+            return []
+        }
+    }
+
+    // 将制定时间节点的数据中的文字信息和多媒体类型信息生成一个文件 返回包含了该文件路径和里面包含的多媒体文件的路径的数组
+    fileprivate func createFiles(_ from: String, to: String, pathGetter: (_ from: String, _ to: String) -> String) -> [String] {
+        let newline = "\r\n"    // 换行
+        let txtfile = pathGetter(from, to) + ".txt"
         var filePaths = [txtfile]
         let data = NSMutableData()
         for dd in catalogue {
-            if dd >= finalFrom && dd <= finalTo {
+            if dd >= from && dd <= to {
                 //按天解析
                 loadDay(dayString: dd) { (items) in
                     let thisday = dd + newline
@@ -257,11 +264,9 @@ extension DataCache {
     func backupAll() -> [String] {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
-            let _ = deleteDay(fileState!.filename, atDirectory: FileManager.backupFilePath())
+            let _ = delete(fileState!.filename, atDirectory: FileManager.backupFilePath())
         }
-        if catalogue.count > 0 {
-            let start = catalogue[0]
-            let end = catalogue[catalogue.count-1]
+        if !catalogue.isEmpty, let start = catalogue.last, let end = catalogue.first {
             return createBackupFileWithAddtionalInfo(start, to: end)
         }
         return []
@@ -271,13 +276,11 @@ extension DataCache {
         checkFileExist()
         if fileState!.lastDate != EMPTY_STRING {
             //如果之前有备份 就从之前备份到今天
-            let _ = deleteDay(fileState!.filename, atDirectory: FileManager.backupFilePath())
+            let _ = delete(fileState!.filename, atDirectory: FileManager.backupFilePath())
             return createBackupFileWithAddtionalInfo(fileState!.lastDate, to: Time.today())
         } else {
             //如果之前没有备份 就全部备份
-            if catalogue.count > 0 {
-                let start = catalogue[0]
-                let end = catalogue[catalogue.count-1]
+            if !catalogue.isEmpty, let start = catalogue.last, let end = catalogue.first {
                 return createBackupFileWithAddtionalInfo(start, to: end)
             }
         }
@@ -308,15 +311,13 @@ extension DataCache {
         fileState = (lastBackup,lastTimeEnd)
     }
 
-
-    fileprivate func deleteDay(_ dd:String, atDirectory directory: String) -> Bool{
+    fileprivate func delete(_ dd:String, atDirectory directory: String) -> Bool{
         Dlog("deleteday:\(dd)")
         let txt = "\(directory)/\(dd)"
-        let attach = dd.replacingOccurrences(of: "txt", with: "zip")
+        let corAttachPath = dd.replacingOccurrences(of: "txt", with: "zip")
         let mng = FileManager.default
         if mng.fileExists(atPath: txt) {
             do {
-                
                 try mng.removeItem(atPath: txt)
                 return true
             } catch {
@@ -324,13 +325,13 @@ extension DataCache {
                 return false
             }
         }
-        if mng.fileExists(atPath: attach) {
+        if mng.fileExists(atPath: corAttachPath) {
             do {
                 
-                try mng.removeItem(atPath: attach)
+                try mng.removeItem(atPath: corAttachPath)
                 return true
             } catch {
-                Dlog("删除文件错误:\(attach)")
+                Dlog("删除文件错误:\(corAttachPath)")
                 return false
             }
         }
