@@ -20,27 +20,20 @@ import RealmSwift
 class DataCache {
     
     static let share = DataCache()
-    
-    fileprivate var realm:Realm!        // 数据库 同一个数据库只能在出生的线程工作
 
-    var catalogue:[String] = []         // 目录：精确到日
-    var catalogue_month:[String] = []   // 目录：精确到月
+    /// 数据库 同一个数据库只能在出生的线程工作
+    fileprivate var realm:Realm!
+
+    /// 目录：精确到日
+    var catalogue:[String] = []
+
+    /// 目录：精确到月
+    var catalogue_month:[String] = []
 
     let EMPTY_STRING = " "  // 空字符串
     var fileState:(filename:String,lastDate:String)? = nil  // 导出文件状态
     
-    fileprivate var _currentMonthName:String = ""   // 当前显示月份
-    var currentMonthName:String {
-        get{
-            if _currentMonthName == "" && self.catalogue_month.count > 0 {
-                _currentMonthName = self.catalogue_month.first!
-            }
-            return _currentMonthName
-        }
-        set{
-            _currentMonthName = newValue
-        }
-    }
+    fileprivate var currentMonthName: String = ""
     
     init() {
         do{
@@ -116,7 +109,7 @@ extension DataCache {
     }
     
     // 加载目录
-    func loadCategory(){
+    func loadCategory() {
         self.catalogue_month.removeAll()
         self.catalogue.removeAll()
         
@@ -134,6 +127,14 @@ extension DataCache {
                 tmpMonthString = it.monthString
             }
         }
+    }
+
+    func updateAndGetCurrentMonthName() -> String {
+        loadCategory()
+        if let curMonth = catalogue_month.first {
+            currentMonthName = curMonth
+        }
+        return currentMonthName
     }
 }
 

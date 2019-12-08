@@ -61,11 +61,10 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
             }
         })
     }
+
     // 添加新mood后更新
     @objc func updateMonthData() {
-        DataCache.share.loadCategory()
-        self.title = DataCache.share.currentMonthName
-        loadMonthData(DataCache.share.currentMonthName)
+        loadMonthData(DataCache.share.updateAndGetCurrentMonthName())
     }
 
     // 指纹识别
@@ -79,10 +78,11 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     }
 
     // 解析一个月的数据生成数据源
-    func loadMonthData(_ month:String) {
+    func loadMonthData(_ month: String) {
         guard !month.isEmpty else {
             return
         }
+        self.title = month
         
         self.cool = 0
         self.ok = 0
@@ -194,14 +194,12 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
     
     func catalogueDidSelectItem(item: String){
         resumeView(){
-            self.title = item
             self.loadMonthData(item)
         }
     }
     
     func catalogueDidClose() {
         resumeView(){}
-        
     }
     
     // MARK: - Table view data source and Delegate
