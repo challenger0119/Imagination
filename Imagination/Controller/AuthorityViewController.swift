@@ -89,18 +89,15 @@ class AuthorityViewController: UIViewController,UITextFieldDelegate {
         let isTouchIdAvailable = authenticationContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
                                                                          error: &error)
         
-        if isTouchIdAvailable
-        {
-            authenticationContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "需要验证指纹", reply: {
-                (success, error) -> Void in
-                if success
-                {
-                    DispatchQueue.main.async {
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                    
-                }
-            })
+        if isTouchIdAvailable {
+            authenticationContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics,
+                                                 localizedReason: I18N.string("need_verify"),
+                                                 reply: { (success, error) -> Void in
+                                                    if success {
+                                                        DispatchQueue.main.async {
+                                                            self.dismiss(animated: true, completion: nil)
+                                                        }
+                                                    }})
         }
     }
     

@@ -593,7 +593,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65685Y88TH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -601,7 +601,7 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.1.0;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -623,7 +623,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 65685Y88TH;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -631,7 +631,7 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 0.1.0;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";

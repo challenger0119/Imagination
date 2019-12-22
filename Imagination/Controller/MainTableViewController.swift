@@ -69,7 +69,7 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
 
     // 指纹识别
     func authorityView() {
-        if AuthorityViewController.pWord != AuthorityViewController.NotSet{
+        if AuthorityViewController.pWord != AuthorityViewController.NotSet {
             let vc = self.storyboard!.instantiateViewController(withIdentifier: "authority") as! AuthorityViewController
             self.tabBarController?.present(vc, animated: true, completion: {
                 vc.useTouchId()
