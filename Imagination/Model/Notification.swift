@@ -21,7 +21,6 @@ class Notification {
     static let keyForMinute = "fireTimeMinute"
     static let keyForReminder = "noti_everyday"
     static let keyForNewMoodAdded = "newMoodAdded"
-    static let keyForHitokoto = "keyForHitokoto"
     
     static var fireTime: (hour: Int, minute: Int)?{
         get{
@@ -79,27 +78,6 @@ class Notification {
 extension Notification {
 
     static var hitokotoBody: String? {
-        get {
-            return UserDefaults.standard.string(forKey: keyForHitokoto)
-        }
-        set {
-            if let value = newValue {
-                UserDefaults.standard.set(value, forKey: keyForHitokoto)
-            } else {
-                UserDefaults.standard.removeObject(forKey: keyForHitokoto)
-            }
-        }
-    }
-
-    class func getNewHitokotoBody() {
-        let hitokotoAPI = "https://v1.hitokoto.cn?encode=text"
-        if let url = URL(string: hitokotoAPI) {
-            URLSession.shared.dataTask(with: url) { (data, _, _) in
-                if let data = data, let hitokoto = String(data: data, encoding: .utf8) {
-                    Dlog("hitokoto \(hitokoto)")
-                    self.hitokotoBody = hitokoto
-                }
-            }.resume()
-        }
+        return Hitokoto.hitokotoBody
     }
 }

@@ -21,6 +21,8 @@
 		502E1B2821592BCA00397B03 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502E1B2721592BCA00397B03 /* Theme.swift */; };
 		50995464212919A500BECAFD /* PhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50995463212919A500BECAFD /* PhoneModel.swift */; };
 		509B2F0D2153E27500D5A926 /* DataPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */; };
+		50CB1ECD24611229007868FE /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CB1ECC24611229007868FE /* LaunchViewController.swift */; };
+		50CB1ED324611CC1007868FE /* Hitokoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CB1ED224611CC1007868FE /* Hitokoto.swift */; };
 		F804D3A42150CA7E0028DAD3 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804D3A32150CA7E0028DAD3 /* Location.swift */; };
 		F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80B691B1EB1D6BF00900635 /* AudioViewController.swift */; };
 		F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81229611BF73C6C00BDCF0E /* AppDelegate.swift */; };
@@ -75,6 +77,8 @@
 		502E1B2721592BCA00397B03 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		50995463212919A500BECAFD /* PhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
 		509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPickerViewController.swift; sourceTree = "<group>"; };
+		50CB1ECC24611229007868FE /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		50CB1ED224611CC1007868FE /* Hitokoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hitokoto.swift; sourceTree = "<group>"; };
 		6617760B2D13706ED0EFC492 /* Pods_Imagination.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Imagination.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70134F5EE603F78D03C4878 /* Pods-Imagination.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imagination.release.xcconfig"; path = "Pods/Target Support Files/Pods-Imagination/Pods-Imagination.release.xcconfig"; sourceTree = "<group>"; };
 		F804D3A32150CA7E0028DAD3 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 				509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */,
 				F868516821882BED00E1F715 /* VoiceInputViewController.swift */,
 				1B43AD302251D4430090BE3A /* WebViewController.swift */,
+				50CB1ECC24611229007868FE /* LaunchViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -197,6 +202,7 @@
 				F81316E9214F94B700FA0FCC /* Media.swift */,
 				F804D3A32150CA7E0028DAD3 /* Location.swift */,
 				502E1B2721592BCA00397B03 /* Theme.swift */,
+				50CB1ED224611CC1007868FE /* Hitokoto.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -421,6 +427,7 @@
 				F868516921882BED00E1F715 /* VoiceInputViewController.swift in Sources */,
 				F89537851EAF89DE00BFEAFC /* AudioRecord.swift in Sources */,
 				502E1B2821592BCA00397B03 /* Theme.swift in Sources */,
+				50CB1ECD24611229007868FE /* LaunchViewController.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
 				1B43AD312251D4430090BE3A /* WebViewController.swift in Sources */,
 				F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */,
@@ -439,6 +446,7 @@
 				50995464212919A500BECAFD /* PhoneModel.swift in Sources */,
 				F8F28CF51C0DB9D40007EDE3 /* Time.swift in Sources */,
 				F8C1F5901C3BBA2A00447ED2 /* CustomTableViewCell.swift in Sources */,
+				50CB1ED324611CC1007868FE /* Hitokoto.swift in Sources */,
 				F81283981C3F82E8002985A7 /* Notification.swift in Sources */,
 				F8FC2A7A1BFC26EB001D1AEB /* AuthorityViewController.swift in Sources */,
 				F8C1F5921C3BBA4A00447ED2 /* MainTableViewController.swift in Sources */,

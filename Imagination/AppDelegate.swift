@@ -25,7 +25,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 Dlog("requestAuthorization \(success)")
             }
         }
-        Notification.getNewHitokotoBody()
+        Hitokoto.getNewHitokotoBody()
+        
+        if let rootVC = window?.rootViewController {
+            let vc = LaunchViewController()
+            window?.rootViewController = vc
+            DispatchQueue.main.asyncAfter(deadline: .now() + Hitokoto.needShowTime()) {
+                self.window?.rootViewController = rootVC
+            }
+        }
         return true
     }
     
