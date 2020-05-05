@@ -23,6 +23,7 @@
 		509B2F0D2153E27500D5A926 /* DataPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */; };
 		50CB1ECD24611229007868FE /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CB1ECC24611229007868FE /* LaunchViewController.swift */; };
 		50CB1ED324611CC1007868FE /* Hitokoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CB1ED224611CC1007868FE /* Hitokoto.swift */; };
+		50CB1ED5246133A3007868FE /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50CB1ED4246133A3007868FE /* AboutViewController.swift */; };
 		F804D3A42150CA7E0028DAD3 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = F804D3A32150CA7E0028DAD3 /* Location.swift */; };
 		F80B691C1EB1D6BF00900635 /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80B691B1EB1D6BF00900635 /* AudioViewController.swift */; };
 		F81229621BF73C6C00BDCF0E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81229611BF73C6C00BDCF0E /* AppDelegate.swift */; };
@@ -79,6 +80,7 @@
 		509B2F0C2153E27500D5A926 /* DataPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPickerViewController.swift; sourceTree = "<group>"; };
 		50CB1ECC24611229007868FE /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		50CB1ED224611CC1007868FE /* Hitokoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hitokoto.swift; sourceTree = "<group>"; };
+		50CB1ED4246133A3007868FE /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		6617760B2D13706ED0EFC492 /* Pods_Imagination.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Imagination.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70134F5EE603F78D03C4878 /* Pods-Imagination.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imagination.release.xcconfig"; path = "Pods/Target Support Files/Pods-Imagination/Pods-Imagination.release.xcconfig"; sourceTree = "<group>"; };
 		F804D3A32150CA7E0028DAD3 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				F868516821882BED00E1F715 /* VoiceInputViewController.swift */,
 				1B43AD302251D4430090BE3A /* WebViewController.swift */,
 				50CB1ECC24611229007868FE /* LaunchViewController.swift */,
+				50CB1ED4246133A3007868FE /* AboutViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -430,6 +433,7 @@
 				50CB1ECD24611229007868FE /* LaunchViewController.swift in Sources */,
 				F8EFBA611D71E73300A7C3C0 /* Annotation.swift in Sources */,
 				1B43AD312251D4430090BE3A /* WebViewController.swift in Sources */,
+				50CB1ED5246133A3007868FE /* AboutViewController.swift in Sources */,
 				F856CF041EB322C200FE2822 /* MemorySpaceHeaderView.swift in Sources */,
 				1BC6B5A5226DEB8D00C689F2 /* WebDAV.swift in Sources */,
 				F8E9918B1C17CAE500650406 /* MoreViewController.swift in Sources */,
@@ -609,7 +613,7 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -639,7 +643,7 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination;
 				PRODUCT_NAME = "$(TARGET_NAME)";

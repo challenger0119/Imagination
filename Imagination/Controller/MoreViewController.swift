@@ -241,8 +241,7 @@ extension MoreViewController {
         } else if indexPath.row == 8 {
             navigationController?.pushViewController(WebDAVViewController(), animated: true)
         } else if indexPath.row == 9 {
-            let webVC = WebViewController(withURLString: "https://wuzhi.me")
-            navigationController?.pushViewController(webVC, animated: true)
+            // storyboard
         }
     }
 }
