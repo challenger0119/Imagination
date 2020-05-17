@@ -17,6 +17,16 @@ class AboutViewController: UITableViewController {
         let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         versionLabel.text = "版本: \(version ?? "")"
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
 }
 
 extension AboutViewController {

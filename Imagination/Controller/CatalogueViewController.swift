@@ -28,7 +28,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         self.siderTable = UITableView(frame: tframe, style: .plain)
         self.siderTable.dataSource = self
         self.siderTable.delegate = self
-        self.siderTable.backgroundColor = UIColor(white: 0.8, alpha: 1.0)
+        self.siderTable.backgroundColor = Theme.Color.white()
         self.siderTable.separatorStyle = .none
         
         self.view.addSubview(siderTable)
@@ -97,8 +97,7 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         }else{
             let cell = UITableViewCell(style: .default, reuseIdentifier: reusableCellIdentifier)
             cell.textLabel?.text = self.content![indexPath.row]
-            cell.backgroundColor = UIColor.clear
-            cell.textLabel?.textColor = UIColor.white
+            cell.textLabel?.textColor = Theme.Color.grey()
             return cell
         }
     }
@@ -108,10 +107,4 @@ class CatalogueViewController: UIViewController,UITableViewDelegate,UITableViewD
         dismissVC()
         self.delegate?.catalogueDidSelectItem(item: self.content![indexPath.row])
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
 }

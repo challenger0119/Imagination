@@ -85,7 +85,7 @@
 		D70134F5EE603F78D03C4878 /* Pods-Imagination.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Imagination.release.xcconfig"; path = "Pods/Target Support Files/Pods-Imagination/Pods-Imagination.release.xcconfig"; sourceTree = "<group>"; };
 		F804D3A32150CA7E0028DAD3 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		F80B691B1EB1D6BF00900635 /* AudioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
-		F812295E1BF73C6C00BDCF0E /* Imagination.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Imagination.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F812295E1BF73C6C00BDCF0E /* 碎想.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "碎想.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F81229611BF73C6C00BDCF0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F81229661BF73C6C00BDCF0E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F812296B1BF73C6C00BDCF0E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -246,7 +246,7 @@
 		F812295F1BF73C6C00BDCF0E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F812295E1BF73C6C00BDCF0E /* Imagination.app */,
+				F812295E1BF73C6C00BDCF0E /* 碎想.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -306,7 +306,7 @@
 			);
 			name = Imagination;
 			productName = Imagination;
-			productReference = F812295E1BF73C6C00BDCF0E /* Imagination.app */;
+			productReference = F812295E1BF73C6C00BDCF0E /* 碎想.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -613,10 +613,10 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.3.0;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination.dev;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "碎想";
 				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
 				PROVISIONING_PROFILE_SPECIFIER = allcan;
 				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";
@@ -643,10 +643,10 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.3.0;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "碎想";
 				PROVISIONING_PROFILE = "583c4b3f-701f-4dab-b5cf-f16ee551d6b0";
 				PROVISIONING_PROFILE_SPECIFIER = imaginationdis;
 				SWIFT_OBJC_BRIDGING_HEADER = "Imagination/Imagination-Bridging-Header.h";

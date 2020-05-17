@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F812295D1BF73C6C00BDCF0E"
-               BuildableName = "Imagination.app"
+               BuildableName = "&#x788e;&#x60f3;.app"
                BlueprintName = "Imagination"
                ReferencedContainer = "container:Imagination.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F812295D1BF73C6C00BDCF0E"
-            BuildableName = "Imagination.app"
+            BuildableName = "&#x788e;&#x60f3;.app"
             BlueprintName = "Imagination"
             ReferencedContainer = "container:Imagination.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F812295D1BF73C6C00BDCF0E"
-            BuildableName = "Imagination.app"
+            BuildableName = "&#x788e;&#x60f3;.app"
             BlueprintName = "Imagination"
             ReferencedContainer = "container:Imagination.xcodeproj">
          </BuildableReference>
