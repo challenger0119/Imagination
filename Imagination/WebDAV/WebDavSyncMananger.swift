@@ -27,7 +27,7 @@ class WebDavSyncMananger {
 
     func synchronization() {
         if !syncDirHref.isEmpty {
-            let fileDir = FileManager.backupFilePath()
+            let fileDir = FileManager.exportFilePath()
             do {
                 let files = try FileManager.default.subpathsOfDirectory(atPath: fileDir)
                 files.forEach { (f) in

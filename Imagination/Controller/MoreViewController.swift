@@ -42,7 +42,6 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
     func updateReminder() {
         if Notification.isReminder {
             if let clock = Notification.fireTime {
-                
                 reminder.detailTextLabel?.text = String(format: "%d:%02d", clock.hour, clock.minute)
             }
         } else {
@@ -52,7 +51,7 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
 
     func updateCloudSyncCell() {
         if let config = WebDAVConfig.recent() {
-            cloundSyncCell.detailTextLabel?.text = config.serverName
+            cloundSyncCell.detailTextLabel?.text = config.serverName + "(点击上传已导出文件)"
         }
     }
     
