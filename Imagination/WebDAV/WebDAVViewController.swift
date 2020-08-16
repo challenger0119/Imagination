@@ -126,7 +126,7 @@ extension WebDAVViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: reusableIdentifier, for: indexPath)
         let item = items[indexPath.row + 1]
         if item.isDirectory {
-            if item.href == WebDavSyncMananger.shared.syncDirHref {
+            if WebDavSyncMananger.shared.syncDirHref.hasPrefix(item.href) {
                 cell.accessoryType = .detailDisclosureButton
             } else {
                 cell.accessoryType = .detailButton

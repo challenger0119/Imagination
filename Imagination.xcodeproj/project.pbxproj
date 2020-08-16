@@ -613,7 +613,7 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.3.1;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination.dev;
 				PRODUCT_NAME = "碎想";
@@ -643,7 +643,7 @@
 				);
 				INFOPLIST_FILE = Imagination/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.3.0;
+				MARKETING_VERSION = 0.3.1;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaohui.imagination;
 				PRODUCT_NAME = "碎想";
