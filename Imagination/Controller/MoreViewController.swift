@@ -42,7 +42,8 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
     func updateReminder() {
         if Notification.isReminder {
             if let clock = Notification.fireTime {
-                reminder.detailTextLabel?.text = "\(clock.hour):\(clock.minute)"
+                
+                reminder.detailTextLabel?.text = String(format: "%d:%02d", clock.hour, clock.minute)
             }
         } else {
             reminder.detailTextLabel?.text = "每天特定时段会提示更新心情"
