@@ -46,6 +46,7 @@ class Notification {
             }
         }
         set{
+            Hitokoto.off = newValue
             UserDefaults.standard.set(newValue, forKey: Notification.keyForReminder)
         }
     }
@@ -72,6 +73,13 @@ class Notification {
     
     static func cancelAllNotifications() {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+    
+    static func reSchedule() {
+        if let time = fireTime {
+            cancelAllNotifications()
+            createNotificaion(at: time.0, minute: time.1)
+        }
     }
 }
 

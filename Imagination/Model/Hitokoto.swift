@@ -10,6 +10,12 @@ import Foundation
 
 class Hitokoto {
     static let keyForHitokoto = "keyForHitokoto"
+    static let hitokotoOn = "keyForHitokotoOnOff"
+    
+    static var off: Bool {
+        get { UserDefaults.standard.bool(forKey: hitokotoOn) }
+        set { UserDefaults.standard.set(newValue, forKey: hitokotoOn) }
+    }
 
      static var hitokotoBody: String? {
         get {

@@ -45,7 +45,7 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
                 reminder.detailTextLabel?.text = String(format: "%d:%02d", clock.hour, clock.minute)
             }
         } else {
-            reminder.detailTextLabel?.text = "每天特定时段会提示更新心情"
+            reminder.detailTextLabel?.text = "每天定时一言(替代启动一言)"
         }
     }
 
@@ -183,13 +183,11 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
                                 self.updateReminder()
                                 return
                             }
-
-                            
                             
                             let pickerBack = UIView(frame: CGRect(x: 20, y: self.view.frame.height/2-133, width: self.view.frame.width - 40, height: 266))
                             pickerBack.backgroundColor = UIColor.white
                             pickerBack.layer.cornerRadius = 10
-                            let btn = UIButton.init(frame: CGRect(x: pickerBack.frame.width - 52, y: 8, width: 40, height: 40))
+                            let btn = UIButton(frame: CGRect(x: pickerBack.frame.width - 52, y: 8, width: 40, height: 40))
                             btn.setImage(UIImage(named: "check"), for: .normal)
                             btn.addTarget(self, action: #selector(self.didSelectTime), for: UIControl.Event.touchUpInside)
                             pickerBack.addSubview(btn)
@@ -202,7 +200,6 @@ class MoreViewController: UITableViewController, MFMailComposeViewControllerDele
                             self.datePicker!.datePickerMode = UIDatePicker.Mode.time
                             self.datePicker?.timeZone = TimeZone.current
                             pickerBack.addSubview(self.datePicker!)
-                            
                             
                             let pickerBackMask = UIView(frame: UIScreen.main.bounds)
                             pickerBackMask.tag = self.pickerViewTag

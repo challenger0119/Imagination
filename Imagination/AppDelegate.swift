@@ -20,12 +20,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         Hitokoto.getNewHitokotoBody()
         
-        if let rootVC = window?.rootViewController {
+        if let rootVC = window?.rootViewController, !Hitokoto.off {
             let vc = LaunchViewController()
             window?.rootViewController = vc
             DispatchQueue.main.asyncAfter(deadline: .now() + Hitokoto.needShowTime()) {
                 self.window?.rootViewController = rootVC
             }
+        }
+        
+        if Notification.isReminder {
+            Notification.reSchedule()
         }
         return true
     }
