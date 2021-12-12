@@ -17,26 +17,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     
     var keyBoardHeight:CGFloat = 216.0
     let keyboardDistance:CGFloat = 10
-    var moodState = 0 {
-        didSet{
-            if moodState == 1 {
-                self.noGoodBtn.backgroundColor = MoodType.defaultColor
-                self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControl.State())
-                self.goodBtn.backgroundColor = MoodType.coolColor
-                self.goodBtn.setTitleColor(UIColor.white, for: UIControl.State())
-            }else if moodState == 2{
-                self.noGoodBtn.backgroundColor = MoodType.justOkColor
-                self.noGoodBtn.setTitleColor(UIColor.white, for: UIControl.State())
-                self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControl.State())
-                self.goodBtn.backgroundColor = MoodType.defaultColor
-            }else{
-                self.noGoodBtn.backgroundColor = MoodType.defaultColor
-                self.noGoodBtn.setTitleColor(UIColor.lightGray, for: UIControl.State())
-                self.goodBtn.backgroundColor = MoodType.defaultColor
-                self.goodBtn.setTitleColor(UIColor.lightGray, for: UIControl.State())
-            }
-        }
-    }
     
     var place:(name:String,coor:CLLocationCoordinate2D)?{
         didSet{
@@ -62,8 +42,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     var font: UIFont = UIFont.systemFont(ofSize: 14)
     
     @IBOutlet weak var content: UITextView!
-    @IBOutlet weak var goodBtn: UIButton!
-    @IBOutlet weak var noGoodBtn: UIButton!
     @IBOutlet weak var getLocBtn: UIButton!
     @IBOutlet weak var bottomContraint: NSLayoutConstraint!
     
@@ -102,22 +80,6 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
         NotificationCenter.default.removeObserver(self)
     }
 
-    @IBAction func noGoodBtnClicked() {
-        if moodState == 2 {
-            moodState = 0;
-        }else{
-            moodState = 2
-        }
-    }
-    
-    @IBAction func goodBtnClicked() {
-        if moodState == 1 {
-            moodState = 0;
-        }else{
-            moodState = 1
-        }
-    }
-   
     @objc func longPressAction(gesture:UILongPressGestureRecognizer){
         if gesture.state == .began {
             removeLocation()
@@ -144,33 +106,17 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
     }
 
     @IBAction func done(_ sender: UIBarButtonItem) {
-        self.closeKeyboard()
-        if !self.content.text.isEmpty && self.moodState == 0 {
-            let alert = UIAlertController(title: "提示", message: "确定不选择状态？", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "确定", style: .default, handler: {
-                action in
-                self.doneAction()
-            }))
-            alert.addAction(UIAlertAction(title: "取消", style: .default, handler: {
-                action in
-            }))
-            self.present(alert, animated: true, completion: {
-                
-            })
-        }else{
-            self.doneAction()
-        }
+        closeKeyboard()
+        doneAction()
     }
     
     
     func doneAction() {
-        let ttt = content.text
-        if !(ttt!.isEmpty) {
+        if let ttt = content.text {
             analysisTextStorage() //解析多媒体
             
             let item = Item()
-            item.content = ttt!
-            item.mood = moodState
+            item.content = ttt
             if let plc = place {
                item.location = Location(withName: plc.name, latitude: plc.coor.latitude, longtitude: plc.coor.longitude)
             }
@@ -181,21 +127,8 @@ class MoodViewController: UIViewController,UIAlertViewDelegate,UIImagePickerCont
             dataCache.storeItem(item)
 
             NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: Notification.keyForNewMoodAdded), object: nil)
-            back()
-        } else {
-            if moodState != 0 {
-                //自动填写
-                switch moodState {
-                case 1: content.text = "\"不言不语，毕竟言语无法表达我今天的快乐！！\""
-                case 2: content.text = "\"可能，这就是平凡的一天。\""
-                case 3: content.text = "\"生活不就是这样吗——开心与不开心交替出现。不是都说最有趣的路是曲曲折折的吗？加油!\""
-                default: break
-                }
-                self.doneAction()
-            }else{
-                back()
-            }
         }
+        back()
     }
     
     @IBAction func didSwipDown(){

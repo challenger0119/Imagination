@@ -14,7 +14,9 @@ class CustomTableViewCell: UITableViewCell {
     @IBOutlet weak var content: UITextView!
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.content.layer.cornerRadius = 3.0
-        self.content.isUserInteractionEnabled = false
+        content.layer.cornerRadius = 3.0
+        content.isUserInteractionEnabled = false
+        time.textColor = UIColor(white: 0.5, alpha: 1.0)
+        content.textColor = UIColor(white: 0.4, alpha: 1.0)
     }
 }

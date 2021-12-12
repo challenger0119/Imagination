@@ -17,14 +17,12 @@ class ContentShowViewController: UIViewController {
     var text:String = ""
     var pInfo:Location?
     var exitAnimation:(() -> Void)?
-    var mood:MoodType
     fileprivate var mapView:UIView?
     
     init(withItem item:Item) {
         self.multiMedias = item.medias.sorted(byKeyPath: "position", ascending: true)
         self.text = item.content
         self.pInfo = item.location
-        self.mood = item.moodType
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -33,16 +31,7 @@ class ContentShowViewController: UIViewController {
     }
     
     @objc func closeVC(){
-        UIView.animate(withDuration: 0.2, animations: {
-            self.view.alpha = 0
-        }, completion: {
-            boo in
-            if boo {
-                self.dismiss(animated: false, completion: {
-                    
-                })
-            }
-        })
+        self.dismiss(animated: true, completion: nil)
     }
     
     @objc func showMap(){
@@ -56,10 +45,8 @@ class ContentShowViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // 模糊背景
-        let imageView = UIImageView(frame: self.view.frame)
-        imageView.image = UIImage.blurImage(of: UIApplication.shared.keyWindow, withBlurNumber: 1)
-        self.view.addSubview(imageView)
+        
+        view.backgroundColor = UIColor.white
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeVC)))
         
@@ -74,7 +61,6 @@ class ContentShowViewController: UIViewController {
             let locBtn = UIButton(frame: CGRect(x: 20, y: self.view.frame.height-50, width: textView.frame.width, height: 30))
             self.view.addSubview(locBtn)
             locBtn.layer.cornerRadius = 5.0
-            locBtn.setTitleColor(self.mood.getColor(), for: .normal)
             locBtn.setTitle(pInfo!.name, for: .normal)
             locBtn.titleLabel?.adjustsFontSizeToFitWidth = true
             locBtn.addTarget(self, action: #selector(showMap), for: .touchUpInside)
@@ -136,15 +122,14 @@ class ContentShowViewController: UIViewController {
                     let substring = String(self.text[start..<end])
                     let height = (substring as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
                     textView.addSubview(
-                        labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: substring, textColor: self.mood.getColor())
+                        labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: substring)
                     )
                     usedHeight += height
                 }
             }
         }else{
             let height = (self.text as NSString).boundingRect(with: CGSize(width:textView.frame.width,height:textView.frame.height), options: [NSStringDrawingOptions.usesLineFragmentOrigin,.usesFontLeading], attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 15)], context: nil).size.height
-            textView.addSubview(
-                labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: self.text, textColor: self.mood.getColor()))
+            textView.addSubview(labelFactory(frame: CGRect(x:0,y:usedHeight,width:textView.frame.width,height:height), content: self.text))
         }
         textView.contentSize = CGSize(width: textView.frame.size.width, height: usedHeight)
     }
@@ -158,12 +143,12 @@ class ContentShowViewController: UIViewController {
         return btn
     }
     
-    func labelFactory(frame:CGRect,content:String,textColor:UIColor)->UILabel{
+    func labelFactory(frame:CGRect, content:String)->UILabel{
         let label = UILabel(frame: frame)
         label.text = content
-        label.textColor = textColor
+        label.textColor = UIColor(white: 0.3, alpha: 1.0)
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont.preferredFont(forTextStyle: .body)
         return label
     }
 
@@ -175,24 +160,19 @@ class ContentShowViewController: UIViewController {
             let vc = ImageViewController(withImage: UIImage(contentsOfFile: mf.storePath)!)
             let nav = UINavigationController(rootViewController: vc)
             nav.navigationBar.isTranslucent = false
-            self.present(nav, animated: true, completion: {
-                
-            })
+            self.present(nav, animated: true, completion:nil)
             
         case .video:
             let playView = AVPlayerViewController()
             let playitem = AVPlayerItem(asset: AVAsset(url: URL.init(fileURLWithPath: mf.storePath)))
             let player = AVPlayer(playerItem: playitem)
             playView.player = player
-            self.present(playView, animated: true, completion: {
-            })
+            self.present(playView, animated: true, completion: nil)
         case .voice:
             let vc = AudioViewController(withFile: mf.storePath)
             let nav = UINavigationController(rootViewController: vc)
             nav.navigationBar.isTranslucent = false
-            self.present(nav, animated: true, completion: {
-                
-            })
+            self.present(nav, animated: true, completion: nil)
         default:
             break
         }
