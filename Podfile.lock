@@ -14,7 +14,7 @@ DEPENDENCIES:
   - SSZipArchive
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Realm
     - RealmSwift
     - SnapKit
@@ -28,4 +28,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 43a0b83f348bd3793185650b448db276a13f3eb3
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.11.0
