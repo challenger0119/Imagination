@@ -136,12 +136,14 @@ class MainTableViewController: UITableViewController,CatalogueViewControllerDele
         let cc = dataSource[indexPath.row]
         cell.time.text = cc.dayString + " " + cc.timeString
         // 去掉内容里面的换行 避免cell过高
+        var contentText = ""
         if let plc = cc.location {
-            cell.content.text = cc.content + cc.getMediaDescription() + "\n\n@\(plc.name)"
+            contentText = cc.content + cc.getMediaDescription() + "\n\n@\(plc.name)"
         }else{
-            cell.content.text = cc.content + cc.getMediaDescription()
+            contentText = cc.content + cc.getMediaDescription()
         }
-        cell.content.text = cell.content.text.trimmingCharacters(in: .newlines)
+        contentText = contentText.trimmingCharacters(in: .newlines)
+        cell.setContentText(contentText)
         return cell
     }
 
